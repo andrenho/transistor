@@ -60,6 +60,10 @@ pkg_search_module(LUA REQUIRED luajit)
 set(ENGINE_SRC
         src/lua/luaengine.cc
         src/lua/luaengine.hh
+        src/engine/componentdb/componentdb.hh
+        src/engine/componentdb/componentdef.hh
+        src/engine/componentdb/component.hh
+        src/engine/editor/board.hh
 )
 
 set(IMGUI_SRC
