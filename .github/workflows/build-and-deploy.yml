@@ -1,0 +1,36 @@
+name: Build and deploy
+on:
+  push:
+    tags:
+      - 'v*'
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+      - name: Install dependencies
+        run: sudo apt install -y build-essential libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libluajit-5.1-dev
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Test
+        run: ./build.sh -t
+      - name: Build
+        run: ./build.sh -r
+      - name: Create package
+        run: cd build && make package_source
+      - name: Create release
+        id: create_release
+        uses: actions/create-release@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+      - name: Upload artifact
+        uses: alexellis/upload-assets@0.4.0
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          asset_paths: '["./build/*.bz2"]'
