@@ -5,6 +5,7 @@
 
 #include "component.hh"
 #include "wire.hh"
+#include "wiremanagement.hh"
 #include "engine/componentdb/componentdb.hh"
 #include "engine/geometry/position.hh"
 
@@ -16,6 +17,7 @@ public:
     [[nodiscard]] std::map<Position, Wire> const& wires() const { return wires_; }
 
     void add_component(std::string const& component_name, intpos_t x, intpos_t y);
+    void draw_wire(Wire::Width width, Wire::Layer layer, intpos_t x0, intpos_t y0, intpos_t x1, intpos_t y1, Orientation orientation);
 
 private:
     size_t                   w_, h_;
@@ -23,6 +25,7 @@ private:
 
     std::map<Position, Component> components_;
     std::map<Position, Wire>      wires_;
+    WireManagement                wire_management_;
 };
 
 #endif //BOARD_HH

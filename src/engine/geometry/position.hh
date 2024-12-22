@@ -7,7 +7,7 @@
 
 struct Position {
     intpos_t  x, y;
-    Direction dir;
+    Direction dir = Direction::Center;
 
     bool operator==(Position const& p) const { return x == p.x && y == p.y && dir == p.dir; }
     bool operator<(Position const& p) const;
