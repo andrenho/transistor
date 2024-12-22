@@ -1,6 +1,8 @@
 #include "doctest.h"
 #include "engine/connections/connection.hh"
 
+#include <algorithm>
+
 #include "engine/layout/layout.hh"
 #include "engine/sandbox/compiler.hh"
 #include "engine/sandbox/sandbox.hh"
@@ -65,8 +67,28 @@ TEST_SUITE("Engine")
             CHECK(layout.wires.contains({ 3, 1, Direction::W }));
         }
 
+#if 0
         SUBCASE("Compile layout to connections")
         {
+            CHECK(connections.size() == 1);
+
+            Connection const& connection = connections.at(0);
+
+            CHECK(connection.pins.size() == 2);
+            CHECK(r::find_if(connection.pins, [](Pin const& pin) {
+                return pin.component->def == &button && pin.pin_no == 3;
+            }) != connection.pins.end());
+            CHECK(r::find_if(connection.pins, [](Pin const& pin) {
+                return pin.component->def == &led && pin.pin_no == 1;
+            }) != connection.pins.end());
+
+            CHECK(connection.wire.size() == 4);
+
+            CHECK(r::contains(connection.wire, Position { 1, 1, Direction::E }));
+            CHECK(r::contains(connection.wire, Position { 2, 1, Direction::W }));
+            CHECK(r::contains(connection.wire, Position { 2, 1, Direction::E }));
+            CHECK(r::contains(connection.wire, Position { 3, 1, Direction::W }));
         }
+#endif
     }
 }
