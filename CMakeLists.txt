@@ -65,22 +65,23 @@ set(ENGINE_SRC
         src/engine/geometry/direction.cc
         src/engine/geometry/position.hh
         src/engine/componentdb/componentdb.hh
+        src/engine/componentdb/componentdb.cc
         src/engine/componentdb/componentdef.hh
+        src/engine/componentdb/components.hh
+        src/engine/componentdb/components.cc
         src/engine/editor/editor.hh
+        src/engine/editor/editor.cc
         src/engine/editor/board.hh
+        src/engine/editor/board.cc
         src/engine/editor/component.hh
+        src/engine/editor/component.cc
         src/engine/editor/wire.hh
+        src/engine/editor/wiremanagement.hh
+        src/engine/editor/wiremanagement.cc
         src/engine/layout/layout.hh
         src/engine/layout/pin.hh
         src/engine/connections/connection.hh
         src/engine/sandbox/sandbox.hh
-        src/engine/componentdb/components.hh
-        src/engine/componentdb/components.cc
-        src/engine/componentdb/componentdb.cc
-        src/engine/editor/board.cc
-        src/engine/editor/editor.cc
-        src/engine/editor/wiremanagement.hh
-        src/engine/editor/wiremanagement.cc
         src/engine/sandbox/compiler.cc
         src/engine/sandbox/compiler.hh
 )

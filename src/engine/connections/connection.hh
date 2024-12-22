@@ -10,7 +10,7 @@
 struct Connection {
     std::vector<Pin>      pins;
     std::vector<Position> tiles;
-    bus_t                 value = 0;
+    bus_data_t                 value = 0;
 };
 
 using Connections = std::vector<Connection>;
