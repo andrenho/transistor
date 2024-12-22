@@ -73,6 +73,7 @@ set(ENGINE_SRC
         src/engine/layout/layout.hh
         src/engine/layout/pin.hh
         src/engine/connections/connection.hh
+        src/engine/sandbox/sandbox.hh
 )
 
 set(IMGUI_SRC
@@ -136,7 +137,7 @@ add_executable(${PROJECT_NAME}-tests
         ${ENGINE_SRC}
         tests/doctest.h
         tests/main.cc
-        tests/tests.cc
+        tests/basic.cc
 )
 target_compile_definitions(${PROJECT_NAME}-tests PUBLIC PROJECT_NAME=\"${PROJECT_NAME}-tests\" ${DEF})
 target_compile_options(${PROJECT_NAME}-tests PRIVATE ${warnings})

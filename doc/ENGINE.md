@@ -3,7 +3,8 @@
 The `Sandbox` is the class the contains the build/simulation engine. It contains:
 
 * the `Editor`, used for editing a circuit (holds `Components` and `Wires`)
-* a `ComponentDatabase`, which holds components types that can be added to the editor.
+* a `ComponentDatabase`, which holds components types that can be added to the editor. Components can be native, or 
+  written in Lua.
 
 Every time a change is made to the editor, a compilation process kicks in that will:
 
@@ -14,5 +15,7 @@ Every time a change is made to the editor, a compilation process kicks in that w
 The `Simulation` is then run on the `Connections`, which execute the component code and calculate the pins values and,
 from that, the connection value. The value is then fed back to the `Editor`, which is used to give visual feedback to
 the user.
+
+The `Simulation` will run at every loop, and it'll be rebuit if any changes are made on the `Editor`.
 
 ![Engine architecture](architecture-backend.jpg)

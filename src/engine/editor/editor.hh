@@ -7,7 +7,7 @@
 
 class Editor {
 public:
-    [[nodiscard]] std::vector<Board> const& boards() const { return boards_; }
+    [[nodiscard]] std::vector<Board>& boards() { return boards_; }
 
 private:
     std::vector<Board> boards_ { {10, 10} };  // contains one empty board at startup
