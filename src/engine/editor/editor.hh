@@ -7,10 +7,13 @@
 
 class Editor {
 public:
+    explicit Editor(ComponentDatabase const& component_db);
+
     [[nodiscard]] std::list<Board>& boards() { return boards_; }
 
 private:
-    std::list<Board> boards_ { { 10, 10 } };  // contains one empty board at startup
+    ComponentDatabase const& component_db_;
+    std::list<Board> boards_;
 };
 
 #endif //EDITOR_HH

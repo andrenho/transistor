@@ -11,7 +11,7 @@ public:
 
 private:
     ComponentDatabase component_db_;
-    Editor            editor_;
+    Editor            editor_ { component_db_ };
 };
 
 #endif //SANDBOX_HH

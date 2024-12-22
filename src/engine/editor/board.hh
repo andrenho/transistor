@@ -1,16 +1,16 @@
 #ifndef BOARD_HH
 #define BOARD_HH
 
-#include <memory>
 #include <map>
 
 #include "component.hh"
 #include "wire.hh"
+#include "engine/componentdb/componentdb.hh"
 #include "engine/geometry/position.hh"
 
 class Board {
 public:
-    Board(size_t w, size_t h) : w_(w), h_(h) {}
+    Board(size_t w, size_t h, ComponentDatabase const& component_db) : w_(w), h_(h), component_db_(component_db) {}
 
     [[nodiscard]] std::map<Position, Component> const& components() const { return components_; }
     [[nodiscard]] std::map<Position, Wire> const& wires() const { return wires_; }
@@ -18,7 +18,9 @@ public:
     void add_component(std::string const& component_name, intpos_t x, intpos_t y);
 
 private:
-    size_t w_, h_;
+    size_t                   w_, h_;
+    ComponentDatabase const& component_db_;
+
     std::map<Position, Component> components_;
     std::map<Position, Wire>      wires_;
 };

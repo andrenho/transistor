@@ -78,6 +78,7 @@ set(ENGINE_SRC
         src/engine/componentdb/components.cc
         src/engine/componentdb/componentdb.cc
         src/engine/editor/board.cc
+        src/engine/editor/editor.cc
 )
 
 set(IMGUI_SRC
