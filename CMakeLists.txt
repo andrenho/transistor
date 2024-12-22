@@ -60,10 +60,15 @@ pkg_search_module(LUA REQUIRED luajit)
 set(ENGINE_SRC
         src/lua/luaengine.cc
         src/lua/luaengine.hh
+        src/engine/geometry/direction.hh
+        src/engine/geometry/direction.cc
+        src/engine/geometry/Position.hh
         src/engine/componentdb/componentdb.hh
         src/engine/componentdb/componentdef.hh
-        src/engine/componentdb/component.hh
+        src/engine/editor/editor.hh
         src/engine/editor/board.hh
+        src/engine/editor/component.hh
+        src/engine/editor/wire.hh
 )
 
 set(IMGUI_SRC
@@ -76,9 +81,6 @@ set(IMGUI_SRC
         contrib/imgui/backends/imgui_impl_sdlrenderer2.cpp
 )
 
-# ignore warnings in imported files
-set_source_files_properties(${IMGUI_SRC} PROPERTIES COMPILE_FLAGS "-w")
-
 add_executable(${CMAKE_PROJECT_NAME}
     ${IMGUI_SRC}
     ${ENGINE_SRC}
@@ -86,6 +88,9 @@ add_executable(${CMAKE_PROJECT_NAME}
     src/ui/ui.hh
     src/ui/ui.cc
 )
+
+# ignore warnings in imported files
+set_source_files_properties(${IMGUI_SRC} PROPERTIES COMPILE_FLAGS "-w")
 
 b_embed(${CMAKE_PROJECT_NAME} resources/images/face.png)
 b_embed(${CMAKE_PROJECT_NAME} resources/scripts/hello.lua)
