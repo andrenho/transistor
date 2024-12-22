@@ -60,6 +60,7 @@ pkg_search_module(LUA REQUIRED luajit)
 set(ENGINE_SRC
         src/lua/luaengine.cc
         src/lua/luaengine.hh
+        src/engine/types.hh
         src/engine/geometry/direction.hh
         src/engine/geometry/direction.cc
         src/engine/geometry/position.hh
@@ -70,6 +71,8 @@ set(ENGINE_SRC
         src/engine/editor/component.hh
         src/engine/editor/wire.hh
         src/engine/layout/layout.hh
+        src/engine/layout/pin.hh
+        src/engine/connections/connection.hh
 )
 
 set(IMGUI_SRC
