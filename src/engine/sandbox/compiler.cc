@@ -1,6 +1,8 @@
 #include "compiler.hh"
 
-Layout compiler::compile_to_layout(Board const& board)
+namespace compiler {
+
+Layout compile_to_layout(Board const& board)
 {
     Layout layout;
 
@@ -14,4 +16,13 @@ Layout compiler::compile_to_layout(Board const& board)
         layout.wires[pos] = wire;
 
     return layout;
+}
+
+Connections compile_to_connections(std::vector<Layout> const& layout)
+{
+    Connections connections;
+
+    return connections;
+}
+
 }

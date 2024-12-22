@@ -1,4 +1,5 @@
 #include "doctest.h"
+#include "engine/connections/connection.hh"
 
 #include "engine/layout/layout.hh"
 #include "engine/sandbox/compiler.hh"
@@ -18,6 +19,9 @@ TEST_SUITE("Engine")
         board.add_component("led", 3, 1);
         board.draw_wire(Wire::Width::W1, Wire::Layer::Top, 1, 1, 3, 1, Orientation::Horizontal);
 
+        Layout layout = compiler::compile_to_layout(board);
+        Connections connections = compiler::compile_to_connections(std::vector { layout });
+
         SUBCASE("Board elements")
         {
             CHECK(board.components().size() == 2);
@@ -31,10 +35,8 @@ TEST_SUITE("Engine")
             CHECK(board.wires().contains({ 3, 1, Direction::W }));
         }
 
-        SUBCASE("Compile to layout")
+        SUBCASE("Compile editor to layout")
         {
-            Layout layout = compiler::compile_to_layout(board);
-
             CHECK(layout.pins.size() == 8);
 
             CHECK(layout.pins.at({ 1, 1, Direction::N }).component->def == &button);
@@ -61,6 +63,10 @@ TEST_SUITE("Engine")
             CHECK(layout.wires.contains({ 2, 1, Direction::W }));
             CHECK(layout.wires.contains({ 2, 1, Direction::E }));
             CHECK(layout.wires.contains({ 3, 1, Direction::W }));
+        }
+
+        SUBCASE("Compile layout to connections")
+        {
         }
     }
 }
