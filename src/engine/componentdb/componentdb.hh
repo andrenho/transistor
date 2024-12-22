@@ -12,6 +12,7 @@ public:
     ComponentDatabase();
 
     Component create_component(std::string const& name) const;
+    ComponentDefinition const& component_def(std::string const& name) const { return *components_.at(name).get(); }
 
 private:
     std::unordered_map<std::string, std::unique_ptr<ComponentDefinition>> components_;

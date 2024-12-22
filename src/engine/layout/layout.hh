@@ -2,15 +2,14 @@
 #define LAYOUT_HH
 
 #include <unordered_map>
-#include <variant>
 
 #include "pin.hh"
 #include "engine/editor/wire.hh"
 #include "engine/geometry/position.hh"
 
 struct Layout {
-    using Element = std::variant<Wire, Pin>;
-    std::unordered_map<Position, Element> elements;
+    std::unordered_map<Position, Pin>  pins;
+    std::unordered_map<Position, Wire> wires;
 };
 
 #endif //LAYOUT_HH

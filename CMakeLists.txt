@@ -81,6 +81,8 @@ set(ENGINE_SRC
         src/engine/editor/editor.cc
         src/engine/editor/wiremanagement.hh
         src/engine/editor/wiremanagement.cc
+        src/engine/sandbox/compiler.cc
+        src/engine/sandbox/compiler.hh
 )
 
 set(IMGUI_SRC
