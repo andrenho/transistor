@@ -62,13 +62,14 @@ set(ENGINE_SRC
         src/lua/luaengine.hh
         src/engine/geometry/direction.hh
         src/engine/geometry/direction.cc
-        src/engine/geometry/Position.hh
+        src/engine/geometry/position.hh
         src/engine/componentdb/componentdb.hh
         src/engine/componentdb/componentdef.hh
         src/engine/editor/editor.hh
         src/engine/editor/board.hh
         src/engine/editor/component.hh
         src/engine/editor/wire.hh
+        src/engine/layout/layout.hh
 )
 
 set(IMGUI_SRC
