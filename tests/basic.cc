@@ -5,7 +5,7 @@
 TEST_SUITE("Engine")
 {
     Sandbox sandbox;
-    Board& board = sandbox.editor().boards().at(0);
+    Board& board = *sandbox.editor().boards().begin();
 
     TEST_CASE("Basic circuit")
     {
@@ -15,7 +15,7 @@ TEST_SUITE("Engine")
 
         SUBCASE("check board")
         {
-
+            CHECK(board.components().at({ 1, 1, Direction::Center }).def->name == "button");
         }
     }
 }

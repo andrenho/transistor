@@ -1,16 +1,16 @@
 #ifndef EDITOR_HH
 #define EDITOR_HH
 
-#include <vector>
+#include <list>
 
 #include "board.hh"
 
 class Editor {
 public:
-    [[nodiscard]] std::vector<Board>& boards() { return boards_; }
+    [[nodiscard]] std::list<Board>& boards() { return boards_; }
 
 private:
-    std::vector<Board> boards_ { {10, 10} };  // contains one empty board at startup
+    std::list<Board> boards_ { { 10, 10 } };  // contains one empty board at startup
 };
 
 #endif //EDITOR_HH
