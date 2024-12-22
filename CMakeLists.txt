@@ -74,6 +74,10 @@ set(ENGINE_SRC
         src/engine/layout/pin.hh
         src/engine/connections/connection.hh
         src/engine/sandbox/sandbox.hh
+        src/engine/componentdb/components.hh
+        src/engine/componentdb/components.cc
+        src/engine/componentdb/componentdb.cc
+        src/engine/editor/board.cc
 )
 
 set(IMGUI_SRC

@@ -2,13 +2,19 @@
 #define COMPONENTDATABASE_HH
 
 #include <memory>
-#include <vector>
+#include <string>
+#include <unordered_map>
 
-#include "componentdef.hh"
+#include "engine/editor/component.hh"
 
 class ComponentDatabase {
 public:
-    [[nodiscard]] std::vector<std::unique_ptr<ComponentDefinition>> const& components() const;
+    ComponentDatabase();
+
+    Component create_component(std::string const& name) const;
+
+private:
+    std::unordered_map<std::string, std::unique_ptr<ComponentDefinition>> components_;
 };
 
 #endif //COMPONENTDATABASE_HH

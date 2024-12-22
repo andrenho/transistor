@@ -14,6 +14,8 @@ public:
     [[nodiscard]] std::unordered_map<Position, Component> const& components() const { return components_; }
     [[nodiscard]] std::unordered_map<Position, Wire> const&      wires() const { return wires_; }
 
+    void add_component(std::string const& component_name, intpos_t x, intpos_t y);
+
 private:
     size_t w_, h_;
     std::unordered_map<Position, Component> components_;

@@ -7,7 +7,7 @@
 struct Component {
     ComponentDefinition* def;
     Direction            rotation = Direction::N;
-    void*                data;
+    void*                data = nullptr;
 };
 
 #endif //COMPONENT_HH
