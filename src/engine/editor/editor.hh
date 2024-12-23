@@ -7,7 +7,7 @@
 
 class Editor {
 public:
-    explicit Editor(class Sandbox& sandbox, ComponentDatabase const& component_db);
+    explicit Editor(Sandbox& sandbox, ComponentDatabase const& component_db);
 
     [[nodiscard]] std::list<Board>& boards() { return boards_; }
 

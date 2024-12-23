@@ -93,7 +93,7 @@ TEST_SUITE("Engine")
         {
             for (size_t i = 0; i < 10; ++i)
                 sandbox.simulate();
-            CHECK(led->image_index() == 0);
+            CHECK(led->data[0] == 0);
         }
 
         SUBCASE("Simulate with button press")
@@ -103,7 +103,7 @@ TEST_SUITE("Engine")
 
             for (size_t i = 0; i < 10; ++i)
                 sandbox.simulate();
-            CHECK(led->image_index() == 1);
+            CHECK(led->data[0] == 1);
         }
     }
 }

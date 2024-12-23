@@ -18,9 +18,6 @@ ComponentDefinition button()
         .simulate = [](Component& button) {
             button.pins[0] = button.pins[1] = button.pins[2] = button.pins[3] = button.data[0];
         },
-        .image_index = [](Component const& button) {
-            return button.data[0];
-        },
     };
 }
 
@@ -33,9 +30,6 @@ ComponentDefinition led()
         .data_size = 1,
         .simulate = [](Component& led) {
             led.data[0] = led.pins[0] | led.pins[1] | led.pins[2] | led.pins[3];
-        },
-        .image_index = [](Component const& led) {
-            return led.data[0];
         },
     };
 }

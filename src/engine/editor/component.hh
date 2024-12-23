@@ -19,7 +19,6 @@ struct Component {
     std::vector<std::pair<uintpin_t, Position>> pin_positions(Position const& component_pos) const;
 
     void      on_click() { def->on_click(*this); }
-    uintimg_t image_index() const { return def->image_index(*this); }
 };
 
 #endif //COMPONENT_HH

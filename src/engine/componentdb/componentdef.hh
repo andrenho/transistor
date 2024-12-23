@@ -18,7 +18,6 @@ struct ComponentDefinition {
     size_t      data_size = 0;
     std::function<void(Component&)>            on_click = nullptr;
     std::function<void(Component&)>            simulate = nullptr;
-    std::function<uintimg_t(Component const&)> image_index = [](Component const&) { return 0; };
 
     constexpr uintpin_t pin_count() const
     {
