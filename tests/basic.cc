@@ -1,5 +1,7 @@
 #include "doctest.h"
 
+#include <algorithm>
+
 #include "engine/connections/connection.hh"
 #include "engine/layout/layout.hh"
 #include "engine/sandbox/compiler.hh"
@@ -65,7 +67,6 @@ TEST_SUITE("Engine")
             CHECK(layout.wires.contains({ 3, 1, Direction::W }));
         }
 
-#if 0
         SUBCASE("Compile layout to connections")
         {
             CHECK(connections.size() == 1);
@@ -87,6 +88,5 @@ TEST_SUITE("Engine")
             CHECK(r::contains(connection.wire, Position { 2, 1, Direction::E }));
             CHECK(r::contains(connection.wire, Position { 3, 1, Direction::W }));
         }
-#endif
     }
 }

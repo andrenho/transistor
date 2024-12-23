@@ -59,9 +59,39 @@ std::vector<std::unordered_set<Position>> find_connected_wires(std::unordered_se
     return groups;
 }
 
-Connections compile_to_connections(std::vector<Layout> const& layout)
+Connections compile_to_connections(std::vector<Layout> const& layouts)
 {
     Connections connections;
+
+    auto create_connection = [](Layout const& layout, std::unordered_set<Position> const& positions) -> Connection {
+        Connection conn;
+        conn.wire = positions;
+        for (auto const& [pos, pin]: layout.pins) {
+            if (conn.wire.contains(pos))
+                conn.pins.insert(pin);
+            if (conn.wire.contains({ pos.x, pos.y, Direction::Center }))
+                conn.pins.insert(pin);
+        }
+        return conn;
+    };
+
+    for (auto const& layout: layouts) {
+        for (auto const& layer: Wire::ALL_LAYERS) {
+            for (auto const& width: Wire::ALL_WIDTHS) {
+
+                // create list of wires
+                std::unordered_set<Position> wires;
+                for (auto const& [pos, wire]: layout.wires) {
+                    if (wire.width == width && wire.layer == layer)
+                        wires.insert(pos);
+                }
+
+                // find groups
+                for (auto const& group : find_connected_wires(wires))
+                    connections.push_back(create_connection(layout, group));
+            }
+        }
+    }
 
     return connections;
 }

@@ -1,6 +1,7 @@
 #ifndef TYPES_HH
 #define TYPES_HH
 
+#include <algorithm>
 #include <cstdint>
 #include <ranges>
 

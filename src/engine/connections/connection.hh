@@ -1,16 +1,15 @@
 #ifndef CONNECTION_HH
 #define CONNECTION_HH
 
-#include <vector>
+#include <unordered_set>
 
-#include "engine/types.hh"
 #include "engine/geometry/position.hh"
 #include "engine/layout/pin.hh"
 
 struct Connection {
-    std::vector<Pin>      pins;
-    std::vector<Position> wire;
-    bus_data_t            value = 0;
+    std::unordered_set<Pin>      pins;
+    std::unordered_set<Position> wire;
+    bus_data_t                   value = 0;
 };
 
 using Connections = std::vector<Connection>;

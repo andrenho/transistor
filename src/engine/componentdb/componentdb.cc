@@ -14,5 +14,11 @@ ComponentDatabase::ComponentDatabase()
 
 Component ComponentDatabase::create_component(std::string const& name) const
 {
-    return { .def = components_.at(name).get() };
+    ComponentDefinition const* def = components_.at(name).get();
+    Component component {
+        .def = def
+    };
+    if (def->data_size > 0)
+        component.data = std::make_unique<uint8_t[]>(def->data_size);
+    return component;
 }

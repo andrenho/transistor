@@ -8,6 +8,7 @@ ComponentDefinition button()
         .name = "button",
         .type = ComponentDefinition::Type::SingleTile,
         .can_rotate = false,
+        .data_size = 1,
     };
 }
 
