@@ -24,7 +24,7 @@ Layout compile_to_layout(Board const& board)
 std::vector<std::unordered_set<Position>> find_connected_wires(std::unordered_set<Position> wires)
 {
     auto find_connected_group = [&wires](Position const& start) -> std::unordered_set<Position> {
-        std::vector<Position> result;
+        std::unordered_set<Position> result;
         std::unordered_set<Position> to_visit;
 
         to_visit.insert(start);
@@ -33,18 +33,19 @@ std::vector<std::unordered_set<Position>> find_connected_wires(std::unordered_se
             Position const& visiting = *to_visit.begin();
 
             if (wires.contains(visiting)) {
-                result.push_back(visiting);
+                // add to result list, and remove from the visited
+                result.insert(visiting);
                 wires.erase(visiting);
-                std::cout << visiting << "\n";
-            }
 
-            for (Position const& neighbour: visiting.neighbours())
-                to_visit.insert(neighbour);
+                // add neighbours
+                for (Position const& neighbour: visiting.neighbours())
+                    to_visit.insert(neighbour);
+            }
 
             to_visit.erase(visiting);
         }
 
-        return {start};
+        return result;
     };
 
     if (wires.empty())

@@ -26,6 +26,7 @@ TEST_SUITE("Connected wires")
         CHECK(groups.size() == 1);
 
         auto const& group = groups.at(0);
+        CHECK(group.size() == 4);
         CHECK(group.contains({ 1, 1, Direction::E }));
         CHECK(group.contains({ 2, 1, Direction::W }));
         CHECK(group.contains({ 2, 1, Direction::E }));
