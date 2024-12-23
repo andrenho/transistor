@@ -1,8 +1,6 @@
 #include "doctest.h"
+
 #include "engine/connections/connection.hh"
-
-#include <algorithm>
-
 #include "engine/layout/layout.hh"
 #include "engine/sandbox/compiler.hh"
 #include "engine/sandbox/sandbox.hh"

@@ -148,6 +148,7 @@ add_executable(${PROJECT_NAME}-tests
         tests/doctest.h
         tests/main.cc
         tests/basic.cc
+        tests/connected_wires.cc
 )
 target_compile_definitions(${PROJECT_NAME}-tests PUBLIC PROJECT_NAME=\"${PROJECT_NAME}-tests\" ${DEF})
 target_compile_options(${PROJECT_NAME}-tests PRIVATE ${warnings})
