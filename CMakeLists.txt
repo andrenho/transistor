@@ -84,6 +84,7 @@ set(ENGINE_SRC
         src/engine/sandbox/sandbox.hh
         src/engine/sandbox/compiler.cc
         src/engine/sandbox/compiler.hh
+        src/engine/sandbox/sandbox.cc
 )
 
 set(IMGUI_SRC

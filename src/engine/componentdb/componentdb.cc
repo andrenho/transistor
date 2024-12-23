@@ -16,7 +16,8 @@ Component ComponentDatabase::create_component(std::string const& name) const
 {
     ComponentDefinition const* def = components_.at(name).get();
     Component component {
-        .def = def
+        .def = def,
+        .pins = std::make_unique<uint8_t[]>(def->pin_count()),
     };
     if (def->data_size > 0)
         component.data = std::make_unique<uint8_t[]>(def->data_size);

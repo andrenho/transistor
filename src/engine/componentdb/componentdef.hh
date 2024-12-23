@@ -1,7 +1,12 @@
 #ifndef COMPONENTDEFINITION_HH
 #define COMPONENTDEFINITION_HH
 
+#include <cstddef>
+#include <functional>
 #include <string>
+#include "engine/types.hh"
+
+struct Component;
 
 struct ComponentDefinition {
     enum class Type { SingleTile, IC };
@@ -11,6 +16,16 @@ struct ComponentDefinition {
     bool        can_rotate;
 
     size_t      data_size = 0;
+    std::function<void(Component&)>            on_click = nullptr;
+    std::function<void(Component&)>            simulate = nullptr;
+    std::function<uintimg_t(Component const&)> image_index = [](Component const&) { return 0; };
+
+    constexpr uintpin_t pin_count() const
+    {
+        if (type == Type::SingleTile)
+            return 4;
+        throw std::runtime_error("IC type not yet supported for `pin_count`.");
+    }
 
     // TODO - add IC fields (size, pins)
 };
