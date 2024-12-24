@@ -19,7 +19,7 @@ UI::UI()
     TTF_Init();
     IMG_Init(IMG_INIT_PNG);
 
-    window_ = SDL_CreateWindow(PROJECT_NAME, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 600, SDL_WINDOW_RESIZABLE);
+    window_ = SDL_CreateWindow(PROJECT_NAME, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1600, 800, SDL_WINDOW_RESIZABLE);
     if (!window_)
         throw std::runtime_error("Error: SDL_CreateWindow(): "s + SDL_GetError());
 
@@ -31,18 +31,12 @@ UI::UI()
     SDL_GetRendererInfo(ren_, &info);
     SDL_Log("Current SDL_Renderer: %s", info.name);
 
-    load_resources();
+    resource_manager_.set_renderer(ren_);
+    bg_ = resource_manager_.from_image(b::embed<"resources/images/bg.jpg">().vec());
+    circuit_ = resource_manager_.from_image(b::embed<"resources/images/circuit.png">().vec());
+
     init_imgui();
 }
-
-void UI::load_resources()
-{
-    std::vector<uint8_t> face = b::embed<"resources/images/face.png">().vec();
-    SDL_Surface* sf = IMG_Load_RW(SDL_RWFromMem(face.data(), (int) face.size()), 1);
-    texture_ = SDL_CreateTextureFromSurface(ren_, sf);
-    SDL_FreeSurface(sf);
-}
-
 
 void UI::init_imgui()
 {
@@ -67,8 +61,8 @@ UI::~UI()
     ImGui_ImplSDL2_Shutdown();
     ImGui::DestroyContext();
 
-    if (texture_)
-        SDL_DestroyTexture(texture_);
+    resource_manager_.cleanup();
+
     if (ren_)
         SDL_DestroyRenderer(ren_);
     if (window_)
@@ -100,7 +94,11 @@ void UI::render()
     SDL_SetRenderDrawColor(ren_, 0, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(ren_);
 
-    render_game();
+    // draw background
+    SDL_RenderCopy(ren_, bg_, nullptr, nullptr);
+
+    // TODO - draw sandbox
+    // render_game();
 
     // draw GUI
     render_gui();
@@ -109,25 +107,6 @@ void UI::render()
 
     SDL_RenderPresent(ren_);
 }
-
-void UI::render_game()
-{
-    // get window size
-    int scr_w, scr_h;
-    SDL_GetWindowSize(window_, &scr_w, &scr_h);
-
-    // draw face texture
-    int tx_w, tx_h;
-    SDL_QueryTexture(texture_, nullptr, nullptr, &tx_w, &tx_h);
-    SDL_Rect dest = {
-        .x = (scr_w / 2) - (tx_w / 2),
-        .y = (scr_h / 2) - (tx_h / 2),
-        .w = tx_w,
-        .h = tx_h,
-    };
-    SDL_RenderCopy(ren_, texture_, nullptr, &dest);
-}
-
 
 void UI::render_gui()
 {

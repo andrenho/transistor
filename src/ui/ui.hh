@@ -3,6 +3,8 @@
 
 #include <chrono>
 
+#include "resources/resourcemanager.hh"
+
 using hr = std::chrono::high_resolution_clock;
 using Duration = decltype(hr::now() - hr::now());
 
@@ -19,9 +21,7 @@ public:
     [[nodiscard]] bool running() const { return running_; }
 
 private:
-    void load_resources();
     void init_imgui();
-    void render_game();
     void render_gui();
 
     bool running_ = true;
@@ -29,8 +29,10 @@ private:
 
     struct SDL_Window*   window_;
     struct SDL_Renderer* ren_;
-    struct SDL_Texture*  texture_;
     struct ImGuiIO* io;
+
+    ResourceManager resource_manager_;
+    Resource        bg_, circuit_;
 };
 
 #endif

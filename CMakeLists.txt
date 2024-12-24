@@ -98,17 +98,21 @@ set(IMGUI_SRC
 )
 
 add_executable(${CMAKE_PROJECT_NAME}
-    ${IMGUI_SRC}
-    ${ENGINE_SRC}
-    src/main.cc
-    src/ui/ui.hh
-    src/ui/ui.cc
+        ${IMGUI_SRC}
+        ${ENGINE_SRC}
+        src/main.cc
+        src/ui/ui.hh
+        src/ui/ui.cc
+        src/ui/resources/resourcemanager.cc
+        src/ui/resources/resourcemanager.hh
+        src/ui/resources/resource.hh
 )
 
 # ignore warnings in imported files
 set_source_files_properties(${IMGUI_SRC} PROPERTIES COMPILE_FLAGS "-w")
 
-b_embed(${CMAKE_PROJECT_NAME} resources/images/face.png)
+b_embed(${CMAKE_PROJECT_NAME} resources/images/circuit.png)
+b_embed(${CMAKE_PROJECT_NAME} resources/images/bg.jpg)
 b_embed(${CMAKE_PROJECT_NAME} resources/scripts/hello.lua)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
