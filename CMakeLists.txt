@@ -93,7 +93,10 @@ set(UI_SRC
         src/ui/resources/resourcemanager.cc
         src/ui/resources/resourcemanager.hh
         src/ui/resources/resource.hh
-        src/ui/layer.hh
+        src/ui/ui_layer.hh
+        src/ui/layers/boardeditor.cc
+        src/ui/layers/boardeditor.hh
+        src/ui/circuit_atlas.hh
 )
 
 set(IMGUI_SRC

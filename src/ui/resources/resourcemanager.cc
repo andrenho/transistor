@@ -18,6 +18,11 @@ Resource ResourceManager::from_image(Resource const& res, int x, int y, int w, i
     return resources_.emplace_back(Resource::SubTexture { res, x, y, w, h });
 }
 
+Resource ResourceManager::from_tileset(Resource const& res, int tile_sz, int x, int y, int w, int h)
+{
+    return from_image(res, x * tile_sz, y * tile_sz, w * tile_sz, h * tile_sz);
+}
+
 void ResourceManager::cleanup()
 {
     for (auto const& res: resources_) {

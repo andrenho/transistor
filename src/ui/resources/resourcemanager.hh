@@ -14,6 +14,7 @@ public:
 
     Resource from_image(std::vector<uint8_t> const& data);
     Resource from_image(Resource const& res, int x, int y, int w, int h);
+    Resource from_tileset(Resource const& res, int tile_sz, int x, int y, int w=1, int h=1);
 
     void cleanup();
 

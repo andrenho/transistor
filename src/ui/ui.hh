@@ -3,6 +3,7 @@
 
 #include <chrono>
 
+#include "ui_layer.hh"
 #include "resources/resourcemanager.hh"
 
 using hr = std::chrono::high_resolution_clock;
@@ -15,6 +16,8 @@ public:
     UI (const UI&) = delete;
     UI& operator=(const UI&) = delete;
 
+    void draw_image(UILayer const& layer, Resource const& res, int x, int y, DrawProperties const& dp) const;
+
     void update([[maybe_unused]] Duration timestep);
     void render();
 
@@ -22,17 +25,16 @@ public:
 
 private:
     void init_imgui();
-    void render_gui();
 
     bool running_ = true;
-    bool show_demo_window_ = true;
 
     struct SDL_Window*   window_;
     struct SDL_Renderer* ren_;
-    struct ImGuiIO* io;
 
     ResourceManager resource_manager_;
     Resource        bg_, circuit_;
+
+    std::vector<UILayer> layers;
 };
 
 #endif

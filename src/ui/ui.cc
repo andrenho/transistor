@@ -42,7 +42,7 @@ void UI::init_imgui()
 {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
-    io = &ImGui::GetIO();
+    ImGuiIO* io = &ImGui::GetIO();
     io->ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
     io->ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
@@ -88,6 +88,26 @@ void UI::update(Duration timestep)
     }
 }
 
+void UI::draw_image(UILayer const& layer, Resource const& res, int x, int y, DrawProperties const& dp) const
+{
+    SDL_Texture* texture;
+    SDL_Rect origin;
+
+    if (res.is_texture()) {
+        texture = res;
+        origin.x = origin.y = 0;
+        SDL_QueryTexture(texture, nullptr, nullptr, &origin.w, &origin.h);
+    } else {
+        Resource::SubTexture st = res;
+        texture = st.texture;
+        origin = { st.x, st.y, st.w, st.h };
+    }
+
+    SDL_Rect dest = { layer.layer_x + x, layer.layer_y + y, origin.w, origin.h };
+
+    SDL_RenderCopy(ren_, texture, &origin, &dest);
+}
+
 void UI::render()
 {
     // clear screen
@@ -97,25 +117,13 @@ void UI::render()
     // draw background
     SDL_RenderCopy(ren_, bg_, nullptr, nullptr);
 
-    // TODO - draw sandbox
-    // render_game();
-
-    // draw GUI
-    render_gui();
-    SDL_RenderSetScale(ren_, io->DisplayFramebufferScale.x, io->DisplayFramebufferScale.y);
-    ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData(), ren_);
+    // draw layers
+    for (auto& layer: layers) {
+        layer.render([this, &layer](Resource const& res, int x, int y, DrawProperties const& dp) {
+            draw_image(layer, res, x, y, dp);
+        });
+    }
 
     SDL_RenderPresent(ren_);
 }
 
-void UI::render_gui()
-{
-    ImGui_ImplSDLRenderer2_NewFrame();
-    ImGui_ImplSDL2_NewFrame();
-    ImGui::NewFrame();
-
-    if (show_demo_window_)
-        ImGui::ShowDemoWindow(&show_demo_window_);
-
-    ImGui::Render();
-}
