@@ -21,6 +21,9 @@ public:
     Component* add_component(std::string const& component_name, intpos_t x, intpos_t y);
     void       draw_wire(Wire::Width width, Wire::Layer layer, intpos_t x0, intpos_t y0, intpos_t x1, intpos_t y1, Orientation orientation);
 
+    [[nodiscard]] size_t w() const { return w_; }
+    [[nodiscard]] size_t h() const { return h_; }
+
 private:
     size_t                   w_, h_;
     Sandbox&                 sandbox_;
