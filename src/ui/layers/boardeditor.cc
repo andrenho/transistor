@@ -21,5 +21,18 @@ void BoardEditor::draw(UI_Interface const& uif, CSprite sprite, int x, int y, Dr
 
 void BoardEditor::render(UI_Interface const& uif)
 {
-    draw(uif, CSprite::Tile, 0, 0);
+    draw(uif, CSprite::BoardTopLeft, 0, 0);
+    draw(uif, CSprite::BoardTopRight, (board_.w() + 2) * TILE_SIZE, 0);
+    draw(uif, CSprite::BoardBottomLeft, 0, (board_.h() + 2) * TILE_SIZE);
+    draw(uif, CSprite::BoardBottomRight, (board_.w() + 2) * TILE_SIZE, (board_.h() + 2) * TILE_SIZE);
+
+    for (ssize_t x = 0; x < board_.w(); ++x) {
+        draw(uif, CSprite::BoardTop, (x + 2) * TILE_SIZE, 0);
+        draw(uif, CSprite::BoardBottom, (x + 2) * TILE_SIZE, (board_.h() + 2) * TILE_SIZE);
+    }
+
+    for (ssize_t y = 0; y < board_.h(); ++y) {
+        draw(uif, CSprite::BoardLeft, 0 * TILE_SIZE, (y + 2) * TILE_SIZE);
+        draw(uif, CSprite::BoardRight, (board_.w() + 2) * TILE_SIZE, (y + 2) * TILE_SIZE);
+    }
 }
