@@ -6,7 +6,7 @@
 # v0.0.2 - simple circuit editing
 
 - [x] UI setup
-- [ ] draw board
+- [x] draw board
 - [ ] GUI events
 - [ ] move board
 - [ ] add wires

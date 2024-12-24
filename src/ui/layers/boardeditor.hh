@@ -16,6 +16,9 @@ private:
     Board& board_;
     std::vector<Resource> icons_;
 
+    void render_border(UI_Interface const& uif) const;
+    void render_tile(UI_Interface const& uif, int x, int y) const;
+
     void draw(UI_Interface const& uif, CSprite sprite, int x, int y, DrawProperties dp={}) const;
 };
 
