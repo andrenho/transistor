@@ -96,7 +96,7 @@ set(UI_SRC
         src/ui/ui_layer.hh
         src/ui/layers/boardeditor.cc
         src/ui/layers/boardeditor.hh
-        src/ui/circuit_atlas.hh
+        src/ui/resources/circuit_atlas.hh
 )
 
 set(IMGUI_SRC

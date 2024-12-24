@@ -35,7 +35,6 @@ UI::UI()
 
     resource_manager_.set_renderer(ren_);
     bg_ = resource_manager_.from_image(b::embed<"resources/images/bg.jpg">().vec());
-    circuit_ = resource_manager_.from_image(b::embed<"resources/images/circuit.png">().vec());
 
     init_imgui();
 }
@@ -43,7 +42,7 @@ UI::UI()
 void UI::set_sandbox(Sandbox& sandbox)
 {
     Board& board = *sandbox.editor().boards().begin();
-    layers.push_back(std::make_unique<BoardEditor>(resource_manager_, circuit_, board));
+    layers.push_back(std::make_unique<BoardEditor>(resource_manager_, board));
 }
 
 void UI::init_imgui()

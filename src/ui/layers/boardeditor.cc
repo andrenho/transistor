@@ -1,17 +1,23 @@
 #include "boardeditor.hh"
 
-#include "ui/circuit_atlas.hh"
+#include "battery/embed.hpp"
+#include "ui/resources/circuit_atlas.hh"
 
 static Resource tile;  // TODO
 
-BoardEditor::BoardEditor(ResourceManager& resource_manager, Resource const& circuit, Board& board)
+BoardEditor::BoardEditor(ResourceManager& resource_manager, Board& board)
     : UILayer(0, 0, 100, 100 /* TODO */), board_(board)
 {
-    tile = resource_manager.from_tileset(circuit, TILE_SZ, 3, 1);
+    Resource circuit = resource_manager.from_image(b::embed<"resources/images/circuit.png">().vec());
+    icons_ = resource_manager.from_atlas(circuit, circuit_coordinates, TILE_SIZE);
     zoom = 2.f;
 }
 
 void BoardEditor::render(DrawF draw)
 {
-    draw(tile, 0, 0, {});
+    auto draw_icon = [this, &draw](CSprite sprite, int x, int y, DrawProperties dp={}) {
+        draw(icons_.at((size_t) sprite), x, y, dp);
+    };
+
+    draw_icon(CSprite::Tile, 0, 0);
 }

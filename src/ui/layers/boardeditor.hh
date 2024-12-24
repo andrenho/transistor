@@ -7,12 +7,13 @@
 
 class BoardEditor : public UILayer {
 public:
-    BoardEditor(ResourceManager& resource_manager, Resource const& circuit, Board& board);
+    BoardEditor(ResourceManager& resource_manager, Board& board);
 
     void render(DrawF draw) override;
 
 private:
     Board& board_;
+    std::vector<Resource> icons_;
 };
 
 #endif //BOARDEDITOR_HH

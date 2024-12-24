@@ -37,7 +37,7 @@ private:
     struct SDL_Renderer* ren_;
 
     ResourceManager resource_manager_;
-    Resource        bg_, circuit_;
+    Resource        bg_;
 
     std::vector<std::unique_ptr<UILayer>> layers;
 };
