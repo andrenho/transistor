@@ -3,6 +3,7 @@
 
 #include <chrono>
 #include <memory>
+#include <tuple>
 #include <vector>
 
 #include "uiinterface.hh"
@@ -31,6 +32,7 @@ public:
 
 private:
     void init_imgui();
+    std::tuple<class UILayer*, int, int> find_layer(int x, int y) const;
 
     bool running_ = true;
 

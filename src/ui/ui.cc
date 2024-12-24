@@ -15,6 +15,8 @@ using namespace std::string_literals;
 
 #include "battery/embed.hpp"
 
+#include "ui_layer.hh"
+
 UI::UI()
 {
     SDL_Init(SDL_INIT_EVERYTHING);
@@ -90,6 +92,10 @@ void UI::update(Duration timestep)
             case SDL_QUIT:
                 running_ = false;
                 break;
+            case SDL_MOUSEBUTTONDOWN:
+                if (auto [layer, lx, ly] = find_layer(e.button.x, e.button.y); layer)
+                    layer->on_mouse_press(lx, ly, e.button.button, e.button.clicks == 2);
+                break;
             case SDL_KEYDOWN:
 #ifndef NODEBUG
                 if (e.key.keysym.sym == SDLK_q)
@@ -139,3 +145,9 @@ void UI::render()
     SDL_RenderPresent(ren_);
 }
 
+std::tuple<UILayer*, int, int> UI::find_layer(int x, int y) const
+{
+    for (auto const& layer: layers) {
+        // if (x >= layer->x && y >= layer->y && x < (lay
+    }
+}

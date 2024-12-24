@@ -16,6 +16,6 @@ The `Simulation` is then run on the `Connections`, which execute the component c
 from that, the connection value. The value is then fed back to the `Editor`, which is used to give visual feedback to
 the user.
 
-The `Simulation` will run at every loop, and it'll be rebuit if any changes are made on the `Editor`.
+The `Simulation` will run at every loop, and it'll be rebuilt if any changes are made on the `Editor`.
 
 ![Engine architecture](architecture-backend.jpg)
