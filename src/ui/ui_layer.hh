@@ -1,20 +1,13 @@
 #ifndef LAYER_HH
 #define LAYER_HH
 
-#include <functional>
-
-#include "resources/resource.hh"
-
-struct DrawProperties {
-};
-
-using DrawF = std::function<void(Resource const& res, int x, int y, DrawProperties const& dp)>;
+#include "uiinterface.hh"
 
 class UILayer {
 public:
     virtual ~UILayer() = default;
 
-    virtual void render(DrawF draw) = 0;
+    virtual void render(UI_Interface const& uif) = 0;
 
     int x, y, w, h;
     float zoom = 1.f;

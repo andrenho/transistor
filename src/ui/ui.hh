@@ -5,6 +5,7 @@
 #include <memory>
 #include <vector>
 
+#include "uiinterface.hh"
 #include "ui_layer.hh"
 #include "engine/sandbox/sandbox.hh"
 #include "resources/resourcemanager.hh"
@@ -12,7 +13,7 @@
 using hr = std::chrono::high_resolution_clock;
 using Duration = decltype(hr::now() - hr::now());
 
-class UI {
+class UI : public UI_Interface {
 public:
     UI();
     ~UI();
@@ -21,7 +22,7 @@ public:
 
     void set_sandbox(Sandbox& sandbox);
 
-    void draw_image(UILayer const* layer, Resource const& res, int x, int y, DrawProperties const& dp) const;
+    void draw_image(UILayer const* layer, Resource const& res, int x, int y, DrawProperties const& dp) const override;
 
     void update([[maybe_unused]] Duration timestep);
     void render();

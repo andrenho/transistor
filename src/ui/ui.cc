@@ -127,9 +127,7 @@ void UI::render()
     // draw layers
     for (auto& layer: layers) {
         SDL_RenderSetScale(ren_, layer->zoom, layer->zoom);
-        layer->render([this, &layer](Resource const& res, int x, int y, DrawProperties const& dp) {
-            draw_image(layer.get(), res, x, y, dp);
-        });
+        layer->render(*(UI_Interface const*) this);
         SDL_RenderSetScale(ren_, 1.f, 1.f);
     }
 
