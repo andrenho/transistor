@@ -87,6 +87,15 @@ set(ENGINE_SRC
         src/engine/sandbox/sandbox.cc
 )
 
+set(UI_SRC
+        src/ui/ui.hh
+        src/ui/ui.cc
+        src/ui/resources/resourcemanager.cc
+        src/ui/resources/resourcemanager.hh
+        src/ui/resources/resource.hh
+        src/ui/layer.hh
+)
+
 set(IMGUI_SRC
         contrib/imgui/imgui.cpp
         contrib/imgui/imgui_demo.cpp
@@ -98,14 +107,10 @@ set(IMGUI_SRC
 )
 
 add_executable(${CMAKE_PROJECT_NAME}
-        ${IMGUI_SRC}
         ${ENGINE_SRC}
+        ${UI_SRC}
+        ${IMGUI_SRC}
         src/main.cc
-        src/ui/ui.hh
-        src/ui/ui.cc
-        src/ui/resources/resourcemanager.cc
-        src/ui/resources/resourcemanager.hh
-        src/ui/resources/resource.hh
 )
 
 # ignore warnings in imported files
