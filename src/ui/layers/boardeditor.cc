@@ -8,6 +8,7 @@ BoardEditor::BoardEditor(ResourceManager& resource_manager, Resource const& circ
     : UILayer(0, 0, 100, 100 /* TODO */), board_(board)
 {
     tile = resource_manager.from_tileset(circuit, TILE_SZ, 3, 1);
+    zoom = 2.f;
 }
 
 void BoardEditor::render(DrawF draw)

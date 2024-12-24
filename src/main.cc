@@ -2,14 +2,15 @@
 
 #include <chrono>
 
-#include "lua/luaengine.hh"
+#include "engine/sandbox/sandbox.hh"
 
 int main()
 {
-    LuaEngine lua_engine;
-    lua_engine.hello();
+    Sandbox sandbox;
 
     UI ui;
+    ui.set_sandbox(sandbox);
+
     auto last_frame = hr::now();
     while (ui.running()) {
         auto new_frame = hr::now();

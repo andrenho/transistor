@@ -16,10 +16,11 @@ public:
 
     virtual void render(DrawF draw) = 0;
 
-    int layer_x, layer_y, layer_w, layer_h;
+    int x, y, w, h;
+    float zoom = 1.f;
 
 protected:
-    UILayer(int x, int y, int w, int h) : layer_x(x), layer_y(y), layer_w(w), layer_h(h) {}
+    UILayer(int x, int y, int w, int h) : x(x), y(y), w(w), h(h) {}
 };
 
 #endif //LAYER_HH

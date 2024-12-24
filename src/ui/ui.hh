@@ -2,8 +2,11 @@
 #define UI_UI_HH_
 
 #include <chrono>
+#include <memory>
+#include <vector>
 
 #include "ui_layer.hh"
+#include "engine/sandbox/sandbox.hh"
 #include "resources/resourcemanager.hh"
 
 using hr = std::chrono::high_resolution_clock;
@@ -16,7 +19,9 @@ public:
     UI (const UI&) = delete;
     UI& operator=(const UI&) = delete;
 
-    void draw_image(UILayer const& layer, Resource const& res, int x, int y, DrawProperties const& dp) const;
+    void set_sandbox(Sandbox& sandbox);
+
+    void draw_image(UILayer const* layer, Resource const& res, int x, int y, DrawProperties const& dp) const;
 
     void update([[maybe_unused]] Duration timestep);
     void render();
@@ -34,7 +39,7 @@ private:
     ResourceManager resource_manager_;
     Resource        bg_, circuit_;
 
-    std::vector<UILayer> layers;
+    std::vector<std::unique_ptr<UILayer>> layers;
 };
 
 #endif

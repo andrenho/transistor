@@ -1,6 +1,8 @@
 #include "ui.hh"
 
 #include <string>
+
+#include "layers/boardeditor.hh"
 using namespace std::string_literals;
 
 #include "SDL2/SDL.h"
@@ -36,6 +38,12 @@ UI::UI()
     circuit_ = resource_manager_.from_image(b::embed<"resources/images/circuit.png">().vec());
 
     init_imgui();
+}
+
+void UI::set_sandbox(Sandbox& sandbox)
+{
+    Board& board = *sandbox.editor().boards().begin();
+    layers.push_back(std::make_unique<BoardEditor>(resource_manager_, circuit_, board));
 }
 
 void UI::init_imgui()
@@ -88,7 +96,7 @@ void UI::update(Duration timestep)
     }
 }
 
-void UI::draw_image(UILayer const& layer, Resource const& res, int x, int y, DrawProperties const& dp) const
+void UI::draw_image(UILayer const* layer, Resource const& res, int x, int y, DrawProperties const& dp) const
 {
     SDL_Texture* texture;
     SDL_Rect origin;
@@ -103,7 +111,7 @@ void UI::draw_image(UILayer const& layer, Resource const& res, int x, int y, Dra
         origin = { st.x, st.y, st.w, st.h };
     }
 
-    SDL_Rect dest = { layer.layer_x + x, layer.layer_y + y, origin.w, origin.h };
+    SDL_Rect dest = { layer->x + x, layer->y + y, origin.w, origin.h };
 
     SDL_RenderCopy(ren_, texture, &origin, &dest);
 }
@@ -119,9 +127,11 @@ void UI::render()
 
     // draw layers
     for (auto& layer: layers) {
-        layer.render([this, &layer](Resource const& res, int x, int y, DrawProperties const& dp) {
-            draw_image(layer, res, x, y, dp);
+        SDL_RenderSetScale(ren_, layer->zoom, layer->zoom);
+        layer->render([this, &layer](Resource const& res, int x, int y, DrawProperties const& dp) {
+            draw_image(layer.get(), res, x, y, dp);
         });
+        SDL_RenderSetScale(ren_, 1.f, 1.f);
     }
 
     SDL_RenderPresent(ren_);
