@@ -5,7 +5,11 @@
 #include <functional>
 #include <string>
 #include "engine/types.hh"
+#include "ui/uiinterface.hh"
 
+class  ResourceManager;
+class  Resource;
+class  UI_Interface;
 struct Component;
 
 struct ComponentDefinition {
@@ -16,8 +20,9 @@ struct ComponentDefinition {
     bool        can_rotate;
 
     size_t      data_size = 0;
-    std::function<void(Component&)>            on_click = nullptr;
-    std::function<void(Component&)>            simulate = nullptr;
+
+    std::function<void(Component& component)>   on_click = nullptr;
+    std::function<void(Component& component)>   simulate = nullptr;
 
     constexpr uintpin_t pin_count() const
     {

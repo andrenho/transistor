@@ -11,6 +11,7 @@
 - [x] move board
 - [x] add wires
 - [ ] components
+  - [ ] images
   - [ ] add
   - [ ] manipulate
   - [ ] VCC, PNP, NPN
