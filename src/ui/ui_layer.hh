@@ -9,11 +9,11 @@ public:
 
     virtual void render(UI_Interface const& uif) = 0;
 
-    virtual void on_mouse_press(int x, int y, uint8_t button, bool dbl_click) {}
-    virtual void on_mouse_release(int x, int y, uint8_t button) {}
-    virtual void on_mouse_move(int x, int y, int rx, int ry) {}
-    virtual void on_key_press(uint32_t key, int x, int y) {}
-    virtual void on_key_release(uint32_t key, int x, int y) {}
+    virtual void on_mouse_press(UI_Interface& uif, int x, int y, uint8_t button, bool dbl_click) {}
+    virtual void on_mouse_release(UI_Interface& uif, int x, int y, uint8_t button) {}
+    virtual void on_mouse_move(UI_Interface& uif, int x, int y, int rx, int ry) {}
+    virtual void on_key_press(UI_Interface& uif, uint32_t key, int x, int y) {}
+    virtual void on_key_release(UI_Interface& uif, uint32_t key, int x, int y) {}
 
     int pos_x, pos_y, w, h;
     float zoom = 1.f;

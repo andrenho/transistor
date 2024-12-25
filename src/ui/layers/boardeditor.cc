@@ -50,7 +50,7 @@ void BoardEditor::render_tile(UI_Interface const& uif, int x, int y) const
     draw(uif, CSprite::Tile, x + 2, y + 2);
 }
 
-void BoardEditor::on_mouse_press(int x, int y, uint8_t button, bool dbl_click)
+void BoardEditor::on_mouse_press(UI_Interface& uif, int x, int y, uint8_t button, bool dbl_click)
 {
     int tx = x / TILE_SIZE - 2;
     int ty = y / TILE_SIZE - 2;

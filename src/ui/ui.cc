@@ -95,20 +95,20 @@ void UI::update(Duration timestep)
                 break;
             case SDL_MOUSEBUTTONDOWN:
                 if (auto [layer, lx, ly] = find_layer(e.button.x, e.button.y); layer)
-                    layer->on_mouse_press(lx, ly, e.button.button, e.button.clicks == 2);
+                    layer->on_mouse_press(*this, lx, ly, e.button.button, e.button.clicks == 2);
                 break;
             case SDL_MOUSEBUTTONUP:
                 if (auto [layer, lx, ly] = find_layer(e.button.x, e.button.y); layer)
-                    layer->on_mouse_release(lx, ly, e.button.button);
+                    layer->on_mouse_release(*this, lx, ly, e.button.button);
                 break;
             case SDL_MOUSEMOTION:
                 if (auto [layer, lx, ly] = find_layer(e.motion.x, e.motion.y); layer)
-                    layer->on_mouse_move(lx, ly, e.motion.xrel, e.motion.yrel);
+                    layer->on_mouse_move(*this, lx, ly, e.motion.xrel, e.motion.yrel);
                 break;
             case SDL_KEYDOWN:
                 SDL_GetMouseState(&mx, &my);
                 if (auto [layer, lx, ly] = find_layer(mx, my); layer)
-                    layer->on_key_press(e.key.keysym.sym, lx, ly);
+                    layer->on_key_press(*this, e.key.keysym.sym, lx, ly);
                 break;
 #ifndef NODEBUG
                 if (e.key.keysym.sym == SDLK_q)
@@ -117,7 +117,7 @@ void UI::update(Duration timestep)
             case SDL_KEYUP:
                 SDL_GetMouseState(&mx, &my);
                 if (auto [layer, lx, ly] = find_layer(mx, my); layer)
-                    layer->on_key_release(e.key.keysym.sym, lx, ly);
+                    layer->on_key_release(*this, e.key.keysym.sym, lx, ly);
                 break;
             default: break;
         }

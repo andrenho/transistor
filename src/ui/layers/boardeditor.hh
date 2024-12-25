@@ -12,7 +12,7 @@ public:
 
     void render(UI_Interface const& uif) override;
 
-    void on_mouse_press(int x, int y, uint8_t button, bool dbl_click) override;
+    void on_mouse_press(UI_Interface& uif, int x, int y, uint8_t button, bool dbl_click) override;
 
 private:
     Board& board_;
