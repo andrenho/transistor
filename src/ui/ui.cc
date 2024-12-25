@@ -107,13 +107,15 @@ void UI::update(Duration timestep)
                     drag_layer(*dragging_, e.motion.xrel, e.motion.yrel);
                 break;
             case SDL_KEYDOWN:
-                SDL_GetMouseState(&mx, &my);
-                if (auto [layer, lx, ly] = find_layer(mx, my); layer)
-                    layer->on_key_press(*this, e.key.keysym.sym, lx, ly);
+                if (e.key.repeat == 0) {
+                    SDL_GetMouseState(&mx, &my);
+                    if (auto [layer, lx, ly] = find_layer(mx, my); layer)
+                        layer->on_key_press(*this, e.key.keysym.sym, lx, ly);
 #ifndef NODEBUG
-                if (e.key.keysym.sym == SDLK_q)
-                    running_ = false;
+                    if (e.key.keysym.sym == SDLK_q)
+                        running_ = false;
 #endif
+                }
                 break;
             case SDL_KEYUP:
                 SDL_GetMouseState(&mx, &my);
@@ -147,6 +149,7 @@ void UI::draw_image(UILayer const* layer, Resource const& res, int x, int y, Dra
         .h = origin.h
     };
 
+    SDL_SetTextureAlphaMod(texture, dp.semitransparent ? 128 : 255);
     SDL_RenderCopy(ren_, texture, &origin, &dest);
 }
 

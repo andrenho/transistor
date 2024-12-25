@@ -11,7 +11,7 @@
 
 class Board {
 public:
-    Board(int w, int h, class Sandbox& sandbox, ComponentDatabase const& component_db)
+    Board(intpos_t w, intpos_t h, class Sandbox& sandbox, ComponentDatabase const& component_db)
         : w_(w), h_(h), sandbox_(sandbox), component_db_(component_db) {}
 
     [[nodiscard]] std::map<Position, Component> const& components() const { return components_; }
@@ -28,11 +28,11 @@ public:
     void       cancel_placing_wire() { wire_management_.stop_drawing(); }
     [[nodiscard]] std::map<Position, Wire> temporary_wire() const { return wire_management_.current_drawing(); }
 
-    [[nodiscard]] int w() const { return w_; }
-    [[nodiscard]] int h() const { return h_; }
+    [[nodiscard]] intpos_t w() const { return w_; }
+    [[nodiscard]] intpos_t h() const { return h_; }
 
 private:
-    int                      w_, h_;
+    intpos_t                 w_, h_;
     Sandbox&                 sandbox_;
     ComponentDatabase const& component_db_;
 

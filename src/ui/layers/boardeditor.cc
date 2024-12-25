@@ -59,7 +59,7 @@ void BoardEditor::on_key_release(UI_Interface& uif, uint32_t key, int x, int y)
     auto pos = to_pos(x, y);
 
     if (key == 'w') {
-        drawing_wire_ = true;
+        drawing_wire_ = false;
         board_.finish_placing_wire(pos.x, pos.y);
     }
 }
@@ -72,38 +72,38 @@ void BoardEditor::on_key_release(UI_Interface& uif, uint32_t key, int x, int y)
 
 void BoardEditor::draw(UI_Interface const& uif, CSprite sprite, int x, int y, DrawProperties dp) const
 {
-    uif.draw_image(this, icons_.at(static_cast<size_t>(sprite)), x * TILE_SIZE, y * TILE_SIZE, dp);
+    uif.draw_image(this, icons_.at(static_cast<size_t>(sprite)), (x + 2) * TILE_SIZE, (y + 2) * TILE_SIZE, dp);
 }
 
 void BoardEditor::render(UI_Interface const& uif)
 {
     render_border(uif);
-    for (int x = 0; x < board_.w(); ++x)
-        for (int y = 0; y < board_.h(); ++y)
+    for (intpos_t x = 0; x < board_.w(); ++x)
+        for (intpos_t y = 0; y < board_.h(); ++y)
             render_tile(uif, x, y);
 }
 
 void BoardEditor::render_border(UI_Interface const& uif) const
 {
-    draw(uif, CSprite::BoardTopLeft, 0, 0);
-    draw(uif, CSprite::BoardTopRight, board_.w() + 2, 0);
-    draw(uif, CSprite::BoardBottomLeft, 0, board_.h() + 2);
-    draw(uif, CSprite::BoardBottomRight, board_.w() + 2, board_.h() + 2);
+    draw(uif, CSprite::BoardTopLeft, -2, -2);
+    draw(uif, CSprite::BoardTopRight, board_.w(), -2);
+    draw(uif, CSprite::BoardBottomLeft, -2, board_.h());
+    draw(uif, CSprite::BoardBottomRight, board_.w(), board_.h());
 
     for (ssize_t x = 0; x < board_.w(); ++x) {
-        draw(uif, CSprite::BoardTop, x + 2, 0);
-        draw(uif, CSprite::BoardBottom, x + 2, board_.h() + 2);
+        draw(uif, CSprite::BoardTop, x, -2);
+        draw(uif, CSprite::BoardBottom, x, board_.h());
     }
 
     for (ssize_t y = 0; y < board_.h(); ++y) {
-        draw(uif, CSprite::BoardLeft, 0, y + 2);
-        draw(uif, CSprite::BoardRight, board_.w() + 2, y + 2);
+        draw(uif, CSprite::BoardLeft, -2, y);
+        draw(uif, CSprite::BoardRight, board_.w(), y);
     }
 }
 
 void BoardEditor::render_tile(UI_Interface const& uif, intpos_t x, intpos_t y) const
 {
-    draw(uif, CSprite::Tile, x + 2, y + 2);
+    draw(uif, CSprite::Tile, x, y);
 
     for (Direction const& dir: DIRECTIONS) {
         // draw wire
@@ -143,6 +143,6 @@ void BoardEditor::render_wire(UI_Interface const& uif, Position const& pos, Wire
     auto it = wire_sprites.find({ wire, pos.dir, false });  // TODO: use actual value
     if (it == wire_sprites.end())
         throw std::runtime_error("Wire configuration not found");
-    draw(uif, it->second, (pos.x + 2) * TILE_SIZE, (pos.y + 2) * TILE_SIZE, { .semitransparent = semitransparent });
+    draw(uif, it->second, pos.x, pos.y, { .semitransparent = semitransparent });
 }
 
