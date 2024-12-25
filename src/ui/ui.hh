@@ -3,6 +3,7 @@
 
 #include <chrono>
 #include <memory>
+#include <optional>
 #include <tuple>
 #include <vector>
 
@@ -24,6 +25,8 @@ public:
     void set_sandbox(Sandbox& sandbox);
 
     void draw_image(UILayer const* layer, Resource const& res, int x, int y, DrawProperties const& dp) const override;
+    void start_dragging(UILayer* layer) override { dragging_ = layer; }
+    void stop_dragging() override                { dragging_ = {}; }
 
     void update([[maybe_unused]] Duration timestep);
     void render();
@@ -32,7 +35,7 @@ public:
 
 private:
     void init_imgui();
-    std::tuple<class UILayer*, int, int> find_layer(int x, int y) const;
+    std::tuple<UILayer*, int, int> find_layer(int x, int y) const;
 
     bool running_ = true;
 
@@ -43,6 +46,7 @@ private:
     Resource        bg_;
 
     std::vector<std::unique_ptr<UILayer>> layers;
+    std::optional<UILayer*> dragging_;
 };
 
 #endif

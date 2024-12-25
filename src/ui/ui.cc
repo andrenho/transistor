@@ -104,6 +104,10 @@ void UI::update(Duration timestep)
             case SDL_MOUSEMOTION:
                 if (auto [layer, lx, ly] = find_layer(e.motion.x, e.motion.y); layer)
                     layer->on_mouse_move(*this, lx, ly, e.motion.xrel, e.motion.yrel);
+                if (dragging_) {
+                    (*dragging_)->pos_x += e.motion.xrel;
+                    (*dragging_)->pos_y += e.motion.yrel;
+                }
                 break;
             case SDL_KEYDOWN:
                 SDL_GetMouseState(&mx, &my);
@@ -139,7 +143,12 @@ void UI::draw_image(UILayer const* layer, Resource const& res, int x, int y, Dra
         origin = { st.x, st.y, st.w, st.h };
     }
 
-    SDL_Rect dest = { layer->pos_x + x, layer->pos_y + y, origin.w, origin.h };
+    SDL_Rect dest = {
+        .x = (int) (layer->pos_x + x),
+        .y = (int) (layer->pos_y + y),
+        .w = origin.w,
+        .h = origin.h
+    };
 
     SDL_RenderCopy(ren_, texture, &origin, &dest);
 }

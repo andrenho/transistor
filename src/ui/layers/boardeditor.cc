@@ -52,7 +52,18 @@ void BoardEditor::render_tile(UI_Interface const& uif, int x, int y) const
 
 void BoardEditor::on_mouse_press(UI_Interface& uif, int x, int y, uint8_t button, bool dbl_click)
 {
+    if (button == 3) {
+        uif.start_dragging(this);
+    }
+
     int tx = x / TILE_SIZE - 2;
     int ty = y / TILE_SIZE - 2;
-    std::cout << tx << ", " << ty << "\n";
+    std::cout << (int) button << "  " << tx << ", " << ty << "\n";
+}
+
+void BoardEditor::on_mouse_release(UI_Interface& uif, int x, int y, uint8_t button)
+{
+    if (button == 3) {
+        uif.stop_dragging();
+    }
 }
