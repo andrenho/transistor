@@ -6,8 +6,8 @@
 #include "ui/resources/circuit_atlas.hh"
 #include "ui/uiinterface.hh"
 
-BoardEditor::BoardEditor(ResourceManager& resource_manager, Board& board)
-    : UILayer(0, 0, (board.w() + 4) * TILE_SIZE, (board.w() + 4) * TILE_SIZE), board_(board)
+BoardEditor::BoardEditor(UI_Interface& uif, ResourceManager& resource_manager, Board& board)
+    : UILayer(uif, 0, 0, (board.w() + 4) * TILE_SIZE, (board.w() + 4) * TILE_SIZE), board_(board)
 {
     Resource circuit = resource_manager.from_image(b::embed<"resources/images/circuit.png">().vec());
     icons_ = resource_manager.from_atlas(circuit, circuit_coordinates, TILE_SIZE);
@@ -22,21 +22,21 @@ BoardEditor::BoardEditor(ResourceManager& resource_manager, Board& board)
 
 auto to_pos = [](int x, int y) -> Position { return { (intpos_t) (x / TILE_SIZE - 2), (intpos_t) (y / TILE_SIZE - 2) }; };
 
-void BoardEditor::on_mouse_press(UI_Interface& uif, int x, int y, uint8_t button, bool dbl_click)
+void BoardEditor::on_mouse_press(int x, int y, uint8_t button, bool dbl_click)
 {
     if (button == 3) {
-        uif.start_dragging(this);
+        uif_.start_dragging(this);
     }
 }
 
-void BoardEditor::on_mouse_release(UI_Interface& uif, int x, int y, uint8_t button)
+void BoardEditor::on_mouse_release(int x, int y, uint8_t button)
 {
     if (button == 3) {
-        uif.stop_dragging();
+        uif_.stop_dragging();
     }
 }
 
-void BoardEditor::on_mouse_move(UI_Interface& uif, int x, int y, int rx, int ry)
+void BoardEditor::on_mouse_move(int x, int y, int rx, int ry)
 {
     auto pos = to_pos(x, y);
 
@@ -44,7 +44,7 @@ void BoardEditor::on_mouse_move(UI_Interface& uif, int x, int y, int rx, int ry)
         board_.continue_placing_wire(pos.x, pos.y);
 }
 
-void BoardEditor::on_key_press(UI_Interface& uif, uint32_t key, int x, int y)
+void BoardEditor::on_key_press(uint32_t key, int x, int y)
 {
     auto pos = to_pos(x, y);
 
@@ -54,7 +54,7 @@ void BoardEditor::on_key_press(UI_Interface& uif, uint32_t key, int x, int y)
     }
 }
 
-void BoardEditor::on_key_release(UI_Interface& uif, uint32_t key, int x, int y)
+void BoardEditor::on_key_release(uint32_t key, int x, int y)
 {
     auto pos = to_pos(x, y);
 
@@ -70,52 +70,52 @@ void BoardEditor::on_key_release(UI_Interface& uif, uint32_t key, int x, int y)
 //               //
 //---------------//
 
-void BoardEditor::draw(UI_Interface const& uif, CSprite sprite, int x, int y, DrawProperties dp) const
+void BoardEditor::draw(CSprite sprite, int x, int y, DrawProperties dp) const
 {
-    uif.draw_image(this, icons_.at(static_cast<size_t>(sprite)), (x + 2) * TILE_SIZE, (y + 2) * TILE_SIZE, dp);
+    uif_.draw_image(this, icons_.at(static_cast<size_t>(sprite)), (x + 2) * TILE_SIZE, (y + 2) * TILE_SIZE, dp);
 }
 
-void BoardEditor::render(UI_Interface const& uif)
+void BoardEditor::render()
 {
-    render_border(uif);
+    render_border();
     for (intpos_t x = 0; x < board_.w(); ++x)
         for (intpos_t y = 0; y < board_.h(); ++y)
-            render_tile(uif, x, y);
+            render_tile(x, y);
 }
 
-void BoardEditor::render_border(UI_Interface const& uif) const
+void BoardEditor::render_border() const
 {
-    draw(uif, CSprite::BoardTopLeft, -2, -2);
-    draw(uif, CSprite::BoardTopRight, board_.w(), -2);
-    draw(uif, CSprite::BoardBottomLeft, -2, board_.h());
-    draw(uif, CSprite::BoardBottomRight, board_.w(), board_.h());
+    draw(CSprite::BoardTopLeft, -2, -2);
+    draw(CSprite::BoardTopRight, board_.w(), -2);
+    draw(CSprite::BoardBottomLeft, -2, board_.h());
+    draw(CSprite::BoardBottomRight, board_.w(), board_.h());
 
     for (ssize_t x = 0; x < board_.w(); ++x) {
-        draw(uif, CSprite::BoardTop, x, -2);
-        draw(uif, CSprite::BoardBottom, x, board_.h());
+        draw(CSprite::BoardTop, x, -2);
+        draw(CSprite::BoardBottom, x, board_.h());
     }
 
     for (ssize_t y = 0; y < board_.h(); ++y) {
-        draw(uif, CSprite::BoardLeft, -2, y);
-        draw(uif, CSprite::BoardRight, board_.w(), y);
+        draw(CSprite::BoardLeft, -2, y);
+        draw(CSprite::BoardRight, board_.w(), y);
     }
 }
 
-void BoardEditor::render_tile(UI_Interface const& uif, intpos_t x, intpos_t y) const
+void BoardEditor::render_tile(intpos_t x, intpos_t y) const
 {
-    draw(uif, CSprite::Tile, x, y);
+    draw(CSprite::Tile, x, y);
 
     for (Direction const& dir: DIRECTIONS) {
         // draw wire
         auto it = board_.wires().find({ x, y, dir });
         if (it != board_.wires().end())
-            render_wire(uif, it->first, it->second, false);
+            render_wire(it->first, it->second, false);
 
         // draw temporary wire
         auto temp = board_.temporary_wire();
         it = temp.find({ x, y, dir });
         if (it != temp.end())
-            render_wire(uif, it->first, it->second, true);
+            render_wire(it->first, it->second, true);
     }
 }
 
@@ -127,7 +127,7 @@ struct std::hash<std::tuple<Wire, Direction, bool>> {
     }
 };
 
-void BoardEditor::render_wire(UI_Interface const& uif, Position const& pos, Wire const& wire, bool semitransparent) const
+void BoardEditor::render_wire(Position const& pos, Wire const& wire, bool semitransparent) const
 {
     static const std::unordered_map<std::tuple<Wire, Direction, bool>, CSprite> wire_sprites {
         { { { Wire::Width::W1, Wire::Layer::Top }, Direction::N, true }, CSprite::WireTopOnNorth_1 },
@@ -143,6 +143,6 @@ void BoardEditor::render_wire(UI_Interface const& uif, Position const& pos, Wire
     auto it = wire_sprites.find({ wire, pos.dir, false });  // TODO: use actual value
     if (it == wire_sprites.end())
         throw std::runtime_error("Wire configuration not found");
-    draw(uif, it->second, pos.x, pos.y, { .semitransparent = semitransparent });
+    draw(it->second, pos.x, pos.y, { .semitransparent = semitransparent });
 }
 

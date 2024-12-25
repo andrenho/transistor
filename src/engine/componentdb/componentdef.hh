@@ -5,7 +5,6 @@
 #include <functional>
 #include <string>
 #include "engine/types.hh"
-#include "ui/uiinterface.hh"
 
 class  ResourceManager;
 class  Resource;

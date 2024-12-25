@@ -7,13 +7,13 @@ class UILayer {
 public:
     virtual ~UILayer() = default;
 
-    virtual void render(UI_Interface const& uif) = 0;
+    virtual void render() = 0;
 
-    virtual void on_mouse_press(UI_Interface& uif, int x, int y, uint8_t button, bool dbl_click) {}
-    virtual void on_mouse_release(UI_Interface& uif, int x, int y, uint8_t button) {}
-    virtual void on_mouse_move(UI_Interface& uif, int x, int y, int rx, int ry) {}
-    virtual void on_key_press(UI_Interface& uif, uint32_t key, int x, int y) {}
-    virtual void on_key_release(UI_Interface& uif, uint32_t key, int x, int y) {}
+    virtual void on_mouse_press(int x, int y, uint8_t button, bool dbl_click) {}
+    virtual void on_mouse_release(int x, int y, uint8_t button) {}
+    virtual void on_mouse_move(int x, int y, int rx, int ry) {}
+    virtual void on_key_press(uint32_t key, int x, int y) {}
+    virtual void on_key_release(uint32_t key, int x, int y) {}
 
     virtual void set_x(int pos_x) { x_ = pos_x; }
     virtual void set_y(int pos_y) { y_ = pos_y; }
@@ -25,8 +25,9 @@ public:
     [[nodiscard]] virtual float zoom() const { return zoom_; }
 
 protected:
-    UILayer(int x, int y, int w, int h) : x_(x), y_(y), w_(w), h_(h) {}
+    UILayer(UI_Interface& uif, int x, int y, int w, int h) : uif_(uif), x_(x), y_(y), w_(w), h_(h) {}
 
+    UI_Interface& uif_;
     int x_, y_, w_, h_;
     float zoom_ = 1.f;
 };

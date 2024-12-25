@@ -2,6 +2,9 @@
 
 #include <string>
 
+#include "SDL2/SDL_ttf.h"
+#include "SDL2/SDL_image.h"
+
 #include "layers/boardeditor.hh"
 using namespace std::string_literals;
 
@@ -62,7 +65,7 @@ UI::~UI()
 void UI::set_sandbox(Sandbox& sandbox)
 {
     Board& board = *sandbox.editor().boards().begin();
-    layers.push_back(std::make_unique<BoardEditor>(resource_manager_, board));
+    layers.push_back(std::make_unique<BoardEditor>(*this, resource_manager_, board));
 }
 
 void UI::init_imgui()
@@ -99,15 +102,15 @@ void UI::update(Duration timestep)
                 break;
             case SDL_MOUSEBUTTONDOWN:
                 if (auto [layer, lx, ly] = find_layer(e.button.x, e.button.y); layer)
-                    layer->on_mouse_press(*this, lx, ly, e.button.button, e.button.clicks == 2);
+                    layer->on_mouse_press(lx, ly, e.button.button, e.button.clicks == 2);
                 break;
             case SDL_MOUSEBUTTONUP:
-                for (auto [layer, lx, ly] : find_all_layers(mx, my))
-                    layer->on_mouse_release(*this, lx, ly, e.button.button);
+                for (auto [layer, lx, ly] : find_all_layers(e.button.x, e.button.y))
+                    layer->on_mouse_release(lx, ly, e.button.button);
                 break;
             case SDL_MOUSEMOTION:
                 if (auto [layer, lx, ly] = find_layer(e.button.x, e.button.y); layer)
-                    layer->on_mouse_move(*this, lx, ly, e.motion.xrel, e.motion.yrel);
+                    layer->on_mouse_move(lx, ly, e.motion.xrel, e.motion.yrel);
                 if (dragging_)
                     drag_layer(*dragging_, e.motion.xrel, e.motion.yrel);
                 break;
@@ -115,7 +118,7 @@ void UI::update(Duration timestep)
                 if (e.key.repeat == 0) {
                     SDL_GetMouseState(&mx, &my);
                     if (auto [layer, lx, ly] = find_layer(mx, my); layer)
-                        layer->on_key_press(*this, e.key.keysym.sym, lx, ly);
+                        layer->on_key_press(e.key.keysym.sym, lx, ly);
 #ifndef NODEBUG
                     if (e.key.keysym.sym == SDLK_q)
                         running_ = false;
@@ -125,7 +128,7 @@ void UI::update(Duration timestep)
             case SDL_KEYUP:
                 SDL_GetMouseState(&mx, &my);
                 for (auto [layer, lx, ly] : find_all_layers(mx, my))
-                    layer->on_key_release(*this, e.key.keysym.sym, lx, ly);
+                    layer->on_key_release(e.key.keysym.sym, lx, ly);
                 break;
             default: break;
         }
@@ -182,7 +185,7 @@ void UI::render() const
     // draw layers
     for (auto& layer: layers) {
         SDL_RenderSetScale(ren_, layer->zoom(), layer->zoom());
-        layer->render(*this);
+        layer->render();
         SDL_RenderSetScale(ren_, 1.f, 1.f);
     }
 
