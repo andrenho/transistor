@@ -56,6 +56,8 @@ private:
     std::vector<std::unique_ptr<UILayer>> layers;
     std::optional<UILayer*> dragging_;
 
+    mutable Duration frame_time_ = std::chrono::milliseconds(0);
+    mutable size_t   frame_count_ = 0;
 };
 
 #endif

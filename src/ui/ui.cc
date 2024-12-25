@@ -19,6 +19,8 @@ UI::UI()
     TTF_Init();
     IMG_Init(IMG_INIT_PNG);
 
+    SDL_SetHint (SDL_HINT_RENDER_VSYNC, "1");
+
     window_ = SDL_CreateWindow(PROJECT_NAME, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1600, 800, SDL_WINDOW_RESIZABLE);
     if (!window_)
         throw std::runtime_error("Error: SDL_CreateWindow(): "s + SDL_GetError());
@@ -82,6 +84,9 @@ void UI::init_imgui()
 
 void UI::update(Duration timestep)
 {
+    ++frame_count_;
+    ++frame_time_ += timestep;
+
     SDL_Event e;
     while (SDL_PollEvent(&e)) {
 
@@ -182,6 +187,14 @@ void UI::render() const
     }
 
     SDL_RenderPresent(ren_);
+
+    // show FPS
+    if (frame_count_ > 20) {
+        int fps = 1000 / (std::chrono::duration_cast<std::chrono::milliseconds>(frame_time_).count() / frame_count_);
+        SDL_SetWindowTitle(window_, (std::string(PROJECT_NAME) + " (" + std::to_string(fps) + " FPS)").c_str());
+        frame_time_ = std::chrono::milliseconds(0);
+        frame_count_ = 0;
+    }
 }
 
 void UI::drag_layer(UILayer* layer, int xrel, int yrel)
