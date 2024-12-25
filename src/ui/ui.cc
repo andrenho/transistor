@@ -97,11 +97,11 @@ void UI::update(Duration timestep)
                     layer->on_mouse_press(*this, lx, ly, e.button.button, e.button.clicks == 2);
                 break;
             case SDL_MOUSEBUTTONUP:
-                if (auto [layer, lx, ly] = find_layer(e.button.x, e.button.y); layer)
+                for (auto [layer, lx, ly] : find_all_layers(mx, my))
                     layer->on_mouse_release(*this, lx, ly, e.button.button);
                 break;
             case SDL_MOUSEMOTION:
-                if (auto [layer, lx, ly] = find_layer(e.motion.x, e.motion.y); layer)
+                if (auto [layer, lx, ly] = find_layer(e.button.x, e.button.y); layer)
                     layer->on_mouse_move(*this, lx, ly, e.motion.xrel, e.motion.yrel);
                 if (dragging_)
                     drag_layer(*dragging_, e.motion.xrel, e.motion.yrel);
@@ -119,7 +119,7 @@ void UI::update(Duration timestep)
                 break;
             case SDL_KEYUP:
                 SDL_GetMouseState(&mx, &my);
-                if (auto [layer, lx, ly] = find_layer(mx, my); layer)
+                for (auto [layer, lx, ly] : find_all_layers(mx, my))
                     layer->on_key_release(*this, e.key.keysym.sym, lx, ly);
                 break;
             default: break;
@@ -208,4 +208,13 @@ std::tuple<UILayer*, int, int> UI::find_layer(int x, int y) const
         }
     }
     return { nullptr, 0, 0 };
+}
+
+std::vector<std::tuple<UILayer*, int, int>> UI::find_all_layers(int x, int y) const
+{
+    std::vector<std::tuple<UILayer*, int, int>> r;
+    r.reserve(layers.size());
+    for (auto const& layer: layers)
+        r.emplace_back(layer.get(), (x - layer->x()) / layer->zoom(), (y - layer->y()) / layer->zoom());
+    return r;
 }
