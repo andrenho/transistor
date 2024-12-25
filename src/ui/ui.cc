@@ -143,9 +143,9 @@ void UI::draw_image(UILayer const* layer, Resource const& res, int x, int y, Dra
         origin = { st.x, st.y, st.w, st.h };
     }
 
-    SDL_Rect dest = {
-        .x = (int) (layer->pos_x + x),
-        .y = (int) (layer->pos_y + y),
+    const SDL_Rect dest = {
+        .x = (int) (layer->pos_x / layer->zoom) + x,
+        .y = (int) (layer->pos_y / layer->zoom) + y,
         .w = origin.w,
         .h = origin.h
     };
@@ -153,7 +153,7 @@ void UI::draw_image(UILayer const* layer, Resource const& res, int x, int y, Dra
     SDL_RenderCopy(ren_, texture, &origin, &dest);
 }
 
-void UI::render()
+void UI::render() const
 {
     // clear screen
     SDL_SetRenderDrawColor(ren_, 0, 0, 0, SDL_ALPHA_OPAQUE);
@@ -165,7 +165,7 @@ void UI::render()
     // draw layers
     for (auto& layer: layers) {
         SDL_RenderSetScale(ren_, layer->zoom, layer->zoom);
-        layer->render(*(UI_Interface const*) this);
+        layer->render(*this);
         SDL_RenderSetScale(ren_, 1.f, 1.f);
     }
 

@@ -29,7 +29,7 @@ public:
     void stop_dragging() override                { dragging_ = {}; }
 
     void update([[maybe_unused]] Duration timestep);
-    void render();
+    void render() const;
 
     [[nodiscard]] bool running() const { return running_; }
 
