@@ -14,6 +14,36 @@ BoardEditor::BoardEditor(ResourceManager& resource_manager, Board& board)
     zoom_ = 2.f;
 }
 
+//------------//
+//            //
+//   EVENTS   //
+//            //
+//------------//
+
+void BoardEditor::on_mouse_press(UI_Interface& uif, int x, int y, uint8_t button, bool dbl_click)
+{
+    if (button == 3) {
+        uif.start_dragging(this);
+    }
+
+    int tx = x / TILE_SIZE - 2;
+    int ty = y / TILE_SIZE - 2;
+    std::cout << (int) button << "  " << tx << ", " << ty << "\n";
+}
+
+void BoardEditor::on_mouse_release(UI_Interface& uif, int x, int y, uint8_t button)
+{
+    if (button == 3) {
+        uif.stop_dragging();
+    }
+}
+
+//---------------//
+//               //
+//   RENDERING   //
+//               //
+//---------------//
+
 void BoardEditor::draw(UI_Interface const& uif, CSprite sprite, int x, int y, DrawProperties dp) const
 {
     uif.draw_image(this, icons_.at(static_cast<size_t>(sprite)), x * TILE_SIZE, y * TILE_SIZE, dp);
@@ -45,26 +75,48 @@ void BoardEditor::render_border(UI_Interface const& uif) const
     }
 }
 
-void BoardEditor::render_tile(UI_Interface const& uif, int x, int y) const
+void BoardEditor::render_tile(UI_Interface const& uif, intpos_t x, intpos_t y) const
 {
     draw(uif, CSprite::Tile, x + 2, y + 2);
+
+    for (Direction const& dir: DIRECTIONS) {
+        // draw wire
+        auto it = board_.wires().find({ x, y, dir });
+        if (it != board_.wires().end())
+            render_wire(uif, it->first, it->second, false);
+
+        // draw temporary wire
+        auto temp = board_.temporary_wire();
+        it = temp.find({ x, y, dir });
+        if (it != temp.end())
+            render_wire(uif, it->first, it->second, true);
+    }
 }
 
-void BoardEditor::on_mouse_press(UI_Interface& uif, int x, int y, uint8_t button, bool dbl_click)
-{
-    if (button == 3) {
-        uif.start_dragging(this);
+// why is that not included by default in C++ ??
+template <>
+struct std::hash<std::tuple<Wire, Direction, bool>> {
+    std::size_t operator()(std::tuple<Wire, Direction, bool> const& t) const noexcept {
+        return std::hash<Wire>()(std::get<0>(t)) ^ std::hash<Direction>()(std::get<1>(t)) << std::get<2>(t);
     }
+};
 
-    int tx = x / TILE_SIZE - 2;
-    int ty = y / TILE_SIZE - 2;
-    std::cout << (int) button << "  " << tx << ", " << ty << "\n";
-}
-
-void BoardEditor::on_mouse_release(UI_Interface& uif, int x, int y, uint8_t button)
+void BoardEditor::render_wire(UI_Interface const& uif, Position const& pos, Wire const& wire, bool semitransparent) const
 {
-    if (button == 3) {
-        uif.stop_dragging();
-    }
+    static const std::unordered_map<std::tuple<Wire, Direction, bool>, CSprite> wire_sprites {
+        { { { Wire::Width::W1, Wire::Layer::Top }, Direction::N, true }, CSprite::WireTopOnNorth_1 },
+        { { { Wire::Width::W1, Wire::Layer::Top }, Direction::S, true }, CSprite::WireTopOnSouth_1 },
+        { { { Wire::Width::W1, Wire::Layer::Top }, Direction::W, true }, CSprite::WireTopOnWest_1 },
+        { { { Wire::Width::W1, Wire::Layer::Top }, Direction::E, true }, CSprite::WireTopOnEast_1 },
+        { { { Wire::Width::W1, Wire::Layer::Top }, Direction::N, false }, CSprite::WireTopOffNorth_1 },
+        { { { Wire::Width::W1, Wire::Layer::Top }, Direction::S, false }, CSprite::WireTopOffSouth_1 },
+        { { { Wire::Width::W1, Wire::Layer::Top }, Direction::W, false }, CSprite::WireTopOffWest_1 },
+        { { { Wire::Width::W1, Wire::Layer::Top }, Direction::E, false }, CSprite::WireTopOffEast_1 },
+    };
+
+    auto it = wire_sprites.find({ wire, pos.dir, false });  // TODO: use actual value
+    if (it != wire_sprites.end())
+        throw std::runtime_error("Wire configuration not found");
+    draw(uif, it->second, (pos.x + 2) * TILE_SIZE, (pos.y + 2) * TILE_SIZE, { .semitransparent = semitransparent });
 }
 

@@ -20,7 +20,8 @@ private:
     std::vector<Resource> icons_;
 
     void render_border(UI_Interface const& uif) const;
-    void render_tile(UI_Interface const& uif, int x, int y) const;
+    void render_tile(UI_Interface const& uif, intpos_t x, intpos_t y) const;
+    void render_wire(UI_Interface const& uif, Position const& pos, Wire const& wire, bool semitransparent) const;
 
     void draw(UI_Interface const& uif, CSprite sprite, int x, int y, DrawProperties dp={}) const;
 };

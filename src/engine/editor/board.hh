@@ -20,6 +20,13 @@ public:
 
     Component* add_component(std::string const& component_name, intpos_t x, intpos_t y);
     void       draw_wire(Wire::Width width, Wire::Layer layer, intpos_t x0, intpos_t y0, intpos_t x1, intpos_t y1, Orientation orientation);
+    void       merge_wires(std::map<Position, Wire> const& wires);
+
+    void       start_placing_wire(Wire::Width width, Wire::Layer layer, intpos_t x, intpos_t y) { wire_management_.start_drawing({ x, y }, width, layer); }
+    void       continue_placing_wire(intpos_t x, intpos_t y) { wire_management_.set_current_end({ x, y }); }
+    void       finish_placing_wire(intpos_t x, intpos_t y) { merge_wires(wire_management_.stop_drawing({ x, y })); }
+    void       cancel_placing_wire() { wire_management_.stop_drawing(); }
+    [[nodiscard]] std::map<Position, Wire> temporary_wire() const { return wire_management_.current_drawing(); }
 
     [[nodiscard]] int w() const { return w_; }
     [[nodiscard]] int h() const { return h_; }

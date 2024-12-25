@@ -33,6 +33,11 @@ std::map<Position, Wire> WireManagement::stop_drawing(Position const& pos)
     return w;
 }
 
+void WireManagement::stop_drawing()
+{
+    drawing_wire_.reset();
+}
+
 std::map<Position, Wire> WireManagement::current_drawing() const
 {
     if (!drawing_wire_)

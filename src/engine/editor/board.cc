@@ -17,3 +17,9 @@ void Board::draw_wire(Wire::Width width, Wire::Layer layer, intpos_t x0, intpos_
         wires_[pos] = wire;
     sandbox_.on_update();
 }
+
+void Board::merge_wires(std::map<Position, Wire> const& wires)
+{
+    for (auto const& [pos, wire]: wires)
+        wires_[pos] = wire;
+}

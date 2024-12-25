@@ -8,6 +8,8 @@ enum class Direction : uint8_t {
     N = 'N', S = 'S', W = 'W', E='E', Center='X'
 };
 
+constexpr Direction DIRECTIONS[] = { Direction::N, Direction::W, Direction::S, Direction::E };
+
 Direction rotate(Direction dir);
 
 inline std::ostream& operator<<(std::ostream& os, Direction dir) {

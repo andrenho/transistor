@@ -2,6 +2,7 @@
 #define UIINTERFACE_HH
 
 struct DrawProperties {
+    bool semitransparent = false;
 };
 
 class UILayer;
