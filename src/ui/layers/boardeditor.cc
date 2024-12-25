@@ -20,21 +20,47 @@ BoardEditor::BoardEditor(ResourceManager& resource_manager, Board& board)
 //            //
 //------------//
 
+auto to_pos = [](int x, int y) -> Position { return { (intpos_t) (x / TILE_SIZE - 2), (intpos_t) (y / TILE_SIZE - 2) }; };
+
 void BoardEditor::on_mouse_press(UI_Interface& uif, int x, int y, uint8_t button, bool dbl_click)
 {
     if (button == 3) {
         uif.start_dragging(this);
     }
-
-    int tx = x / TILE_SIZE - 2;
-    int ty = y / TILE_SIZE - 2;
-    std::cout << (int) button << "  " << tx << ", " << ty << "\n";
 }
 
 void BoardEditor::on_mouse_release(UI_Interface& uif, int x, int y, uint8_t button)
 {
     if (button == 3) {
         uif.stop_dragging();
+    }
+}
+
+void BoardEditor::on_mouse_move(UI_Interface& uif, int x, int y, int rx, int ry)
+{
+    auto pos = to_pos(x, y);
+
+    if (drawing_wire_)
+        board_.continue_placing_wire(pos.x, pos.y);
+}
+
+void BoardEditor::on_key_press(UI_Interface& uif, uint32_t key, int x, int y)
+{
+    auto pos = to_pos(x, y);
+
+    if (key == 'w') {
+        drawing_wire_ = true;
+        board_.start_placing_wire(Wire::Width::W1, Wire::Layer::Top, pos.x, pos.y);
+    }
+}
+
+void BoardEditor::on_key_release(UI_Interface& uif, uint32_t key, int x, int y)
+{
+    auto pos = to_pos(x, y);
+
+    if (key == 'w') {
+        drawing_wire_ = true;
+        board_.finish_placing_wire(pos.x, pos.y);
     }
 }
 

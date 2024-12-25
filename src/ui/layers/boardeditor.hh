@@ -14,10 +14,14 @@ public:
 
     void on_mouse_press(UI_Interface& uif, int x, int y, uint8_t button, bool dbl_click) override;
     void on_mouse_release(UI_Interface& uif, int x, int y, uint8_t button) override;
+    void on_mouse_move(UI_Interface& uif, int x, int y, int rx, int ry) override;
+    void on_key_press(UI_Interface& uif, uint32_t key, int x, int y) override;
+    void on_key_release(UI_Interface& uif, uint32_t key, int x, int y) override;
 
 private:
-    Board& board_;
+    Board&                board_;
     std::vector<Resource> icons_;
+    bool                  drawing_wire_ = false;
 
     void render_border(UI_Interface const& uif) const;
     void render_tile(UI_Interface const& uif, intpos_t x, intpos_t y) const;
