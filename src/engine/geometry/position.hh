@@ -20,7 +20,7 @@ template<>
 struct std::hash<Position> {
     std::size_t operator()(Position const& p) const noexcept
     {
-        return (std::hash<Direction>{}(p.dir) << 2) ^ (std::hash<intpos_t>{}(p.x) << 1) ^ std::hash<intpos_t>{}(p.y);
+        return (std::hash<Direction>{}(p.dir) << 32) ^ (std::hash<intpos_t>{}(p.x) << 16) ^ std::hash<intpos_t>{}(p.y);
     }
 };
 

@@ -123,7 +123,7 @@ void BoardEditor::render_tile(UI_Interface const& uif, intpos_t x, intpos_t y) c
 template <>
 struct std::hash<std::tuple<Wire, Direction, bool>> {
     std::size_t operator()(std::tuple<Wire, Direction, bool> const& t) const noexcept {
-        return std::hash<Wire>()(std::get<0>(t)) ^ std::hash<Direction>()(std::get<1>(t)) << std::get<2>(t);
+        return (std::hash<Wire>()(std::get<0>(t)) << 8) ^ std::hash<Direction>()(std::get<1>(t)) << std::get<2>(t);
     }
 };
 
