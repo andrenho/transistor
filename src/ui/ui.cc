@@ -5,10 +5,6 @@
 #include "layers/boardeditor.hh"
 using namespace std::string_literals;
 
-#include "SDL2/SDL.h"
-#include "SDL2/SDL_ttf.h"
-#include "SDL2/SDL_image.h"
-
 #include "imgui.h"
 #include "backends/imgui_impl_sdl2.h"
 #include "backends/imgui_impl_sdlrenderer2.h"
@@ -39,6 +35,26 @@ UI::UI()
     bg_ = resource_manager_.from_image(b::embed<"resources/images/bg.jpg">().vec());
 
     init_imgui();
+
+    move_cursor_ = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZEALL);
+}
+
+UI::~UI()
+{
+    ImGui_ImplSDLRenderer2_Shutdown();
+    ImGui_ImplSDL2_Shutdown();
+    ImGui::DestroyContext();
+
+    resource_manager_.cleanup();
+
+    SDL_FreeCursor(move_cursor_);
+    if (ren_)
+        SDL_DestroyRenderer(ren_);
+    if (window_)
+        SDL_DestroyWindow(window_);
+    IMG_Quit();
+    TTF_Quit();
+    SDL_Quit();
 }
 
 void UI::set_sandbox(Sandbox& sandbox)
@@ -62,23 +78,6 @@ void UI::init_imgui()
     // Setup Platform/Renderer backends
     ImGui_ImplSDL2_InitForSDLRenderer(window_, ren_);
     ImGui_ImplSDLRenderer2_Init(ren_);
-}
-
-UI::~UI()
-{
-    ImGui_ImplSDLRenderer2_Shutdown();
-    ImGui_ImplSDL2_Shutdown();
-    ImGui::DestroyContext();
-
-    resource_manager_.cleanup();
-
-    if (ren_)
-        SDL_DestroyRenderer(ren_);
-    if (window_)
-        SDL_DestroyWindow(window_);
-    IMG_Quit();
-    TTF_Quit();
-    SDL_Quit();
 }
 
 void UI::update(Duration timestep)
@@ -105,8 +104,8 @@ void UI::update(Duration timestep)
                 if (auto [layer, lx, ly] = find_layer(e.motion.x, e.motion.y); layer)
                     layer->on_mouse_move(*this, lx, ly, e.motion.xrel, e.motion.yrel);
                 if (dragging_) {
-                    (*dragging_)->pos_x += e.motion.xrel;
-                    (*dragging_)->pos_y += e.motion.yrel;
+                    (*dragging_)->set_x((*dragging_)->x() + e.motion.xrel);
+                    (*dragging_)->set_y((*dragging_)->y() + e.motion.yrel);
                 }
                 break;
             case SDL_KEYDOWN:
@@ -144,13 +143,25 @@ void UI::draw_image(UILayer const* layer, Resource const& res, int x, int y, Dra
     }
 
     const SDL_Rect dest = {
-        .x = (int) (layer->pos_x / layer->zoom) + x,
-        .y = (int) (layer->pos_y / layer->zoom) + y,
+        .x = (int) (layer->x() / layer->zoom()) + x,
+        .y = (int) (layer->y() / layer->zoom()) + y,
         .w = origin.w,
         .h = origin.h
     };
 
     SDL_RenderCopy(ren_, texture, &origin, &dest);
+}
+
+void UI::start_dragging(UILayer* layer)
+{
+    dragging_ = layer;
+    SDL_SetCursor(move_cursor_);
+}
+
+void UI::stop_dragging()
+{
+    dragging_ = {};
+    SDL_SetCursor(SDL_GetDefaultCursor());
 }
 
 void UI::render() const
@@ -164,7 +175,7 @@ void UI::render() const
 
     // draw layers
     for (auto& layer: layers) {
-        SDL_RenderSetScale(ren_, layer->zoom, layer->zoom);
+        SDL_RenderSetScale(ren_, layer->zoom(), layer->zoom());
         layer->render(*this);
         SDL_RenderSetScale(ren_, 1.f, 1.f);
     }
@@ -175,10 +186,10 @@ void UI::render() const
 std::tuple<UILayer*, int, int> UI::find_layer(int x, int y) const
 {
     for (auto const& layer: layers) {
-        if (x >= layer->pos_x && y >= layer->pos_y
-                && x < (layer->pos_x + (layer->w * layer->zoom))
-                && y < (layer->pos_y + (layer->h * layer->zoom))) {
-            return { layer.get(), (x - layer->pos_x) / layer->zoom, (y - layer->pos_y) / layer->zoom };
+        if (x >= layer->x() && y >= layer->y()
+                && x < (layer->x() + (layer->w() * layer->zoom()))
+                && y < (layer->y() + (layer->h() * layer->zoom()))) {
+            return { layer.get(), (x - layer->x()) / layer->zoom(), (y - layer->y()) / layer->zoom() };
         }
     }
     return { nullptr, 0, 0 };

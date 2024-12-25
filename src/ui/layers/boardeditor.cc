@@ -11,7 +11,7 @@ BoardEditor::BoardEditor(ResourceManager& resource_manager, Board& board)
 {
     Resource circuit = resource_manager.from_image(b::embed<"resources/images/circuit.png">().vec());
     icons_ = resource_manager.from_atlas(circuit, circuit_coordinates, TILE_SIZE);
-    zoom = 2.f;
+    zoom_ = 2.f;
 }
 
 void BoardEditor::draw(UI_Interface const& uif, CSprite sprite, int x, int y, DrawProperties dp) const

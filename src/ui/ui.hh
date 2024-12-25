@@ -7,6 +7,10 @@
 #include <tuple>
 #include <vector>
 
+#include "SDL2/SDL.h"
+#include "SDL2/SDL_ttf.h"
+#include "SDL2/SDL_image.h"
+
 #include "uiinterface.hh"
 #include "ui_layer.hh"
 #include "engine/sandbox/sandbox.hh"
@@ -25,8 +29,8 @@ public:
     void set_sandbox(Sandbox& sandbox);
 
     void draw_image(UILayer const* layer, Resource const& res, int x, int y, DrawProperties const& dp) const override;
-    void start_dragging(UILayer* layer) override { dragging_ = layer; }
-    void stop_dragging() override                { dragging_ = {}; }
+    void start_dragging(UILayer* layer) override;
+    void stop_dragging() override;
 
     void update([[maybe_unused]] Duration timestep);
     void render() const;
@@ -39,14 +43,16 @@ private:
 
     bool running_ = true;
 
-    struct SDL_Window*   window_;
-    struct SDL_Renderer* ren_;
+    SDL_Window*   window_;
+    SDL_Renderer* ren_;
+    SDL_Cursor    *move_cursor_;
 
     ResourceManager resource_manager_;
     Resource        bg_;
 
     std::vector<std::unique_ptr<UILayer>> layers;
     std::optional<UILayer*> dragging_;
+
 };
 
 #endif
