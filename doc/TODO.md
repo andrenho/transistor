@@ -7,8 +7,8 @@
 
 - [x] UI setup
 - [x] draw board
-- [ ] GUI events
-- [ ] move board
+- [x] GUI events
+- [x] move board
 - [ ] add wires
 - [ ] components
   - [ ] add
