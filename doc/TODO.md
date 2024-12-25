@@ -9,7 +9,7 @@
 - [x] draw board
 - [x] GUI events
 - [x] move board
-- [ ] add wires
+- [x] add wires
 - [ ] components
   - [ ] add
   - [ ] manipulate
