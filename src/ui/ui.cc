@@ -110,11 +110,11 @@ void UI::update(Duration timestep)
                 SDL_GetMouseState(&mx, &my);
                 if (auto [layer, lx, ly] = find_layer(mx, my); layer)
                     layer->on_key_press(*this, e.key.keysym.sym, lx, ly);
-                break;
 #ifndef NODEBUG
                 if (e.key.keysym.sym == SDLK_q)
                     running_ = false;
 #endif
+                break;
             case SDL_KEYUP:
                 SDL_GetMouseState(&mx, &my);
                 if (auto [layer, lx, ly] = find_layer(mx, my); layer)

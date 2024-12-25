@@ -141,7 +141,7 @@ void BoardEditor::render_wire(UI_Interface const& uif, Position const& pos, Wire
     };
 
     auto it = wire_sprites.find({ wire, pos.dir, false });  // TODO: use actual value
-    if (it != wire_sprites.end())
+    if (it == wire_sprites.end())
         throw std::runtime_error("Wire configuration not found");
     draw(uif, it->second, (pos.x + 2) * TILE_SIZE, (pos.y + 2) * TILE_SIZE, { .semitransparent = semitransparent });
 }
