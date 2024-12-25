@@ -67,3 +67,4 @@ void BoardEditor::on_mouse_release(UI_Interface& uif, int x, int y, uint8_t butt
         uif.stop_dragging();
     }
 }
+

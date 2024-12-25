@@ -103,10 +103,8 @@ void UI::update(Duration timestep)
             case SDL_MOUSEMOTION:
                 if (auto [layer, lx, ly] = find_layer(e.motion.x, e.motion.y); layer)
                     layer->on_mouse_move(*this, lx, ly, e.motion.xrel, e.motion.yrel);
-                if (dragging_) {
-                    (*dragging_)->set_x((*dragging_)->x() + e.motion.xrel);
-                    (*dragging_)->set_y((*dragging_)->y() + e.motion.yrel);
-                }
+                if (dragging_)
+                    drag_layer(*dragging_, e.motion.xrel, e.motion.yrel);
                 break;
             case SDL_KEYDOWN:
                 SDL_GetMouseState(&mx, &my);
@@ -181,6 +179,20 @@ void UI::render() const
     }
 
     SDL_RenderPresent(ren_);
+}
+
+void UI::drag_layer(UILayer* layer, int xrel, int yrel)
+{
+    int scr_w, scr_h;
+    SDL_GetWindowSize(window_, &scr_w, &scr_h);
+
+    int min_x = (-layer->w() + 56) * layer->zoom();
+    int min_y = (-layer->h() + 56) * layer->zoom();
+    int max_x = scr_w - 56 * layer->zoom();
+    int max_y = scr_h - 56 * layer->zoom();
+
+    layer->set_x(std::min(std::max(layer->x() + xrel, min_x), max_x));
+    layer->set_y(std::min(std::max(layer->y() + yrel, min_y), max_y));
 }
 
 std::tuple<UILayer*, int, int> UI::find_layer(int x, int y) const

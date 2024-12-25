@@ -39,6 +39,8 @@ public:
 
 private:
     void init_imgui();
+
+    void drag_layer(UILayer* layer, int xrel, int yrel);
     std::tuple<UILayer*, int, int> find_layer(int x, int y) const;
 
     bool running_ = true;
