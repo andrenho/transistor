@@ -87,6 +87,7 @@ void UI::update(Duration timestep)
     while (SDL_PollEvent(&e)) {
 
         ImGui_ImplSDL2_ProcessEvent(&e);
+        int mx, my;
 
         switch (e.type) {
             case SDL_QUIT:
@@ -96,11 +97,28 @@ void UI::update(Duration timestep)
                 if (auto [layer, lx, ly] = find_layer(e.button.x, e.button.y); layer)
                     layer->on_mouse_press(lx, ly, e.button.button, e.button.clicks == 2);
                 break;
+            case SDL_MOUSEBUTTONUP:
+                if (auto [layer, lx, ly] = find_layer(e.button.x, e.button.y); layer)
+                    layer->on_mouse_release(lx, ly, e.button.button);
+                break;
+            case SDL_MOUSEMOTION:
+                if (auto [layer, lx, ly] = find_layer(e.motion.x, e.motion.y); layer)
+                    layer->on_mouse_move(lx, ly, e.motion.xrel, e.motion.yrel);
+                break;
             case SDL_KEYDOWN:
+                SDL_GetMouseState(&mx, &my);
+                if (auto [layer, lx, ly] = find_layer(mx, my); layer)
+                    layer->on_key_press(e.key.keysym.sym, lx, ly);
+                break;
 #ifndef NODEBUG
                 if (e.key.keysym.sym == SDLK_q)
                     running_ = false;
 #endif
+            case SDL_KEYUP:
+                SDL_GetMouseState(&mx, &my);
+                if (auto [layer, lx, ly] = find_layer(mx, my); layer)
+                    layer->on_key_release(e.key.keysym.sym, lx, ly);
+                break;
             default: break;
         }
     }
@@ -121,7 +139,7 @@ void UI::draw_image(UILayer const* layer, Resource const& res, int x, int y, Dra
         origin = { st.x, st.y, st.w, st.h };
     }
 
-    SDL_Rect dest = { layer->x + x, layer->y + y, origin.w, origin.h };
+    SDL_Rect dest = { layer->pos_x + x, layer->pos_y + y, origin.w, origin.h };
 
     SDL_RenderCopy(ren_, texture, &origin, &dest);
 }
@@ -148,6 +166,11 @@ void UI::render()
 std::tuple<UILayer*, int, int> UI::find_layer(int x, int y) const
 {
     for (auto const& layer: layers) {
-        // if (x >= layer->x && y >= layer->y && x < (lay
+        if (x >= layer->pos_x && y >= layer->pos_y
+                && x < (layer->pos_x + (layer->w * layer->zoom))
+                && y < (layer->pos_y + (layer->h * layer->zoom))) {
+            return { layer.get(), (x - layer->pos_x) / layer->zoom, (y - layer->pos_y) / layer->zoom };
+        }
     }
+    return { nullptr, 0, 0 };
 }

@@ -15,11 +15,11 @@ public:
     virtual void on_key_press(uint32_t key, int x, int y) {}
     virtual void on_key_release(uint32_t key, int x, int y) {}
 
-    int x, y, w, h;
+    int pos_x, pos_y, w, h;
     float zoom = 1.f;
 
 protected:
-    UILayer(int x, int y, int w, int h) : x(x), y(y), w(w), h(h) {}
+    UILayer(int x, int y, int w, int h) : pos_x(x), pos_y(y), w(w), h(h) {}
 };
 
 #endif //LAYER_HH

@@ -1,10 +1,10 @@
 #include "boardeditor.hh"
 
+#include <iostream>
+
 #include "battery/embed.hpp"
 #include "ui/resources/circuit_atlas.hh"
 #include "ui/uiinterface.hh"
-
-static Resource tile;  // TODO
 
 BoardEditor::BoardEditor(ResourceManager& resource_manager, Board& board)
     : UILayer(0, 0, (board.w() + 4) * TILE_SIZE, (board.w() + 4) * TILE_SIZE), board_(board)
@@ -48,4 +48,11 @@ void BoardEditor::render_border(UI_Interface const& uif) const
 void BoardEditor::render_tile(UI_Interface const& uif, int x, int y) const
 {
     draw(uif, CSprite::Tile, x + 2, y + 2);
+}
+
+void BoardEditor::on_mouse_press(int x, int y, uint8_t button, bool dbl_click)
+{
+    int tx = x / TILE_SIZE - 2;
+    int ty = y / TILE_SIZE - 2;
+    std::cout << tx << ", " << ty << "\n";
 }
