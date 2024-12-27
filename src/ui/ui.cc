@@ -15,7 +15,7 @@ using namespace std::string_literals;
 
 #include "battery/embed.hpp"
 
-#include "ui_layer.hh"
+#include "layers/layer.hh"
 
 UI::UI()
 {
@@ -165,7 +165,7 @@ void UI::draw_image(Scene::Image const& image) const
     SDL_RenderSetScale(ren_, 1.f, 1.f);
 }
 
-void UI::start_dragging(UILayer* layer)
+void UI::start_dragging(Layer* layer)
 {
     dragging_ = layer;
     SDL_SetCursor(move_cursor_);
@@ -206,7 +206,7 @@ void UI::render() const
     }
 }
 
-void UI::drag_layer(UILayer* layer, int xrel, int yrel)
+void UI::drag_layer(Layer* layer, int xrel, int yrel)
 {
     int scr_w, scr_h;
     SDL_GetWindowSize(window_, &scr_w, &scr_h);
@@ -220,7 +220,7 @@ void UI::drag_layer(UILayer* layer, int xrel, int yrel)
     layer->set_y(std::min(std::max(layer->y() + yrel, min_y), max_y));
 }
 
-std::tuple<UILayer*, int, int> UI::find_layer(int x, int y) const
+std::tuple<Layer*, int, int> UI::find_layer(int x, int y) const
 {
     for (auto const& layer: layers) {
         if (x >= layer->x() && y >= layer->y()
@@ -232,9 +232,9 @@ std::tuple<UILayer*, int, int> UI::find_layer(int x, int y) const
     return { nullptr, 0, 0 };
 }
 
-std::vector<std::tuple<UILayer*, int, int>> UI::find_all_layers(int x, int y) const
+std::vector<std::tuple<Layer*, int, int>> UI::find_all_layers(int x, int y) const
 {
-    std::vector<std::tuple<UILayer*, int, int>> r;
+    std::vector<std::tuple<Layer*, int, int>> r;
     r.reserve(layers.size());
     for (auto const& layer: layers)
         r.emplace_back(layer.get(), (x - layer->x()) / layer->zoom(), (y - layer->y()) / layer->zoom());

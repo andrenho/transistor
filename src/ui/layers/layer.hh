@@ -1,11 +1,11 @@
 #ifndef LAYER_HH
 #define LAYER_HH
 
-#include "scene.hh"
+#include "../scene.hh"
 
-class UILayer : public Scene::ImageContext {
+class Layer : public Scene::ImageContext {
 public:
-    ~UILayer() override = default;
+    ~Layer() override = default;
 
     virtual void render(Scene& scene) = 0;
 
@@ -26,7 +26,7 @@ public:
     [[nodiscard]] virtual int h() const { return h_; }
 
 protected:
-    UILayer(int x, int y, int w, int h) : x_(x), y_(y), w_(w), h_(h) {}
+    Layer(int x, int y, int w, int h) : x_(x), y_(y), w_(w), h_(h) {}
 
     int x_, y_, w_, h_;
     float zoom_ = 1.f;

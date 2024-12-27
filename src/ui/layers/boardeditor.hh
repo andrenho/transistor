@@ -2,11 +2,11 @@
 #define BOARDEDITOR_HH
 
 #include "engine/editor/board.hh"
-#include "ui/ui_layer.hh"
+#include "layer.hh"
 #include "ui/resources/circuit_atlas.hh"
 #include "ui/resources/resourcemanager.hh"
 
-class BoardEditor : public UILayer {
+class BoardEditor : public Layer {
 public:
     BoardEditor(ResourceManager& resource_manager, Board& board);
 

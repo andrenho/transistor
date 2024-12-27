@@ -9,7 +9,7 @@
 
 #include "SDL2/SDL.h"
 
-#include "ui_layer.hh"
+#include "layers/layer.hh"
 #include "engine/sandbox/sandbox.hh"
 #include "resources/resourcemanager.hh"
 
@@ -34,12 +34,12 @@ private:
     void init_imgui();
 
     void draw_image(Scene::Image const& image) const;
-    void start_dragging(UILayer* layer);
+    void start_dragging(Layer* layer);
     void stop_dragging();
 
-    void                                        drag_layer(UILayer* layer, int xrel, int yrel);
-    std::tuple<UILayer*, int, int>              find_layer(int x, int y) const;
-    std::vector<std::tuple<UILayer*, int, int>> find_all_layers(int x, int y) const;
+    void                                        drag_layer(Layer* layer, int xrel, int yrel);
+    std::tuple<Layer*, int, int>              find_layer(int x, int y) const;
+    std::vector<std::tuple<Layer*, int, int>> find_all_layers(int x, int y) const;
 
     bool running_ = true;
 
@@ -50,8 +50,8 @@ private:
     ResourceManager resource_manager_;
     Resource        bg_;
 
-    std::vector<std::unique_ptr<UILayer>> layers;
-    std::optional<UILayer*> dragging_;
+    std::vector<std::unique_ptr<Layer>> layers;
+    std::optional<Layer*> dragging_;
 
     mutable Duration frame_time_ = std::chrono::milliseconds(0);
     mutable size_t   frame_count_ = 0;
