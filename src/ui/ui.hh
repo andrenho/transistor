@@ -34,10 +34,10 @@ private:
     void init_imgui();
 
     void draw_image(Scene::Image const& image) const;
-    void start_dragging(Layer* layer);
-    void stop_dragging();
 
-    void                                        drag_layer(Layer* layer, int xrel, int yrel);
+    void do_events(Events const& events);
+
+    void                                      drag_layer(Layer* layer, int xrel, int yrel);
     std::tuple<Layer*, int, int>              find_layer(int x, int y) const;
     std::vector<std::tuple<Layer*, int, int>> find_all_layers(int x, int y) const;
 

@@ -1,6 +1,8 @@
 #include "ui.hh"
 
 #include <string>
+
+#include "util/visitor.hh"
 using namespace std::string_literals;
 
 #include "scene.hh"
@@ -91,6 +93,8 @@ void UI::update(Duration timestep)
     ++frame_count_;
     ++frame_time_ += timestep;
 
+    Events events;
+
     SDL_Event e;
     while (SDL_PollEvent(&e)) {
 
@@ -103,15 +107,15 @@ void UI::update(Duration timestep)
                 break;
             case SDL_MOUSEBUTTONDOWN:
                 if (auto [layer, lx, ly] = find_layer(e.button.x, e.button.y); layer)
-                    layer->on_mouse_press(lx, ly, e.button.button, e.button.clicks == 2);
+                    layer->on_mouse_press(lx, ly, e.button.button, e.button.clicks == 2, events);
                 break;
             case SDL_MOUSEBUTTONUP:
                 for (auto [layer, lx, ly] : find_all_layers(e.button.x, e.button.y))
-                    layer->on_mouse_release(lx, ly, e.button.button);
+                    layer->on_mouse_release(lx, ly, e.button.button, events);
                 break;
             case SDL_MOUSEMOTION:
                 if (auto [layer, lx, ly] = find_layer(e.button.x, e.button.y); layer)
-                    layer->on_mouse_move(lx, ly, e.motion.xrel, e.motion.yrel);
+                    layer->on_mouse_move(lx, ly, e.motion.xrel, e.motion.yrel, events);
                 if (dragging_)
                     drag_layer(*dragging_, e.motion.xrel, e.motion.yrel);
                 break;
@@ -119,7 +123,7 @@ void UI::update(Duration timestep)
                 if (e.key.repeat == 0) {
                     SDL_GetMouseState(&mx, &my);
                     if (auto [layer, lx, ly] = find_layer(mx, my); layer)
-                        layer->on_key_press(e.key.keysym.sym, lx, ly);
+                        layer->on_key_press(e.key.keysym.sym, lx, ly, events);
 #ifndef NODEBUG
                     if (e.key.keysym.sym == SDLK_q)
                         running_ = false;
@@ -129,11 +133,13 @@ void UI::update(Duration timestep)
             case SDL_KEYUP:
                 SDL_GetMouseState(&mx, &my);
                 for (auto [layer, lx, ly] : find_all_layers(mx, my))
-                    layer->on_key_release(e.key.keysym.sym, lx, ly);
+                    layer->on_key_release(e.key.keysym.sym, lx, ly, events);
                 break;
             default: break;
         }
     }
+
+    do_events(events);
 }
 
 void UI::draw_image(Scene::Image const& image) const
@@ -165,16 +171,20 @@ void UI::draw_image(Scene::Image const& image) const
     SDL_RenderSetScale(ren_, 1.f, 1.f);
 }
 
-void UI::start_dragging(Layer* layer)
+void UI::do_events(Events const& events)
 {
-    dragging_ = layer;
-    SDL_SetCursor(move_cursor_);
-}
-
-void UI::stop_dragging()
-{
-    dragging_ = {};
-    SDL_SetCursor(SDL_GetDefaultCursor());
+    for (auto const& event: events) {
+        std::visit(overloaded {
+            [&](event::StartDragging const& sd) {
+                dragging_ = sd.layer;
+                SDL_SetCursor(move_cursor_);
+            },
+            [&](event::StopDragging const&) {
+                dragging_ = {};
+                SDL_SetCursor(SDL_GetDefaultCursor());
+            }
+        }, event);
+    }
 }
 
 void UI::render() const

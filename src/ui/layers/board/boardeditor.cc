@@ -21,21 +21,21 @@ BoardEditor::BoardEditor(ResourceManager& resource_manager, Board& board)
 
 auto to_pos = [](int x, int y) -> Position { return { (intpos_t) (x / TILE_SIZE - 2), (intpos_t) (y / TILE_SIZE - 2) }; };
 
-void BoardEditor::on_mouse_press(int x, int y, uint8_t button, bool dbl_click)
+void BoardEditor::on_mouse_press(int x, int y, uint8_t button, bool dbl_click, Events& events)
 {
     if (button == 3) {
-        // uif_.start_dragging(this);
+        events.emplace_back(event::StartDragging { this });
     }
 }
 
-void BoardEditor::on_mouse_release(int x, int y, uint8_t button)
+void BoardEditor::on_mouse_release(int x, int y, uint8_t button, Events& events)
 {
     if (button == 3) {
-        // uif_.stop_dragging();
+        events.emplace_back(event::StopDragging {});
     }
 }
 
-void BoardEditor::on_mouse_move(int x, int y, int rx, int ry)
+void BoardEditor::on_mouse_move(int x, int y, int rx, int ry, Events& events)
 {
     auto pos = to_pos(x, y);
 
@@ -43,7 +43,7 @@ void BoardEditor::on_mouse_move(int x, int y, int rx, int ry)
         board_.continue_placing_wire(pos.x, pos.y);
 }
 
-void BoardEditor::on_key_press(uint32_t key, int x, int y)
+void BoardEditor::on_key_press(uint32_t key, int x, int y, Events& events)
 {
     auto pos = to_pos(x, y);
 
@@ -53,7 +53,7 @@ void BoardEditor::on_key_press(uint32_t key, int x, int y)
     }
 }
 
-void BoardEditor::on_key_release(uint32_t key, int x, int y)
+void BoardEditor::on_key_release(uint32_t key, int x, int y, Events& events)
 {
     auto pos = to_pos(x, y);
 

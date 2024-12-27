@@ -85,11 +85,14 @@ set(ENGINE_SRC
         src/engine/sandbox/compiler.cc
         src/engine/sandbox/compiler.hh
         src/engine/sandbox/sandbox.cc
+        src/util/visitor.hh
 )
 
 set(UI_SRC
         src/ui/ui.hh
         src/ui/ui.cc
+        src/ui/scene.hh
+        src/ui/events.hh
         src/ui/resources/resourcemanager.cc
         src/ui/resources/resourcemanager.hh
         src/ui/resources/resource.hh
@@ -97,7 +100,6 @@ set(UI_SRC
         src/ui/layers/board/boardeditor.cc
         src/ui/layers/board/boardeditor.hh
         src/ui/layers/board/circuit_atlas.hh
-        src/ui/scene.hh
 )
 
 set(IMGUI_SRC

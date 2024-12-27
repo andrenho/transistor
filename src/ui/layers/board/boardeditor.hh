@@ -12,11 +12,11 @@ public:
 
     void render(Scene& scene) override;
 
-    void on_mouse_press(int x, int y, uint8_t button, bool dbl_click) override;
-    void on_mouse_release(int x, int y, uint8_t button) override;
-    void on_mouse_move(int x, int y, int rx, int ry) override;
-    void on_key_press(uint32_t key, int x, int y) override;
-    void on_key_release(uint32_t key, int x, int y) override;
+    void on_mouse_press(int x, int y, uint8_t button, bool dbl_click, Events& events) override;
+    void on_mouse_release(int x, int y, uint8_t button, Events& events) override;
+    void on_mouse_move(int x, int y, int rx, int ry, Events& events) override;
+    void on_key_press(uint32_t key, int x, int y, Events& events) override;
+    void on_key_release(uint32_t key, int x, int y, Events& events) override;
 
 private:
     Board&                board_;
