@@ -3,7 +3,7 @@
 
 #include <cstdint>
 
-#include "resourcemanager.hh"
+#include "../../resources/resourcemanager.hh"
 
 enum class CSprite {
     Tile = 0,

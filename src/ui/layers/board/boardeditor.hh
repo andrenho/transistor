@@ -2,8 +2,8 @@
 #define BOARDEDITOR_HH
 
 #include "engine/editor/board.hh"
-#include "layer.hh"
-#include "ui/resources/circuit_atlas.hh"
+#include "../layer.hh"
+#include "circuit_atlas.hh"
 #include "ui/resources/resourcemanager.hh"
 
 class BoardEditor : public Layer {

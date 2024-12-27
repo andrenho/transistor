@@ -3,7 +3,7 @@
 #include <iostream>
 
 #include "battery/embed.hpp"
-#include "ui/resources/circuit_atlas.hh"
+#include "circuit_atlas.hh"
 
 BoardEditor::BoardEditor(ResourceManager& resource_manager, Board& board)
     : Layer(0, 0, (board.w() + 4) * TILE_SIZE, (board.w() + 4) * TILE_SIZE), board_(board)

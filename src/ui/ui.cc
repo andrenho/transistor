@@ -1,13 +1,13 @@
 #include "ui.hh"
 
 #include <string>
+using namespace std::string_literals;
 
 #include "scene.hh"
 #include "SDL2/SDL_ttf.h"
 #include "SDL2/SDL_image.h"
 
-#include "layers/boardeditor.hh"
-using namespace std::string_literals;
+#include "layers/board/boardeditor.hh"
 
 #include "imgui.h"
 #include "backends/imgui_impl_sdl2.h"

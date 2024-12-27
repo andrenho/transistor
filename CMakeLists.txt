@@ -94,9 +94,9 @@ set(UI_SRC
         src/ui/resources/resourcemanager.hh
         src/ui/resources/resource.hh
         src/ui/layers/layer.hh
-        src/ui/layers/boardeditor.cc
-        src/ui/layers/boardeditor.hh
-        src/ui/resources/circuit_atlas.hh
+        src/ui/layers/board/boardeditor.cc
+        src/ui/layers/board/boardeditor.hh
+        src/ui/layers/board/circuit_atlas.hh
         src/ui/scene.hh
 )
 
