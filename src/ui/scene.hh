@@ -23,10 +23,10 @@ public:
         ImageContext const* context;
         Resource            resource;
         int                 x, y;
-        Pen const&          pen;
+        Pen                 pen;
     };
 
-    void add(ImageContext const* context, Resource resource, int x, int y, Pen pen={}) {
+    void add(ImageContext const* context, Resource resource, int x, int y, Pen const& pen={}) {
         images_.emplace_back(context, resource, x, y, pen);
     }
 

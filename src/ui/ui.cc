@@ -1,5 +1,6 @@
 #include "ui.hh"
 
+#include <iostream>
 #include <string>
 
 #include "util/visitor.hh"
