@@ -5,9 +5,12 @@
 #include <functional>
 #include <string>
 #include "engine/types.hh"
+#include "engine/editor/component.hh"
+#include "ui/resources/resource.hh"
 
 class  ResourceManager;
-class  Resource;
+class  Scene;
+struct Resource;
 struct Component;
 
 struct ComponentDefinition {
@@ -19,8 +22,9 @@ struct ComponentDefinition {
 
     size_t      data_size = 0;
 
-    std::function<void(Component& component)>   on_click = nullptr;
-    std::function<void(Component& component)>   simulate = nullptr;
+    std::function<void(Component& component)> on_click = nullptr;
+    std::function<void(Component& component)> simulate = nullptr;
+    std::function<void(Component& component, Scene& scene, Resource const& circuit_res)> render = nullptr;
 
     constexpr uintpin_t pin_count() const
     {
