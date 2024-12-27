@@ -2,6 +2,7 @@
 
 #include <string>
 
+#include "scene.hh"
 #include "SDL2/SDL_ttf.h"
 #include "SDL2/SDL_image.h"
 
@@ -65,7 +66,7 @@ UI::~UI()
 void UI::set_sandbox(Sandbox& sandbox)
 {
     Board& board = *sandbox.editor().boards().begin();
-    layers.push_back(std::make_unique<BoardEditor>(*this, resource_manager_, board));
+    layers.push_back(std::make_unique<BoardEditor>(resource_manager_, board));
 }
 
 void UI::init_imgui()
@@ -135,30 +136,33 @@ void UI::update(Duration timestep)
     }
 }
 
-void UI::draw_image(UILayer const* layer, Resource const& res, int x, int y, DrawProperties const& dp) const
+void UI::draw_image(Scene::Image const& image) const
 {
     SDL_Texture* texture;
     SDL_Rect origin;
 
-    if (res.is_texture()) {
-        texture = res;
+    if (image.resource.is_texture()) {
+        texture = image.resource;
         origin.x = origin.y = 0;
         SDL_QueryTexture(texture, nullptr, nullptr, &origin.w, &origin.h);
     } else {
-        Resource::SubTexture st = res;
+        Resource::SubTexture st = image.resource;
         texture = st.texture;
         origin = { st.x, st.y, st.w, st.h };
     }
 
     const SDL_Rect dest = {
-        .x = (int) (layer->x() / layer->zoom()) + x,
-        .y = (int) (layer->y() / layer->zoom()) + y,
+        .x = (int) (image.context->x() / image.context->zoom()) + image.x,
+        .y = (int) (image.context->y() / image.context->zoom()) + image.y,
         .w = origin.w,
         .h = origin.h
     };
 
-    SDL_SetTextureAlphaMod(texture, dp.semitransparent ? 128 : 255);
+    SDL_SetTextureAlphaMod(texture, image.pen.semitransparent ? 128 : 255);
+
+    SDL_RenderSetScale(ren_, image.context->zoom(), image.context->zoom());
     SDL_RenderCopy(ren_, texture, &origin, &dest);
+    SDL_RenderSetScale(ren_, 1.f, 1.f);
 }
 
 void UI::start_dragging(UILayer* layer)
@@ -175,20 +179,22 @@ void UI::stop_dragging()
 
 void UI::render() const
 {
+    // create scene
+    Scene scene;
+    scene.bg = bg_;
+    for (auto& layer: layers)
+        layer->render(scene);
+
     // clear screen
     SDL_SetRenderDrawColor(ren_, 0, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(ren_);
 
     // draw background
-    SDL_RenderCopy(ren_, bg_, nullptr, nullptr);
+    SDL_RenderCopy(ren_, scene.bg, nullptr, nullptr);
 
-    // draw layers
-    for (auto& layer: layers) {
-        SDL_RenderSetScale(ren_, layer->zoom(), layer->zoom());
-        layer->render();
-        SDL_RenderSetScale(ren_, 1.f, 1.f);
-    }
-
+    // draw images
+    for (auto const& image: scene.images())
+        draw_image(image);
     SDL_RenderPresent(ren_);
 
     // show FPS

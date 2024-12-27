@@ -9,7 +9,6 @@
 
 #include "SDL2/SDL.h"
 
-#include "uiinterface.hh"
 #include "ui_layer.hh"
 #include "engine/sandbox/sandbox.hh"
 #include "resources/resourcemanager.hh"
@@ -17,7 +16,7 @@
 using hr = std::chrono::high_resolution_clock;
 using Duration = decltype(hr::now() - hr::now());
 
-class UI : public UI_Interface {
+class UI {
 public:
     UI();
     ~UI();
@@ -26,10 +25,6 @@ public:
 
     void set_sandbox(Sandbox& sandbox);
 
-    void draw_image(UILayer const* layer, Resource const& res, int x, int y, DrawProperties const& dp) const override;
-    void start_dragging(UILayer* layer) override;
-    void stop_dragging() override;
-
     void update([[maybe_unused]] Duration timestep);
     void render() const;
 
@@ -37,6 +32,10 @@ public:
 
 private:
     void init_imgui();
+
+    void draw_image(Scene::Image const& image) const;
+    void start_dragging(UILayer* layer);
+    void stop_dragging();
 
     void                                        drag_layer(UILayer* layer, int xrel, int yrel);
     std::tuple<UILayer*, int, int>              find_layer(int x, int y) const;

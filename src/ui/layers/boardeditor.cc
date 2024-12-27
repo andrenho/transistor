@@ -4,10 +4,9 @@
 
 #include "battery/embed.hpp"
 #include "ui/resources/circuit_atlas.hh"
-#include "ui/uiinterface.hh"
 
-BoardEditor::BoardEditor(UI_Interface& uif, ResourceManager& resource_manager, Board& board)
-    : UILayer(uif, 0, 0, (board.w() + 4) * TILE_SIZE, (board.w() + 4) * TILE_SIZE), board_(board)
+BoardEditor::BoardEditor(ResourceManager& resource_manager, Board& board)
+    : UILayer(0, 0, (board.w() + 4) * TILE_SIZE, (board.w() + 4) * TILE_SIZE), board_(board)
 {
     Resource circuit = resource_manager.from_image(b::embed<"resources/images/circuit.png">().vec());
     icons_ = resource_manager.from_atlas(circuit, circuit_coordinates, TILE_SIZE);
@@ -25,14 +24,14 @@ auto to_pos = [](int x, int y) -> Position { return { (intpos_t) (x / TILE_SIZE 
 void BoardEditor::on_mouse_press(int x, int y, uint8_t button, bool dbl_click)
 {
     if (button == 3) {
-        uif_.start_dragging(this);
+        // uif_.start_dragging(this);
     }
 }
 
 void BoardEditor::on_mouse_release(int x, int y, uint8_t button)
 {
     if (button == 3) {
-        uif_.stop_dragging();
+        // uif_.stop_dragging();
     }
 }
 
@@ -70,52 +69,52 @@ void BoardEditor::on_key_release(uint32_t key, int x, int y)
 //               //
 //---------------//
 
-void BoardEditor::draw(CSprite sprite, int x, int y, DrawProperties dp) const
+void BoardEditor::draw(Scene& scene, CSprite sprite, int x, int y, Pen const& pen) const
 {
-    uif_.draw_image(this, icons_.at(static_cast<size_t>(sprite)), (x + 2) * TILE_SIZE, (y + 2) * TILE_SIZE, dp);
+    scene.add(this, icons_.at(static_cast<size_t>(sprite)), (x + 2) * TILE_SIZE, (y + 2) * TILE_SIZE, pen);
 }
 
-void BoardEditor::render()
+void BoardEditor::render(Scene& scene)
 {
-    render_border();
+    render_border(scene);
     for (intpos_t x = 0; x < board_.w(); ++x)
         for (intpos_t y = 0; y < board_.h(); ++y)
-            render_tile(x, y);
+            render_tile(scene, x, y);
 }
 
-void BoardEditor::render_border() const
+void BoardEditor::render_border(Scene& scene) const
 {
-    draw(CSprite::BoardTopLeft, -2, -2);
-    draw(CSprite::BoardTopRight, board_.w(), -2);
-    draw(CSprite::BoardBottomLeft, -2, board_.h());
-    draw(CSprite::BoardBottomRight, board_.w(), board_.h());
+    draw(scene, CSprite::BoardTopLeft, -2, -2);
+    draw(scene, CSprite::BoardTopRight, board_.w(), -2);
+    draw(scene, CSprite::BoardBottomLeft, -2, board_.h());
+    draw(scene, CSprite::BoardBottomRight, board_.w(), board_.h());
 
     for (ssize_t x = 0; x < board_.w(); ++x) {
-        draw(CSprite::BoardTop, x, -2);
-        draw(CSprite::BoardBottom, x, board_.h());
+        draw(scene, CSprite::BoardTop, x, -2);
+        draw(scene, CSprite::BoardBottom, x, board_.h());
     }
 
     for (ssize_t y = 0; y < board_.h(); ++y) {
-        draw(CSprite::BoardLeft, -2, y);
-        draw(CSprite::BoardRight, board_.w(), y);
+        draw(scene, CSprite::BoardLeft, -2, y);
+        draw(scene, CSprite::BoardRight, board_.w(), y);
     }
 }
 
-void BoardEditor::render_tile(intpos_t x, intpos_t y) const
+void BoardEditor::render_tile(Scene& scene, intpos_t x, intpos_t y) const
 {
-    draw(CSprite::Tile, x, y);
+    draw(scene, CSprite::Tile, x, y);
 
     for (Direction const& dir: DIRECTIONS) {
         // draw wire
         auto it = board_.wires().find({ x, y, dir });
         if (it != board_.wires().end())
-            render_wire(it->first, it->second, false);
+            render_wire(scene, it->first, it->second, false);
 
         // draw temporary wire
         auto temp = board_.temporary_wire();
         it = temp.find({ x, y, dir });
         if (it != temp.end())
-            render_wire(it->first, it->second, true);
+            render_wire(scene, it->first, it->second, true);
     }
 }
 
@@ -127,7 +126,7 @@ struct std::hash<std::tuple<Wire, Direction, bool>> {
     }
 };
 
-void BoardEditor::render_wire(Position const& pos, Wire const& wire, bool semitransparent) const
+void BoardEditor::render_wire(Scene& scene, Position const& pos, Wire const& wire, bool semitransparent) const
 {
     static const std::unordered_map<std::tuple<Wire, Direction, bool>, CSprite> wire_sprites {
         { { { Wire::Width::W1, Wire::Layer::Top }, Direction::N, true }, CSprite::WireTopOnNorth_1 },
@@ -143,6 +142,6 @@ void BoardEditor::render_wire(Position const& pos, Wire const& wire, bool semitr
     auto it = wire_sprites.find({ wire, pos.dir, false });  // TODO: use actual value
     if (it == wire_sprites.end())
         throw std::runtime_error("Wire configuration not found");
-    draw(it->second, pos.x, pos.y, { .semitransparent = semitransparent });
+    draw(scene, it->second, pos.x, pos.y, { .semitransparent = semitransparent });
 }
 

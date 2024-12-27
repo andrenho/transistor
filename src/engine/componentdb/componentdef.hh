@@ -8,7 +8,6 @@
 
 class  ResourceManager;
 class  Resource;
-class  UI_Interface;
 struct Component;
 
 struct ComponentDefinition {
