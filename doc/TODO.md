@@ -11,6 +11,7 @@
 - [x] move board
 - [x] add wires
 - [ ] components
+  - [ ] Move icons to resource manager (?) 
   - [ ] images
   - [ ] add
   - [ ] manipulate

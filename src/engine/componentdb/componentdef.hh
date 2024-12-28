@@ -5,7 +5,7 @@
 #include <functional>
 #include <string>
 #include "engine/types.hh"
-#include "engine/editor/component.hh"
+#include "ui/scene.hh"
 #include "ui/resources/resource.hh"
 
 class  ResourceManager;
@@ -24,7 +24,13 @@ struct ComponentDefinition {
 
     std::function<void(Component& component)> on_click = nullptr;
     std::function<void(Component& component)> simulate = nullptr;
-    std::function<void(Component& component, Scene& scene, Resource const& circuit_res)> render = nullptr;
+
+    struct RenderContext {
+        Scene::ImageContext*         context;
+        Scene&                       scene;
+        std::vector<Resource> const& icons;
+    };
+    std::function<void(Component& component, RenderContext const& rctx)> render;
 
     constexpr uintpin_t pin_count() const
     {

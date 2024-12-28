@@ -2,6 +2,9 @@
 
 #include "engine/editor/component.hh"
 
+#include "ui/scene.hh"
+#include "ui/layers/board/circuit_atlas.hh"
+
 
 namespace component {
 
@@ -17,6 +20,12 @@ ComponentDefinition button()
         },
         .simulate = [](Component& button) {
             button.pins[0] = button.pins[1] = button.pins[2] = button.pins[3] = button.data[0];
+        },
+        .render = [](Component& component, ComponentDefinition::RenderContext const& rctx) {
+            if (component.data[0] == 0)
+                rctx.scene.add(rctx.context, rctx.icons.at((size_t) CSprite::ButtonOff), 0, 0);
+            else
+                rctx.scene.add(rctx.context, rctx.icons.at((size_t) CSprite::ButtonOn), 0, 0);
         },
     };
 }
