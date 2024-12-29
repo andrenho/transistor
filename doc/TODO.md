@@ -11,9 +11,8 @@
 - [x] move board
 - [x] add wires
 - [ ] components
-  - [ ] Move icons to resource manager (?) 
-  - [ ] images
-  - [ ] add
+  - [x] images
+  - [x] add
   - [ ] manipulate
   - [ ] VCC, PNP, NPN
   - [ ] rotation
