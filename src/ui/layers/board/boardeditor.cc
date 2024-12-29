@@ -24,7 +24,16 @@ auto to_pos = [](int x, int y) -> Position { return { (intpos_t) (x / TILE_SIZE 
 
 void BoardEditor::on_mouse_press(int x, int y, uint8_t button, bool dbl_click, Events& events)
 {
-    if (button == 3) {
+    auto pos = to_pos(x, y);
+
+    if (button == 1) {
+
+        // check for component click
+        auto it = board_.components().find(pos);
+        if (it != board_.components().end())
+            it->second.on_click();
+
+    } else if (button == 3) {
         events.emplace_back(event::StartDragging { this });
     }
 }

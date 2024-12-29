@@ -21,9 +21,9 @@ struct ComponentDefinition {
 
     size_t      data_size = 0;
 
-    std::function<void(Component& component)> on_click = nullptr;
-    std::function<void(Component& component)> simulate = nullptr;
-    std::function<void(Component const& component, struct ComponentRenderContext const& rctx)> render;
+    std::function<void(Component& component)> on_click = [](Component&) {};
+    std::function<void(Component& component)> simulate = [](Component&) {};
+    std::function<void(Component const& component, struct ComponentRenderContext const& rctx)> render = [](Component const&, ComponentRenderContext const&) {};
 
     constexpr uintpin_t pin_count() const
     {

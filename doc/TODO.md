@@ -13,10 +13,10 @@
 - [ ] components
   - [x] images
   - [x] add
-  - [ ] manipulate
-  - [ ] VCC, PNP, NPN
-  - [ ] rotation
+  - [x] manipulate
 - [ ] simulation
+- [ ] VCC, PNP, NPN
+  - [ ] rotation
 - [ ] delete wires/components
 
 # v0.0.3 - circuits QOL
