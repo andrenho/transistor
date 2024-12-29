@@ -56,6 +56,9 @@ void BoardEditor::on_key_press(uint32_t key, int x, int y, Events& events)
         case 'b':
             board_.add_component("button", pos.x, pos.y);
             break;
+        case 'l':
+            board_.add_component("led", pos.x, pos.y);
+            break;
         default: break;
     }
 }
