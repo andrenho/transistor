@@ -23,7 +23,7 @@ struct ComponentDefinition {
 
     std::function<void(Component& component)> on_click = nullptr;
     std::function<void(Component& component)> simulate = nullptr;
-    std::function<void(Component& component, struct ComponentRenderContext const& rctx)> render;
+    std::function<void(Component const& component, struct ComponentRenderContext const& rctx)> render;
 
     constexpr uintpin_t pin_count() const
     {

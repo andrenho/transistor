@@ -26,6 +26,7 @@ private:
     void render_border(Scene& scene) const;
     void render_tile(Scene& scene, intpos_t x, intpos_t y) const;
     void render_wire(Scene& scene, Position const& pos, Wire const& wire, bool semitransparent) const;
+    void render_component(Scene& scene, Position const& pos, Component const& component) const;
 
     void draw(Scene& scene, CSprite sprite, int x, int y, Pen const& pen={}) const;
 };

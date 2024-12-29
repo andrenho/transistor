@@ -4,6 +4,7 @@
 
 #include "battery/embed.hpp"
 #include "circuit_atlas.hh"
+#include "engine/componentdb/rendercontext.hh"
 
 BoardEditor::BoardEditor(ResourceManager& resource_manager, Board& board)
     : Layer(0, 0, (board.w() + 4) * TILE_SIZE, (board.w() + 4) * TILE_SIZE), board_(board)
@@ -47,9 +48,15 @@ void BoardEditor::on_key_press(uint32_t key, int x, int y, Events& events)
 {
     auto pos = to_pos(x, y);
 
-    if (key == 'w') {
-        drawing_wire_ = true;
-        board_.start_placing_wire(Wire::Width::W1, Wire::Layer::Top, pos.x, pos.y);
+    switch (key) {
+        case 'w':
+            drawing_wire_ = true;
+            board_.start_placing_wire(Wire::Width::W1, Wire::Layer::Top, pos.x, pos.y);
+            break;
+        case 'b':
+            board_.add_component("button", pos.x, pos.y);
+            break;
+        default: break;
     }
 }
 
@@ -115,6 +122,10 @@ void BoardEditor::render_tile(Scene& scene, intpos_t x, intpos_t y) const
         it = temp.find({ x, y, dir });
         if (it != temp.end())
             render_wire(scene, it->first, it->second, true);
+
+        auto itc = board_.components().find({ x, y });
+        if (itc != board_.components().end())
+            render_component(scene, itc->first, itc->second);
     }
 }
 
@@ -145,3 +156,16 @@ void BoardEditor::render_wire(Scene& scene, Position const& pos, Wire const& wir
     draw(scene, it->second, pos.x, pos.y, { .semitransparent = semitransparent });
 }
 
+void BoardEditor::render_component(Scene& scene, Position const& pos, Component const& component) const
+{
+    if (component.def->render) {
+        ComponentRenderContext crtx {
+            .context = this,
+            .scene = scene,
+            .icons = icons_,
+            .x = (pos.x + 2) * TILE_SIZE,
+            .y = (pos.y + 2) * TILE_SIZE,
+        };
+        component.def->render(component, crtx);
+    }
+}
