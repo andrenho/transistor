@@ -23,3 +23,12 @@ void Board::merge_wires(std::map<Position, Wire> const& wires)
     for (auto const& [pos, wire]: wires)
         wires_[pos] = wire;
 }
+
+void Board::clear_tile(intpos_t x, intpos_t y)
+{
+    wires_.erase({ x, y, Direction::Center });
+    for (Direction dir: DIRECTIONS)
+        wires_.erase({ x, y, dir });
+    components_.erase({ x, y });
+    sandbox_.on_update();
+}

@@ -22,6 +22,8 @@ public:
     void       draw_wire(Wire::Width width, Wire::Layer layer, intpos_t x0, intpos_t y0, intpos_t x1, intpos_t y1, Orientation orientation);
     void       merge_wires(std::map<Position, Wire> const& wires);
 
+    void       clear_tile(intpos_t x, intpos_t y);
+
     void       start_placing_wire(Wire::Width width, Wire::Layer layer, intpos_t x, intpos_t y) { wire_management_.start_drawing({ x, y }, width, layer); }
     void       continue_placing_wire(intpos_t x, intpos_t y) { wire_management_.set_current_end({ x, y }); }
     void       finish_placing_wire(intpos_t x, intpos_t y) { merge_wires(wire_management_.stop_drawing({ x, y })); }

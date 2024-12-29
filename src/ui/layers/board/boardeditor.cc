@@ -51,6 +51,8 @@ void BoardEditor::on_mouse_move(int x, int y, int rx, int ry, Events& events)
 
     if (drawing_wire_)
         board_.continue_placing_wire(pos.x, pos.y);
+    if (erasing_wire_)
+        board_.clear_tile(pos.x, pos.y);
 }
 
 void BoardEditor::on_key_press(uint32_t key, int x, int y, Events& events)
@@ -68,6 +70,10 @@ void BoardEditor::on_key_press(uint32_t key, int x, int y, Events& events)
         case 'l':
             board_.add_component("led", pos.x, pos.y);
             break;
+        case 'x':
+            board_.clear_tile(pos.x, pos.y);
+            erasing_wire_ = true;
+            break;
         default: break;
     }
 }
@@ -79,6 +85,8 @@ void BoardEditor::on_key_release(uint32_t key, int x, int y, Events& events)
     if (key == 'w') {
         drawing_wire_ = false;
         board_.finish_placing_wire(pos.x, pos.y);
+    } else if (key == 'x') {
+        erasing_wire_ = false;
     }
 }
 

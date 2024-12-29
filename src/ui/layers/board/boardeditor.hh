@@ -22,6 +22,7 @@ private:
     Board&                board_;
     std::vector<Resource> icons_;
     bool                  drawing_wire_ = false;
+    bool                  erasing_wire_ = false;
 
     void render_border(Scene& scene) const;
     void render_tile(Scene& scene, intpos_t x, intpos_t y) const;
