@@ -46,6 +46,7 @@ UI::UI()
     init_imgui();
 
     move_cursor_ = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZEALL);
+    delete_cursor_ = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_HAND);
 }
 
 UI::~UI()
@@ -56,6 +57,7 @@ UI::~UI()
 
     resource_manager_.cleanup();
 
+    SDL_FreeCursor(delete_cursor_);
     SDL_FreeCursor(move_cursor_);
     if (ren_)
         SDL_DestroyRenderer(ren_);
@@ -143,6 +145,33 @@ void UI::update(Duration timestep)
     do_events(events);
 }
 
+void UI::do_events(Events const& events)
+{
+    for (auto const& event: events) {
+        std::visit(overloaded {
+            [&](event::StartDragging const& sd) {
+                dragging_ = sd.layer;
+                SDL_SetCursor(move_cursor_);
+            },
+            [&](event::StopDragging const&) {
+                dragging_ = {};
+                SDL_SetCursor(SDL_GetDefaultCursor());
+            },
+            [&](event::SetMouseCursor const& mc) {
+                switch (mc.cursor) {
+                    case event::SetMouseCursor::Normal:
+                        SDL_SetCursor(SDL_GetDefaultCursor());
+                        break;
+                    case event::SetMouseCursor::Delete:
+                        SDL_SetCursor(delete_cursor_);
+                        break;
+                }
+            },
+        }, event);
+    }
+}
+
+
 void UI::draw_image(Scene::Image const& image) const
 {
     SDL_Texture* texture;
@@ -170,22 +199,6 @@ void UI::draw_image(Scene::Image const& image) const
     SDL_RenderSetScale(ren_, image.context->zoom(), image.context->zoom());
     SDL_RenderCopy(ren_, texture, &origin, &dest);
     SDL_RenderSetScale(ren_, 1.f, 1.f);
-}
-
-void UI::do_events(Events const& events)
-{
-    for (auto const& event: events) {
-        std::visit(overloaded {
-            [&](event::StartDragging const& sd) {
-                dragging_ = sd.layer;
-                SDL_SetCursor(move_cursor_);
-            },
-            [&](event::StopDragging const&) {
-                dragging_ = {};
-                SDL_SetCursor(SDL_GetDefaultCursor());
-            }
-        }, event);
-    }
 }
 
 void UI::render() const

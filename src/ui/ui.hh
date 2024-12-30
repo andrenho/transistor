@@ -45,7 +45,7 @@ private:
 
     SDL_Window*   window_;
     SDL_Renderer* ren_;
-    SDL_Cursor    *move_cursor_;
+    SDL_Cursor    *move_cursor_, *delete_cursor_;
 
     ResourceManager resource_manager_;
     Resource        bg_;

@@ -73,6 +73,7 @@ void BoardEditor::on_key_press(uint32_t key, int x, int y, Events& events)
         case 'x':
             board_.clear_tile(pos.x, pos.y);
             erasing_wire_ = true;
+            events.emplace_back(event::SetMouseCursor { event::SetMouseCursor::Delete });
             break;
         default: break;
     }
@@ -87,6 +88,7 @@ void BoardEditor::on_key_release(uint32_t key, int x, int y, Events& events)
         board_.finish_placing_wire(pos.x, pos.y);
     } else if (key == 'x') {
         erasing_wire_ = false;
+        events.emplace_back(event::SetMouseCursor { event::SetMouseCursor::Normal });
     }
 }
 
