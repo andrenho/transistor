@@ -14,7 +14,11 @@
   - [x] images
   - [x] add
   - [x] manipulate
-- [ ] delete wires/component
+- [x] delete wires/component
+- [ ] refactoring
+ - [ ] move circuit png to UI
+ - [ ] ImageContext (?)
+ - [ ] richer RenderContext, incorporate Scene into it
 - [ ] simulation
 - [ ] VCC, PNP, NPN
   - [ ] rotation
