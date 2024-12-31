@@ -1,8 +1,10 @@
 #ifndef SCENE_HH
 #define SCENE_HH
 
-#include <deque>
+#include <optional>
+#include <queue>
 
+#include "layers/board/circuit_atlas.hh"
 #include "resources/resource.hh"
 
 struct Pen {
@@ -11,31 +13,27 @@ struct Pen {
 
 class Scene {
 public:
-    class ImageContext {
-    public:
-        virtual ~ImageContext() = default;
-        virtual int x() const = 0;
-        virtual int y() const = 0;
-        virtual float zoom() const = 0;
-    };
-
     struct Image {
-        ImageContext const* context;
-        Resource            resource;
-        int                 x, y;
-        Pen                 pen;
+        std::variant<Resource, CSprite> image;
+        int      x, y;
+        Pen      pen;
     };
 
-    void add(ImageContext const* context, Resource resource, int x, int y, Pen const& pen={}) {
-        images_.emplace_back(context, resource, x, y, pen);
+    void add(std::variant<Resource, CSprite> image, int x, int y, Pen const& pen={}) {
+        images_.emplace(image, x, y, pen);
     }
 
-    [[nodiscard]] std::deque<Image> const& images() const { return images_; }
-
-    Resource bg;
+    std::optional<Image> next_image() {
+        if (!images_.empty()) {
+            Image image = std::move(images_.front());
+            images_.pop();
+            return image;
+        }
+        return {};
+    }
 
 private:
-    std::deque<Image> images_;
+    std::queue<Image> images_;
 };
 
 #endif //SCENE_HH

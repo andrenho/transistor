@@ -4,7 +4,7 @@
 #include "engine/editor/board.hh"
 #include "../layer.hh"
 #include "circuit_atlas.hh"
-#include "ui/resources/resourcemanager.hh"
+#include "ui/scene.hh"
 
 class BoardEditor : public Layer {
 public:
@@ -20,7 +20,6 @@ public:
 
 private:
     Board&                board_;
-    std::vector<Resource> icons_;
     bool                  drawing_wire_ = false;
     bool                  erasing_wire_ = false;
 

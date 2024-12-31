@@ -43,6 +43,9 @@ UI::UI()
     resource_manager_.set_renderer(ren_);
     bg_ = resource_manager_.from_image(b::embed<"resources/images/bg.jpg">().vec());
 
+    Resource circuit = resource_manager_.from_image(b::embed<"resources/images/circuit.png">().vec());
+    icons_ = resource_manager_.from_atlas(circuit, circuit_coordinates, TILE_SIZE);
+
     init_imgui();
 
     move_cursor_ = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZEALL);
@@ -71,7 +74,7 @@ UI::~UI()
 void UI::set_sandbox(Sandbox& sandbox)
 {
     Board& board = *sandbox.editor().boards().begin();
-    layers.push_back(std::make_unique<BoardEditor>(resource_manager_, board));
+    layers_.push_back(std::make_unique<BoardEditor>(resource_manager_, board));
 }
 
 void UI::init_imgui()
@@ -172,53 +175,62 @@ void UI::do_events(Events const& events)
 }
 
 
-void UI::draw_image(Scene::Image const& image) const
+void UI::draw_image(Scene::Image const& image, Layer const* layer) const
 {
-    SDL_Texture* texture;
+    SDL_Texture* texture = nullptr;
     SDL_Rect origin;
 
-    if (image.resource.is_texture()) {
-        texture = image.resource;
+    Resource res;
+    if (auto resource = std::get_if<Resource>(&image.image))
+        res = *resource;
+    else if (auto sprite = std::get_if<CSprite>(&image.image))
+        res = icons_.at((size_t) *sprite);
+
+    if (res.is_texture()) {
+        texture = res;
         origin.x = origin.y = 0;
         SDL_QueryTexture(texture, nullptr, nullptr, &origin.w, &origin.h);
-    } else {
-        Resource::SubTexture st = image.resource;
+    } else if (res.is_subtexture()) {
+        Resource::SubTexture st = res;
         texture = st.texture;
         origin = { st.x, st.y, st.w, st.h };
+    } else {
+        throw std::runtime_error("Invalid resource.");
     }
 
     const SDL_Rect dest = {
-        .x = (int) (image.context->x() / image.context->zoom()) + image.x,
-        .y = (int) (image.context->y() / image.context->zoom()) + image.y,
+        .x = (int) (layer->x() / layer->zoom()) + image.x,
+        .y = (int) (layer->y() / layer->zoom()) + image.y,
         .w = origin.w,
         .h = origin.h
     };
 
     SDL_SetTextureAlphaMod(texture, image.pen.semitransparent ? 128 : 255);
 
-    SDL_RenderSetScale(ren_, image.context->zoom(), image.context->zoom());
+    SDL_RenderSetScale(ren_, layer->zoom(), layer->zoom());
     SDL_RenderCopy(ren_, texture, &origin, &dest);
     SDL_RenderSetScale(ren_, 1.f, 1.f);
 }
 
 void UI::render() const
 {
-    // create scene
-    Scene scene;
-    scene.bg = bg_;
-    for (auto& layer: layers)
-        layer->render(scene);
-
     // clear screen
     SDL_SetRenderDrawColor(ren_, 0, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(ren_);
 
     // draw background
-    SDL_RenderCopy(ren_, scene.bg, nullptr, nullptr);
+    SDL_RenderCopy(ren_, bg_, nullptr, nullptr);
 
-    // draw images
-    for (auto const& image: scene.images())
-        draw_image(image);
+    // draw layers
+    for (auto& layer: layers_) {
+        Scene scene;
+        layer->render(scene);
+        while (auto image = scene.next_image()) {
+            draw_image(*image, layer.get());
+        }
+    }
+
+    // present to screen
     SDL_RenderPresent(ren_);
 
     // show FPS
@@ -246,7 +258,7 @@ void UI::drag_layer(Layer* layer, int xrel, int yrel)
 
 std::tuple<Layer*, int, int> UI::find_layer(int x, int y) const
 {
-    for (auto const& layer: layers) {
+    for (auto const& layer: layers_) {
         if (x >= layer->x() && y >= layer->y()
                 && x < (layer->x() + (layer->w() * layer->zoom()))
                 && y < (layer->y() + (layer->h() * layer->zoom()))) {
@@ -259,8 +271,8 @@ std::tuple<Layer*, int, int> UI::find_layer(int x, int y) const
 std::vector<std::tuple<Layer*, int, int>> UI::find_all_layers(int x, int y) const
 {
     std::vector<std::tuple<Layer*, int, int>> r;
-    r.reserve(layers.size());
-    for (auto const& layer: layers)
+    r.reserve(layers_.size());
+    for (auto const& layer: layers_)
         r.emplace_back(layer.get(), (x - layer->x()) / layer->zoom(), (y - layer->y()) / layer->zoom());
     return r;
 }

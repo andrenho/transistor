@@ -1,14 +1,13 @@
 #ifndef LAYER_HH
 #define LAYER_HH
 
-#include "../scene.hh"
 #include "ui/events.hh"
 
-class Layer : public Scene::ImageContext {
+class Layer {
 public:
-    ~Layer() override = default;
+    virtual ~Layer() = default;
 
-    virtual void render(Scene& scene) = 0;
+    virtual void render(class Scene& scene) = 0;
 
     virtual void on_mouse_press(int x, int y, uint8_t button, bool dbl_click, Events& events) {}
     virtual void on_mouse_release(int x, int y, uint8_t button, Events& events) {}
@@ -19,9 +18,9 @@ public:
     virtual void set_x(int pos_x) { x_ = pos_x; }
     virtual void set_y(int pos_y) { y_ = pos_y; }
 
-    [[nodiscard]] int x() const override { return x_; }
-    [[nodiscard]] int y() const override { return y_; }
-    [[nodiscard]] float zoom() const override { return zoom_; }
+    [[nodiscard]] int x() const { return x_; }
+    [[nodiscard]] int y() const { return y_; }
+    [[nodiscard]] float zoom() const { return zoom_; }
 
     [[nodiscard]] virtual int w() const { return w_; }
     [[nodiscard]] virtual int h() const { return h_; }

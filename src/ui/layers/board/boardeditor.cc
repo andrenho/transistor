@@ -4,13 +4,10 @@
 
 #include "battery/embed.hpp"
 #include "circuit_atlas.hh"
-#include "engine/componentdb/rendercontext.hh"
 
 BoardEditor::BoardEditor(ResourceManager& resource_manager, Board& board)
     : Layer(0, 0, (board.w() + 4) * TILE_SIZE, (board.w() + 4) * TILE_SIZE), board_(board)
 {
-    Resource circuit = resource_manager.from_image(b::embed<"resources/images/circuit.png">().vec());
-    icons_ = resource_manager.from_atlas(circuit, circuit_coordinates, TILE_SIZE);
     zoom_ = 2.f;
 }
 
@@ -100,7 +97,7 @@ void BoardEditor::on_key_release(uint32_t key, int x, int y, Events& events)
 
 void BoardEditor::draw(Scene& scene, CSprite sprite, int x, int y, Pen const& pen) const
 {
-    scene.add(this, icons_.at(static_cast<size_t>(sprite)), (x + 2) * TILE_SIZE, (y + 2) * TILE_SIZE, pen);
+    scene.add(sprite, (x + 2) * TILE_SIZE, (y + 2) * TILE_SIZE, pen);
 }
 
 void BoardEditor::render(Scene& scene)
@@ -180,14 +177,5 @@ void BoardEditor::render_wire(Scene& scene, Position const& pos, Wire const& wir
 
 void BoardEditor::render_component(Scene& scene, Position const& pos, Component const& component) const
 {
-    if (component.def->render) {
-        ComponentRenderContext crtx {
-            .context = this,
-            .scene = scene,
-            .icons = icons_,
-            .x = (pos.x + 2) * TILE_SIZE,
-            .y = (pos.y + 2) * TILE_SIZE,
-        };
-        component.def->render(component, crtx);
-    }
+    component.def->render(component, scene, (pos.x + 2) * TILE_SIZE, (pos.y + 2) * TILE_SIZE);
 }

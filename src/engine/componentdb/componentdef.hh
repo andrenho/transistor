@@ -6,6 +6,7 @@
 #include <string>
 
 #include "engine/types.hh"
+#include "ui/scene.hh"
 
 class  ResourceManager;
 class  Scene;
@@ -23,7 +24,7 @@ struct ComponentDefinition {
 
     std::function<void(Component& component)> on_click = [](Component&) {};
     std::function<void(Component& component)> simulate = [](Component&) {};
-    std::function<void(Component const& component, struct ComponentRenderContext const& rctx)> render = [](Component const&, ComponentRenderContext const&) {};
+    std::function<void(Component const& component, Scene& scene, int x, int y)> render = [](Component const&, Scene&, int, int) {};
 
     constexpr uintpin_t pin_count() const
     {

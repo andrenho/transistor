@@ -1,7 +1,6 @@
 #include "components.hh"
 
 #include "engine/editor/component.hh"
-#include "rendercontext.hh"
 
 namespace component {
 
@@ -18,9 +17,9 @@ ComponentDefinition button()
         .simulate = [](Component& button) {
             button.pins[0] = button.pins[1] = button.pins[2] = button.pins[3] = button.data[0];
         },
-        .render = [](Component const& component, ComponentRenderContext const& rctx) {
-            rctx.add_to_scene(CSprite::ShadowSquare, 1, 1);
-            rctx.add_to_scene(component.data[0] ? CSprite::ButtonOn : CSprite::ButtonOff, 0, 0);
+        .render = [](Component const& component, Scene& scene, int x, int y) {
+            scene.add(CSprite::ShadowSquare, x + 1, y + 1);
+            scene.add(component.data[0] ? CSprite::ButtonOn : CSprite::ButtonOff, x, y);
         },
     };
 }
@@ -35,9 +34,9 @@ ComponentDefinition led()
         .simulate = [](Component& led) {
             led.data[0] = led.pins[0] | led.pins[1] | led.pins[2] | led.pins[3];
         },
-        .render = [](Component const& component, ComponentRenderContext const& rctx) {
-            rctx.add_to_scene(CSprite::ShadowCircle, 1, 1);
-            rctx.add_to_scene(component.data[0] ? CSprite::LedOn : CSprite::LedOff, 0, 0);
+        .render = [](Component const& component, Scene& scene, int x, int y) {
+            scene.add(CSprite::ShadowCircle, x + 1, y + 1);
+            scene.add(component.data[0] ? CSprite::LedOn: CSprite::LedOff, x, y);
         },
     };
 }

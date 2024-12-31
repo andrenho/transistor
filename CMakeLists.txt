@@ -100,7 +100,6 @@ set(UI_SRC
         src/ui/layers/board/boardeditor.cc
         src/ui/layers/board/boardeditor.hh
         src/ui/layers/board/circuit_atlas.hh
-        src/engine/componentdb/rendercontext.hh
 )
 
 set(IMGUI_SRC
