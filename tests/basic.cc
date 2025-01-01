@@ -27,44 +27,44 @@ TEST_SUITE("Engine")
         SUBCASE("Board elements")
         {
             CHECK(board.components().size() == 2);
-            CHECK(board.components().at({ 1, 1, Direction::Center }).def == &button_def);
-            CHECK(board.components().at({ 3, 1, Direction::Center }).def == &led_def);
+            CHECK(board.components().at({ board.id(), 1, 1, Direction::Center }).def == &button_def);
+            CHECK(board.components().at({ board.id(), 3, 1, Direction::Center }).def == &led_def);
 
             CHECK(board.wires().size() == 4);
-            CHECK(board.wires().contains({ 1, 1, Direction::E }));
-            CHECK(board.wires().contains({ 2, 1, Direction::W }));
-            CHECK(board.wires().contains({ 2, 1, Direction::E }));
-            CHECK(board.wires().contains({ 3, 1, Direction::W }));
+            CHECK(board.wires().contains({ board.id(), 1, 1, Direction::E }));
+            CHECK(board.wires().contains({ board.id(), 2, 1, Direction::W }));
+            CHECK(board.wires().contains({ board.id(), 2, 1, Direction::E }));
+            CHECK(board.wires().contains({ board.id(), 3, 1, Direction::W }));
         }
 
         SUBCASE("Compile editor to layout")
         {
             CHECK(layout.pins.size() == 8);
 
-            CHECK(layout.pins.at({ 1, 1, Direction::N }).component->def == &button_def);
-            CHECK(layout.pins.at({ 1, 1, Direction::N }).pin_no == 0);
-            CHECK(layout.pins.at({ 1, 1, Direction::W }).component->def == &button_def);
-            CHECK(layout.pins.at({ 1, 1, Direction::W }).pin_no == 1);
-            CHECK(layout.pins.at({ 1, 1, Direction::S }).component->def == &button_def);
-            CHECK(layout.pins.at({ 1, 1, Direction::S }).pin_no == 2);
-            CHECK(layout.pins.at({ 1, 1, Direction::E }).component->def == &button_def);
-            CHECK(layout.pins.at({ 1, 1, Direction::E }).pin_no == 3);
+            CHECK(layout.pins.at({ board.id(), 1, 1, Direction::N }).component->def == &button_def);
+            CHECK(layout.pins.at({ board.id(), 1, 1, Direction::N }).pin_no == 0);
+            CHECK(layout.pins.at({ board.id(), 1, 1, Direction::W }).component->def == &button_def);
+            CHECK(layout.pins.at({ board.id(), 1, 1, Direction::W }).pin_no == 1);
+            CHECK(layout.pins.at({ board.id(), 1, 1, Direction::S }).component->def == &button_def);
+            CHECK(layout.pins.at({ board.id(), 1, 1, Direction::S }).pin_no == 2);
+            CHECK(layout.pins.at({ board.id(), 1, 1, Direction::E }).component->def == &button_def);
+            CHECK(layout.pins.at({ board.id(), 1, 1, Direction::E }).pin_no == 3);
 
-            CHECK(layout.pins.at({ 3, 1, Direction::N }).component->def == &led_def);
-            CHECK(layout.pins.at({ 3, 1, Direction::N }).pin_no == 0);
-            CHECK(layout.pins.at({ 3, 1, Direction::W }).component->def == &led_def);
-            CHECK(layout.pins.at({ 3, 1, Direction::W }).pin_no == 1);
-            CHECK(layout.pins.at({ 3, 1, Direction::S }).component->def == &led_def);
-            CHECK(layout.pins.at({ 3, 1, Direction::S }).pin_no == 2);
-            CHECK(layout.pins.at({ 3, 1, Direction::E }).component->def == &led_def);
-            CHECK(layout.pins.at({ 3, 1, Direction::E }).pin_no == 3);
+            CHECK(layout.pins.at({ board.id(), 3, 1, Direction::N }).component->def == &led_def);
+            CHECK(layout.pins.at({ board.id(), 3, 1, Direction::N }).pin_no == 0);
+            CHECK(layout.pins.at({ board.id(), 3, 1, Direction::W }).component->def == &led_def);
+            CHECK(layout.pins.at({ board.id(), 3, 1, Direction::W }).pin_no == 1);
+            CHECK(layout.pins.at({ board.id(), 3, 1, Direction::S }).component->def == &led_def);
+            CHECK(layout.pins.at({ board.id(), 3, 1, Direction::S }).pin_no == 2);
+            CHECK(layout.pins.at({ board.id(), 3, 1, Direction::E }).component->def == &led_def);
+            CHECK(layout.pins.at({ board.id(), 3, 1, Direction::E }).pin_no == 3);
 
             CHECK(layout.wires.size() == 4);
 
-            CHECK(layout.wires.contains({ 1, 1, Direction::E }));
-            CHECK(layout.wires.contains({ 2, 1, Direction::W }));
-            CHECK(layout.wires.contains({ 2, 1, Direction::E }));
-            CHECK(layout.wires.contains({ 3, 1, Direction::W }));
+            CHECK(layout.wires.contains({ board.id(), 1, 1, Direction::E }));
+            CHECK(layout.wires.contains({ board.id(), 2, 1, Direction::W }));
+            CHECK(layout.wires.contains({ board.id(), 2, 1, Direction::E }));
+            CHECK(layout.wires.contains({ board.id(), 3, 1, Direction::W }));
         }
 
         SUBCASE("Compile layout to connections")
@@ -83,10 +83,10 @@ TEST_SUITE("Engine")
 
             CHECK(connection.wire.size() == 4);
 
-            CHECK(r::contains(connection.wire, Position { 1, 1, Direction::E }));
-            CHECK(r::contains(connection.wire, Position { 2, 1, Direction::W }));
-            CHECK(r::contains(connection.wire, Position { 2, 1, Direction::E }));
-            CHECK(r::contains(connection.wire, Position { 3, 1, Direction::W }));
+            CHECK(r::contains(connection.wire, Position { board.id(), 1, 1, Direction::E }));
+            CHECK(r::contains(connection.wire, Position { board.id(), 2, 1, Direction::W }));
+            CHECK(r::contains(connection.wire, Position { board.id(), 2, 1, Direction::E }));
+            CHECK(r::contains(connection.wire, Position { board.id(), 3, 1, Direction::W }));
         }
 
         SUBCASE("Simulate without button press")
@@ -94,6 +94,8 @@ TEST_SUITE("Engine")
             for (size_t i = 0; i < 10; ++i)
                 sandbox.simulate();
             CHECK(led->data[0] == 0);
+
+            CHECK(board.wire_value({ board.id(), 2, 1, Direction::W }) == 0);
         }
 
         SUBCASE("Simulate with button press")
@@ -104,6 +106,8 @@ TEST_SUITE("Engine")
             for (size_t i = 0; i < 10; ++i)
                 sandbox.simulate();
             CHECK(led->data[0] == 1);
+
+            CHECK(board.wire_value({ board.id(), 2, 1, Direction::W }) == 1);
         }
     }
 }

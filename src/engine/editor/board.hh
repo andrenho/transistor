@@ -12,7 +12,7 @@
 class Board {
 public:
     Board(intpos_t w, intpos_t h, class Sandbox& sandbox, ComponentDatabase const& component_db)
-        : w_(w), h_(h), sandbox_(sandbox), component_db_(component_db) {}
+        : id_(board_counter_++), w_(w), h_(h), sandbox_(sandbox), component_db_(component_db) {}
 
     [[nodiscard]] std::map<Position, Component> const& components() const { return components_; }
     [[nodiscard]] std::map<Position, Component>& components() { return components_; }
@@ -24,16 +24,21 @@ public:
 
     void       clear_tile(intpos_t x, intpos_t y);
 
-    void       start_placing_wire(Wire::Width width, Wire::Layer layer, intpos_t x, intpos_t y) { wire_management_.start_drawing({ x, y }, width, layer); }
-    void       continue_placing_wire(intpos_t x, intpos_t y) { wire_management_.set_current_end({ x, y }); }
-    void       finish_placing_wire(intpos_t x, intpos_t y) { merge_wires(wire_management_.stop_drawing({ x, y })); }
+    void       start_placing_wire(Wire::Width width, Wire::Layer layer, intpos_t x, intpos_t y) { wire_management_.start_drawing({ this, x, y }, width, layer); }
+    void       continue_placing_wire(intpos_t x, intpos_t y) { wire_management_.set_current_end({ this, x, y }); }
+    void       finish_placing_wire(intpos_t x, intpos_t y) { merge_wires(wire_management_.stop_drawing({ this, x, y })); }
     void       cancel_placing_wire() { wire_management_.stop_drawing(); }
+
+    [[nodiscard]] bus_data_t wire_value(Position const& pos) const;
     [[nodiscard]] std::map<Position, Wire> temporary_wire() const { return wire_management_.current_drawing(); }
 
     [[nodiscard]] intpos_t w() const { return w_; }
     [[nodiscard]] intpos_t h() const { return h_; }
 
+    [[nodiscard]] size_t id() const { return id_; }
+
 private:
+    const size_t         id_;
     intpos_t                 w_, h_;
     Sandbox&                 sandbox_;
     ComponentDatabase const& component_db_;
@@ -41,6 +46,8 @@ private:
     std::map<Position, Component> components_;
     std::map<Position, Wire>      wires_;
     WireManagement                wire_management_;
+
+    static size_t board_counter_;
 };
 
 #endif //BOARD_HH

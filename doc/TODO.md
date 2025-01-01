@@ -15,11 +15,18 @@
   - [x] add
   - [x] manipulate
 - [x] delete wires/component
-- [ ] refactoring
- - [ ] move circuit png to UI
- - [ ] ImageContext (?)
- - [ ] richer RenderContext, incorporate Scene into it
+- [x] refactoring
+ - [x] move circuit png to UI
+ - [x] ImageContext (?)
+ - [x] richer RenderContext, incorporate Scene into it
+ - [x] create board id
+ - [x] create unique position (including board)
+ - [ ] migrate all simulation parameters from x,y to Position
+ - [ ] use unique position to identify wire value
 - [ ] simulation
+  - [ ] query wire value from editor
+  - [ ] wires to north seem not to be working
+  - [ ] circuit is not turning off when button is depressed
 - [ ] VCC, PNP, NPN
   - [ ] rotation
 

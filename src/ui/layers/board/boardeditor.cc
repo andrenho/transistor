@@ -17,11 +17,11 @@ BoardEditor::BoardEditor(ResourceManager& resource_manager, Board& board)
 //            //
 //------------//
 
-auto to_pos = [](int x, int y) -> Position { return { (intpos_t) (x / TILE_SIZE - 2), (intpos_t) (y / TILE_SIZE - 2) }; };
+auto to_pos = [](Board const& board, int x, int y) -> Position { return { board.id(), (intpos_t) (x / TILE_SIZE - 2), (intpos_t) (y / TILE_SIZE - 2) }; };
 
 void BoardEditor::on_mouse_press(int x, int y, uint8_t button, bool dbl_click, Events& events)
 {
-    auto pos = to_pos(x, y);
+    auto pos = to_pos(board_, x, y);
 
     if (button == 1) {
 
@@ -44,7 +44,7 @@ void BoardEditor::on_mouse_release(int x, int y, uint8_t button, Events& events)
 
 void BoardEditor::on_mouse_move(int x, int y, int rx, int ry, Events& events)
 {
-    auto pos = to_pos(x, y);
+    auto pos = to_pos(board_, x, y);
 
     if (drawing_wire_)
         board_.continue_placing_wire(pos.x, pos.y);
@@ -54,7 +54,7 @@ void BoardEditor::on_mouse_move(int x, int y, int rx, int ry, Events& events)
 
 void BoardEditor::on_key_press(uint32_t key, int x, int y, Events& events)
 {
-    auto pos = to_pos(x, y);
+    auto pos = to_pos(board_, x, y);
 
     switch (key) {
         case 'w':
@@ -78,7 +78,7 @@ void BoardEditor::on_key_press(uint32_t key, int x, int y, Events& events)
 
 void BoardEditor::on_key_release(uint32_t key, int x, int y, Events& events)
 {
-    auto pos = to_pos(x, y);
+    auto pos = to_pos(board_, x, y);
 
     if (key == 'w') {
         drawing_wire_ = false;
@@ -132,17 +132,17 @@ void BoardEditor::render_tile(Scene& scene, intpos_t x, intpos_t y) const
 
     for (Direction const& dir: DIRECTIONS) {
         // draw wire
-        auto it = board_.wires().find({ x, y, dir });
+        auto it = board_.wires().find({ board_.id(), x, y, dir });
         if (it != board_.wires().end())
             render_wire(scene, it->first, it->second, false);
 
         // draw temporary wire
         auto temp = board_.temporary_wire();
-        it = temp.find({ x, y, dir });
+        it = temp.find({ board_.id(), x, y, dir });
         if (it != temp.end())
             render_wire(scene, it->first, it->second, true);
 
-        auto itc = board_.components().find({ x, y });
+        auto itc = board_.components().find({ board_.id(), x, y });
         if (itc != board_.components().end())
             render_component(scene, itc->first, itc->second);
     }

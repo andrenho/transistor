@@ -47,19 +47,19 @@ std::map<Position, Wire> WireManagement::current_drawing() const
 
     auto add_straight_wire = [&vsp](Position const& from, Position const& to) {
         if (from.x == to.x && from.y < to.y) {   // vertical
-            vsp.push_back({ from.x, from.y, Direction::S });
+            vsp.push_back({ from.board_id, from.x, from.y, Direction::S });
             for (intpos_t y = from.y + 1; y < to.y; ++y) {
-                vsp.push_back({ to.x, y, Direction::N });
-                vsp.push_back({ to.x, y, Direction::S });
+                vsp.push_back({ to.board_id, to.x, y, Direction::N });
+                vsp.push_back({ to.board_id, to.x, y, Direction::S });
             }
-            vsp.push_back({ to.x, to.y, Direction::N });
+            vsp.push_back({ to.board_id, to.x, to.y, Direction::N });
         } else if (from.y == to.y && from.x < to.x) {  // horizontal
-            vsp.push_back({ from.x, from.y, Direction::E });
+            vsp.push_back({ from.board_id, from.x, from.y, Direction::E });
             for (intpos_t x = from.x + 1; x < to.x; ++x) {
-                vsp.push_back({ x, from.y, Direction::W });
-                vsp.push_back({ x, from.y, Direction::E });
+                vsp.push_back({ from.board_id, x, from.y, Direction::W });
+                vsp.push_back({ from.board_id, x, from.y, Direction::E });
             }
-            vsp.push_back({ to.x, to.y, Direction::W });
+            vsp.push_back({ to.board_id, to.x, to.y, Direction::W });
         } else {
             throw std::runtime_error("Invalid straight line.");
         }
@@ -70,14 +70,14 @@ std::map<Position, Wire> WireManagement::current_drawing() const
     auto end = drawing_wire_->end_pos;
     if (drawing_wire_->orientation == Orientation::Horizontal) {
         if (start.x != end.x)
-            add_straight_wire({ std::min(start.x, end.x), start.y }, { std::max(start.x, end.x), start.y });
+            add_straight_wire({ start.board_id, std::min(start.x, end.x), start.y }, { start.board_id, std::max(start.x, end.x), start.y });
         if (start.y != end.y)
-            add_straight_wire({ end.x, std::min(start.y, end.y) }, {  end.x, std::max(start.y, end.y) });
+            add_straight_wire({ end.board_id, end.x, std::min(start.y, end.y) }, { end.board_id, end.x, std::max(start.y, end.y) });
     } else if (drawing_wire_->orientation == Orientation::Vertical) {
         if (start.y != end.y)
-            add_straight_wire({ start.x, std::min(start.y, end.y) }, {  start.x, std::max(start.y, end.y) });
+            add_straight_wire({ start.board_id, start.x, std::min(start.y, end.y) }, { start.board_id, start.x, std::max(start.y, end.y) });
         if (start.x != end.x)
-            add_straight_wire({ std::min(start.x, end.x), end.y }, { std::max(start.x, end.x), end.y });
+            add_straight_wire({ start.board_id, std::min(start.x, end.x), end.y }, { start.board_id, std::max(start.x, end.x), end.y });
     }
 
     // create wire map out of wire path

@@ -86,6 +86,7 @@ set(ENGINE_SRC
         src/engine/sandbox/compiler.hh
         src/engine/sandbox/sandbox.cc
         src/util/visitor.hh
+        src/engine/geometry/position.cc
 )
 
 set(UI_SRC

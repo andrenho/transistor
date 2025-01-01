@@ -69,7 +69,7 @@ Connections compile_to_connections(std::vector<Layout> const& layouts)
         for (auto const& [pos, pin]: layout.pins) {
             if (conn.wire.contains(pos))
                 conn.pins.insert(pin);
-            if (conn.wire.contains({ pos.x, pos.y, Direction::Center }))
+            if (conn.wire.contains({ pos.board_id, pos.x, pos.y, Direction::Center }))
                 conn.pins.insert(pin);
         }
         return conn;

@@ -17,8 +17,8 @@ private:
     ComponentDatabase component_db_;
     Editor            editor_ { *this, component_db_ };
 
-    Connections             connections_cache_;
-    std::vector<Component*> components_cache_;
+    Connections                              connections_cache_;
+    std::vector<Component*>                  components_cache_;
 };
 
 #endif //SANDBOX_HH
