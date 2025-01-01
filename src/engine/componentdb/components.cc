@@ -38,6 +38,9 @@ ComponentDefinition led()
             scene.add(CSprite::ShadowCircle, x + 1, y + 1);
             scene.add(component.data[0] ? CSprite::LedOn: CSprite::LedOff, x, y);
         },
+        .input_pins = [](Component const& component) {
+            return std::vector<uintpin_t> { 0, 1, 2, 3 };
+        },
     };
 }
 

@@ -5,7 +5,7 @@
 #include "compiler.hh"
 #include "engine/layout/layout.hh"
 
-void Sandbox::on_update()
+void Sandbox::reset()
 {
     components_cache_.clear();
 
@@ -37,6 +37,12 @@ void Sandbox::simulate()
         // simulate components
         for (Component* component: components_cache_)
             component->def->simulate(*component);
+
+        // reset input pins
+        for (Pin const& pin: connection.pins) {
+            if (pin.input)
+                pin.component->pins[pin.pin_no] = 0;
+        }
 
         // find value for connection
         bus_data_t value = 0;

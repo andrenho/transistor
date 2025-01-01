@@ -91,6 +91,9 @@ TEST_SUITE("Engine")
 
         SUBCASE("Simulate without button press")
         {
+            button->data[0] = 0;
+            sandbox.reset();
+
             for (size_t i = 0; i < 10; ++i)
                 sandbox.simulate();
             CHECK(led->data[0] == 0);
@@ -100,6 +103,9 @@ TEST_SUITE("Engine")
 
         SUBCASE("Simulate with button press")
         {
+            button->data[0] = 0;
+            sandbox.reset();
+
             button->on_click();
             CHECK(button->data[0] == 1);
 
@@ -108,6 +114,32 @@ TEST_SUITE("Engine")
             CHECK(led->data[0] == 1);
 
             CHECK(board.wire_value({ board.id(), 2, 1, Direction::W }) == 1);
+        }
+
+        SUBCASE("Button press and release")
+        {
+            button->data[0] = 0;
+            sandbox.reset();
+
+            // press
+
+            button->on_click();
+            CHECK(button->data[0] == 1);
+
+            for (size_t i = 0; i < 10; ++i)
+                sandbox.simulate();
+            CHECK(led->data[0] == 1);
+
+            // release
+
+            button->on_click();
+            CHECK(button->data[0] == 0);
+
+            for (size_t i = 0; i < 10; ++i)
+                sandbox.simulate();
+            CHECK(led->data[0] == 0);
+
+            CHECK(board.wire_value({ board.id(), 2, 1, Direction::W }) == 0);
         }
     }
 }

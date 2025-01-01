@@ -5,7 +5,8 @@
 
 struct Pin {
     Component const* component;
-    uintpin_t  pin_no;
+    uintpin_t        pin_no;
+    bool             input;
 
     bool operator==(Pin const& p) const { return component == p.component && pin_no == p.pin_no; }
 };
