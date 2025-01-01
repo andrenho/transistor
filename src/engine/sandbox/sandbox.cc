@@ -25,6 +25,8 @@ void Sandbox::on_update()
 
 void Sandbox::simulate()
 {
+    wire_value_cache_.clear();
+
     for (Connection& connection: connections_cache_) {
 
         // set pin input values
@@ -42,5 +44,16 @@ void Sandbox::simulate()
             value |= pin.component->pins[pin.pin_no];
         connection.value = value;
 
+        // add wire cache
+        for (Position const& pos: connection.wire)
+            wire_value_cache_.emplace(pos, value);
     }
+}
+
+uint8_t Sandbox::wire_value(Position const& pos) const
+{
+    auto it = wire_value_cache_.find(pos);
+    if (it != wire_value_cache_.end())
+        return it->second;
+    return 0;
 }

@@ -13,12 +13,15 @@ public:
     void on_update();
     void simulate();
 
+    [[nodiscard]] bus_data_t wire_value(Position const& pos) const;
+
 private:
     ComponentDatabase component_db_;
     Editor            editor_ { *this, component_db_ };
 
     Connections                              connections_cache_;
     std::vector<Component*>                  components_cache_;
+    std::unordered_map<Position, bus_data_t> wire_value_cache_;
 };
 
 #endif //SANDBOX_HH

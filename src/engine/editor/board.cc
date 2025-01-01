@@ -37,5 +37,5 @@ void Board::clear_tile(intpos_t x, intpos_t y)
 
 bus_data_t Board::wire_value(Position const& pos) const
 {
-    return 0;  // TODO
+    return sandbox_.wire_value(pos);
 }

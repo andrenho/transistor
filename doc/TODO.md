@@ -21,7 +21,7 @@
  - [x] richer RenderContext, incorporate Scene into it
  - [x] create board id
  - [x] create unique position (including board)
- - [ ] migrate all simulation parameters from x,y to Position
+ - [x] migrate all simulation parameters from x,y to Position
  - [ ] use unique position to identify wire value
 - [ ] simulation
   - [ ] query wire value from editor

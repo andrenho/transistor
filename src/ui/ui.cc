@@ -168,6 +168,7 @@ void UI::do_events(Events const& events)
                     case event::SetMouseCursor::Delete:
                         SDL_SetCursor(delete_cursor_);
                         break;
+                    default: break;
                 }
             },
         }, event);
