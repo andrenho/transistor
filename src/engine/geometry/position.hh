@@ -19,7 +19,7 @@ struct Position {
     bool operator==(Position const& p) const { return board_id == p.board_id && x == p.x && y == p.y && dir == p.dir; }
     bool operator<(Position const& p) const;
 
-    constexpr std::array<Position, 4> neighbours() const;
+    const std::array<Position, 4> neighbours() const;
 };
 
 template<>
@@ -41,41 +41,5 @@ inline bool Position::operator<(Position const& p) const
     return pfn(*this) < pfn(p);
 }
 
-constexpr std::array<Position, 4> Position::neighbours() const
-{
-    switch (dir) {
-        case Direction::W:
-            return {{
-                { board_id, (intpos_t) (x - 1), y, Direction::E },
-                { board_id, x, y, Direction::E },
-                { board_id, x, y, Direction::N },
-                { board_id, x, y, Direction::S },
-            }};
-        case Direction::E:
-            return {{
-                { board_id, (intpos_t) (x + 1), y, Direction::W },
-                { board_id, x, y, Direction::W },
-                { board_id, x, y, Direction::N },
-                { board_id, x, y, Direction::S },
-            }};
-        case Direction::N:
-            return {{
-                { board_id, x, (intpos_t) (y - 1), Direction::S },
-                { board_id, x, y, Direction::S },
-                { board_id, x, y, Direction::W },
-                { board_id, x, y, Direction::E }
-            }};
-        case Direction::S:
-            return {{
-                { board_id, x, (intpos_t) (y + 1), Direction::N },
-                { board_id, x, y, Direction::S },
-                { board_id, x, y, Direction::W },
-                { board_id, x, y, Direction::E },
-            }};
-        case Direction::Center:
-        default:
-            throw std::runtime_error("Invalid direction");
-    }
-}
 
 #endif //TILEPOS_HH

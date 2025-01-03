@@ -38,16 +38,11 @@ void Sandbox::simulate()
         for (Component* component: components_cache_)
             component->def->simulate(*component);
 
-        // reset input pins
-        for (Pin const& pin: connection.pins) {
-            if (pin.input)
-                pin.component->pins[pin.pin_no] = 0;
-        }
-
         // find value for connection
         bus_data_t value = 0;
         for (Pin const& pin: connection.pins)
-            value |= pin.component->pins[pin.pin_no];
+            if (!pin.input)
+                value |= pin.component->pins[pin.pin_no];
         connection.value = value;
 
         // add wire cache

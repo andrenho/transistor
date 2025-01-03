@@ -169,7 +169,7 @@ void BoardEditor::render_wire(Scene& scene, Position const& pos, Wire const& wir
         { { { Wire::Width::W1, Wire::Layer::Top }, Direction::E, false }, CSprite::WireTopOffEast_1 },
     };
 
-    auto it = wire_sprites.find({ wire, pos.dir, false });  // TODO: use actual value
+    auto it = wire_sprites.find({ wire, pos.dir, board_.wire_value(pos) });
     if (it == wire_sprites.end())
         throw std::runtime_error("Wire configuration not found");
     draw(scene, it->second, pos.x, pos.y, { .semitransparent = semitransparent });

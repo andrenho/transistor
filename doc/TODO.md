@@ -22,11 +22,11 @@
  - [x] create board id
  - [x] create unique position (including board)
  - [x] migrate all simulation parameters from x,y to Position
- - [ ] use unique position to identify wire value
-- [ ] simulation
-  - [ ] query wire value from editor
-  - [ ] wires to north seem not to be working
-  - [ ] circuit is not turning off when button is depressed
+ - [x] use unique position to identify wire value
+- [x] simulation
+  - [x] query wire value from editor
+  - [x] wires to north seem not to be working
+  - [x] circuit is not turning off when button is depressed
 - [ ] VCC, PNP, NPN
   - [ ] rotation
 

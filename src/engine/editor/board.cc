@@ -24,6 +24,7 @@ void Board::merge_wires(std::map<Position, Wire> const& wires)
 {
     for (auto const& [pos, wire]: wires)
         wires_[pos] = wire;
+    sandbox_.reset();
 }
 
 void Board::clear_tile(intpos_t x, intpos_t y)
