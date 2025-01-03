@@ -44,4 +44,21 @@ ComponentDefinition led()
     };
 }
 
+ComponentDefinition vcc()
+{
+    return {
+        .name = "vcc",
+        .type = ComponentDefinition::Type::SingleTile,
+        .can_rotate = false,
+        .data_size = 0,
+        .simulate = [](Component& vcc) {
+            vcc.pins[0] = vcc.pins[1] = vcc.pins[2] = vcc.pins[3] = 1;
+        },
+        .render = [](Component const& component, Scene& scene, int x, int y) {
+            scene.add(CSprite::ShadowSquare, x + 1, y + 1);
+            scene.add(CSprite::VCC, x, y);
+        },
+    };
+}
+
 }

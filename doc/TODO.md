@@ -27,8 +27,11 @@
   - [x] query wire value from editor
   - [x] wires to north seem not to be working
   - [x] circuit is not turning off when button is depressed
-- [ ] VCC, PNP, NPN
+- [x] VCC
+- [ ] PNP, NPN
   - [ ] rotation
+- [ ] bugs
+  - [ ] energy not travelling south
 
 # v0.0.3 - circuits QOL
 

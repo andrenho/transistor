@@ -7,6 +7,7 @@ namespace component {
 
 ComponentDefinition button();
 ComponentDefinition led();
+ComponentDefinition vcc();
 
 }
 

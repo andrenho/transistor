@@ -67,6 +67,9 @@ void BoardEditor::on_key_press(uint32_t key, int x, int y, Events& events)
         case 'l':
             board_.add_component("led", pos.x, pos.y);
             break;
+        case 'v':
+            board_.add_component("vcc", pos.x, pos.y);
+            break;
         case 'x':
             board_.clear_tile(pos.x, pos.y);
             erasing_wire_ = true;
