@@ -67,11 +67,11 @@ Connections compile_to_connections(std::vector<Layout> const& layouts)
 
     auto create_connection = [](Layout const& layout, std::unordered_set<Position> const& positions) -> Connection {
         Connection conn;
-        conn.wire = positions;
+        conn.wires = positions;
         for (auto const& [pos, pin]: layout.pins) {
-            if (conn.wire.contains(pos))
+            if (conn.wires.contains(pos))
                 conn.pins.insert(pin);
-            if (conn.wire.contains({ pos.board_id, pos.x, pos.y, Direction::Center }))
+            if (conn.wires.contains({ pos.board_id, pos.x, pos.y, Direction::Center }))
                 conn.pins.insert(pin);
         }
         return conn;

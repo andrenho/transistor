@@ -46,7 +46,7 @@ void Sandbox::simulate()
         connection.value = value;
 
         // add wire cache
-        for (Position const& pos: connection.wire)
+        for (Position const& pos: connection.wires)
             wire_value_cache_.emplace(pos, value);
     }
 }

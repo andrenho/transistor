@@ -32,7 +32,8 @@ struct std::hash<Position> {
 
 inline std::ostream& operator<<(std::ostream& os, Position const& p)
 {
-    return os << "<" << p.board_id << "|" << p.x << "," << p.y << "," << p.dir << ">";
+    os << "<" << p.board_id << "|" << p.x << "," << p.y << "," << p.dir << ">";
+    return os;
 }
 
 inline bool Position::operator<(Position const& p) const

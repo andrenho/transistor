@@ -1,6 +1,8 @@
 #ifndef PIN_HH
 #define PIN_HH
 
+#include <ostream>
+
 #include "engine/editor/component.hh"
 
 struct Pin {
@@ -9,6 +11,10 @@ struct Pin {
     bool             input;
 
     bool operator==(Pin const& p) const { return component == p.component && pin_no == p.pin_no; }
+    friend std::ostream& operator<<(std::ostream& os, Pin const& pin) {
+        os << "Component: " << pin.component << ", pin: " << (int) pin.pin_no << ", input: " << (pin.input ? "yes" : "no");
+        return os;
+    }
 };
 
 template<>

@@ -1,6 +1,7 @@
 #include "doctest.h"
 
 #include <algorithm>
+#include <iostream>
 
 #include "engine/connections/connection.hh"
 #include "engine/layout/layout.hh"
@@ -17,6 +18,8 @@ TEST_SUITE("Engine")
 
     TEST_CASE("Basic circuit")
     {
+        board.clear();
+
         Component* button = board.add_component("button", 1, 1);
         Component* led = board.add_component("led", 3, 1);
         board.draw_wire(Wire::Width::W1, Wire::Layer::Top, 1, 1, 3, 1, Orientation::Horizontal);
@@ -81,12 +84,12 @@ TEST_SUITE("Engine")
                 return pin.component->def == &led_def && pin.pin_no == 1;
             }) != connection.pins.end());
 
-            CHECK(connection.wire.size() == 4);
+            CHECK(connection.wires.size() == 4);
 
-            CHECK(r::contains(connection.wire, Position { board.id(), 1, 1, Direction::E }));
-            CHECK(r::contains(connection.wire, Position { board.id(), 2, 1, Direction::W }));
-            CHECK(r::contains(connection.wire, Position { board.id(), 2, 1, Direction::E }));
-            CHECK(r::contains(connection.wire, Position { board.id(), 3, 1, Direction::W }));
+            CHECK(r::contains(connection.wires, Position { board.id(), 1, 1, Direction::E }));
+            CHECK(r::contains(connection.wires, Position { board.id(), 2, 1, Direction::W }));
+            CHECK(r::contains(connection.wires, Position { board.id(), 2, 1, Direction::E }));
+            CHECK(r::contains(connection.wires, Position { board.id(), 3, 1, Direction::W }));
         }
 
         SUBCASE("Simulate without button press")
@@ -140,6 +143,48 @@ TEST_SUITE("Engine")
             CHECK(led->data[0] == 0);
 
             CHECK(board.wire_value({ board.id(), 2, 1, Direction::W }) == 0);
+        }
+    }
+
+    TEST_CASE("Special circuit case 1")
+    {
+        board.clear();
+
+        Component* button = board.add_component("button", 1, 0);
+        Component* led1 = board.add_component("led", 0, 2);
+        Component* led2 = board.add_component("led", 1, 3);
+
+        board.draw_wire(Wire::Width::W1, Wire::Layer::Top, 1, 0, 1, 3, Orientation::Vertical);
+        board.draw_wire(Wire::Width::W1, Wire::Layer::Top, 1, 2, 0, 2, Orientation::Horizontal);
+
+        Layout layout = compiler::compile_to_layout(board);
+        Connections connections = compiler::compile_to_connections(std::vector { layout });
+
+        for (Connection const& c: connections)
+            std::cout << c << "\n";
+
+        SUBCASE("Compile layout to connections")
+        {
+            CHECK(connections.size() == 1);
+
+            Connection const& connection = connections.at(0);
+
+            CHECK(connection.pins.size() == 3);
+            CHECK(r::find_if(connection.pins, [&](Pin const& pin) { return pin.component == button && pin.pin_no == 2; }) != connection.pins.end());
+            CHECK(r::find_if(connection.pins, [&](Pin const& pin) { return pin.component == led1 && pin.pin_no == 1; }) != connection.pins.end());
+            CHECK(r::find_if(connection.pins, [&](Pin const& pin) { return pin.component == led2 && pin.pin_no == 0; }) != connection.pins.end());
+
+            CHECK(connection.wires.size() == 8);
+
+            CHECK(r::contains(connection.wires, Position { board.id(), 1, 0, Direction::S }));
+            CHECK(r::contains(connection.wires, Position { board.id(), 1, 1, Direction::N }));
+            CHECK(r::contains(connection.wires, Position { board.id(), 1, 1, Direction::S }));
+            CHECK(r::contains(connection.wires, Position { board.id(), 1, 2, Direction::N }));
+            CHECK(r::contains(connection.wires, Position { board.id(), 1, 2, Direction::S }));
+            CHECK(r::contains(connection.wires, Position { board.id(), 1, 3, Direction::N }));
+
+            CHECK(r::contains(connection.wires, Position { board.id(), 0, 2, Direction::E }));
+            CHECK(r::contains(connection.wires, Position { board.id(), 1, 2, Direction::W }));
         }
     }
 }

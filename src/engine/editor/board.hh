@@ -23,6 +23,7 @@ public:
     void       merge_wires(std::map<Position, Wire> const& wires);
 
     void       clear_tile(intpos_t x, intpos_t y);
+    void       clear();
 
     void       start_placing_wire(Wire::Width width, Wire::Layer layer, intpos_t x, intpos_t y) { wire_management_.start_drawing({ this, x, y }, width, layer); }
     void       continue_placing_wire(intpos_t x, intpos_t y) { wire_management_.set_current_end({ this, x, y }); }
@@ -38,7 +39,7 @@ public:
     [[nodiscard]] size_t id() const { return id_; }
 
 private:
-    const size_t         id_;
+    const size_t             id_;
     intpos_t                 w_, h_;
     Sandbox&                 sandbox_;
     ComponentDatabase const& component_db_;
