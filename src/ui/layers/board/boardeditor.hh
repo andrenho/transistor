@@ -21,7 +21,7 @@ public:
 private:
     Board&                board_;
     bool                  drawing_wire_ = false;
-    bool                  erasing_wire_ = false;
+    bool                  erasing_ = false;
 
     void render_border(Scene& scene) const;
     void render_tile(Scene& scene, intpos_t x, intpos_t y) const;
@@ -29,6 +29,9 @@ private:
     void render_component(Scene& scene, Position const& pos, Component const& component) const;
 
     void draw(Scene& scene, CSprite sprite, int x, int y, Pen const& pen={}) const;
+
+    void start_erasing(Position const& pos, Events& events);
+    void stop_erasing(Events& events);
 };
 
 #endif //BOARDEDITOR_HH

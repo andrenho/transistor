@@ -24,11 +24,14 @@ void BoardEditor::on_mouse_press(int x, int y, uint8_t button, bool dbl_click, E
     auto pos = to_pos(board_, x, y);
 
     if (button == 1) {
-
         // check for component click
         auto it = board_.components().find(pos);
         if (it != board_.components().end())
             it->second.on_click();
+
+    } else if (button == 2) {
+
+        start_erasing(pos, events);
 
     } else if (button == 3) {
         events.emplace_back(event::StartDragging { this });
@@ -37,7 +40,9 @@ void BoardEditor::on_mouse_press(int x, int y, uint8_t button, bool dbl_click, E
 
 void BoardEditor::on_mouse_release(int x, int y, uint8_t button, Events& events)
 {
-    if (button == 3) {
+    if (button == 2) {
+        stop_erasing(events);
+    } else if (button == 3) {
         events.emplace_back(event::StopDragging {});
     }
 }
@@ -48,7 +53,7 @@ void BoardEditor::on_mouse_move(int x, int y, int rx, int ry, Events& events)
 
     if (drawing_wire_)
         board_.continue_placing_wire(pos.x, pos.y);
-    if (erasing_wire_)
+    if (erasing_)
         board_.clear_tile(pos.x, pos.y);
 }
 
@@ -71,9 +76,7 @@ void BoardEditor::on_key_press(uint32_t key, int x, int y, Events& events)
             board_.add_component("vcc", pos.x, pos.y);
             break;
         case 'x':
-            board_.clear_tile(pos.x, pos.y);
-            erasing_wire_ = true;
-            events.emplace_back(event::SetMouseCursor { event::SetMouseCursor::Delete });
+            start_erasing(pos, events);
             break;
         default: break;
     }
@@ -87,9 +90,21 @@ void BoardEditor::on_key_release(uint32_t key, int x, int y, Events& events)
         drawing_wire_ = false;
         board_.finish_placing_wire(pos.x, pos.y);
     } else if (key == 'x') {
-        erasing_wire_ = false;
-        events.emplace_back(event::SetMouseCursor { event::SetMouseCursor::Normal });
+        stop_erasing(events);
     }
+}
+
+void BoardEditor::start_erasing(Position const& pos, Events& events)
+{
+    board_.clear_tile(pos.x, pos.y);
+    erasing_ = true;
+    events.emplace_back(event::SetMouseCursor { event::SetMouseCursor::Delete });
+}
+
+void BoardEditor::stop_erasing(Events& events)
+{
+    erasing_ = false;
+    events.emplace_back(event::SetMouseCursor { event::SetMouseCursor::Normal });
 }
 
 //---------------//
