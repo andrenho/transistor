@@ -171,7 +171,7 @@ TEST_SUITE("Engine")
 
             CHECK(connection.pins.size() == 3);
             CHECK(r::find_if(connection.pins, [&](Pin const& pin) { return pin.component == button && pin.pin_no == 2; }) != connection.pins.end());
-            CHECK(r::find_if(connection.pins, [&](Pin const& pin) { return pin.component == led1 && pin.pin_no == 1; }) != connection.pins.end());
+            CHECK(r::find_if(connection.pins, [&](Pin const& pin) { return pin.component == led1 && pin.pin_no == 3; }) != connection.pins.end());
             CHECK(r::find_if(connection.pins, [&](Pin const& pin) { return pin.component == led2 && pin.pin_no == 0; }) != connection.pins.end());
 
             CHECK(connection.wires.size() == 8);

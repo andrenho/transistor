@@ -1,5 +1,6 @@
 #include "doctest.h"
 
+#include <iostream>
 #include <unordered_set>
 #include <vector>
 
@@ -79,6 +80,27 @@ TEST_SUITE("Connected wires")
         positions.insert({ BOARD_ID, 2, 2, Direction::N });
         positions.insert({ BOARD_ID, 2, 2, Direction::E });
         positions.insert({ BOARD_ID, 3, 2, Direction::W });
+
+        auto groups = compiler::find_connected_wires(positions);
+        CHECK(groups.size() == 1);
+
+        auto const& group = groups.at(0);
+        CHECK(group.size() == positions.size());
+        for (Position const& p: positions)
+            CHECK(group.contains(p));
+    }
+
+    TEST_CASE("Strange shape")
+    {
+        positions.insert({ BOARD_ID, 1, 0, Direction::S });
+        positions.insert({ BOARD_ID, 1, 1, Direction::N });
+        positions.insert({ BOARD_ID, 1, 1, Direction::S });
+        positions.insert({ BOARD_ID, 1, 2, Direction::N });
+        positions.insert({ BOARD_ID, 1, 2, Direction::S });
+        positions.insert({ BOARD_ID, 1, 3, Direction::N });
+
+        positions.insert({ BOARD_ID, 0, 2, Direction::E });
+        positions.insert({ BOARD_ID, 1, 2, Direction::W });
 
         auto groups = compiler::find_connected_wires(positions);
         CHECK(groups.size() == 1);

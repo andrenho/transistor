@@ -1,7 +1,7 @@
 # v0.0.1 - base engine
 
-- [ ] base engine
-- [ ] unit tests
+- [x] base engine
+- [x] unit tests
 
 # v0.0.2 - simple circuit editing
 
@@ -10,7 +10,7 @@
 - [x] GUI events
 - [x] move board
 - [x] add wires
-- [ ] components
+- [x] components
   - [x] images
   - [x] add
   - [x] manipulate
@@ -28,10 +28,10 @@
   - [x] wires to north seem not to be working
   - [x] circuit is not turning off when button is depressed
 - [x] VCC
+- [x] bugs
+  - [x] energy not travelling south
 - [ ] PNP, NPN
   - [ ] rotation
-- [ ] bugs
-  - [ ] energy not travelling south
 
 # v0.0.3 - circuits QOL
 

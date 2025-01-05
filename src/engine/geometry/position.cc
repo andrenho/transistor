@@ -34,7 +34,7 @@ const std::array<Position, 4> Position::neighbours() const
         case Direction::S:
             return {{
                 { board_id, x, (intpos_t) (y + 1), Direction::N },
-                { board_id, x, y, Direction::S },
+                { board_id, x, y, Direction::N },
                 { board_id, x, y, Direction::W },
                 { board_id, x, y, Direction::E },
             }};
