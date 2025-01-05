@@ -3,7 +3,7 @@
 #include "components.hh"
 
 static const ComponentDefinition native_components[] = {
-    component::button(), component::led(), component::vcc(),
+    component::button(), component::led(), component::vcc(), component::npn(), component::pnp(),
 };
 
 ComponentDatabase::ComponentDatabase()

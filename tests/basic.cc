@@ -160,9 +160,6 @@ TEST_SUITE("Engine")
         Layout layout = compiler::compile_to_layout(board);
         Connections connections = compiler::compile_to_connections(std::vector { layout });
 
-        for (Connection const& c: connections)
-            std::cout << c << "\n";
-
         SUBCASE("Compile layout to connections")
         {
             CHECK(connections.size() == 1);

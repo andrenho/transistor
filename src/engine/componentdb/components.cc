@@ -31,15 +31,15 @@ ComponentDefinition led()
         .type = ComponentDefinition::Type::SingleTile,
         .can_rotate = false,
         .data_size = 1,
+        .input_pins = [](Component const& component) {
+            return std::vector<uintpin_t> { 0, 1, 2, 3 };
+        },
         .simulate = [](Component& led) {
             led.data[0] = led.pins[0] | led.pins[1] | led.pins[2] | led.pins[3];
         },
         .render = [](Component const& component, Scene& scene, int x, int y) {
             scene.add(CSprite::ShadowCircle, x + 1, y + 1);
             scene.add(component.data[0] ? CSprite::LedOn: CSprite::LedOff, x, y);
-        },
-        .input_pins = [](Component const& component) {
-            return std::vector<uintpin_t> { 0, 1, 2, 3 };
         },
     };
 }
@@ -57,6 +57,48 @@ ComponentDefinition vcc()
         .render = [](Component const& component, Scene& scene, int x, int y) {
             scene.add(CSprite::ShadowSquare, x + 1, y + 1);
             scene.add(CSprite::VCC, x, y);
+        },
+    };
+}
+
+ComponentDefinition npn()
+{
+    return {
+        .name = "npn",
+        .type = ComponentDefinition::Type::SingleTile,
+        .can_rotate = true,
+        .data_size = 0,
+        .input_pins = [](Component const& component) {
+            return std::vector<uintpin_t> { 0, 1, 2 };
+        },
+        .simulate = [](Component& npn) {
+            constexpr size_t IN = 1, SWITCH_1 = 0, SWITCH_2 = 2, OUT = 3;
+            npn.pins[OUT] = !(npn.pins[IN] & (npn.pins[SWITCH_1] | npn.pins[SWITCH_2]));
+        },
+        .render = [](Component const& component, Scene& scene, int x, int y) {
+            scene.add(CSprite::ShadowRect, x + 1, y + 1);
+            scene.add(CSprite::NPN, x, y);
+        },
+    };
+}
+
+ComponentDefinition pnp()
+{
+    return {
+        .name = "pnp",
+        .type = ComponentDefinition::Type::SingleTile,
+        .can_rotate = true,
+        .data_size = 0,
+        .input_pins = [](Component const& component) {
+            return std::vector<uintpin_t> { 0, 1, 2 };
+        },
+        .simulate = [](Component& pnp) {
+            constexpr size_t IN = 1, SWITCH_1 = 0, SWITCH_2 = 2, OUT = 3;
+            pnp.pins[OUT] = pnp.pins[IN] & (pnp.pins[SWITCH_1] | pnp.pins[SWITCH_2]);
+        },
+        .render = [](Component const& component, Scene& scene, int x, int y) {
+            scene.add(CSprite::ShadowRect, x + 1, y + 1);
+            scene.add(CSprite::PNP, x, y);
         },
     };
 }

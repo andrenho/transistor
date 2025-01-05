@@ -23,9 +23,9 @@ struct ComponentDefinition {
     size_t      data_size = 0;
 
     std::function<void(Component& component)>                                   on_click = [](Component&) {};
+    std::function<std::vector<uintpin_t>(Component const& component)>           input_pins = [](Component const&) { return std::vector<uintpin_t>{}; };
     std::function<void(Component& component)>                                   simulate = [](Component&) {};
     std::function<void(Component const& component, Scene& scene, int x, int y)> render = [](Component const&, Scene&, int, int) {};
-    std::function<std::vector<uintpin_t>(Component const& component)>           input_pins = [](Component const&) { return std::vector<uintpin_t>{}; };
 
     constexpr uintpin_t pin_count() const
     {
