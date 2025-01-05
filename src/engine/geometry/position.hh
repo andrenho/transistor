@@ -2,6 +2,7 @@
 #define TILEPOS_HH
 
 #include <ostream>
+#include <vector>
 
 #include "direction.hh"
 #include "engine/types.hh"
@@ -19,7 +20,7 @@ struct Position {
     bool operator==(Position const& p) const { return board_id == p.board_id && x == p.x && y == p.y && dir == p.dir; }
     bool operator<(Position const& p) const;
 
-    const std::array<Position, 4> neighbours() const;
+    std::vector<Position> neighbours(bool has_single_tile_component_pin) const;
 };
 
 template<>

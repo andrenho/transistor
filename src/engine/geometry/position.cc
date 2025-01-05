@@ -7,39 +7,55 @@ Position::Position(Board* board, intpos_t _x, intpos_t _y, Direction _dir)
 {
 }
 
-const std::array<Position, 4> Position::neighbours() const
+std::vector<Position> Position::neighbours(bool has_single_tile_component_pin) const
 {
-    switch (dir) {
-        case Direction::W:
-            return {{
-                { board_id, (intpos_t) (x - 1), y, Direction::E },
-                { board_id, x, y, Direction::E },
-                { board_id, x, y, Direction::N },
-                { board_id, x, y, Direction::S },
-            }};
-        case Direction::E:
-            return {{
-                { board_id, (intpos_t) (x + 1), y, Direction::W },
-                { board_id, x, y, Direction::W },
-                { board_id, x, y, Direction::N },
-                { board_id, x, y, Direction::S },
-            }};
-        case Direction::N:
-            return {{
-                { board_id, x, (intpos_t) (y - 1), Direction::S },
-                { board_id, x, y, Direction::S },
-                { board_id, x, y, Direction::W },
-                { board_id, x, y, Direction::E }
-            }};
-        case Direction::S:
-            return {{
-                { board_id, x, (intpos_t) (y + 1), Direction::N },
-                { board_id, x, y, Direction::N },
-                { board_id, x, y, Direction::W },
-                { board_id, x, y, Direction::E },
-            }};
-        case Direction::Center:
-        default:
-            throw std::runtime_error("Invalid direction");
+    if (has_single_tile_component_pin) {
+        switch (dir) {
+            case Direction::W:
+                return { { board_id, (intpos_t) (x - 1), y, Direction::E } };
+            case Direction::E:
+                return { { board_id, (intpos_t) (x + 1), y, Direction::W } };
+            case Direction::N:
+                return { { board_id, x, (intpos_t) (y - 1), Direction::S } };
+            case Direction::S:
+                return { { board_id, x, (intpos_t) (y + 1), Direction::N } };
+            case Direction::Center:
+                default:
+                    throw std::runtime_error("Invalid direction");
+        }
+    } else {
+        switch (dir) {
+            case Direction::W:
+                return {
+                    { board_id, (intpos_t) (x - 1), y, Direction::E },
+                    { board_id, x, y, Direction::E },
+                    { board_id, x, y, Direction::N },
+                    { board_id, x, y, Direction::S },
+                };
+            case Direction::E:
+                return {
+                    { board_id, (intpos_t) (x + 1), y, Direction::W },
+                    { board_id, x, y, Direction::W },
+                    { board_id, x, y, Direction::N },
+                    { board_id, x, y, Direction::S },
+                };
+            case Direction::N:
+                return {
+                    { board_id, x, (intpos_t) (y - 1), Direction::S },
+                    { board_id, x, y, Direction::S },
+                    { board_id, x, y, Direction::W },
+                    { board_id, x, y, Direction::E }
+                };
+            case Direction::S:
+                return {
+                    { board_id, x, (intpos_t) (y + 1), Direction::N },
+                    { board_id, x, y, Direction::N },
+                    { board_id, x, y, Direction::W },
+                    { board_id, x, y, Direction::E },
+                };
+            case Direction::Center:
+                default:
+                    throw std::runtime_error("Invalid direction");
+        }
     }
 }

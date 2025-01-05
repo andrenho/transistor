@@ -146,6 +146,18 @@ TEST_SUITE("Engine")
         }
     }
 
+    TEST_CASE("Multiple connections to same single-tile component")
+    {
+        Component* led = board.add_component("led", 1, 1);
+        board.draw_wire(Wire::Width::W1, Wire::Layer::Top, 0, 1, 1, 1, Orientation::Horizontal);
+        board.draw_wire(Wire::Width::W1, Wire::Layer::Top, 1, 0, 1, 1, Orientation::Vertical);
+
+        Layout layout = compiler::compile_to_layout(board);
+        Connections connections = compiler::compile_to_connections(std::vector { layout });
+
+        CHECK(connections.size() == 2);
+    }
+
     TEST_CASE("Special circuit case 1")
     {
         board.clear();

@@ -164,7 +164,7 @@ add_executable(${PROJECT_NAME}-tests
         ${ENGINE_SRC}
         tests/doctest.h
         tests/main.cc
-        tests/basic.cc
+        tests/compilation.cc
         tests/connected_wires.cc
 )
 target_compile_definitions(${PROJECT_NAME}-tests PUBLIC PROJECT_NAME=\"${PROJECT_NAME}-tests\" ${DEF})

@@ -23,9 +23,9 @@ Layout compile_to_layout(Board const& board)
     return layout;
 }
 
-std::vector<std::unordered_set<Position>> find_connected_wires(std::unordered_set<Position> wires)
+std::vector<std::unordered_set<Position>> find_connected_wires(std::unordered_set<Position> wires, std::unordered_set<Position> const& single_pin_components)
 {
-    auto find_connected_group = [&wires](Position const& start) -> std::unordered_set<Position> {
+    auto find_connected_group = [&wires, &single_pin_components](Position const& start) -> std::unordered_set<Position> {
         std::unordered_set<Position> result;
         std::unordered_set<Position> to_visit;
 
@@ -40,7 +40,8 @@ std::vector<std::unordered_set<Position>> find_connected_wires(std::unordered_se
                 wires.erase(visiting);
 
                 // add neighbours
-                for (Position const& neighbour: visiting.neighbours())
+                bool has_single_tile_component_pin = r::contains(single_pin_components, Position { visiting.board_id, visiting.x, visiting.y });
+                for (Position const& neighbour: visiting.neighbours(has_single_tile_component_pin))
                     to_visit.insert(neighbour);
             }
 
@@ -89,7 +90,7 @@ Connections compile_to_connections(std::vector<Layout> const& layouts)
                 }
 
                 // find groups
-                for (auto const& group : find_connected_wires(wires))
+                for (auto const& group : find_connected_wires(wires, {}))
                     connections.push_back(create_connection(layout, group));
             }
         }

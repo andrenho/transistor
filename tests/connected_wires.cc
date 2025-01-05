@@ -8,7 +8,7 @@
 #include "engine/sandbox/compiler.hh"
 
 namespace compiler {
-    std::vector<std::unordered_set<Position>> find_connected_wires(std::unordered_set<Position> wires);
+    std::vector<std::unordered_set<Position>> find_connected_wires(std::unordered_set<Position> wires, std::unordered_set<Position> const& single_pin_components={});
 }
 
 TEST_SUITE("Connected wires")
@@ -18,6 +18,8 @@ TEST_SUITE("Connected wires")
 
     TEST_CASE("Simple wire")
     {
+        positions = {};
+
         positions.insert({ BOARD_ID, 1, 1, Direction::E });
         positions.insert({ BOARD_ID, 2, 1, Direction::W });
         positions.insert({ BOARD_ID, 2, 1, Direction::E });
@@ -36,6 +38,8 @@ TEST_SUITE("Connected wires")
 
     TEST_CASE("Two separate wires")
     {
+        positions = {};
+
         positions.insert({ BOARD_ID, 1, 1, Direction::E });
         positions.insert({ BOARD_ID, 2, 1, Direction::W });
         positions.insert({ BOARD_ID, 2, 1, Direction::E });
@@ -66,6 +70,8 @@ TEST_SUITE("Connected wires")
 
     TEST_CASE("Crossing wires (E shaped)")
     {
+        positions = {};
+
         positions.insert({ BOARD_ID, 1, 1, Direction::E });
         positions.insert({ BOARD_ID, 2, 1, Direction::W });
         positions.insert({ BOARD_ID, 2, 1, Direction::E });
@@ -92,6 +98,8 @@ TEST_SUITE("Connected wires")
 
     TEST_CASE("Strange shape")
     {
+        positions = {};
+
         positions.insert({ BOARD_ID, 1, 0, Direction::S });
         positions.insert({ BOARD_ID, 1, 1, Direction::N });
         positions.insert({ BOARD_ID, 1, 1, Direction::S });
@@ -109,5 +117,27 @@ TEST_SUITE("Connected wires")
         CHECK(group.size() == positions.size());
         for (Position const& p: positions)
             CHECK(group.contains(p));
+    }
+
+    TEST_CASE("Single-tile component in middle of connection")
+    {
+        positions = {};
+
+        positions.insert({ BOARD_ID, 1, 1, Direction::W });
+        positions.insert({ BOARD_ID, 1, 1, Direction::S });
+
+        auto groups = compiler::find_connected_wires(positions, { { BOARD_ID, 1, 1 } });
+
+        CHECK(groups.size() == 2);
+
+        CHECK(groups.at(0).size() == 1);
+        bool c1 = (*groups.at(0).begin() == Position { BOARD_ID, 1, 1, Direction::W }) || (*groups.at(0).begin() == Position { BOARD_ID, 1, 1, Direction::S });
+        CHECK(c1);
+
+        CHECK(groups.at(1).size() == 1);
+        bool c2 = (*groups.at(1).begin() == Position { BOARD_ID, 1, 1, Direction::W }) || (*groups.at(1).begin() == Position { BOARD_ID, 1, 1, Direction::S });
+        CHECK(c2);
+
+        CHECK(*groups.at(0).begin() != *groups.at(1).begin());
     }
 }
