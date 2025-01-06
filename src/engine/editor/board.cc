@@ -43,6 +43,17 @@ void Board::clear()
     sandbox_.reset();
 }
 
+void Board::rotate_component(intpos_t x, intpos_t y)
+{
+    // TODO - implement for ICs
+    auto it = components_.find({ id_, x, y });
+    if (it != components_.end()) {
+        Component& component = it->second;
+        component.rotation = rotate(component.rotation);
+    }
+    sandbox_.reset();
+}
+
 bus_data_t Board::wire_value(Position const& pos) const
 {
     return sandbox_.wire_value(pos);

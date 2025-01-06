@@ -81,6 +81,9 @@ void BoardEditor::on_key_press(uint32_t key, int x, int y, Events& events)
         case 'p':
             board_.add_component("pnp", pos.x, pos.y);
             break;
+        case 'r':
+            board_.rotate_component(pos.x, pos.y);
+            break;
         case 'x':
             start_erasing(pos, events);
             break;

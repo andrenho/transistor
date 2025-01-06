@@ -30,6 +30,8 @@ public:
     void       finish_placing_wire(intpos_t x, intpos_t y) { merge_wires(wire_management_.stop_drawing({ this, x, y })); }
     void       cancel_placing_wire() { wire_management_.stop_drawing(); }
 
+    void       rotate_component(intpos_t x, intpos_t y);
+
     [[nodiscard]] bus_data_t wire_value(Position const& pos) const;
     [[nodiscard]] std::map<Position, Wire> temporary_wire() const { return wire_management_.current_drawing(); }
 

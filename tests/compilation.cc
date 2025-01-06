@@ -198,4 +198,26 @@ TEST_SUITE("Engine")
             CHECK(r::contains(connection.wires, Position { board.id(), 1, 2, Direction::W }));
         }
     }
+
+    TEST_CASE("Single-tile component rotation")
+    {
+        board.clear();
+
+        Component* npn = board.add_component("npn", 1, 1);
+        board.rotate_component(1, 1);
+
+        Layout layout = compiler::compile_to_layout(board);
+
+        SUBCASE("Rotate")
+        {
+            CHECK(layout.pins.at({ board.id(), 1, 1, Direction::W }).component == npn);
+            CHECK(layout.pins.at({ board.id(), 1, 1, Direction::W }).pin_no == 0);
+            CHECK(layout.pins.at({ board.id(), 1, 1, Direction::S }).component == npn);
+            CHECK(layout.pins.at({ board.id(), 1, 1, Direction::S }).pin_no == 1);
+            CHECK(layout.pins.at({ board.id(), 1, 1, Direction::E }).component == npn);
+            CHECK(layout.pins.at({ board.id(), 1, 1, Direction::E }).pin_no == 2);
+            CHECK(layout.pins.at({ board.id(), 1, 1, Direction::N }).component == npn);
+            CHECK(layout.pins.at({ board.id(), 1, 1, Direction::N }).pin_no == 3);
+        }
+    }
 }
