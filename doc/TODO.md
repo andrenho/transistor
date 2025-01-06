@@ -31,7 +31,7 @@
 - [x] bugs
   - [x] energy not travelling south
 - [x] PNP, NPN
-  - [ ] rotation
+  - [x] rotation
 
 # v0.0.3 - circuits QOL
 

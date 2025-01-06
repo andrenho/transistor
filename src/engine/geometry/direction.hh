@@ -10,7 +10,29 @@ enum class Direction : uint8_t {
 
 constexpr Direction DIRECTIONS[] = { Direction::N, Direction::W, Direction::S, Direction::E };
 
-Direction rotate(Direction dir);
+constexpr Direction dir_rotate_component(Direction dir)
+{
+    switch (dir) {
+        case Direction::N: return Direction::E;
+        case Direction::E: return Direction::S;
+        case Direction::S: return Direction::W;
+        case Direction::W: return Direction::N;
+        case Direction::Center: return Direction::Center;
+        default: throw std::runtime_error("Shouldn't happen");
+    }
+}
+
+constexpr double dir_angle_clockwise(Direction dir)
+{
+    switch (dir) {
+        case Direction::N: return 0.0;
+        case Direction::E: return 90.0;
+        case Direction::S: return 180.0;
+        case Direction::W: return 270.0;
+        case Direction::Center: return 0.0;
+        default: throw std::runtime_error("Shouldn't happen");
+    }
+}
 
 inline std::ostream& operator<<(std::ostream& os, Direction dir) {
     switch (dir) {

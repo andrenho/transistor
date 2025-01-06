@@ -209,7 +209,7 @@ void UI::draw_image(Scene::Image const& image, Layer const* layer) const
     SDL_SetTextureAlphaMod(texture, image.pen.semitransparent ? 128 : 255);
 
     SDL_RenderSetScale(ren_, layer->zoom(), layer->zoom());
-    SDL_RenderCopy(ren_, texture, &origin, &dest);
+    SDL_RenderCopyEx(ren_, texture, &origin, &dest, dir_angle_clockwise(image.pen.rotation), nullptr, SDL_FLIP_NONE);
     SDL_RenderSetScale(ren_, 1.f, 1.f);
 }
 

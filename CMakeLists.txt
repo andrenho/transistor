@@ -62,7 +62,6 @@ set(ENGINE_SRC
         src/lua/luaengine.hh
         src/engine/types.hh
         src/engine/geometry/direction.hh
-        src/engine/geometry/direction.cc
         src/engine/geometry/position.hh
         src/engine/componentdb/componentdb.hh
         src/engine/componentdb/componentdb.cc

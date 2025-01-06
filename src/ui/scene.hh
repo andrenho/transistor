@@ -6,9 +6,11 @@
 
 #include "layers/board/circuit_atlas.hh"
 #include "resources/resource.hh"
+#include "engine/geometry/direction.hh"
 
 struct Pen {
     bool semitransparent = false;
+    Direction rotation = Direction::N;
 };
 
 class Scene {

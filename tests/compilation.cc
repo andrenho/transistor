@@ -210,14 +210,14 @@ TEST_SUITE("Engine")
 
         SUBCASE("Rotate")
         {
-            CHECK(layout.pins.at({ board.id(), 1, 1, Direction::W }).component == npn);
-            CHECK(layout.pins.at({ board.id(), 1, 1, Direction::W }).pin_no == 0);
-            CHECK(layout.pins.at({ board.id(), 1, 1, Direction::S }).component == npn);
-            CHECK(layout.pins.at({ board.id(), 1, 1, Direction::S }).pin_no == 1);
             CHECK(layout.pins.at({ board.id(), 1, 1, Direction::E }).component == npn);
-            CHECK(layout.pins.at({ board.id(), 1, 1, Direction::E }).pin_no == 2);
+            CHECK(layout.pins.at({ board.id(), 1, 1, Direction::E }).pin_no == 0);
             CHECK(layout.pins.at({ board.id(), 1, 1, Direction::N }).component == npn);
-            CHECK(layout.pins.at({ board.id(), 1, 1, Direction::N }).pin_no == 3);
+            CHECK(layout.pins.at({ board.id(), 1, 1, Direction::N }).pin_no == 1);
+            CHECK(layout.pins.at({ board.id(), 1, 1, Direction::W }).component == npn);
+            CHECK(layout.pins.at({ board.id(), 1, 1, Direction::W }).pin_no == 2);
+            CHECK(layout.pins.at({ board.id(), 1, 1, Direction::S }).component == npn);
+            CHECK(layout.pins.at({ board.id(), 1, 1, Direction::S }).pin_no == 3);
         }
     }
 }

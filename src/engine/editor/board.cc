@@ -1,5 +1,7 @@
 #include "board.hh"
 
+#include <iostream>
+
 #include "engine/sandbox/sandbox.hh"
 
 size_t Board::board_counter_ = 0;
@@ -45,11 +47,15 @@ void Board::clear()
 
 void Board::rotate_component(intpos_t x, intpos_t y)
 {
-    // TODO - implement for ICs
     auto it = components_.find({ id_, x, y });
     if (it != components_.end()) {
         Component& component = it->second;
-        component.rotation = rotate(component.rotation);
+        if (component.def->type == ComponentDefinition::Type::SingleTile) {
+            if (component.def->can_rotate)
+                component.rotation = dir_rotate_component(component.rotation);
+        } else {
+            throw std::runtime_error("IC rotation not supported yet.");  // TODO - implement for ICs
+        }
     }
     sandbox_.reset();
 }

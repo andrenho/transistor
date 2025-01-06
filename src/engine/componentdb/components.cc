@@ -76,8 +76,9 @@ ComponentDefinition npn()
             npn.pins[OUT] = npn.pins[IN] & !(npn.pins[SWITCH_1] | npn.pins[SWITCH_2]);
         },
         .render = [](Component const& component, Scene& scene, int x, int y) {
-            scene.add(CSprite::ShadowRect, x + 1, y + 1);
-            scene.add(CSprite::NPN, x, y);
+            Pen pen = { .rotation = component.rotation };
+            scene.add(CSprite::ShadowRect, x + 1, y + 1, pen);
+            scene.add(CSprite::NPN, x, y, pen);
         },
     };
 }
@@ -97,8 +98,9 @@ ComponentDefinition pnp()
             pnp.pins[OUT] = pnp.pins[IN] & (pnp.pins[SWITCH_1] | pnp.pins[SWITCH_2]);
         },
         .render = [](Component const& component, Scene& scene, int x, int y) {
-            scene.add(CSprite::ShadowRect, x + 1, y + 1);
-            scene.add(CSprite::PNP, x, y);
+            Pen pen = { .rotation = component.rotation };
+            scene.add(CSprite::ShadowRect, x + 1, y + 1, pen);
+            scene.add(CSprite::PNP, x, y, pen);
         },
     };
 }
