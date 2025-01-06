@@ -148,6 +148,8 @@ TEST_SUITE("Engine")
 
     TEST_CASE("Multiple connections to same single-tile component")
     {
+        board.clear();
+
         Component* led = board.add_component("led", 1, 1);
         board.draw_wire(Wire::Width::W1, Wire::Layer::Top, 0, 1, 1, 1, Orientation::Horizontal);
         board.draw_wire(Wire::Width::W1, Wire::Layer::Top, 1, 0, 1, 1, Orientation::Vertical);

@@ -23,9 +23,9 @@ Layout compile_to_layout(Board const& board)
     return layout;
 }
 
-std::vector<std::unordered_set<Position>> find_connected_wires(std::unordered_set<Position> wires, std::unordered_set<Position> const& single_pin_components)
+std::vector<std::unordered_set<Position>> find_connected_wires(std::unordered_set<Position> wires, std::unordered_set<Position> const& single_tile_component_pins)
 {
-    auto find_connected_group = [&wires, &single_pin_components](Position const& start) -> std::unordered_set<Position> {
+    auto find_connected_group = [&wires, &single_tile_component_pins](Position const& start) -> std::unordered_set<Position> {
         std::unordered_set<Position> result;
         std::unordered_set<Position> to_visit;
 
@@ -40,7 +40,7 @@ std::vector<std::unordered_set<Position>> find_connected_wires(std::unordered_se
                 wires.erase(visiting);
 
                 // add neighbours
-                bool has_single_tile_component_pin = r::contains(single_pin_components, Position { visiting.board_id, visiting.x, visiting.y });
+                bool has_single_tile_component_pin = r::contains(single_tile_component_pins, Position { visiting.board_id, visiting.x, visiting.y });
                 for (Position const& neighbour: visiting.neighbours(has_single_tile_component_pin))
                     to_visit.insert(neighbour);
             }
@@ -78,19 +78,28 @@ Connections compile_to_connections(std::vector<Layout> const& layouts)
         return conn;
     };
 
+    // for each layout...
     for (auto const& layout: layouts) {
+
+        // ...find single-tile component pins positions, ...
+        std::unordered_set<Position> single_tile_component_pins;
+        for (auto const& p: layout.pins)
+            if (p.second.component->def->type == ComponentDefinition::Type::SingleTile)
+                single_tile_component_pins.emplace(p.first.board_id, p.first.x, p.first.y);
+
+        // for each layer/width, ...
         for (auto const& layer: Wire::ALL_LAYERS) {
             for (auto const& width: Wire::ALL_WIDTHS) {
 
-                // create list of wires
+                // ... create list of wires
                 std::unordered_set<Position> wires;
                 for (auto const& [pos, wire]: layout.wires) {
                     if (wire.width == width && wire.layer == layer)
                         wires.insert(pos);
                 }
 
-                // find groups
-                for (auto const& group : find_connected_wires(wires, {}))
+                // ... find groups
+                for (auto const& group : find_connected_wires(wires, single_tile_component_pins))
                     connections.push_back(create_connection(layout, group));
             }
         }

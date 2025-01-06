@@ -8,7 +8,7 @@
 #include "engine/sandbox/compiler.hh"
 
 namespace compiler {
-    std::vector<std::unordered_set<Position>> find_connected_wires(std::unordered_set<Position> wires, std::unordered_set<Position> const& single_pin_components={});
+    std::vector<std::unordered_set<Position>> find_connected_wires(std::unordered_set<Position> wires, std::unordered_set<Position> const& single_tile_component_pins={});
 }
 
 TEST_SUITE("Connected wires")
