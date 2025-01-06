@@ -30,7 +30,7 @@
 - [x] VCC
 - [x] bugs
   - [x] energy not travelling south
-- [ ] PNP, NPN
+- [x] PNP, NPN
   - [ ] rotation
 
 # v0.0.3 - circuits QOL

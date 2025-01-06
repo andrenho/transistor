@@ -73,7 +73,7 @@ ComponentDefinition npn()
         },
         .simulate = [](Component& npn) {
             constexpr size_t IN = 1, SWITCH_1 = 0, SWITCH_2 = 2, OUT = 3;
-            npn.pins[OUT] = !(npn.pins[IN] & (npn.pins[SWITCH_1] | npn.pins[SWITCH_2]));
+            npn.pins[OUT] = npn.pins[IN] & !(npn.pins[SWITCH_1] | npn.pins[SWITCH_2]);
         },
         .render = [](Component const& component, Scene& scene, int x, int y) {
             scene.add(CSprite::ShadowRect, x + 1, y + 1);
