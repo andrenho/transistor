@@ -18,7 +18,7 @@ std::vector<std::pair<uintpin_t, Position>> Component::pin_positions(Position co
 
     if (def->type == ComponentDefinition::Type::SingleTile) {
         Direction dir = rotation;
-        for (size_t i = 0; i < 4; ++i) {
+        for (uintpin_t i = 0; i < 4; ++i) {
             pin_positions.push_back({ i, { component_pos.board_id, component_pos.x, component_pos.y, dir } });
             dir = single_tile_next_pin(dir);
         }
