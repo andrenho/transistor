@@ -63,6 +63,7 @@ set(ENGINE_SRC
         src/engine/types.hh
         src/engine/geometry/direction.hh
         src/engine/geometry/position.hh
+        src/engine/geometry/position.cc
         src/engine/componentdb/componentdb.hh
         src/engine/componentdb/componentdb.cc
         src/engine/componentdb/componentdef.hh
@@ -81,11 +82,10 @@ set(ENGINE_SRC
         src/engine/layout/pin.hh
         src/engine/connections/connection.hh
         src/engine/sandbox/sandbox.hh
+        src/engine/sandbox/sandbox.cc
         src/engine/sandbox/compiler.cc
         src/engine/sandbox/compiler.hh
-        src/engine/sandbox/sandbox.cc
         src/util/visitor.hh
-        src/engine/geometry/position.cc
 )
 
 set(UI_SRC
@@ -100,6 +100,8 @@ set(UI_SRC
         src/ui/layers/board/boardeditor.cc
         src/ui/layers/board/boardeditor.hh
         src/ui/layers/board/circuit_atlas.hh
+        src/ui/gui/gui.cc
+        src/ui/gui/gui.hh
 )
 
 set(IMGUI_SRC

@@ -12,6 +12,7 @@
 
 #include "layers/layer.hh"
 #include "engine/sandbox/sandbox.hh"
+#include "gui/gui.hh"
 #include "resources/resourcemanager.hh"
 
 using hr = std::chrono::high_resolution_clock;
@@ -32,8 +33,6 @@ public:
     [[nodiscard]] bool running() const { return running_; }
 
 private:
-    void                                      init_imgui();
-
     void                                      draw_image(Scene::Image const& image, Layer const* layer) const;
     void                                      do_events(Events const& events);
 
@@ -48,6 +47,7 @@ private:
     SDL_Cursor    *move_cursor_, *delete_cursor_;
     std::vector<Resource> icons_;
 
+    mutable GUI     gui_;
     ResourceManager resource_manager_;
     Resource        bg_;
 

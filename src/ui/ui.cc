@@ -12,10 +12,6 @@ using namespace std::string_literals;
 
 #include "layers/board/boardeditor.hh"
 
-#include "imgui.h"
-#include "backends/imgui_impl_sdl2.h"
-#include "backends/imgui_impl_sdlrenderer2.h"
-
 #include "battery/embed.hpp"
 
 #include "layers/layer.hh"
@@ -46,7 +42,7 @@ UI::UI()
     Resource circuit = resource_manager_.from_image(b::embed<"resources/images/circuit.png">().vec());
     icons_ = resource_manager_.from_atlas(circuit, circuit_coordinates, TILE_SIZE);
 
-    init_imgui();
+    gui_.init(window_, ren_);
 
     move_cursor_ = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZEALL);
     delete_cursor_ = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_HAND);
@@ -54,9 +50,7 @@ UI::UI()
 
 UI::~UI()
 {
-    ImGui_ImplSDLRenderer2_Shutdown();
-    ImGui_ImplSDL2_Shutdown();
-    ImGui::DestroyContext();
+    gui_.shutdown();
 
     resource_manager_.cleanup();
 
@@ -77,23 +71,6 @@ void UI::set_sandbox(Sandbox& sandbox)
     layers_.push_back(std::make_unique<BoardEditor>(resource_manager_, board));
 }
 
-void UI::init_imgui()
-{
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO* io = &ImGui::GetIO();
-    io->ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-    io->ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
-
-    // Setup Dear ImGui style
-    ImGui::StyleColorsDark();
-    //ImGui::StyleColorsLight();
-
-    // Setup Platform/Renderer backends
-    ImGui_ImplSDL2_InitForSDLRenderer(window_, ren_);
-    ImGui_ImplSDLRenderer2_Init(ren_);
-}
-
 void UI::update(Duration timestep)
 {
     ++frame_count_;
@@ -104,7 +81,8 @@ void UI::update(Duration timestep)
     SDL_Event e;
     while (SDL_PollEvent(&e)) {
 
-        ImGui_ImplSDL2_ProcessEvent(&e);
+        gui_.process_events(&e);
+
         int mx, my;
 
         switch (e.type) {
@@ -230,6 +208,9 @@ void UI::render() const
             draw_image(*image, layer.get());
         }
     }
+
+    // draw gui
+    gui_.render(ren_);
 
     // present to screen
     SDL_RenderPresent(ren_);
