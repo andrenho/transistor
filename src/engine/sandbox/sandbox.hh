@@ -18,7 +18,7 @@ public:
 
     [[nodiscard]] bus_data_t wire_value(Position const& pos) const;
 
-    json serialize() const;
+    [[nodiscard]] json serialize() const;
 
 private:
     ComponentDatabase component_db_;

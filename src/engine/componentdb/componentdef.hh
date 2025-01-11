@@ -8,6 +8,9 @@
 #include "engine/types.hh"
 #include "ui/scene.hh"
 
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
+
 class  ResourceManager;
 class  Scene;
 struct Resource;
@@ -27,11 +30,20 @@ struct ComponentDefinition {
     std::function<void(Component& component)>                                   simulate = [](Component&) {};
     std::function<void(Component const& component, Scene& scene, int x, int y)> render = [](Component const&, Scene&, int, int) {};
 
-    constexpr uintpin_t pin_count() const
-    {
+    std::function<std::string(Component const& component)>                      serialize_component = [](Component const&) { return ""; };
+
+    constexpr uintpin_t pin_count() const {
         if (type == Type::SingleTile)
             return 4;
         throw std::runtime_error("IC type not yet supported for `pin_count`.");
+    }
+
+    [[nodiscard]] json serialize(Component const& component) const {
+        json r { { "name", name } };
+        std::string value = serialize_component(component);
+        if (value != "")
+            r["value"] = value;
+        return r;
     }
 
     // TODO - add IC fields (size, pins)

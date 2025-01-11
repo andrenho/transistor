@@ -3,10 +3,11 @@
 
 #include <array>
 #include <cstdint>
+#include <string>
 
 struct Wire {
     enum class Width : uint8_t { W1 = '1' };
-    enum class Layer : uint8_t { Top = 't', Bottom = 'b' };
+    enum class Layer : uint8_t { Top = 'T', Bottom = 'B' };
 
     Width width;
     Layer layer;
@@ -24,5 +25,9 @@ struct std::hash<Wire> {
         return (((uint8_t) wire.layer) << 8) | (uint8_t) wire.width;
     }
 };
+
+namespace std {
+inline std::string to_string(Wire const& wire) { return std::string(1, (char) wire.width) + std::string(1, (char) wire.layer); }
+}
 
 #endif //WIRE_HH

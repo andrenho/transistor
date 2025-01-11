@@ -23,6 +23,10 @@ struct Position {
     std::vector<Position> neighbours(bool has_single_tile_component_pin) const;
 };
 
+namespace std {
+std::string to_string(Position const& pos);
+}
+
 template<>
 struct std::hash<Position> {
     std::size_t operator()(Position const& p) const noexcept

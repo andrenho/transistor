@@ -69,6 +69,7 @@ void UI::set_sandbox(Sandbox& sandbox)
 {
     Board& board = *sandbox.editor().boards().begin();
     layers_.push_back(std::make_unique<BoardEditor>(resource_manager_, board));
+    gui_.set_sandbox(&sandbox);
 }
 
 void UI::update(Duration timestep)

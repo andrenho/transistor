@@ -59,3 +59,12 @@ std::vector<Position> Position::neighbours(bool has_single_tile_component_pin) c
         }
     }
 }
+
+namespace std {
+
+std::string to_string(Position const& pos)
+{
+    return std::to_string(pos.board_id) + "," + std::to_string(pos.x) + "," + std::to_string(pos.y) + "," + std::string(1, (char) pos.dir);
+}
+
+}

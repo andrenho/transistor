@@ -1,10 +1,13 @@
 #include "gui.hh"
 
+#include <iostream>
+
 #include "imgui.h"
 #include "backends/imgui_impl_sdl2.h"
 #include "backends/imgui_impl_sdlrenderer2.h"
 
 #include "battery/embed.hpp"
+#include "engine/sandbox/sandbox.hh"
 
 void GUI::init(SDL_Window* window, SDL_Renderer* ren)
 {
@@ -24,7 +27,7 @@ void GUI::init(SDL_Window* window, SDL_Renderer* ren)
     auto ttf = b::embed<"resources/fonts/Pixellari.ttf">();
     ImFontConfig cfg;
     cfg.FontDataOwnedByAtlas = false;
-    io->Fonts->AddFontFromMemoryTTF((void *) ttf.data(), (size_t) ttf.size(), 16, &cfg);
+    io->Fonts->AddFontFromMemoryTTF((void *) ttf.data(), (int) ttf.size(), 16, &cfg);
 }
 
 void GUI::setup_theme()
@@ -90,7 +93,7 @@ bool GUI::main_menu()
 #ifndef NDEBUG
             ImGui::Separator();
             if (ImGui::MenuItem("Serialize sandbox"))
-                ; // TODO
+                std::cout << sandbox_->serialize().dump(2) << "\n";
             ImGui::MenuItem("Demo Window", "", &show_demo_window_);
 #endif
             ImGui::Separator();

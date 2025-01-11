@@ -5,11 +5,16 @@
 
 #include "board.hh"
 
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
+
 class Editor {
 public:
     explicit Editor(Sandbox& sandbox, ComponentDatabase const& component_db);
 
     [[nodiscard]] std::list<Board>& boards() { return boards_; }
+
+    [[nodiscard]] json serialize() const;
 
 private:
     Sandbox& sandbox_;

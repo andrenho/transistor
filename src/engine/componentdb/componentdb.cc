@@ -23,3 +23,8 @@ Component ComponentDatabase::create_component(std::string const& name) const
         component.data = std::make_unique<uint8_t[]>(def->data_size);
     return component;
 }
+
+json ComponentDatabase::serialize() const
+{
+    return json::object();  // TODO
+}

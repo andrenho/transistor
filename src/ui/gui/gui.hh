@@ -8,6 +8,8 @@ public:
     void init(SDL_Window* window, SDL_Renderer* ren);
     void shutdown();
 
+    void set_sandbox(struct Sandbox* sandbox) { sandbox_ = sandbox; }
+
     void process_events(SDL_Event* e);
     bool render(SDL_Renderer* ren);
 
@@ -17,7 +19,8 @@ private:
     bool main_menu();
 
     struct ImGuiIO* io = nullptr;
-    bool show_demo_window_ = false;
+    Sandbox*        sandbox_ = nullptr;
+    bool            show_demo_window_ = false;
 };
 
 #endif //GUI_HH

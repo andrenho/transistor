@@ -60,6 +60,25 @@ void Board::rotate_component(intpos_t x, intpos_t y)
     sandbox_.reset();
 }
 
+json Board::serialize() const
+{
+    json jwires = json::object();
+    for (auto const& [pos, wire] : wires_)
+        jwires[std::to_string(pos)] = std::to_string(wire);
+
+    json jcomponents = json::object();
+    for (auto const& [pos, component]: components_)
+        jcomponents[std::to_string(pos)] = component.def->serialize(component);
+
+    return {
+        { "id", id_ },
+        { "w", w_ },
+        { "h", h_ },
+        { "wires", jwires },
+        { "components", jcomponents },
+    };
+}
+
 bus_data_t Board::wire_value(Position const& pos) const
 {
     return sandbox_.wire_value(pos);

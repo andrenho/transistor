@@ -9,6 +9,9 @@
 #include "engine/componentdb/componentdb.hh"
 #include "engine/geometry/position.hh"
 
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
+
 class Board {
 public:
     Board(intpos_t w, intpos_t h, class Sandbox& sandbox, ComponentDatabase const& component_db)
@@ -31,6 +34,8 @@ public:
     void       cancel_placing_wire() { wire_management_.stop_drawing(); }
 
     void       rotate_component(intpos_t x, intpos_t y);
+
+    [[nodiscard]] json serialize() const;
 
     [[nodiscard]] bus_data_t wire_value(Position const& pos) const;
     [[nodiscard]] std::map<Position, Wire> temporary_wire() const { return wire_management_.current_drawing(); }
