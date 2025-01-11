@@ -33,33 +33,33 @@
 - [x] PNP, NPN
   - [x] rotation
 
-# v0.0.3 - circuits QOL
-
-- [ ] resize board
-- [ ] serialization / deserialization
-  - [ ] save/load
-- [ ] selection
-- [ ] cut/copy/paste
-- [ ] add text to board
-
-# v0.0.4 - basic GUI
+# v0.0.3 - basic UI
 
 - [ ] theme for ImGUI
 - [ ] main menu
 - [ ] infobox (sidebar?)
+- [ ] serialization / deserialization
+  - [ ] save/load
 
-# v0.0.5 - advanced wiring
-
-- [ ] lower layer wiring
-- [ ] bus
-- [ ] bus adapter
-
-# v0.0.6 - ICs + customization
+# v0.0.4 - ICs + customization
 
 - [ ] ic support
   - [ ] rotation
   - [ ] native behaviour
   - [ ] Lua support
+
+# v0.0.5 - circuits QOL
+
+- [ ] resize board
+- [ ] selection
+- [ ] cut/copy/paste
+- [ ] add text to board
+
+# v0.0.6 - advanced wiring
+
+- [ ] lower layer wiring
+- [ ] bus
+- [ ] bus adapter
 
 # v0.0.7 - subcircuits
 
