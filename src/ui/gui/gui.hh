@@ -12,6 +12,9 @@ public:
     void render(SDL_Renderer* ren);
 
 private:
+    void setup_theme();
+
+    struct ImGuiIO* io = nullptr;
     bool show_demo_window_ = true;
 };
 

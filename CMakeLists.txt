@@ -127,6 +127,7 @@ set_source_files_properties(${IMGUI_SRC} PROPERTIES COMPILE_FLAGS "-w")
 b_embed(${CMAKE_PROJECT_NAME} resources/images/circuit.png)
 b_embed(${CMAKE_PROJECT_NAME} resources/images/bg.jpg)
 b_embed(${CMAKE_PROJECT_NAME} resources/scripts/hello.lua)
+b_embed(${CMAKE_PROJECT_NAME} resources/fonts/Pixellari.ttf)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     add_compile_options(-ggdb -O0)

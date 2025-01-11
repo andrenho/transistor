@@ -4,22 +4,53 @@
 #include "backends/imgui_impl_sdl2.h"
 #include "backends/imgui_impl_sdlrenderer2.h"
 
+#include "battery/embed.hpp"
+
 void GUI::init(SDL_Window* window, SDL_Renderer* ren)
 {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
-    ImGuiIO* io = &ImGui::GetIO();
+    io = &ImGui::GetIO();
     io->ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
     io->ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
-    // Setup Dear ImGui style
-    ImGui::StyleColorsDark();
-    //ImGui::StyleColorsLight();
+    setup_theme();
 
     // Setup Platform/Renderer backends
     ImGui_ImplSDL2_InitForSDLRenderer(window, ren);
     ImGui_ImplSDLRenderer2_Init(ren);
 
+    // Load custom font
+    auto ttf = b::embed<"resources/fonts/Pixellari.ttf">();
+    ImFontConfig cfg;
+    cfg.FontDataOwnedByAtlas = false;
+    io->Fonts->AddFontFromMemoryTTF((void *) ttf.data(), (size_t) ttf.size(), 16, &cfg);
+}
+
+void GUI::setup_theme()
+{
+    // ImGui::StyleColorsDark();
+    ImGui::StyleColorsLight();
+
+    ImVec4* colors = ImGui::GetStyle().Colors;
+    colors[ImGuiCol_Text]                   = ImVec4(1.00f, 1.00f, 0.94f, 1.00f);
+    colors[ImGuiCol_WindowBg]               = ImVec4(0.47f, 0.47f, 0.47f, 1.00f);
+    colors[ImGuiCol_PopupBg]                = ImVec4(0.55f, 0.55f, 0.55f, 0.98f);
+    colors[ImGuiCol_FrameBg]                = ImVec4(0.25f, 0.25f, 0.25f, 1.00f);
+    colors[ImGuiCol_TitleBg]                = ImVec4(0.25f, 0.25f, 0.25f, 1.00f);
+    colors[ImGuiCol_TitleBgActive]          = ImVec4(0.77f, 0.38f, 0.38f, 1.00f);
+    colors[ImGuiCol_MenuBarBg]              = ImVec4(0.38f, 0.38f, 0.38f, 1.00f);
+    colors[ImGuiCol_Tab]                    = ImVec4(0.50f, 0.53f, 0.58f, 0.93f);
+    colors[ImGuiCol_TabSelected]            = ImVec4(0.25f, 0.38f, 0.66f, 1.00f);
+    colors[ImGuiCol_ScrollbarGrab]          = ImVec4(0.31f, 0.31f, 0.31f, 0.80f);
+
+    ImGuiStyle& style = ImGui::GetStyle();
+    style.WindowPadding = { 8, 8 };
+    style.FramePadding = { 7, 5 };
+    style.ItemSpacing = { 8, 4 };
+    style.WindowRounding = 5;
+    style.FrameRounding = 3;
+    style.ScrollbarRounding = 0;
 }
 
 void GUI::shutdown()
