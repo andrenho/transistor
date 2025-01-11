@@ -46,12 +46,17 @@ endif()
 # libraries
 #
 
+include(FetchContent)
+
 find_package(PkgConfig)
 find_package(SDL2 REQUIRED)
 pkg_search_module(SDL2_TTF REQUIRED SDL2_ttf)
 pkg_search_module(SDL2_IMAGE REQUIRED SDL2_image)
 pkg_search_module(LUA REQUIRED luajit)
 #pkg_search_module(LUA REQUIRED lua5.4)
+
+FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz)
+FetchContent_MakeAvailable(json)
 
 #
 # executable
@@ -142,7 +147,7 @@ target_compile_definitions(${CMAKE_PROJECT_NAME} PUBLIC PROJECT_NAME=\"${CMAKE_P
 target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE ${warnings})
 target_include_directories(${CMAKE_PROJECT_NAME} SYSTEM PUBLIC . src contrib/imgui contrib/glad/include ${SDL2_INCLUDE_DIRS} ${SDL2_TTF_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS} ${LUA_INCLUDE_DIRS})
 target_link_directories(${CMAKE_PROJECT_NAME} PUBLIC ${SDL2_TTF_LIBRARY_DIRS} ${SDL2_IMAGE_LIBRARY_DIRS} ${LUA_LIBRARY_DIRS})
-target_link_libraries(${CMAKE_PROJECT_NAME} LINK_PUBLIC ${SDL2_LIBRARIES} ${SDL2_TTF_LIBRARIES} ${SDL2_IMAGE_LIBRARIES} ${LUA_LIBRARIES})
+target_link_libraries(${CMAKE_PROJECT_NAME} LINK_PUBLIC ${SDL2_LIBRARIES} ${SDL2_TTF_LIBRARIES} ${SDL2_IMAGE_LIBRARIES} ${LUA_LIBRARIES} nlohmann_json::nlohmann_json)
 
 # check for leaks
 
@@ -173,7 +178,7 @@ target_compile_definitions(${PROJECT_NAME}-tests PUBLIC PROJECT_NAME=\"${PROJECT
 target_compile_options(${PROJECT_NAME}-tests PRIVATE ${warnings})
 target_include_directories(${PROJECT_NAME}-tests SYSTEM PUBLIC . src ${LUA_INCLUDE_DIRS})
 target_link_directories(${PROJECT_NAME}-tests PUBLIC ${LUA_LIBRARY_DIRS})
-target_link_libraries(${PROJECT_NAME}-tests LINK_PUBLIC ${LUA_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}-tests LINK_PUBLIC ${LUA_LIBRARIES} nlohmann_json::nlohmann_json)
 
 b_embed(${CMAKE_PROJECT_NAME}-tests resources/scripts/hello.lua)
 

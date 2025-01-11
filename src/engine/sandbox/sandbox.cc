@@ -58,3 +58,9 @@ uint8_t Sandbox::wire_value(Position const& pos) const
         return it->second;
     return 0;
 }
+
+json Sandbox::serialize() const
+{
+    json content;
+    return content;
+}

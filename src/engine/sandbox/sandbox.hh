@@ -5,6 +5,9 @@
 #include "engine/connections/connection.hh"
 #include "engine/editor/editor.hh"
 
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
+
 class Sandbox {
 public:
     [[nodiscard]] ComponentDatabase& component_db() { return component_db_; }
@@ -14,6 +17,8 @@ public:
     void simulate();
 
     [[nodiscard]] bus_data_t wire_value(Position const& pos) const;
+
+    json serialize() const;
 
 private:
     ComponentDatabase component_db_;
