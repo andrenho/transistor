@@ -191,7 +191,7 @@ void UI::draw_image(Scene::Image const& image, Layer const* layer) const
     SDL_RenderSetScale(ren_, 1.f, 1.f);
 }
 
-void UI::render() const
+void UI::render()
 {
     // clear screen
     SDL_SetRenderDrawColor(ren_, 0, 0, 0, SDL_ALPHA_OPAQUE);
@@ -210,7 +210,8 @@ void UI::render() const
     }
 
     // draw gui
-    gui_.render(ren_);
+    if (!gui_.render(ren_))
+        running_ = false;
 
     // present to screen
     SDL_RenderPresent(ren_);

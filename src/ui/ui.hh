@@ -28,7 +28,7 @@ public:
     void set_sandbox(Sandbox& sandbox);
 
     void update([[maybe_unused]] Duration timestep);
-    void render() const;
+    void render();
 
     [[nodiscard]] bool running() const { return running_; }
 
@@ -47,7 +47,7 @@ private:
     SDL_Cursor    *move_cursor_, *delete_cursor_;
     std::vector<Resource> icons_;
 
-    mutable GUI     gui_;
+    GUI             gui_;
     ResourceManager resource_manager_;
     Resource        bg_;
 

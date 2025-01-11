@@ -65,7 +65,7 @@ void GUI::process_events(SDL_Event* e)
     ImGui_ImplSDL2_ProcessEvent(e);
 }
 
-void GUI::render(SDL_Renderer* ren)
+bool GUI::render(SDL_Renderer* ren)
 {
     ImGui_ImplSDLRenderer2_NewFrame();
     ImGui_ImplSDL2_NewFrame();
@@ -74,6 +74,32 @@ void GUI::render(SDL_Renderer* ren)
     if (show_demo_window_)
         ImGui::ShowDemoWindow(&show_demo_window_);
 
+    if (!main_menu())
+        return false;
+
     ImGui::Render();
     ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData(), ren);
+
+    return true;
+}
+
+bool GUI::main_menu()
+{
+    if (ImGui::BeginMainMenuBar()) {
+        if (ImGui::BeginMenu("File")) {
+#ifndef NDEBUG
+            ImGui::Separator();
+            if (ImGui::MenuItem("Serialize sandbox"))
+                ; // TODO
+            ImGui::MenuItem("Demo Window", "", &show_demo_window_);
+#endif
+            ImGui::Separator();
+            if (ImGui::MenuItem("Exit"))
+                return false;
+            ImGui::EndMenu();
+        }
+    }
+    ImGui::EndMainMenuBar();
+
+    return true;
 }

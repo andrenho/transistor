@@ -9,13 +9,15 @@ public:
     void shutdown();
 
     void process_events(SDL_Event* e);
-    void render(SDL_Renderer* ren);
+    bool render(SDL_Renderer* ren);
 
 private:
     void setup_theme();
 
+    bool main_menu();
+
     struct ImGuiIO* io = nullptr;
-    bool show_demo_window_ = true;
+    bool show_demo_window_ = false;
 };
 
 #endif //GUI_HH

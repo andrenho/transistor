@@ -35,8 +35,8 @@
 
 # v0.0.3 - basic UI
 
-- [ ] theme for ImGUI
-- [ ] main menu
+- [x] theme for ImGUI
+- [x] main menu
 - [ ] infobox (sidebar?)
 - [ ] serialization / deserialization
   - [ ] save/load
