@@ -37,9 +37,9 @@
 
 - [x] theme for ImGUI
 - [x] main menu
-- [ ] infobox (sidebar?)
 - [ ] serialization / deserialization
   - [ ] save/load
+- [ ] infobox (sidebar?)
 
 # v0.0.4 - ICs + customization
 
