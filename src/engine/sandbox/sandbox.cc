@@ -13,6 +13,7 @@ Sandbox::Sandbox(json const& content)
     : editor_(content.at("editor"), component_db_, [this](){ reset(); })
 {
     // TODO - deal with component_db
+    reset();
 }
 
 void Sandbox::reset()

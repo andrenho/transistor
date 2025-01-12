@@ -48,7 +48,6 @@ void Game::unserialize(json const& content, bool validate_version)
     }
 
     sandbox_ = std::make_unique<Sandbox>(content.at("sandbox"));
-    sandbox_.reset();
 }
 
 void Game::save() const
