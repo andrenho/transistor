@@ -77,8 +77,9 @@ bool GUI::render(SDL_Renderer* ren)
     if (show_demo_window_)
         ImGui::ShowDemoWindow(&show_demo_window_);
 
-    if (!main_menu())
+    if (!render_main_menu())
         return false;
+    render_infobox();
 
     ImGui::Render();
     ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData(), ren);
@@ -86,14 +87,14 @@ bool GUI::render(SDL_Renderer* ren)
     return true;
 }
 
-bool GUI::main_menu()
+bool GUI::render_main_menu()
 {
     if (ImGui::BeginMainMenuBar()) {
         if (ImGui::BeginMenu("File")) {
 #ifndef NDEBUG
             ImGui::Separator();
             if (ImGui::MenuItem("Serialize sandbox"))
-                std::cout << game_->sandbox().serialize().dump(2) << "\n";
+                std::cout << game_->serialize().dump(2) << "\n";
             ImGui::MenuItem("Demo Window", "", &show_demo_window_);
 #endif
             ImGui::Separator();
@@ -105,4 +106,28 @@ bool GUI::main_menu()
     ImGui::EndMainMenuBar();
 
     return true;
+}
+
+void GUI::render_infobox()
+{
+    constexpr float INFOBOX_WIDTH = 350.f;
+
+    ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav;
+
+    const ImGuiViewport* viewport = ImGui::GetMainViewport();
+    ImVec2 window_pos = { viewport->WorkSize.x - INFOBOX_WIDTH, viewport->WorkPos.y };
+    ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always);
+    ImGui::SetNextWindowSize({ INFOBOX_WIDTH, viewport->WorkSize.y });
+
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0);
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 16, 16 });
+
+    ImGui::SetNextWindowBgAlpha(0.35f);
+
+    if (ImGui::Begin("InfoBox", nullptr, window_flags)) {
+        ImGui::Text("This is a infobox");
+    }
+    ImGui::End();
+
+    ImGui::PopStyleVar(2);
 }

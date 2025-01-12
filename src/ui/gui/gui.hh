@@ -17,10 +17,11 @@ public:
 private:
     void setup_theme();
 
-    bool main_menu();
+    bool render_main_menu();
+    void render_infobox();
 
     struct ImGuiIO* io = nullptr;
-    Game*           game_;
+    Game*           game_ = nullptr;
     bool            show_demo_window_ = false;
 };
 
