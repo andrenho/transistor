@@ -268,10 +268,10 @@ std::vector<std::tuple<Layer*, int, int>> UI::find_all_layers(int x, int y) cons
 
 void UI::report_exception(std::exception const& exception)
 {
-    gui_.set_modal_exception(exception);
+    gui_.set_modal_exception(exception.what());
 
     while (running_) {
-        update(Duration { 1 });
+        update(Duration { 1000 });
         render();
     }
 }

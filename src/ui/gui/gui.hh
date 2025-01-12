@@ -1,6 +1,8 @@
 #ifndef GUI_HH
 #define GUI_HH
 
+#include <string>
+
 #include "engine/game/game.hh"
 #include "SDL2/SDL.h"
 
@@ -15,7 +17,7 @@ public:
 
     bool render(SDL_Renderer* ren);
 
-    void set_modal_exception(std::optional<std::exception> const& modal_exception) { modal_exception_ = modal_exception; }
+    void set_modal_exception(std::optional<std::string> const& modal_exception) { modal_exception_ = modal_exception; }
 
 private:
     void setup_theme();
@@ -28,7 +30,7 @@ private:
     Game*           game_ = nullptr;
     bool            show_demo_window_ = false;
 
-    std::optional<std::exception> modal_exception_ {};
+    std::optional<std::string> modal_exception_ {};
 };
 
 #endif //GUI_HH

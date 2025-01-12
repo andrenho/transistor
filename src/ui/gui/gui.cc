@@ -137,9 +137,13 @@ void GUI::render_infobox()
 
 bool GUI::render_modal_exception()
 {
+    ImGui::SetNextWindowSizeConstraints({ 400.f, 0.f }, { 400.f, FLT_MAX });
     if (ImGui::BeginPopupModal("Error!", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
-        if (modal_exception_)
-            ImGui::Text("%s", modal_exception_->what());
+        if (modal_exception_) {
+            ImGui::PushTextWrapPos();
+            ImGui::Text("%s", modal_exception_->c_str());
+            ImGui::PopTextWrapPos();
+        }
         ImGui::Separator();
         ImGui::SetItemDefaultFocus();
         if (ImGui::Button("OK", ImVec2(120, 0))) {
