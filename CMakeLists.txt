@@ -126,6 +126,9 @@ set(IMGUI_SRC
         contrib/imgui/imgui_widgets.cpp
         contrib/imgui/backends/imgui_impl_sdl2.cpp
         contrib/imgui/backends/imgui_impl_sdlrenderer2.cpp
+        contrib/ImGuiFileDialog/ImGuiFileDialog.h
+        contrib/ImGuiFileDialog/ImGuiFileDialog.cpp
+        contrib/ImGuiFileDialog/ImGuiFileDialogConfig.h
 )
 
 add_executable(${CMAKE_PROJECT_NAME}
