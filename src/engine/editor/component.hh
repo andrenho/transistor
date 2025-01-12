@@ -18,6 +18,9 @@ struct Component {
     std::vector<std::pair<uintpin_t, Position>> pin_positions(Position const& component_pos) const;
 
     void      on_click() { def->on_click(*this); }
+
+    friend bool operator==(Component const& lhs, Component const& rhs) { return lhs.def->name == rhs.def->name; }  // TODO - use id?
+    friend bool operator!=(Component const& lhs, Component const& rhs) { return !(lhs == rhs); }
 };
 
 #endif //COMPONENT_HH

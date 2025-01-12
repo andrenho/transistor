@@ -144,6 +144,14 @@ TEST_SUITE("Engine")
 
             CHECK(board.wire_value({ board.id(), 2, 1, Direction::W }) == 0);
         }
+
+        SUBCASE("Serialization and deserialization")
+        {
+            json content = sandbox.serialize();
+            std::cout << content.dump(2) << "\n";
+            Sandbox sandbox2(content);
+            CHECK(sandbox == sandbox2);
+        }
     }
 
     TEST_CASE("Multiple connections to same single-tile component")

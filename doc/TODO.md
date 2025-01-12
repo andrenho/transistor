@@ -37,9 +37,9 @@
 
 - [x] theme for ImGUI
 - [x] main menu
-- [ ] serialization / deserialization
-  - [ ] serialization
-  - [ ] deserialization
+- [x] serialization / deserialization
+  - [x] serialization
+  - [x] deserialization
   - [ ] save/load
 - [ ] infobox (sidebar?)
 

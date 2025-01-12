@@ -6,11 +6,36 @@
 
 size_t Board::board_counter_ = 0;
 
-Component* Board::add_component(std::string const& component_name, intpos_t x, intpos_t y)
+Board::Board(intpos_t w, intpos_t h, class Sandbox& sandbox, ComponentDatabase const& component_db)
+    : id_(board_counter_++), w_(w), h_(h), sandbox_(sandbox), component_db_(component_db)
+{
+}
+
+Board::Board(json const& content, Sandbox& sandbox, ComponentDatabase const& component_db)
+    : id_(content.at("id")), w_(content.at("w")), h_(content.at("h")), sandbox_(sandbox), component_db_(component_db)
+{
+    if (board_counter_ <= id_)
+        board_counter_ = id_ + 1;
+
+    for (auto const& jwire: content.at("wires").items())
+        wires_.emplace(Position(jwire.key()), Wire(jwire.value()));
+
+    for (auto const& jcomp: content.at("components").items()) {
+        Position pos(jcomp.key());
+        Component* component = add_component(jcomp.value().at("name"), pos.x, pos.y, true);
+        if (jcomp.value().contains("value"))
+            component->def->unserialize_component(*component, jcomp.value().at("value"));
+    }
+
+    // sandbox_.reset();
+}
+
+Component* Board::add_component(std::string const& component_name, intpos_t x, intpos_t y, bool bypass_reset)
 {
     // TODO - check - is there a component here already?
     auto it = components_.emplace(Position { this, x, y, Direction::Center }, component_db_.create_component(component_name));
-    sandbox_.reset();
+    if (!bypass_reset)
+        sandbox_.reset();
     return &it.first->second;
 }
 
@@ -18,14 +43,14 @@ void Board::draw_wire(Wire::Width width, Wire::Layer layer, intpos_t x0, intpos_
 {
     wire_management_.start_drawing({ this, x0, y0 }, width, layer);
     for (auto const& [pos, wire] : wire_management_.stop_drawing({ this, x1, y1 }))
-        wires_[pos] = wire;
+        wires_.emplace(pos, wire);
     sandbox_.reset();
 }
 
 void Board::merge_wires(std::map<Position, Wire> const& wires)
 {
     for (auto const& [pos, wire]: wires)
-        wires_[pos] = wire;
+        wires_.emplace(pos, wire);
     sandbox_.reset();
 }
 

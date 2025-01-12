@@ -1,9 +1,13 @@
 #include "sandbox.hh"
 
-#include <algorithm>
-
 #include "compiler.hh"
 #include "engine/layout/layout.hh"
+
+Sandbox::Sandbox(json const& content)
+    : editor_(Editor(content.at("editor"), *this, component_db_))
+{
+    // TODO - deal with component_db
+}
 
 void Sandbox::reset()
 {

@@ -14,14 +14,14 @@ using json = nlohmann::json;
 
 class Board {
 public:
-    Board(intpos_t w, intpos_t h, class Sandbox& sandbox, ComponentDatabase const& component_db)
-        : id_(board_counter_++), w_(w), h_(h), sandbox_(sandbox), component_db_(component_db) {}
+    Board(intpos_t w, intpos_t h, class Sandbox& sandbox, ComponentDatabase const& component_db);
+    Board(json const& content, class Sandbox& sandbox, ComponentDatabase const& component_db);
 
     [[nodiscard]] std::map<Position, Component> const& components() const { return components_; }
     [[nodiscard]] std::map<Position, Component>& components() { return components_; }
     [[nodiscard]] std::map<Position, Wire> const& wires() const { return wires_; }
 
-    Component* add_component(std::string const& component_name, intpos_t x, intpos_t y);
+    Component* add_component(std::string const& component_name, intpos_t x, intpos_t y, bool bypass_reset=false);
     void       draw_wire(Wire::Width width, Wire::Layer layer, intpos_t x0, intpos_t y0, intpos_t x1, intpos_t y1, Orientation orientation);
     void       merge_wires(std::map<Position, Wire> const& wires);
 
@@ -44,6 +44,9 @@ public:
     [[nodiscard]] intpos_t h() const { return h_; }
 
     [[nodiscard]] size_t id() const { return id_; }
+
+    friend bool operator==(Board const& lhs, Board const& rhs) { return std::tie(lhs.id_, lhs.w_, lhs.h_, lhs.components_, lhs.wires_) == std::tie(rhs.id_, rhs.w_, rhs.h_, rhs.components_, rhs.wires_); }
+    friend bool operator!=(Board const& lhs, Board const& rhs) { return !(lhs == rhs); }
 
 private:
     const size_t             id_;

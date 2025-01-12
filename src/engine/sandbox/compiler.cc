@@ -18,7 +18,7 @@ Layout compile_to_layout(Board const& board)
 
     // copy wires
     for (auto const& [pos, wire]: board.wires())
-        layout.wires[pos] = wire;
+        layout.wires.emplace(pos, wire);
 
     return layout;
 }

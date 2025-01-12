@@ -13,14 +13,18 @@ struct Position {
 
     Position(struct Board* board, intpos_t x, intpos_t y, Direction dir = Direction::Center);
 
+    explicit Position(std::string const& from);
+
     size_t    board_id;
     intpos_t  x, y;
     Direction dir;
 
-    bool operator==(Position const& p) const { return board_id == p.board_id && x == p.x && y == p.y && dir == p.dir; }
-    bool operator<(Position const& p) const;
+    bool        operator<(Position const& p) const;
 
     std::vector<Position> neighbours(bool has_single_tile_component_pin) const;
+
+    friend bool operator==(Position const& lhs, Position const& rhs) { return std::tie(lhs.board_id, lhs.x, lhs.y, lhs.dir) == std::tie(rhs.board_id, rhs.x, rhs.y, rhs.dir); }
+    friend bool operator!=(Position const& lhs, Position const& rhs) { return !(lhs == rhs); }
 };
 
 namespace std {

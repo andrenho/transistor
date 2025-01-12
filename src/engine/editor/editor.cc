@@ -3,7 +3,14 @@
 Editor::Editor(Sandbox& sandbox, ComponentDatabase const& component_db)
     : sandbox_(sandbox), component_db_(component_db)
 {
-    boards_.emplace_back(10, 10, sandbox_, component_db_);
+    boards_.emplace_back(20, 10, sandbox_, component_db_);
+}
+
+Editor::Editor(json const& content, Sandbox& sandbox, ComponentDatabase const& component_db)
+    : sandbox_(sandbox), component_db_(component_db)
+{
+    for (auto const& jboard: content.at("boards"))
+        boards_.emplace_back(jboard, sandbox_, component_db_);
 }
 
 json Editor::serialize() const

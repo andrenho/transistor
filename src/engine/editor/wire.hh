@@ -9,6 +9,9 @@ struct Wire {
     enum class Width : uint8_t { W1 = '1' };
     enum class Layer : uint8_t { Top = 'T', Bottom = 'B' };
 
+    Wire(Width _width, Layer _layer) : width(_width), layer(_layer) {}
+    Wire(std::string const& content) : width((Width) content[0]), layer((Layer) content[1]) {}
+
     Width width;
     Layer layer;
 

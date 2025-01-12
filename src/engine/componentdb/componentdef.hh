@@ -9,6 +9,7 @@
 #include "ui/scene.hh"
 
 #include <nlohmann/json.hpp>
+
 using json = nlohmann::json;
 
 class  ResourceManager;
@@ -31,6 +32,7 @@ struct ComponentDefinition {
     std::function<void(Component const& component, Scene& scene, int x, int y)> render = [](Component const&, Scene&, int, int) {};
 
     std::function<std::string(Component const& component)>                      serialize_component = [](Component const&) { return ""; };
+    std::function<void(Component& component, json const& content)>              unserialize_component = [](Component&, json const&) {};
 
     constexpr uintpin_t pin_count() const {
         if (type == Type::SingleTile)

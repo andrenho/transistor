@@ -83,9 +83,6 @@ std::map<Position, Wire> WireManagement::current_drawing() const
     // create wire map out of wire path
     std::map<Position, Wire> wm {};
     for (auto const& sp: vsp)
-        wm[sp] = Wire {
-            .width = drawing_wire_->width,
-            .layer = drawing_wire_->side,
-        };
+        wm.emplace(sp, Wire(drawing_wire_->width, drawing_wire_->side));
     return wm;
 }

@@ -1,10 +1,23 @@
 #include "position.hh"
 
+#include <sstream>
+
 #include "engine/editor/board.hh"
 
 Position::Position(Board* board, intpos_t _x, intpos_t _y, Direction _dir)
     : board_id(board->id()), x(_x), y(_y), dir(_dir)
 {
+}
+
+Position::Position(std::string const& from)
+{
+    std::stringstream ss(from);
+    std::string temp;
+
+    getline(ss, temp, ','); board_id = std::stoi(temp);
+    getline(ss, temp, ','); x = (intpos_t) std::stoi(temp);
+    getline(ss, temp, ','); y = (intpos_t) std::stoi(temp);
+    getline(ss, temp);            dir = (Direction) temp[0];
 }
 
 std::vector<Position> Position::neighbours(bool has_single_tile_component_pin) const

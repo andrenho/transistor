@@ -10,6 +10,9 @@ using json = nlohmann::json;
 
 class Sandbox {
 public:
+    Sandbox() = default;
+    explicit Sandbox(json const& content);
+
     [[nodiscard]] ComponentDatabase& component_db() { return component_db_; }
     [[nodiscard]] Editor&            editor() { return editor_; }
 
@@ -19,6 +22,9 @@ public:
     [[nodiscard]] bus_data_t wire_value(Position const& pos) const;
 
     [[nodiscard]] json serialize() const;
+
+    friend bool operator==(Sandbox const& lhs, Sandbox const& rhs) { return lhs.editor_ == rhs.editor_; }
+    friend bool operator!=(Sandbox const& lhs, Sandbox const& rhs) { return !(lhs == rhs); }
 
 private:
     ComponentDatabase component_db_;
