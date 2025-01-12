@@ -40,8 +40,10 @@
 - [x] serialization / deserialization
   - [x] serialization
   - [x] deserialization
+  - [x] check version
   - [ ] save/load
 - [ ] infobox (sidebar?)
+- [ ] exceptions
 
 # v0.0.4 - ICs + customization
 
@@ -49,6 +51,7 @@
   - [ ] rotation
   - [ ] native behaviour
   - [ ] Lua support
+    - [ ] serialize/deserialize
 
 # v0.0.5 - circuits QOL
 

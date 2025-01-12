@@ -2,11 +2,24 @@
 
 #include "compiler.hh"
 #include "engine/layout/layout.hh"
+#include "util/exceptions.hh"
 
-Sandbox::Sandbox(json const& content)
-    : editor_(Editor(content.at("editor"), *this, component_db_))
+Sandbox::Sandbox(json const& content, bool validate_version)
+    : editor_(check_version_and_create_editor(content, validate_version))
 {
     // TODO - deal with component_db
+}
+
+Editor Sandbox::check_version_and_create_editor(json const& content, bool validate_version)
+{
+    if (validate_version) {
+        if (content.at("version").at("major") > PROJECT_VERSION_MAJOR
+                || (content.at("version").at("major") == PROJECT_VERSION_MAJOR && content.at("version").at("minor") > PROJECT_VERSION_MINOR)
+                || (content.at("version").at("major") == PROJECT_VERSION_MAJOR && content.at("version").at("minor") == PROJECT_VERSION_MINOR && content.at("version").at("patch") > PROJECT_VERSION_PATCH))
+            throw RecoverableErrorOptional("This file was created with a higher version than the current runtime, and it might present errors when loading. Do you want to continue?");
+    }
+
+    return Editor(content.at("editor"), *this, component_db_);
 }
 
 void Sandbox::reset()
@@ -66,6 +79,11 @@ uint8_t Sandbox::wire_value(Position const& pos) const
 json Sandbox::serialize() const
 {
     json content;
+    content["version"] = json {
+        { "major", PROJECT_VERSION_MAJOR },
+        { "minor", PROJECT_VERSION_MINOR },
+        { "patch", PROJECT_VERSION_PATCH },
+    };
     content["editor"] = editor_.serialize();
     content["componentDatabase"] = component_db_.serialize();
     return content;

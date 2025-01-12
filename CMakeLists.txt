@@ -42,6 +42,14 @@ if(CCACHE_PROGRAM)
     set(CMAKE_CXX_COMPILER_LAUNCHER "${CCACHE_PROGRAM}")
 endif()
 
+add_compile_definitions(
+        PROJECT_NAME=\"${CMAKE_PROJECT_NAME}\"
+        PROJECT_VERSION=\"${CMAKE_PROJECT_VERSION}\"
+        PROJECT_VERSION_MAJOR=${CMAKE_PROJECT_VERSION_MAJOR}
+        PROJECT_VERSION_MINOR=${CMAKE_PROJECT_VERSION_MINOR}
+        PROJECT_VERSION_PATCH=${CMAKE_PROJECT_VERSION_PATCH}
+)
+
 #
 # libraries
 #
@@ -91,6 +99,7 @@ set(ENGINE_SRC
         src/engine/sandbox/compiler.cc
         src/engine/sandbox/compiler.hh
         src/util/visitor.hh
+        src/util/exceptions.hh
 )
 
 set(UI_SRC
@@ -143,7 +152,6 @@ if(CMAKE_BUILD_TYPE STREQUAL "Release")
     add_compile_options(-Ofast -flto)
 endif()
 
-target_compile_definitions(${CMAKE_PROJECT_NAME} PUBLIC PROJECT_NAME=\"${CMAKE_PROJECT_NAME}\" ${DEF})
 target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE ${warnings})
 target_include_directories(${CMAKE_PROJECT_NAME} SYSTEM PUBLIC . src contrib/imgui contrib/glad/include ${SDL2_INCLUDE_DIRS} ${SDL2_TTF_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS} ${LUA_INCLUDE_DIRS})
 target_link_directories(${CMAKE_PROJECT_NAME} PUBLIC ${SDL2_TTF_LIBRARY_DIRS} ${SDL2_IMAGE_LIBRARY_DIRS} ${LUA_LIBRARY_DIRS})
