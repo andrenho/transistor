@@ -47,6 +47,7 @@ private:
     SDL_Renderer* ren_;
     SDL_Cursor    *move_cursor_, *delete_cursor_;
     std::vector<Resource> icons_;
+    Game*         game_ = nullptr;
 
     GUI             gui_;
     ResourceManager resource_manager_;
@@ -57,6 +58,7 @@ private:
 
     mutable Duration frame_time_ = std::chrono::milliseconds(0);
     mutable size_t   frame_count_ = 0;
+    size_t           total_frames_ = 0;
 };
 
 #endif

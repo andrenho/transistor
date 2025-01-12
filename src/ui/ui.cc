@@ -70,12 +70,14 @@ void UI::set_game(Game& game)
     Board& board = *game.sandbox().editor().boards().begin();
     layers_.push_back(std::make_unique<BoardEditor>(resource_manager_, game.sandbox(), board.id()));
     gui_.set_game(game);
+    game_ = &game;
 }
 
 void UI::update(Duration timestep)
 {
     ++frame_count_;
     ++frame_time_ += timestep;
+    ++total_frames_;
 
     Events events;
 
@@ -125,6 +127,9 @@ void UI::update(Duration timestep)
     }
 
     do_events(events);
+
+    if (total_frames_ % 600 == 0) // every 10 sec
+        game_->save();
 }
 
 void UI::do_events(Events const& events)

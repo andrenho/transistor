@@ -188,7 +188,7 @@ add_executable(${PROJECT_NAME}-tests
         tests/compilation.cc
         tests/connected_wires.cc
 )
-target_compile_definitions(${PROJECT_NAME}-tests PUBLIC PROJECT_NAME=\"${PROJECT_NAME}-tests\" ${DEF})
+target_compile_definitions(${PROJECT_NAME}-tests PUBLIC ${DEF})
 target_compile_options(${PROJECT_NAME}-tests PRIVATE ${warnings})
 target_include_directories(${PROJECT_NAME}-tests SYSTEM PUBLIC . src ${LUA_INCLUDE_DIRS})
 target_link_directories(${PROJECT_NAME}-tests PUBLIC ${LUA_LIBRARY_DIRS})

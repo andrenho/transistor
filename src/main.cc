@@ -7,7 +7,8 @@ using namespace std::chrono_literals;
 
 int main()
 {
-    Game game;
+    Game game(0);
+    game.try_load();
 
     UI ui;
     ui.set_game(game);
