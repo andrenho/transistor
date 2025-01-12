@@ -72,11 +72,6 @@ uint8_t Sandbox::wire_value(Position const& pos) const
 json Sandbox::serialize() const
 {
     json content;
-    content["version"] = json {
-        { "major", PROJECT_VERSION_MAJOR },
-        { "minor", PROJECT_VERSION_MINOR },
-        { "patch", PROJECT_VERSION_PATCH },
-    };
     content["editor"] = editor_.serialize();
     content["componentDatabase"] = component_db_.serialize();
     return content;

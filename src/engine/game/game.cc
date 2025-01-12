@@ -30,6 +30,11 @@ json Game::serialize() const
 {
     return json {
         { "sandbox", sandbox_->serialize() },
+        { "version", json {
+            { "major", PROJECT_VERSION_MAJOR },
+            { "minor", PROJECT_VERSION_MINOR },
+            { "patch", PROJECT_VERSION_PATCH },
+        } }
     };
 }
 
@@ -43,6 +48,7 @@ void Game::unserialize(json const& content, bool validate_version)
     }
 
     sandbox_ = std::make_unique<Sandbox>(content.at("sandbox"));
+    sandbox_.reset();
 }
 
 void Game::save() const
