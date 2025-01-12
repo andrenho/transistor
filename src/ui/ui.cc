@@ -68,7 +68,7 @@ UI::~UI()
 void UI::set_game(Game& game)
 {
     Board& board = *game.sandbox().editor().boards().begin();
-    layers_.push_back(std::make_unique<BoardEditor>(resource_manager_, board));
+    layers_.push_back(std::make_unique<BoardEditor>(resource_manager_, game.sandbox(), board.id()));
     gui_.set_game(game);
 }
 

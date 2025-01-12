@@ -10,8 +10,8 @@ using json = nlohmann::json;
 
 class Sandbox {
 public:
-    Sandbox() = default;
-    explicit Sandbox(json const& content, bool validate_version=true);
+    Sandbox();
+    explicit Sandbox(json const& content);
 
     [[nodiscard]] ComponentDatabase& component_db() { return component_db_; }
     [[nodiscard]] Editor&            editor() { return editor_; }
@@ -28,13 +28,11 @@ public:
 
 private:
     ComponentDatabase component_db_;
-    Editor            editor_ { *this, component_db_ };
+    Editor            editor_;
 
     Connections                              connections_cache_;
     std::vector<Component*>                  components_cache_;
     std::unordered_map<Position, bus_data_t> wire_value_cache_;
-
-    Editor check_version_and_create_editor(json const& content, bool validate_version);
 };
 
 #endif //SANDBOX_HH

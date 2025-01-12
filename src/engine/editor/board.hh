@@ -10,12 +10,14 @@
 #include "engine/geometry/position.hh"
 
 #include <nlohmann/json.hpp>
+
+#include "engine/sandbox/recompilation.hh"
 using json = nlohmann::json;
 
 class Board {
 public:
-    Board(intpos_t w, intpos_t h, class Sandbox& sandbox, ComponentDatabase const& component_db);
-    Board(json const& content, class Sandbox& sandbox, ComponentDatabase const& component_db);
+    Board(intpos_t w, intpos_t h, ComponentDatabase const& component_db, SandboxRecompilationFn recompile);
+    Board(json const& content, ComponentDatabase const& component_db, SandboxRecompilationFn recompile);
 
     [[nodiscard]] std::map<Position, Component> const& components() const { return components_; }
     [[nodiscard]] std::map<Position, Component>& components() { return components_; }
@@ -37,7 +39,6 @@ public:
 
     [[nodiscard]] json serialize() const;
 
-    [[nodiscard]] bus_data_t wire_value(Position const& pos) const;
     [[nodiscard]] std::map<Position, Wire> temporary_wire() const { return wire_management_.current_drawing(); }
 
     [[nodiscard]] intpos_t w() const { return w_; }
@@ -51,12 +52,13 @@ public:
 private:
     const size_t             id_;
     intpos_t                 w_, h_;
-    Sandbox&                 sandbox_;
     ComponentDatabase const& component_db_;
 
     std::map<Position, Component> components_;
     std::map<Position, Wire>      wires_;
     WireManagement                wire_management_;
+
+    SandboxRecompilationFn        recompile_;
 
     static size_t board_counter_;
 };

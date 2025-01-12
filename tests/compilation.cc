@@ -101,7 +101,7 @@ TEST_SUITE("Engine")
                 sandbox.simulate();
             CHECK(led->data[0] == 0);
 
-            CHECK(board.wire_value({ board.id(), 2, 1, Direction::W }) == 0);
+            CHECK(sandbox.wire_value({ board.id(), 2, 1, Direction::W }) == 0);
         }
 
         SUBCASE("Simulate with button press")
@@ -116,7 +116,7 @@ TEST_SUITE("Engine")
                 sandbox.simulate();
             CHECK(led->data[0] == 1);
 
-            CHECK(board.wire_value({ board.id(), 2, 1, Direction::W }) == 1);
+            CHECK(sandbox.wire_value({ board.id(), 2, 1, Direction::W }) == 1);
         }
 
         SUBCASE("Button press and release")
@@ -142,7 +142,7 @@ TEST_SUITE("Engine")
                 sandbox.simulate();
             CHECK(led->data[0] == 0);
 
-            CHECK(board.wire_value({ board.id(), 2, 1, Direction::W }) == 0);
+            CHECK(sandbox.wire_value({ board.id(), 2, 1, Direction::W }) == 0);
         }
 
         SUBCASE("Serialization and deserialization")

@@ -5,8 +5,9 @@
 #include "battery/embed.hpp"
 #include "circuit_atlas.hh"
 
-BoardEditor::BoardEditor(ResourceManager& resource_manager, Board& board)
-    : Layer(0, 0, (board.w() + 4) * TILE_SIZE, (board.w() + 4) * TILE_SIZE), board_(board)
+BoardEditor::BoardEditor(ResourceManager& resource_manager, Sandbox& sandbox, size_t board_id)
+    : Layer(0, 0, (sandbox.editor().board(board_id).w() + 4) * TILE_SIZE, (sandbox.editor().board(board_id).w() + 4) * TILE_SIZE),
+      sandbox_(sandbox), board_(sandbox.editor().board(board_id))
 {
     zoom_ = 2.f;
 }
@@ -196,7 +197,7 @@ void BoardEditor::render_wire(Scene& scene, Position const& pos, Wire const& wir
         { { { Wire::Width::W1, Wire::Layer::Top }, Direction::E, false }, CSprite::WireTopOffEast_1 },
     };
 
-    auto it = wire_sprites.find({ wire, pos.dir, board_.wire_value(pos) });
+    auto it = wire_sprites.find({ wire, pos.dir, sandbox_.wire_value(pos) });
     if (it == wire_sprites.end())
         throw std::runtime_error("Wire configuration not found");
     draw(scene, it->second, pos.x, pos.y, { .semitransparent = semitransparent });

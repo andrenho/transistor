@@ -1,16 +1,26 @@
 #include "editor.hh"
 
-Editor::Editor(Sandbox& sandbox, ComponentDatabase const& component_db)
-    : sandbox_(sandbox), component_db_(component_db)
+#include <stdexcept>
+
+Editor::Editor(ComponentDatabase const& component_db, SandboxRecompilationFn recompile)
+    : component_db_(component_db)
 {
-    boards_.emplace_back(20, 10, sandbox_, component_db_);
+    boards_.emplace_back(20, 10, component_db_, recompile);
 }
 
-Editor::Editor(json const& content, Sandbox& sandbox, ComponentDatabase const& component_db)
-    : sandbox_(sandbox), component_db_(component_db)
+Editor::Editor(json const& content, ComponentDatabase const& component_db, SandboxRecompilationFn recompile)
+    : component_db_(component_db)
 {
     for (auto const& jboard: content.at("boards"))
-        boards_.emplace_back(jboard, sandbox_, component_db_);
+        boards_.emplace_back(jboard, component_db_, recompile);
+}
+
+Board& Editor::board(size_t id)
+{
+    for (auto& board : boards_)
+        if (board.id() == id)
+            return board;
+    throw std::out_of_range("Board not found");
 }
 
 json Editor::serialize() const

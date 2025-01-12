@@ -4,11 +4,12 @@
 #include "engine/editor/board.hh"
 #include "../layer.hh"
 #include "circuit_atlas.hh"
+#include "engine/sandbox/sandbox.hh"
 #include "ui/scene.hh"
 
 class BoardEditor : public Layer {
 public:
-    BoardEditor(ResourceManager& resource_manager, Board& board);
+    BoardEditor(ResourceManager& resource_manager, Sandbox& sandbox, size_t board_id);
 
     void render(Scene& scene) override;
 
@@ -19,6 +20,7 @@ public:
     void on_key_release(uint32_t key, int x, int y, Events& events) override;
 
 private:
+    Sandbox const&        sandbox_;
     Board&                board_;
     bool                  drawing_wire_ = false;
     bool                  erasing_ = false;

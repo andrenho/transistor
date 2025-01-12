@@ -131,6 +131,7 @@ set(IMGUI_SRC
         contrib/ImGuiFileDialog/ImGuiFileDialog.h
         contrib/ImGuiFileDialog/ImGuiFileDialog.cpp
         contrib/ImGuiFileDialog/ImGuiFileDialogConfig.h
+        src/engine/sandbox/recompilation.hh
 )
 
 add_executable(${CMAKE_PROJECT_NAME}
