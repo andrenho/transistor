@@ -42,7 +42,7 @@
   - [x] deserialization
   - [x] check version
   - [x] save/load
-- [ ] infobox (sidebar?)
+- [x] infobox (sidebar?)
 - [ ] exceptions
 
 # v0.0.4 - ICs + customization

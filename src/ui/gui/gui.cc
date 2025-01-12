@@ -81,6 +81,9 @@ bool GUI::render(SDL_Renderer* ren)
         return false;
     render_infobox();
 
+    if (!render_modal_exception())
+        return false;
+
     ImGui::Render();
     ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData(), ren);
 
@@ -130,4 +133,24 @@ void GUI::render_infobox()
     ImGui::End();
 
     ImGui::PopStyleVar(2);
+}
+
+bool GUI::render_modal_exception()
+{
+    if (ImGui::BeginPopupModal("Error!", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
+        if (modal_exception_)
+            ImGui::Text("%s", modal_exception_->what());
+        ImGui::Separator();
+        ImGui::SetItemDefaultFocus();
+        if (ImGui::Button("OK", ImVec2(120, 0))) {
+            ImGui::CloseCurrentPopup();
+            return false;
+        }
+        ImGui::EndPopup();
+    }
+
+    if (modal_exception_)
+        ImGui::OpenPopup("Error!");
+
+    return true;
 }

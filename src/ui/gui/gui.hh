@@ -12,17 +12,23 @@ public:
     void set_game(Game& game) { game_ = &game; }
 
     void process_events(SDL_Event* e);
+
     bool render(SDL_Renderer* ren);
+
+    void set_modal_exception(std::optional<std::exception> const& modal_exception) { modal_exception_ = modal_exception; }
 
 private:
     void setup_theme();
 
     bool render_main_menu();
     void render_infobox();
+    bool render_modal_exception();
 
     struct ImGuiIO* io = nullptr;
     Game*           game_ = nullptr;
     bool            show_demo_window_ = false;
+
+    std::optional<std::exception> modal_exception_ {};
 };
 
 #endif //GUI_HH

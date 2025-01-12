@@ -265,3 +265,13 @@ std::vector<std::tuple<Layer*, int, int>> UI::find_all_layers(int x, int y) cons
         r.emplace_back(layer.get(), (x - layer->x()) / layer->zoom(), (y - layer->y()) / layer->zoom());
     return r;
 }
+
+void UI::report_exception(std::exception const& exception)
+{
+    gui_.set_modal_exception(exception);
+
+    while (running_) {
+        update(Duration { 1 });
+        render();
+    }
+}

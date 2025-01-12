@@ -2,6 +2,7 @@
 #define UI_UI_HH_
 
 #include <chrono>
+#include <functional>
 #include <memory>
 #include <optional>
 #include <tuple>
@@ -23,6 +24,7 @@ class UI {
 public:
     UI();
     ~UI();
+
     UI (const UI&) = delete;
     UI& operator=(const UI&) = delete;
 
@@ -30,6 +32,8 @@ public:
 
     void update([[maybe_unused]] Duration timestep);
     void render();
+
+    void report_exception(std::exception const& exception);
 
     [[nodiscard]] bool running() const { return running_; }
 

@@ -44,7 +44,7 @@ void Game::unserialize(json const& content, bool validate_version)
         if (content.at("version").at("major") > PROJECT_VERSION_MAJOR
                 || (content.at("version").at("major") == PROJECT_VERSION_MAJOR && content.at("version").at("minor") > PROJECT_VERSION_MINOR)
                 || (content.at("version").at("major") == PROJECT_VERSION_MAJOR && content.at("version").at("minor") == PROJECT_VERSION_MINOR && content.at("version").at("patch") > PROJECT_VERSION_PATCH))
-            throw RecoverableErrorOptional("This file was created with a higher version than the current runtime, and it might present errors when loading. Do you want to continue?");
+            throw std::runtime_error("This file was created with a higher version than the current runtime.");
     }
 
     sandbox_ = std::make_unique<Sandbox>(content.at("sandbox"));
