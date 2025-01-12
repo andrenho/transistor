@@ -3,20 +3,19 @@
 #include <chrono>
 using namespace std::chrono_literals;
 
-#include "engine/sandbox/sandbox.hh"
+#include "engine/game/game.hh"
 
 int main()
 {
-    Sandbox sandbox;
+    Game game;
 
     UI ui;
-    ui.set_sandbox(sandbox);
+    ui.set_game(game);
 
     auto last_frame = hr::now();
     while (ui.running()) {
         auto new_frame = hr::now();
-        while (hr::now() < new_frame + 6ms)   // simulate for 6 ms
-            sandbox.simulate();
+        game.update();
         ui.update(new_frame - last_frame);
         ui.render();
         last_frame = new_frame;

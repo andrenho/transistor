@@ -41,6 +41,7 @@
   - [x] serialization
   - [x] deserialization
   - [x] check version
+  - [ ] create Game with save management
   - [ ] save/load
 - [ ] infobox (sidebar?)
 - [ ] exceptions

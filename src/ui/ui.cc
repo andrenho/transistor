@@ -65,11 +65,11 @@ UI::~UI()
     SDL_Quit();
 }
 
-void UI::set_sandbox(Sandbox& sandbox)
+void UI::set_game(Game& game)
 {
-    Board& board = *sandbox.editor().boards().begin();
+    Board& board = *game.sandbox().editor().boards().begin();
     layers_.push_back(std::make_unique<BoardEditor>(resource_manager_, board));
-    gui_.set_sandbox(&sandbox);
+    gui_.set_game(game);
 }
 
 void UI::update(Duration timestep)

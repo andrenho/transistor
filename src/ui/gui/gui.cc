@@ -93,7 +93,7 @@ bool GUI::main_menu()
 #ifndef NDEBUG
             ImGui::Separator();
             if (ImGui::MenuItem("Serialize sandbox"))
-                std::cout << sandbox_->serialize().dump(2) << "\n";
+                std::cout << game_->sandbox().serialize().dump(2) << "\n";
             ImGui::MenuItem("Demo Window", "", &show_demo_window_);
 #endif
             ImGui::Separator();

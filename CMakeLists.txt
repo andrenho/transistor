@@ -100,6 +100,8 @@ set(ENGINE_SRC
         src/engine/sandbox/compiler.hh
         src/util/visitor.hh
         src/util/exceptions.hh
+        src/engine/game/game.cc
+        src/engine/game/game.hh
 )
 
 set(UI_SRC

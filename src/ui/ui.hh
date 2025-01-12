@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "scene.hh"
+#include "engine/game/game.hh"
 #include "SDL2/SDL.h"
 
 #include "layers/layer.hh"
@@ -25,7 +26,7 @@ public:
     UI (const UI&) = delete;
     UI& operator=(const UI&) = delete;
 
-    void set_sandbox(Sandbox& sandbox);
+    void set_game(Game& game);
 
     void update([[maybe_unused]] Duration timestep);
     void render();
