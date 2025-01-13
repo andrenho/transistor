@@ -43,7 +43,7 @@
   - [x] check version
   - [x] save/load
 - [x] infobox (sidebar?)
-- [ ] exceptions
+- [x] exceptions
 
 # v0.0.4 - ICs + customization
 
