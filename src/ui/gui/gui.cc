@@ -79,6 +79,7 @@ bool GUI::render(SDL_Renderer* ren)
 
     if (!render_main_menu())
         return false;
+    render_toolbox();
     render_infobox();
 
     if (!render_modal_exception())
@@ -115,7 +116,7 @@ void GUI::render_infobox()
 {
     constexpr float INFOBOX_WIDTH = 350.f;
 
-    ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav;
+    ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoBringToFrontOnFocus;
 
     const ImGuiViewport* viewport = ImGui::GetMainViewport();
     ImVec2 window_pos = { viewport->WorkSize.x - INFOBOX_WIDTH, viewport->WorkPos.y };
@@ -133,6 +134,13 @@ void GUI::render_infobox()
     ImGui::End();
 
     ImGui::PopStyleVar(2);
+}
+
+void GUI::render_toolbox()
+{
+    if (ImGui::Begin("Toolbox", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoCollapse)) {
+    }
+    ImGui::End();
 }
 
 bool GUI::render_modal_exception()

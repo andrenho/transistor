@@ -5,7 +5,7 @@
 cmake_minimum_required(VERSION 3.28)
 
 project(transistor
-    VERSION 0.0.3
+    VERSION 0.0.4
     DESCRIPTION "A game to learn and create circuits"
     LANGUAGES C CXX ASM
 )

@@ -24,6 +24,7 @@ private:
 
     bool render_main_menu();
     void render_infobox();
+    void render_toolbox();
     bool render_modal_exception();
 
     struct ImGuiIO* io = nullptr;

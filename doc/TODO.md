@@ -47,11 +47,16 @@
 
 # v0.0.4 - ICs + customization
 
+- [ ] toolbar
+  - [ ] basic components
+  - [ ] selected component
+  - [ ] component infobox
+  - [ ] ics
 - [ ] ic support
   - [ ] rotation
-  - [ ] native behaviour
-  - [ ] Lua support
-    - [ ] serialize/deserialize
+- [ ] ic native behaviour
+- [ ] ic Lua support
+  - [ ] serialize/deserialize
 
 # v0.0.5 - circuits QOL
 
