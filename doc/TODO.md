@@ -45,7 +45,15 @@
 - [x] infobox (sidebar?)
 - [x] exceptions
 
-# v0.0.4 - ICs + customization
+# v0.0.4 - Rearchitect
+
+- Architecture:
+  - read from const object
+  - make changes through queues
+- [ ] Engine
+- [ ] UI state
+
+# v0.0.5 - ICs + customization
 
 - [ ] toolbar
   - [ ] basic components
@@ -58,29 +66,29 @@
 - [ ] ic Lua support
   - [ ] serialize/deserialize
 
-# v0.0.5 - circuits QOL
+# v0.0.6 - circuits QOL
 
 - [ ] resize board
 - [ ] selection
 - [ ] cut/copy/paste
 - [ ] add text to board
 
-# v0.0.6 - advanced wiring
+# v0.0.7 - advanced wiring
 
 - [ ] lower layer wiring
 - [ ] bus
 - [ ] bus adapter
 
-# v0.0.7 - subcircuits
+# v0.0.8 - subcircuits
 
 - [ ] ?
 
-# v0.0.8 - game
+# v0.0.9 - game
 
 - [ ] title screen
 - [ ] game level support
 
-# v0.0.9 - custom boards
+# v0.0.10 - custom boards
 
 - [ ] video
 - [ ] audio
