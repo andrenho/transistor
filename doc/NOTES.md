@@ -1,1 +1,0 @@
-- Pin order for single-tile components is N, W, S, E (counter-clockwise starting from N)

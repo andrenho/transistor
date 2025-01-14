@@ -129,7 +129,7 @@ void UI::update(Duration timestep)
     do_events(events);
 
     if (total_frames_ % 600 == 0) // every 10 sec
-        game_->save();
+        game_->enqueue(game::Save {});
 }
 
 void UI::do_events(Events const& events)

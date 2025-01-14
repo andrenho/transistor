@@ -18,7 +18,7 @@ int main()
         try {
 
             if (setup) {
-                game.try_load();
+                game.enqueue(game::TryLoad {});
                 ui.set_game(game);
                 setup = false;
             }

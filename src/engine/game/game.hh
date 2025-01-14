@@ -18,7 +18,6 @@ public:
     [[nodiscard]] Sandbox& sandbox() { return *sandbox_.get(); }
 
     void enqueue(game::Command&& command, bool execute_now=false);
-
     void update();
 
     [[nodiscard]] json serialize() const;
