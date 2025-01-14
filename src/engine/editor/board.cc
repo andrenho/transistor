@@ -27,7 +27,7 @@ Board::Board(json const& content, ComponentDatabase const& component_db, Sandbox
             component->def->unserialize_component(*component, jcomp.value().at("value"));
     }
 
-    // TODO - recompile_();
+    recompile_();
 }
 
 Component* Board::add_component(std::string const& component_name, intpos_t x, intpos_t y, bool bypass_reset)

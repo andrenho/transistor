@@ -17,7 +17,8 @@ public:
     [[nodiscard]] Sandbox const& sandbox() const { return *sandbox_.get(); }
     [[nodiscard]] Sandbox& sandbox() { return *sandbox_.get(); }
 
-    void enqueue(game::Command&& command, bool execute_now=false);
+    void enqueue(game::Command&& command) const;
+    void enqueue_and_execute(game::Command&& command);
     void update();
 
     [[nodiscard]] json serialize() const;
@@ -29,7 +30,7 @@ private:
     void execute_queue();
 
     gameid_t id_;
-    std::queue<game::Command> commands_;
+    mutable std::queue<game::Command> commands_;
     std::unique_ptr<Sandbox> sandbox_ = std::make_unique<Sandbox>();
 };
 

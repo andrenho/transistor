@@ -28,12 +28,10 @@ public:
     UI (const UI&) = delete;
     UI& operator=(const UI&) = delete;
 
-    void set_game(Game& game);
+    void update(Game const& game, [[maybe_unused]] Duration timestep);
+    void render(Game const& game);
 
-    void update([[maybe_unused]] Duration timestep);
-    void render();
-
-    void report_exception(std::exception const& exception);
+    void report_exception(Game const& game, std::exception const& exception);
 
     [[nodiscard]] bool running() const { return running_; }
 
@@ -51,7 +49,6 @@ private:
     SDL_Renderer* ren_;
     SDL_Cursor    *move_cursor_, *delete_cursor_;
     std::vector<Resource> icons_;
-    Game*         game_ = nullptr;
 
     GUI             gui_;
     ResourceManager resource_manager_;

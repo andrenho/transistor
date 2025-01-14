@@ -1,6 +1,7 @@
 #include "ui/ui.hh"
 
 #include <chrono>
+#include <iostream>
 using namespace std::chrono_literals;
 
 #include "engine/game/game.hh"
@@ -9,7 +10,7 @@ int main()
 {
     UI ui;
     Game game(0);
-    bool setup = true;
+    game.enqueue(game::TryLoad {});
 
     auto last_frame = hr::now();
 
@@ -17,20 +18,16 @@ int main()
 
         try {
 
-            if (setup) {
-                game.enqueue(game::TryLoad {});
-                ui.set_game(game);
-                setup = false;
-            }
-
             auto new_frame = hr::now();
+            ui.update(game, new_frame - last_frame);
             game.update();
-            ui.update(new_frame - last_frame);
-            ui.render();
+
+            ui.render(game);
+
             last_frame = new_frame;
 
         } catch (std::exception& e) {
-            ui.report_exception(e);
+            ui.report_exception(game, e);
         }
 
     }

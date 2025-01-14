@@ -65,15 +65,7 @@ UI::~UI()
     SDL_Quit();
 }
 
-void UI::set_game(Game& game)
-{
-    Board& board = *game.sandbox().editor().boards().begin();
-    layers_.push_back(std::make_unique<BoardEditor>(resource_manager_, game.sandbox(), board.id()));
-    gui_.set_game(game);
-    game_ = &game;
-}
-
-void UI::update(Duration timestep)
+void UI::update(Game const& game, Duration timestep)
 {
     ++frame_count_;
     ++frame_time_ += timestep;
@@ -129,7 +121,7 @@ void UI::update(Duration timestep)
     do_events(events);
 
     if (total_frames_ % 600 == 0) // every 10 sec
-        game_->enqueue(game::Save {});
+        game.enqueue(game::Save {});
 }
 
 void UI::do_events(Events const& events)
@@ -197,7 +189,7 @@ void UI::draw_image(Scene::Image const& image, Layer const* layer) const
     SDL_RenderSetScale(ren_, 1.f, 1.f);
 }
 
-void UI::render()
+void UI::render(Game const& game)
 {
     // clear screen
     SDL_SetRenderDrawColor(ren_, 0, 0, 0, SDL_ALPHA_OPAQUE);
@@ -216,7 +208,7 @@ void UI::render()
     }
 
     // draw gui
-    if (!gui_.render(ren_))
+    if (!gui_.render(game, ren_))
         running_ = false;
 
     // present to screen
@@ -266,12 +258,12 @@ std::vector<std::tuple<Layer*, int, int>> UI::find_all_layers(int x, int y) cons
     return r;
 }
 
-void UI::report_exception(std::exception const& exception)
+void UI::report_exception(Game const& game, std::exception const& exception)
 {
     gui_.set_modal_exception(exception.what());
 
     while (running_) {
-        update(Duration { 1000 });
-        render();
+        update(game, Duration { 1000 });
+        render(game);
     }
 }

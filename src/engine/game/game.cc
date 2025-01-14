@@ -24,11 +24,15 @@ void Game::update()
         sandbox_->simulate();
 }
 
-void Game::enqueue(game::Command&& command, bool execute_now)
+void Game::enqueue(game::Command&& command) const
 {
     commands_.emplace(command);
-    if (execute_now)
-        execute_queue();
+}
+
+
+void Game::enqueue_and_execute(game::Command&& command) {
+    enqueue(std::move(command));
+    execute_queue();
 }
 
 void Game::execute_queue()
