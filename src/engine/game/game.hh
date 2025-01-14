@@ -6,6 +6,8 @@
 #include "engine/sandbox/sandbox.hh"
 
 #include <nlohmann/json.hpp>
+
+#include "game_commands.hh"
 using json = nlohmann::json;
 
 class Game {
@@ -15,19 +17,21 @@ public:
     [[nodiscard]] Sandbox const& sandbox() const { return *sandbox_.get(); }
     [[nodiscard]] Sandbox& sandbox() { return *sandbox_.get(); }
 
-    void update();
+    void enqueue(game::Command&& command, bool execute_now=false);
 
-    void save() const;
-    void try_load(bool validate_version=true);
+    void update();
 
     [[nodiscard]] json serialize() const;
     void unserialize(json const& content, bool validate_version);
 
-private:
-    gameid_t id_;
-    std::unique_ptr<Sandbox> sandbox_ = std::make_unique<Sandbox>();
+    [[nodiscard]] gameid_t id() const { return id_; }
 
-    static std::string game_path();
+private:
+    void execute_queue();
+
+    gameid_t id_;
+    std::queue<game::Command> commands_;
+    std::unique_ptr<Sandbox> sandbox_ = std::make_unique<Sandbox>();
 };
 
 

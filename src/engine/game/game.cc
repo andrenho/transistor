@@ -1,29 +1,47 @@
 #include "game.hh"
 
-#include <sys/stat.h>
-
 #include <chrono>
-#include <fstream>
-#include <istream>
-#include <ostream>
 
+#include "gamefilemanager.hh"
 #include "util/exceptions.hh"
 using namespace std::chrono_literals;
 using hr = std::chrono::high_resolution_clock;
 
 #include "../sandbox/sandbox.hh"
+#include "util/visitor.hh"
 
 Game::Game(gameid_t id)
     : id_(id)
 {
-    mkdir(game_path().c_str(), 0755);
+    GameFileManager::init();
 }
 
 void Game::update()
 {
     auto start = hr::now();
+    execute_queue();
     while (hr::now() < start + 6ms)   // simulate for 6 ms
         sandbox_->simulate();
+}
+
+void Game::enqueue(game::Command&& command, bool execute_now)
+{
+    commands_.emplace(command);
+    if (execute_now)
+        execute_queue();
+}
+
+void Game::execute_queue()
+{
+    while (!commands_.empty()) {
+
+        std::visit(overloaded {
+            [&](game::Save const&) { GameFileManager::save(*this); },
+            [&](game::TryLoad const& load) { GameFileManager::try_load(*this, load.validate_version); },
+        }, commands_.front());
+
+        commands_.pop();
+    }
 }
 
 json Game::serialize() const
@@ -48,33 +66,4 @@ void Game::unserialize(json const& content, bool validate_version)
     }
 
     sandbox_ = std::make_unique<Sandbox>(content.at("sandbox"));
-}
-
-void Game::save() const
-{
-    std::ofstream o(game_path() + "game" + std::to_string(id_) + ".json");
-    o << serialize() << std::endl;
-}
-
-void Game::try_load(bool validate_version)
-{
-    std::ifstream i(game_path() + "game" + std::to_string(id_) + ".json");
-    if (i.good()) {
-        json content;
-        i >> content;
-        unserialize(content, validate_version);
-    }
-}
-
-std::string Game::game_path()
-{
-    const char* home = std::getenv("HOME");
-    const char* user_profile = std::getenv("USERPROFILE");
-
-    if (home)
-        return std::string(home) + "/.config/transistor/";
-    if (user_profile)
-        return std::string(user_profile) + "\\transistor\\";
-
-    throw std::runtime_error("Couldn't file save directory.");
 }

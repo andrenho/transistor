@@ -102,6 +102,9 @@ set(ENGINE_SRC
         src/util/exceptions.hh
         src/engine/game/game.cc
         src/engine/game/game.hh
+        src/engine/game/game_commands.hh
+        src/engine/game/gamefilemanager.cc
+        src/engine/game/gamefilemanager.hh
 )
 
 set(UI_SRC
