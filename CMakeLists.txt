@@ -115,10 +115,10 @@ set(UI_SRC
         src/ui/resources/resourcemanager.cc
         src/ui/resources/resourcemanager.hh
         src/ui/resources/resource.hh
-        src/ui/layers/layer.hh
-        src/ui/layers/board/boardeditor.cc
-        src/ui/layers/board/boardeditor.hh
-        src/ui/layers/board/circuit_atlas.hh
+        src/ui/devices/deviceeditor.hh
+        src/ui/devices/board/boardeditor.cc
+        src/ui/devices/board/boardeditor.hh
+        src/ui/devices/board/circuit_atlas.hh
         src/ui/gui/gui.cc
         src/ui/gui/gui.hh
 )

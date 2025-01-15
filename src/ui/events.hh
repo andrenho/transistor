@@ -4,12 +4,12 @@
 #include <deque>
 #include <variant>
 
-struct Layer;
+struct DeviceEditor;
 
 namespace event {
 
 struct StartDragging {
-    Layer *layer;
+    DeviceEditor *layer;
 };
 
 struct StopDragging {};

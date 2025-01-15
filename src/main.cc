@@ -10,7 +10,7 @@ int main()
 {
     UI ui;
     Game game(0);
-    game.enqueue(game::TryLoad {});
+    game << game::TryLoad {};
 
     auto last_frame = hr::now();
 

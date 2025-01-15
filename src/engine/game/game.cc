@@ -18,20 +18,25 @@ Game::Game(gameid_t id)
 
 void Game::update()
 {
+    ++update_count_;
+
     auto start = hr::now();
     execute_queue();
     while (hr::now() < start + 6ms)   // simulate for 6 ms
         sandbox_->simulate();
+
+    if (update_count_ % 300 == 0)
+        *this << game::Save {};
 }
 
-void Game::enqueue(game::Command&& command) const
+void Game::operator<<(game::Command&& command) const
 {
     commands_.emplace(command);
 }
 
-
-void Game::enqueue_and_execute(game::Command&& command) {
-    enqueue(std::move(command));
+void Game::execute(game::Command&& command)
+{
+    commands_.emplace(command);
     execute_queue();
 }
 
@@ -41,7 +46,14 @@ void Game::execute_queue()
 
         std::visit(overloaded {
             [&](game::Save const&) { GameFileManager::save(*this); },
-            [&](game::TryLoad const& load) { GameFileManager::try_load(*this, load.validate_version); },
+            [&](game::TryLoad const& cmd) { GameFileManager::try_load(*this, cmd.validate_version); },
+            [&](game::StartPlacingWire const& cmd) { board(cmd.pos.board_id).start_placing_wire(cmd.width, cmd.layer, cmd.pos.x, cmd.pos.y); },
+            [&](game::ContinuePlacingWire const& cmd) { board(cmd.pos.board_id).continue_placing_wire(cmd.pos.x, cmd.pos.y); },
+            [&](game::FinishPlacingWire const& cmd) { board(cmd.pos.board_id).finish_placing_wire(cmd.pos.x, cmd.pos.y); },
+            [&](game::AddComponent const& cmd) { board(cmd.pos.board_id).add_component(cmd.component_type, cmd.pos.x, cmd.pos.y); },
+            [&](game::RotateComponent const& cmd) { board(cmd.pos.board_id).rotate_component(cmd.pos.x, cmd.pos.y); },
+            [&](game::ComponentClick const& cmd) { const_cast<Component *>(cmd.component)->on_click(); },
+            [&](game::ClearTile const& cmd) { board(cmd.pos.board_id).clear_tile(cmd.pos.x, cmd.pos.y); },
         }, commands_.front());
 
         commands_.pop();

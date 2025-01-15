@@ -4,7 +4,7 @@
 #include <optional>
 #include <queue>
 
-#include "layers/board/circuit_atlas.hh"
+#include "devices/board/circuit_atlas.hh"
 #include "resources/resource.hh"
 #include "engine/geometry/direction.hh"
 

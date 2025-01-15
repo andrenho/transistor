@@ -12,8 +12,7 @@
 #include "engine/game/game.hh"
 #include "SDL2/SDL.h"
 
-#include "layers/layer.hh"
-#include "engine/sandbox/sandbox.hh"
+#include "devices/deviceeditor.hh"
 #include "gui/gui.hh"
 #include "resources/resourcemanager.hh"
 
@@ -36,12 +35,12 @@ public:
     [[nodiscard]] bool running() const { return running_; }
 
 private:
-    void                                      draw_image(Scene::Image const& image, Layer const* layer) const;
-    void                                      do_events(Events const& events);
+    void                                             draw_image(Scene::Image const& image, DeviceEditor const* layer) const;
+    void                                             do_events(Events const& events);
 
-    void                                      drag_layer(Layer* layer, int xrel, int yrel);
-    std::tuple<Layer*, int, int>              find_layer(int x, int y) const;
-    std::vector<std::tuple<Layer*, int, int>> find_all_layers(int x, int y) const;
+    void                                             drag_layer(DeviceEditor* layer, int xrel, int yrel);
+    std::tuple<DeviceEditor*, int, int>              find_layer(int x, int y) const;
+    std::vector<std::tuple<DeviceEditor*, int, int>> find_all_layers(int x, int y) const;
 
     bool running_ = true;
 
@@ -54,8 +53,8 @@ private:
     ResourceManager resource_manager_;
     Resource        bg_;
 
-    std::vector<std::unique_ptr<Layer>> layers_;
-    std::optional<Layer*> dragging_;
+    std::vector<std::unique_ptr<DeviceEditor>> layers_;
+    std::optional<DeviceEditor*> dragging_;
 
     mutable Duration frame_time_ = std::chrono::milliseconds(0);
     mutable size_t   frame_count_ = 0;

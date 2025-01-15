@@ -10,11 +10,11 @@ using namespace std::string_literals;
 #include "SDL2/SDL_ttf.h"
 #include "SDL2/SDL_image.h"
 
-#include "layers/board/boardeditor.hh"
+#include "devices/board/boardeditor.hh"
 
 #include "battery/embed.hpp"
 
-#include "layers/layer.hh"
+#include "devices/deviceeditor.hh"
 
 UI::UI()
 {
@@ -86,15 +86,15 @@ void UI::update(Game const& game, Duration timestep)
                 break;
             case SDL_MOUSEBUTTONDOWN:
                 if (auto [layer, lx, ly] = find_layer(e.button.x, e.button.y); layer)
-                    layer->on_mouse_press(lx, ly, e.button.button, e.button.clicks == 2, events);
+                    layer->on_mouse_press(game, lx, ly, e.button.button, e.button.clicks == 2, events);
                 break;
             case SDL_MOUSEBUTTONUP:
                 for (auto [layer, lx, ly] : find_all_layers(e.button.x, e.button.y))
-                    layer->on_mouse_release(lx, ly, e.button.button, events);
+                    layer->on_mouse_release(game, lx, ly, e.button.button, events);
                 break;
             case SDL_MOUSEMOTION:
                 if (auto [layer, lx, ly] = find_layer(e.button.x, e.button.y); layer)
-                    layer->on_mouse_move(lx, ly, e.motion.xrel, e.motion.yrel, events);
+                    layer->on_mouse_move(game, lx, ly, e.motion.xrel, e.motion.yrel, events);
                 if (dragging_)
                     drag_layer(*dragging_, e.motion.xrel, e.motion.yrel);
                 break;
@@ -102,7 +102,7 @@ void UI::update(Game const& game, Duration timestep)
                 if (e.key.repeat == 0) {
                     SDL_GetMouseState(&mx, &my);
                     if (auto [layer, lx, ly] = find_layer(mx, my); layer)
-                        layer->on_key_press(e.key.keysym.sym, lx, ly, events);
+                        layer->on_key_press(game, e.key.keysym.sym, lx, ly, events);
 #ifndef NODEBUG
                     if (e.key.keysym.sym == SDLK_q)
                         running_ = false;
@@ -112,16 +112,13 @@ void UI::update(Game const& game, Duration timestep)
             case SDL_KEYUP:
                 SDL_GetMouseState(&mx, &my);
                 for (auto [layer, lx, ly] : find_all_layers(mx, my))
-                    layer->on_key_release(e.key.keysym.sym, lx, ly, events);
+                    layer->on_key_release(game, e.key.keysym.sym, lx, ly, events);
                 break;
             default: break;
         }
     }
 
     do_events(events);
-
-    if (total_frames_ % 600 == 0) // every 10 sec
-        game.enqueue(game::Save {});
 }
 
 void UI::do_events(Events const& events)
@@ -152,7 +149,7 @@ void UI::do_events(Events const& events)
 }
 
 
-void UI::draw_image(Scene::Image const& image, Layer const* layer) const
+void UI::draw_image(Scene::Image const& image, DeviceEditor const* layer) const
 {
     SDL_Texture* texture = nullptr;
     SDL_Rect origin;
@@ -201,7 +198,7 @@ void UI::render(Game const& game)
     // draw layers
     for (auto& layer: layers_) {
         Scene scene;
-        layer->render(scene);
+        layer->render(game, scene);
         while (auto image = scene.next_image()) {
             draw_image(*image, layer.get());
         }
@@ -223,7 +220,7 @@ void UI::render(Game const& game)
     }
 }
 
-void UI::drag_layer(Layer* layer, int xrel, int yrel)
+void UI::drag_layer(DeviceEditor* layer, int xrel, int yrel)
 {
     int scr_w, scr_h;
     SDL_GetWindowSize(window_, &scr_w, &scr_h);
@@ -237,7 +234,7 @@ void UI::drag_layer(Layer* layer, int xrel, int yrel)
     layer->set_y(std::min(std::max(layer->y() + yrel, min_y), max_y));
 }
 
-std::tuple<Layer*, int, int> UI::find_layer(int x, int y) const
+std::tuple<DeviceEditor*, int, int> UI::find_layer(int x, int y) const
 {
     for (auto const& layer: layers_) {
         if (x >= layer->x() && y >= layer->y()
@@ -249,9 +246,9 @@ std::tuple<Layer*, int, int> UI::find_layer(int x, int y) const
     return { nullptr, 0, 0 };
 }
 
-std::vector<std::tuple<Layer*, int, int>> UI::find_all_layers(int x, int y) const
+std::vector<std::tuple<DeviceEditor*, int, int>> UI::find_all_layers(int x, int y) const
 {
-    std::vector<std::tuple<Layer*, int, int>> r;
+    std::vector<std::tuple<DeviceEditor*, int, int>> r;
     r.reserve(layers_.size());
     for (auto const& layer: layers_)
         r.emplace_back(layer.get(), (x - layer->x()) / layer->zoom(), (y - layer->y()) / layer->zoom());
