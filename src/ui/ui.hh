@@ -21,7 +21,6 @@ using Duration = decltype(hr::now() - hr::now());
 
 class UI {
 public:
-    UI();
     ~UI();
 
     UI (const UI&) = delete;
@@ -37,6 +36,8 @@ public:
     [[nodiscard]] bool running() const { return running_; }
 
 private:
+    UI();
+
     void recreate_devices();
     void execute_queue();
 
@@ -65,6 +66,8 @@ private:
     mutable Duration frame_time_ = std::chrono::milliseconds(0);
     mutable size_t   frame_count_ = 0;
     size_t           total_frames_ = 0;
+
+    friend UI const& ui();
 };
 
 UI const& ui();

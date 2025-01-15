@@ -12,8 +12,6 @@ using json = nlohmann::json;
 
 class Game {
 public:
-    explicit Game(gameid_t id);
-
     [[nodiscard]] Sandbox const& sandbox() const { return *sandbox_.get(); }
     [[nodiscard]] Sandbox& sandbox() { return *sandbox_.get(); }
 
@@ -31,15 +29,19 @@ public:
     [[nodiscard]] gameid_t id() const { return id_; }
 
 private:
+    explicit Game(gameid_t id);
+
     void execute_queue();
 
     gameid_t id_;
     size_t update_count_ = 0;
     mutable std::queue<G::Command> commands_;
     std::unique_ptr<Sandbox> sandbox_ = std::make_unique<Sandbox>();
+
+    friend Game const& game(gameid_t);
 };
 
-Game const& game();
+Game const& game(gameid_t game_id=0);
 void        game_update();
 
 #endif //GAME_HH

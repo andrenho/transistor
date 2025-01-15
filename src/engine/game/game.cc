@@ -113,9 +113,9 @@ void Game::unserialize(json const& content, bool validate_version)
     sandbox_ = std::make_unique<Sandbox>(content.at("sandbox"));
 }
 
-Game const& game()
+Game const& game(gameid_t id)
 {
-    static const Game game(0);
+    static const Game game(id);
     return game;
 }
 

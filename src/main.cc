@@ -8,7 +8,7 @@ using namespace std::chrono_literals;
 
 int main()
 {
-    game() << G::TryLoad {};
+    game(0) << G::TryLoad {};
 
     auto last_frame = hr::now();
 
