@@ -18,6 +18,7 @@ public:
     [[nodiscard]] ComponentDatabase& component_db() { return component_db_; }
 
     [[nodiscard]] std::list<Board>& boards() { return boards_; }
+    [[nodiscard]] std::list<Board> const& boards() const { return boards_; }
     Board& board(size_t);
 
     void recompile();

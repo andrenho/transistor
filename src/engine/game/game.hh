@@ -39,6 +39,7 @@ private:
     std::unique_ptr<Sandbox> sandbox_ = std::make_unique<Sandbox>();
 };
 
-Game& game();
+Game const& game();
+void        game_update();
 
 #endif //GAME_HH

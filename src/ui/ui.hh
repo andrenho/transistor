@@ -27,10 +27,10 @@ public:
     UI (const UI&) = delete;
     UI& operator=(const UI&) = delete;
 
-    void operator<<(ui::Command&& command) const;
+    void operator<<(U::Command&& command) const;
 
-    void update([[maybe_unused]] Duration timestep);
-    void render();
+    void update(Duration timestep);
+    void render() const;
 
     void report_exception(std::exception const& exception);
 
@@ -60,11 +60,14 @@ private:
 
     std::vector<std::unique_ptr<DeviceEditor>> device_editors_;
     std::optional<DeviceEditor*> dragging_;
-    mutable std::queue<ui::Command> commands_;
+    mutable std::queue<U::Command> commands_;
 
     mutable Duration frame_time_ = std::chrono::milliseconds(0);
     mutable size_t   frame_count_ = 0;
     size_t           total_frames_ = 0;
 };
+
+UI const& ui();
+void      ui_update(Duration timestep);
 
 #endif

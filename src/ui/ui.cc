@@ -74,7 +74,7 @@ void UI::recreate_devices()
         device_editors_.push_back(std::make_unique<BoardEditor>(resource_manager_, board.id()));
 }
 
-void UI::operator<<(ui::Command&& command) const
+void UI::operator<<(U::Command&& command) const
 {
     commands_.emplace(command);
 }
@@ -83,10 +83,9 @@ void UI::execute_queue()
 {
     while (!commands_.empty()) {
 
-        /*
         std::visit(overloaded {
+            [&](U::Quit const&) { running_ = false; },
         }, commands_.front());
-        */
 
         commands_.pop();
     }
@@ -213,7 +212,7 @@ void UI::draw_image(Scene::Image const& image, DeviceEditor const* layer) const
     SDL_RenderSetScale(ren_, 1.f, 1.f);
 }
 
-void UI::render()
+void UI::render() const
 {
     // clear screen
     SDL_SetRenderDrawColor(ren_, 0, 0, 0, SDL_ALPHA_OPAQUE);
@@ -233,7 +232,7 @@ void UI::render()
 
     // draw gui
     if (!gui_.render(ren_))
-        running_ = false;
+        *this << U::Quit {};
 
     // present to screen
     SDL_RenderPresent(ren_);
@@ -290,4 +289,15 @@ void UI::report_exception(std::exception const& exception)
         update(Duration { 1000 });
         render();
     }
+}
+
+UI const& ui()
+{
+    static const UI ui;
+    return ui;
+}
+
+void ui_update(Duration timestep)
+{
+    const_cast<UI*>(&ui())->update(timestep);
 }

@@ -11,12 +11,6 @@ using hr = std::chrono::high_resolution_clock;
 #include "../sandbox/sandbox.hh"
 #include "util/visitor.hh"
 
-Game& game()
-{
-    static Game game(0);
-    return game;
-}
-
 Game::Game(gameid_t id)
     : id_(id)
 {
@@ -118,3 +112,15 @@ void Game::unserialize(json const& content, bool validate_version)
 
     sandbox_ = std::make_unique<Sandbox>(content.at("sandbox"));
 }
+
+Game const& game()
+{
+    static const Game game(0);
+    return game;
+}
+
+void game_update()
+{
+    const_cast<Game*>(&game())->update();
+}
+

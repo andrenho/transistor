@@ -52,8 +52,9 @@
   - make changes through queues
 - [x] Engine
   - [x] Fix test errors
-  - [ ] Remove editor
-  - [ ] Make Game and UI globals (?)
+  - [x] Remove editor
+  - [x] Make Game and UI globals
+  - [ ] Improve exception report with message queues
 - [ ] UI state
   - [ ] Create device editor manager
   - [ ] Remove events.hh

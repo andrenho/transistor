@@ -6,9 +6,11 @@
 #include "engine/game/game.hh"
 
 
-namespace ui {
+namespace U {
 
-using Command = std::variant<int>;
+struct Quit {};
+
+using Command = std::variant<Quit>;
 
 }
 

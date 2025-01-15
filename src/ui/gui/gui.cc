@@ -68,7 +68,7 @@ void GUI::process_events(SDL_Event* e)
     ImGui_ImplSDL2_ProcessEvent(e);
 }
 
-bool GUI::render(SDL_Renderer* ren)
+bool GUI::render(SDL_Renderer* ren) const
 {
     ImGui_ImplSDLRenderer2_NewFrame();
     ImGui_ImplSDL2_NewFrame();
@@ -91,7 +91,7 @@ bool GUI::render(SDL_Renderer* ren)
     return true;
 }
 
-bool GUI::render_main_menu()
+bool GUI::render_main_menu() const
 {
     if (ImGui::BeginMainMenuBar()) {
         if (ImGui::BeginMenu("File")) {
@@ -112,7 +112,7 @@ bool GUI::render_main_menu()
     return true;
 }
 
-void GUI::render_infobox()
+void GUI::render_infobox() const
 {
     constexpr float INFOBOX_WIDTH = 350.f;
 
@@ -136,14 +136,14 @@ void GUI::render_infobox()
     ImGui::PopStyleVar(2);
 }
 
-void GUI::render_toolbox()
+void GUI::render_toolbox() const
 {
     if (ImGui::Begin("Toolbox", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoCollapse)) {
     }
     ImGui::End();
 }
 
-bool GUI::render_modal_exception()
+bool GUI::render_modal_exception() const
 {
     ImGui::SetNextWindowSizeConstraints({ 400.f, 0.f }, { 400.f, FLT_MAX });
     if (ImGui::BeginPopupModal("Error!", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {

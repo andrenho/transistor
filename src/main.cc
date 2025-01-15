@@ -10,25 +10,23 @@ int main()
 {
     game() << G::TryLoad {};
 
-    UI ui;
-
     auto last_frame = hr::now();
 
-    while (ui.running()) {
+    while (ui().running()) {
 
         try {
 
             auto new_frame = hr::now();
 
-            game().update();
-            ui.update(new_frame - last_frame);
+            game_update();
+            ui_update(new_frame - last_frame);
 
-            ui.render();
+            ui().render();
 
             last_frame = new_frame;
 
         } catch (std::exception& e) {
-            ui.report_exception(e);
+            const_cast<UI*>(&ui())->report_exception(e);  // TODO - improve this
         }
 
     }
