@@ -73,7 +73,7 @@ FetchContent_MakeAvailable(json)
 set(ENGINE_SRC
         src/lua/luaengine.cc
         src/lua/luaengine.hh
-        src/engine/types.hh
+        src/engine/util/types.hh
         src/engine/geometry/direction.hh
         src/engine/geometry/position.hh
         src/engine/geometry/position.cc
@@ -121,6 +121,7 @@ set(UI_SRC
         src/ui/devices/board/circuit_atlas.hh
         src/ui/gui/gui.cc
         src/ui/gui/gui.hh
+        src/ui/ui_commands.hh
 )
 
 set(IMGUI_SRC

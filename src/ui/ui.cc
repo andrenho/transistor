@@ -65,6 +65,23 @@ UI::~UI()
     SDL_Quit();
 }
 
+void UI::operator<<(ui::Command&& command) const
+{
+    commands_.emplace(command);
+}
+
+void UI::execute_queue()
+{
+    while (!commands_.empty()) {
+
+        std::visit(overloaded {
+            [&](ui::Reset const& reset) {},
+        }, commands_.front());
+
+        commands_.pop();
+    }
+}
+
 void UI::update(Game const& game, Duration timestep)
 {
     ++frame_count_;
@@ -85,23 +102,23 @@ void UI::update(Game const& game, Duration timestep)
                 running_ = false;
                 break;
             case SDL_MOUSEBUTTONDOWN:
-                if (auto [layer, lx, ly] = find_layer(e.button.x, e.button.y); layer)
+                if (auto [layer, lx, ly] = find_device(e.button.x, e.button.y); layer)
                     layer->on_mouse_press(game, lx, ly, e.button.button, e.button.clicks == 2, events);
                 break;
             case SDL_MOUSEBUTTONUP:
-                for (auto [layer, lx, ly] : find_all_layers(e.button.x, e.button.y))
+                for (auto [layer, lx, ly] : find_all_devices(e.button.x, e.button.y))
                     layer->on_mouse_release(game, lx, ly, e.button.button, events);
                 break;
             case SDL_MOUSEMOTION:
-                if (auto [layer, lx, ly] = find_layer(e.button.x, e.button.y); layer)
+                if (auto [layer, lx, ly] = find_device(e.button.x, e.button.y); layer)
                     layer->on_mouse_move(game, lx, ly, e.motion.xrel, e.motion.yrel, events);
                 if (dragging_)
-                    drag_layer(*dragging_, e.motion.xrel, e.motion.yrel);
+                    drag_device(*dragging_, e.motion.xrel, e.motion.yrel);
                 break;
             case SDL_KEYDOWN:
                 if (e.key.repeat == 0) {
                     SDL_GetMouseState(&mx, &my);
-                    if (auto [layer, lx, ly] = find_layer(mx, my); layer)
+                    if (auto [layer, lx, ly] = find_device(mx, my); layer)
                         layer->on_key_press(game, e.key.keysym.sym, lx, ly, events);
 #ifndef NODEBUG
                     if (e.key.keysym.sym == SDLK_q)
@@ -111,7 +128,7 @@ void UI::update(Game const& game, Duration timestep)
                 break;
             case SDL_KEYUP:
                 SDL_GetMouseState(&mx, &my);
-                for (auto [layer, lx, ly] : find_all_layers(mx, my))
+                for (auto [layer, lx, ly] : find_all_devices(mx, my))
                     layer->on_key_release(game, e.key.keysym.sym, lx, ly, events);
                 break;
             default: break;
@@ -196,7 +213,7 @@ void UI::render(Game const& game)
     SDL_RenderCopy(ren_, bg_, nullptr, nullptr);
 
     // draw layers
-    for (auto& layer: layers_) {
+    for (auto& layer: device_editors_) {
         Scene scene;
         layer->render(game, scene);
         while (auto image = scene.next_image()) {
@@ -220,7 +237,7 @@ void UI::render(Game const& game)
     }
 }
 
-void UI::drag_layer(DeviceEditor* layer, int xrel, int yrel)
+void UI::drag_device(DeviceEditor* layer, int xrel, int yrel)
 {
     int scr_w, scr_h;
     SDL_GetWindowSize(window_, &scr_w, &scr_h);
@@ -234,9 +251,9 @@ void UI::drag_layer(DeviceEditor* layer, int xrel, int yrel)
     layer->set_y(std::min(std::max(layer->y() + yrel, min_y), max_y));
 }
 
-std::tuple<DeviceEditor*, int, int> UI::find_layer(int x, int y) const
+std::tuple<DeviceEditor*, int, int> UI::find_device(int x, int y) const
 {
-    for (auto const& layer: layers_) {
+    for (auto const& layer: device_editors_) {
         if (x >= layer->x() && y >= layer->y()
                 && x < (layer->x() + (layer->w() * layer->zoom()))
                 && y < (layer->y() + (layer->h() * layer->zoom()))) {
@@ -246,11 +263,11 @@ std::tuple<DeviceEditor*, int, int> UI::find_layer(int x, int y) const
     return { nullptr, 0, 0 };
 }
 
-std::vector<std::tuple<DeviceEditor*, int, int>> UI::find_all_layers(int x, int y) const
+std::vector<std::tuple<DeviceEditor*, int, int>> UI::find_all_devices(int x, int y) const
 {
     std::vector<std::tuple<DeviceEditor*, int, int>> r;
-    r.reserve(layers_.size());
-    for (auto const& layer: layers_)
+    r.reserve(device_editors_.size());
+    for (auto const& layer: device_editors_)
         r.emplace_back(layer.get(), (x - layer->x()) / layer->zoom(), (y - layer->y()) / layer->zoom());
     return r;
 }

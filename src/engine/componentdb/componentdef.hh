@@ -5,7 +5,7 @@
 #include <functional>
 #include <string>
 
-#include "engine/types.hh"
+#include "engine/util/types.hh"
 #include "ui/scene.hh"
 
 #include <nlohmann/json.hpp>

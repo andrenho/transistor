@@ -50,8 +50,12 @@
 - Architecture:
   - read from const object
   - make changes through queues
-- [ ] Engine
+- [x] Engine
+  - [ ] Make Game and UI globals (?)
+  - [ ] Fix test errors
 - [ ] UI state
+  - [ ] Create device editor manager
+  - [ ] Remove events.hh
 
 # v0.0.5 - ICs + customization
 

@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "direction.hh"
-#include "engine/types.hh"
+#include "engine/util/types.hh"
 
 struct Position {
     Position(size_t _board_id, intpos_t _x, intpos_t _y, Direction _dir = Direction::Center)

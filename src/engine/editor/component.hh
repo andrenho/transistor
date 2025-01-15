@@ -4,7 +4,7 @@
 #include <memory>
 #include <vector>
 
-#include "engine/types.hh"
+#include "engine/util/types.hh"
 #include "engine/componentdb/componentdef.hh"
 #include "engine/geometry/direction.hh"
 #include "engine/geometry/position.hh"

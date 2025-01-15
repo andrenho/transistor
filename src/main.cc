@@ -8,9 +8,11 @@ using namespace std::chrono_literals;
 
 int main()
 {
-    UI ui;
     Game game(0);
     game << game::TryLoad {};
+
+    UI ui;
+    ui << ui::Reset { game };
 
     auto last_frame = hr::now();
 
@@ -19,8 +21,9 @@ int main()
         try {
 
             auto new_frame = hr::now();
-            ui.update(game, new_frame - last_frame);
+
             game.update();
+            ui.update(game, new_frame - last_frame);
 
             ui.render(game);
 
