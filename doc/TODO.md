@@ -51,6 +51,7 @@
   - read from const object
   - make changes through queues
 - [x] Engine
+  - [ ] Move away from component pointer
   - [ ] Make Game and UI globals (?)
   - [ ] Fix test errors
 - [ ] UI state
