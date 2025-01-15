@@ -5,7 +5,7 @@
 #include <string>
 #include <unordered_map>
 
-#include "engine/editor/component.hh"
+#include "engine/board/component.hh"
 
 #include <nlohmann/json.hpp>
 using json = nlohmann::json;

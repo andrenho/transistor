@@ -10,7 +10,6 @@
 
 #include "scene.hh"
 #include "ui_commands.hh"
-#include "engine/game/game.hh"
 #include "SDL2/SDL.h"
 
 #include "devices/deviceeditor.hh"
@@ -30,14 +29,15 @@ public:
 
     void operator<<(ui::Command&& command) const;
 
-    void update(Game const& game, [[maybe_unused]] Duration timestep);
-    void render(Game const& game);
+    void update([[maybe_unused]] Duration timestep);
+    void render();
 
-    void report_exception(Game const& game, std::exception const& exception);
+    void report_exception(std::exception const& exception);
 
     [[nodiscard]] bool running() const { return running_; }
 
 private:
+    void recreate_devices();
     void execute_queue();
 
     void draw_image(Scene::Image const& image, DeviceEditor const* layer) const;

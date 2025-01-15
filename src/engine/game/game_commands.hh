@@ -4,7 +4,10 @@
 #include <string>
 #include <variant>
 
-namespace game {
+#include "engine/board/wire.hh"
+
+
+namespace G {
 
 struct Save {};
 struct TryLoad { bool validate_version = true; };

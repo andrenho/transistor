@@ -3,7 +3,7 @@
 
 #include <ostream>
 
-#include "engine/editor/component.hh"
+#include "engine/board/component.hh"
 
 struct Pin {
     Component const* component;

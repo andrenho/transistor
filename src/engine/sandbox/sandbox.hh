@@ -1,9 +1,11 @@
 #ifndef SANDBOX_HH
 #define SANDBOX_HH
 
+#include <list>
+
+#include "engine/board/board.hh"
 #include "engine/componentdb/componentdb.hh"
 #include "engine/connections/connection.hh"
-#include "engine/editor/editor.hh"
 
 #include <nlohmann/json.hpp>
 using json = nlohmann::json;
@@ -14,7 +16,9 @@ public:
     explicit Sandbox(json const& content);
 
     [[nodiscard]] ComponentDatabase& component_db() { return component_db_; }
-    [[nodiscard]] Editor&            editor() { return editor_; }
+
+    [[nodiscard]] std::list<Board>& boards() { return boards_; }
+    Board& board(size_t);
 
     void recompile();
     void simulate();
@@ -23,12 +27,12 @@ public:
 
     [[nodiscard]] json serialize() const;
 
-    friend bool operator==(Sandbox const& lhs, Sandbox const& rhs) { return lhs.editor_ == rhs.editor_; }
+    friend bool operator==(Sandbox const& lhs, Sandbox const& rhs) { return lhs.boards_ == rhs.boards_; }
     friend bool operator!=(Sandbox const& lhs, Sandbox const& rhs) { return !(lhs == rhs); }
 
 private:
     ComponentDatabase component_db_;
-    Editor            editor_;
+    std::list<Board>  boards_;
 
     Connections                              connections_cache_;
     std::vector<Component*>                  components_cache_;

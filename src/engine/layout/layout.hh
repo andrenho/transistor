@@ -4,7 +4,7 @@
 #include <unordered_map>
 
 #include "pin.hh"
-#include "engine/editor/wire.hh"
+#include "engine/board/wire.hh"
 #include "engine/geometry/position.hh"
 
 struct Layout {

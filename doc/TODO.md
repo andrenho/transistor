@@ -52,6 +52,7 @@
   - make changes through queues
 - [x] Engine
   - [x] Fix test errors
+  - [ ] Remove editor
   - [ ] Make Game and UI globals (?)
 - [ ] UI state
   - [ ] Create device editor manager

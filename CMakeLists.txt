@@ -82,15 +82,13 @@ set(ENGINE_SRC
         src/engine/componentdb/componentdef.hh
         src/engine/componentdb/components.hh
         src/engine/componentdb/components.cc
-        src/engine/editor/editor.hh
-        src/engine/editor/editor.cc
-        src/engine/editor/board.hh
-        src/engine/editor/board.cc
-        src/engine/editor/component.hh
-        src/engine/editor/component.cc
-        src/engine/editor/wire.hh
-        src/engine/editor/wiremanagement.hh
-        src/engine/editor/wiremanagement.cc
+        src/engine/board/board.hh
+        src/engine/board/board.cc
+        src/engine/board/component.hh
+        src/engine/board/component.cc
+        src/engine/board/wire.hh
+        src/engine/board/wiremanagement.hh
+        src/engine/board/wiremanagement.cc
         src/engine/layout/layout.hh
         src/engine/layout/pin.hh
         src/engine/connections/connection.hh

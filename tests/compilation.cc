@@ -11,7 +11,7 @@
 TEST_SUITE("Engine")
 {
     Sandbox sandbox;
-    Board& board = *sandbox.editor().boards().begin();
+    Board& board = *sandbox.boards().begin();
 
     ComponentDefinition const& button_def = sandbox.component_db().component_def("button");
     ComponentDefinition const& led_def = sandbox.component_db().component_def("led");

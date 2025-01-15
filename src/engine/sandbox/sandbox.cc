@@ -4,16 +4,25 @@
 #include "engine/layout/layout.hh"
 
 Sandbox::Sandbox()
-    : editor_(component_db_)
 {
-
+    boards_.emplace_back(20, 10, component_db_);
 }
 
 Sandbox::Sandbox(json const& content)
-    : editor_(content.at("editor"), component_db_)
 {
     // TODO - deal with component_db
+    for (auto const& jboard: content.at("boards"))
+        boards_.emplace_back(jboard, component_db_);
 }
+
+Board& Sandbox::board(size_t id)
+{
+    for (auto& board : boards_)
+        if (board.id() == id)
+            return board;
+    throw std::out_of_range("Board not found");
+}
+
 
 void Sandbox::recompile()
 {
@@ -21,7 +30,7 @@ void Sandbox::recompile()
 
     // compile boards and generate a layout cache
     std::vector<Layout> layouts;
-    for (auto& board: editor_.boards()) {
+    for (auto& board: boards_) {
         layouts.push_back(compiler::compile_to_layout(board));
 
         // extend component cache with all components on board
@@ -71,8 +80,12 @@ uint8_t Sandbox::wire_value(Position const& pos) const
 
 json Sandbox::serialize() const
 {
+    std::vector<json> jboards;
+    jboards.resize(boards_.size());
+    r::transform(boards_, jboards.begin(), [](Board const& board) { return board.serialize(); });
+
     json content;
-    content["editor"] = editor_.serialize();
+    content["boards"] = jboards;
     content["componentDatabase"] = component_db_.serialize();
     return content;
 }

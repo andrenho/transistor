@@ -1,6 +1,6 @@
 #include "components.hh"
 
-#include "engine/editor/component.hh"
+#include "engine/board/component.hh"
 
 namespace component {
 

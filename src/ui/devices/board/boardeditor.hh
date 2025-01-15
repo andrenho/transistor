@@ -1,7 +1,7 @@
 #ifndef BOARDEDITOR_HH
 #define BOARDEDITOR_HH
 
-#include "engine/editor/board.hh"
+#include "engine/board/board.hh"
 #include "../deviceeditor.hh"
 #include "circuit_atlas.hh"
 #include "engine/sandbox/sandbox.hh"
@@ -9,15 +9,15 @@
 
 class BoardEditor : public DeviceEditor {
 public:
-    BoardEditor(ResourceManager& resource_manager, Game const& game, size_t board_id);
+    BoardEditor(ResourceManager& resource_manager, size_t board_id);
 
-    void render(Game const& game, Scene& scene) override;
+    void render(Scene& scene) override;
 
-    void on_mouse_press(Game const& game, int x, int y, uint8_t button, bool dbl_click, Events& events) override;
-    void on_mouse_release(Game const& game, int x, int y, uint8_t button, Events& events) override;
-    void on_mouse_move(Game const& game, int x, int y, int rx, int ry, Events& events) override;
-    void on_key_press(Game const& game, uint32_t key, int x, int y, Events& events) override;
-    void on_key_release(Game const& game, uint32_t key, int x, int y, Events& events) override;
+    void on_mouse_press(int x, int y, uint8_t button, bool dbl_click, Events& events) override;
+    void on_mouse_release(int x, int y, uint8_t button, Events& events) override;
+    void on_mouse_move(int x, int y, int rx, int ry, Events& events) override;
+    void on_key_press(uint32_t key, int x, int y, Events& events) override;
+    void on_key_release(uint32_t key, int x, int y, Events& events) override;
 
 private:
     Board const& board_;
@@ -31,7 +31,7 @@ private:
 
     void draw(Scene& scene, CSprite sprite, int x, int y, Pen const& pen={}) const;
 
-    void start_erasing(Game const& game, Position const& pos, Events& events);
+    void start_erasing(Position const& pos, Events& events);
     void stop_erasing(Events& events);
 };
 

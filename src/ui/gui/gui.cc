@@ -68,7 +68,7 @@ void GUI::process_events(SDL_Event* e)
     ImGui_ImplSDL2_ProcessEvent(e);
 }
 
-bool GUI::render(Game const& game, SDL_Renderer* ren)
+bool GUI::render(SDL_Renderer* ren)
 {
     ImGui_ImplSDLRenderer2_NewFrame();
     ImGui_ImplSDL2_NewFrame();
@@ -77,7 +77,7 @@ bool GUI::render(Game const& game, SDL_Renderer* ren)
     if (show_demo_window_)
         ImGui::ShowDemoWindow(&show_demo_window_);
 
-    if (!render_main_menu(game))
+    if (!render_main_menu())
         return false;
     // render_toolbox();
     render_infobox();
@@ -91,14 +91,14 @@ bool GUI::render(Game const& game, SDL_Renderer* ren)
     return true;
 }
 
-bool GUI::render_main_menu(Game const& game)
+bool GUI::render_main_menu()
 {
     if (ImGui::BeginMainMenuBar()) {
         if (ImGui::BeginMenu("File")) {
 #ifndef NDEBUG
             ImGui::Separator();
             if (ImGui::MenuItem("Serialize sandbox"))
-                std::cout << game.serialize().dump(2) << "\n";
+                std::cout << game().serialize().dump(2) << "\n";
             ImGui::MenuItem("Demo Window", "", &show_demo_window_);
 #endif
             ImGui::Separator();

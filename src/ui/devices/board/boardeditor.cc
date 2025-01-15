@@ -5,9 +5,9 @@
 #include "battery/embed.hpp"
 #include "circuit_atlas.hh"
 
-BoardEditor::BoardEditor(ResourceManager& resource_manager, Game const& game, size_t board_id)
-    : DeviceEditor(game, 0, 0, (game.board(board_id).w() + 4) * TILE_SIZE, (game.board(board_id).w() + 4) * TILE_SIZE),
-      board_(game.board(board_id))
+BoardEditor::BoardEditor(ResourceManager& resource_manager, size_t board_id)
+    : DeviceEditor(0, 0, (game().board(board_id).w() + 4) * TILE_SIZE, (game().board(board_id).w() + 4) * TILE_SIZE),
+      board_(game().board(board_id))
 {
     zoom_ = 2.f;
 }
@@ -20,7 +20,7 @@ BoardEditor::BoardEditor(ResourceManager& resource_manager, Game const& game, si
 
 auto to_pos = [](Board const& board, int x, int y) -> Position { return { board.id(), (intpos_t) (x / TILE_SIZE - 2), (intpos_t) (y / TILE_SIZE - 2) }; };
 
-void BoardEditor::on_mouse_press(Game const& game, int x, int y, uint8_t button, bool dbl_click, Events& events)
+void BoardEditor::on_mouse_press(int x, int y, uint8_t button, bool dbl_click, Events& events)
 {
     auto pos = to_pos(board_, x, y);
 
@@ -28,18 +28,18 @@ void BoardEditor::on_mouse_press(Game const& game, int x, int y, uint8_t button,
         // check for component click
         auto it = board_.components().find(pos);
         if (it != board_.components().end())
-            game << game::ComponentClick { &it->second };
+            game() << G::ComponentClick { &it->second };
 
     } else if (button == 2) {
 
-        start_erasing(game, pos, events);
+        start_erasing(pos, events);
 
     } else if (button == 3) {
         events.emplace_back(event::StartDragging { this });
     }
 }
 
-void BoardEditor::on_mouse_release(Game const& game, int x, int y, uint8_t button, Events& events)
+void BoardEditor::on_mouse_release(int x, int y, uint8_t button, Events& events)
 {
     if (button == 2) {
         stop_erasing(events);
@@ -48,65 +48,65 @@ void BoardEditor::on_mouse_release(Game const& game, int x, int y, uint8_t butto
     }
 }
 
-void BoardEditor::on_mouse_move(Game const& game, int x, int y, int rx, int ry, Events& events)
+void BoardEditor::on_mouse_move(int x, int y, int rx, int ry, Events& events)
 {
     auto pos = to_pos(board_, x, y);
 
     if (drawing_wire_)
-        game << game::ContinuePlacingWire { pos };
+        game() << G::ContinuePlacingWire { pos };
     if (erasing_)
-        game << game::ClearTile { pos };
+        game() << G::ClearTile { pos };
 }
 
-void BoardEditor::on_key_press(Game const& game, uint32_t key, int x, int y, Events& events)
+void BoardEditor::on_key_press(uint32_t key, int x, int y, Events& events)
 {
     auto pos = to_pos(board_, x, y);
 
     switch (key) {
         case 'w':
             drawing_wire_ = true;
-            game << game::StartPlacingWire { Wire::Width::W1, Wire::Layer::Top, pos };
+            game() << G::StartPlacingWire { Wire::Width::W1, Wire::Layer::Top, pos };
             break;
         case 'b':
-            game << game::AddComponent { "button", pos };
+            game() << G::AddComponent { "button", pos };
             break;
         case 'l':
-            game << game::AddComponent { "led", pos };
+            game() << G::AddComponent { "led", pos };
             break;
         case 'v':
-            game << game::AddComponent { "vcc", pos };
+            game() << G::AddComponent { "vcc", pos };
             break;
         case 'n':
-            game << game::AddComponent { "npn", pos };
+            game() << G::AddComponent { "npn", pos };
             break;
         case 'p':
-            game << game::AddComponent { "pnp", pos };
+            game() << G::AddComponent { "pnp", pos };
             break;
         case 'r':
-            game << game::RotateComponent { pos };
+            game() << G::RotateComponent { pos };
             break;
         case 'x':
-            start_erasing(game, pos, events);
+            start_erasing(pos, events);
             break;
         default: break;
     }
 }
 
-void BoardEditor::on_key_release(Game const& game, uint32_t key, int x, int y, Events& events)
+void BoardEditor::on_key_release(uint32_t key, int x, int y, Events& events)
 {
     auto pos = to_pos(board_, x, y);
 
     if (key == 'w') {
         drawing_wire_ = false;
-        game << game::FinishPlacingWire { pos };
+        game() << G::FinishPlacingWire { pos };
     } else if (key == 'x') {
         stop_erasing(events);
     }
 }
 
-void BoardEditor::start_erasing(Game const& game, Position const& pos, Events& events)
+void BoardEditor::start_erasing(Position const& pos, Events& events)
 {
-    game << game::ClearTile { pos };
+    game() << G::ClearTile { pos };
     erasing_ = true;
     events.emplace_back(event::SetMouseCursor { event::SetMouseCursor::Delete });
 }
@@ -128,7 +128,7 @@ void BoardEditor::draw(Scene& scene, CSprite sprite, int x, int y, Pen const& pe
     scene.add(sprite, (x + 2) * TILE_SIZE, (y + 2) * TILE_SIZE, pen);
 }
 
-void BoardEditor::render(Game const& game, Scene& scene)
+void BoardEditor::render(Scene& scene)
 {
     render_border(scene);
     for (intpos_t x = 0; x < board_.w(); ++x)
@@ -197,7 +197,7 @@ void BoardEditor::render_wire(Scene& scene, Position const& pos, Wire const& wir
         { { { Wire::Width::W1, Wire::Layer::Top }, Direction::E, false }, CSprite::WireTopOffEast_1 },
     };
 
-    auto it = wire_sprites.find({ wire, pos.dir, game_.sandbox().wire_value(pos) });
+    auto it = wire_sprites.find({ wire, pos.dir, game().sandbox().wire_value(pos) });
     if (it == wire_sprites.end())
         throw std::runtime_error("Wire configuration not found");
     draw(scene, it->second, pos.x, pos.y, { .semitransparent = semitransparent });

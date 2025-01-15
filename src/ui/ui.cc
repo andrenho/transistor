@@ -46,6 +46,8 @@ UI::UI()
 
     move_cursor_ = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZEALL);
     delete_cursor_ = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_HAND);
+
+    recreate_devices();
 }
 
 UI::~UI()
@@ -65,6 +67,13 @@ UI::~UI()
     SDL_Quit();
 }
 
+void UI::recreate_devices()
+{
+    device_editors_.clear();
+    for (auto const& board: game().sandbox().boards())
+        device_editors_.push_back(std::make_unique<BoardEditor>(resource_manager_, board.id()));
+}
+
 void UI::operator<<(ui::Command&& command) const
 {
     commands_.emplace(command);
@@ -74,15 +83,16 @@ void UI::execute_queue()
 {
     while (!commands_.empty()) {
 
+        /*
         std::visit(overloaded {
-            [&](ui::Reset const& reset) {},
         }, commands_.front());
+        */
 
         commands_.pop();
     }
 }
 
-void UI::update(Game const& game, Duration timestep)
+void UI::update(Duration timestep)
 {
     ++frame_count_;
     ++frame_time_ += timestep;
@@ -103,15 +113,15 @@ void UI::update(Game const& game, Duration timestep)
                 break;
             case SDL_MOUSEBUTTONDOWN:
                 if (auto [layer, lx, ly] = find_device(e.button.x, e.button.y); layer)
-                    layer->on_mouse_press(game, lx, ly, e.button.button, e.button.clicks == 2, events);
+                    layer->on_mouse_press(lx, ly, e.button.button, e.button.clicks == 2, events);
                 break;
             case SDL_MOUSEBUTTONUP:
                 for (auto [layer, lx, ly] : find_all_devices(e.button.x, e.button.y))
-                    layer->on_mouse_release(game, lx, ly, e.button.button, events);
+                    layer->on_mouse_release(lx, ly, e.button.button, events);
                 break;
             case SDL_MOUSEMOTION:
                 if (auto [layer, lx, ly] = find_device(e.button.x, e.button.y); layer)
-                    layer->on_mouse_move(game, lx, ly, e.motion.xrel, e.motion.yrel, events);
+                    layer->on_mouse_move(lx, ly, e.motion.xrel, e.motion.yrel, events);
                 if (dragging_)
                     drag_device(*dragging_, e.motion.xrel, e.motion.yrel);
                 break;
@@ -119,7 +129,7 @@ void UI::update(Game const& game, Duration timestep)
                 if (e.key.repeat == 0) {
                     SDL_GetMouseState(&mx, &my);
                     if (auto [layer, lx, ly] = find_device(mx, my); layer)
-                        layer->on_key_press(game, e.key.keysym.sym, lx, ly, events);
+                        layer->on_key_press(e.key.keysym.sym, lx, ly, events);
 #ifndef NODEBUG
                     if (e.key.keysym.sym == SDLK_q)
                         running_ = false;
@@ -129,7 +139,7 @@ void UI::update(Game const& game, Duration timestep)
             case SDL_KEYUP:
                 SDL_GetMouseState(&mx, &my);
                 for (auto [layer, lx, ly] : find_all_devices(mx, my))
-                    layer->on_key_release(game, e.key.keysym.sym, lx, ly, events);
+                    layer->on_key_release(e.key.keysym.sym, lx, ly, events);
                 break;
             default: break;
         }
@@ -203,7 +213,7 @@ void UI::draw_image(Scene::Image const& image, DeviceEditor const* layer) const
     SDL_RenderSetScale(ren_, 1.f, 1.f);
 }
 
-void UI::render(Game const& game)
+void UI::render()
 {
     // clear screen
     SDL_SetRenderDrawColor(ren_, 0, 0, 0, SDL_ALPHA_OPAQUE);
@@ -215,14 +225,14 @@ void UI::render(Game const& game)
     // draw layers
     for (auto& layer: device_editors_) {
         Scene scene;
-        layer->render(game, scene);
+        layer->render(scene);
         while (auto image = scene.next_image()) {
             draw_image(*image, layer.get());
         }
     }
 
     // draw gui
-    if (!gui_.render(game, ren_))
+    if (!gui_.render(ren_))
         running_ = false;
 
     // present to screen
@@ -272,12 +282,12 @@ std::vector<std::tuple<DeviceEditor*, int, int>> UI::find_all_devices(int x, int
     return r;
 }
 
-void UI::report_exception(Game const& game, std::exception const& exception)
+void UI::report_exception(std::exception const& exception)
 {
     gui_.set_modal_exception(exception.what());
 
     while (running_) {
-        update(game, Duration { 1000 });
-        render(game);
+        update(Duration { 1000 });
+        render();
     }
 }
