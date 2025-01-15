@@ -2,17 +2,17 @@
 
 #include <stdexcept>
 
-Editor::Editor(ComponentDatabase const& component_db, SandboxRecompilationFn recompile)
+Editor::Editor(ComponentDatabase const& component_db)
     : component_db_(component_db)
 {
-    boards_.emplace_back(20, 10, component_db_, recompile);
+    boards_.emplace_back(20, 10, component_db_);
 }
 
-Editor::Editor(json const& content, ComponentDatabase const& component_db, SandboxRecompilationFn recompile)
+Editor::Editor(json const& content, ComponentDatabase const& component_db)
     : component_db_(component_db)
 {
     for (auto const& jboard: content.at("boards"))
-        boards_.emplace_back(jboard, component_db_, recompile);
+        boards_.emplace_back(jboard, component_db_);
 }
 
 Board& Editor::board(size_t id)

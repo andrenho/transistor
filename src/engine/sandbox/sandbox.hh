@@ -16,7 +16,7 @@ public:
     [[nodiscard]] ComponentDatabase& component_db() { return component_db_; }
     [[nodiscard]] Editor&            editor() { return editor_; }
 
-    void reset();
+    void recompile();
     void simulate();
 
     [[nodiscard]] bus_data_t wire_value(Position const& pos) const;

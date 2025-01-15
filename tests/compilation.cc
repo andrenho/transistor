@@ -95,7 +95,7 @@ TEST_SUITE("Engine")
         SUBCASE("Simulate without button press")
         {
             button->data[0] = 0;
-            sandbox.reset();
+            sandbox.recompile();
 
             for (size_t i = 0; i < 10; ++i)
                 sandbox.simulate();
@@ -107,7 +107,7 @@ TEST_SUITE("Engine")
         SUBCASE("Simulate with button press")
         {
             button->data[0] = 0;
-            sandbox.reset();
+            sandbox.recompile();
 
             button->on_click();
             CHECK(button->data[0] == 1);
@@ -122,7 +122,7 @@ TEST_SUITE("Engine")
         SUBCASE("Button press and release")
         {
             button->data[0] = 0;
-            sandbox.reset();
+            sandbox.recompile();
 
             // press
 

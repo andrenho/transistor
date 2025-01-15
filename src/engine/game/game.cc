@@ -45,15 +45,43 @@ void Game::execute_queue()
     while (!commands_.empty()) {
 
         std::visit(overloaded {
-            [&](game::Save const&) { GameFileManager::save(*this); },
-            [&](game::TryLoad const& cmd) { GameFileManager::try_load(*this, cmd.validate_version); },
-            [&](game::StartPlacingWire const& cmd) { board(cmd.pos.board_id).start_placing_wire(cmd.width, cmd.layer, cmd.pos.x, cmd.pos.y); },
-            [&](game::ContinuePlacingWire const& cmd) { board(cmd.pos.board_id).continue_placing_wire(cmd.pos.x, cmd.pos.y); },
-            [&](game::FinishPlacingWire const& cmd) { board(cmd.pos.board_id).finish_placing_wire(cmd.pos.x, cmd.pos.y); },
-            [&](game::AddComponent const& cmd) { board(cmd.pos.board_id).add_component(cmd.component_type, cmd.pos.x, cmd.pos.y); },
-            [&](game::RotateComponent const& cmd) { board(cmd.pos.board_id).rotate_component(cmd.pos.x, cmd.pos.y); },
-            [&](game::ComponentClick const& cmd) { const_cast<Component *>(cmd.component)->on_click(); },
-            [&](game::ClearTile const& cmd) { board(cmd.pos.board_id).clear_tile(cmd.pos.x, cmd.pos.y); },
+
+            [&](game::Save const&) {
+                GameFileManager::save(*this);
+            },
+            [&](game::TryLoad const& cmd) {
+                GameFileManager::try_load(*this, cmd.validate_version);
+                sandbox_->recompile();
+            },
+
+            [&](game::StartPlacingWire const& cmd) {
+                board(cmd.pos.board_id).start_placing_wire(cmd.width, cmd.layer, cmd.pos.x, cmd.pos.y);
+            },
+            [&](game::ContinuePlacingWire const& cmd) {
+                board(cmd.pos.board_id).continue_placing_wire(cmd.pos.x, cmd.pos.y);
+            },
+            [&](game::FinishPlacingWire const& cmd) {
+                board(cmd.pos.board_id).finish_placing_wire(cmd.pos.x, cmd.pos.y);
+                sandbox_->recompile();
+            },
+
+            [&](game::AddComponent const& cmd) {
+                board(cmd.pos.board_id).add_component(cmd.component_type, cmd.pos.x, cmd.pos.y);
+                if (!cmd.bypass_recompilation)
+                    sandbox_->recompile();
+            },
+            [&](game::RotateComponent const& cmd) {
+                board(cmd.pos.board_id).rotate_component(cmd.pos.x, cmd.pos.y);
+                sandbox_->recompile();
+            },
+            [&](game::ComponentClick const& cmd) {
+                const_cast<Component *>(cmd.component)->on_click();
+            },
+            [&](game::ClearTile const& cmd) {
+                board(cmd.pos.board_id).clear_tile(cmd.pos.x, cmd.pos.y);
+                sandbox_->recompile();
+            },
+
         }, commands_.front());
 
         commands_.pop();

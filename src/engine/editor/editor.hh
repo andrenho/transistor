@@ -6,14 +6,12 @@
 #include "board.hh"
 
 #include <nlohmann/json.hpp>
-
-#include "engine/sandbox/recompilation.hh"
 using json = nlohmann::json;
 
 class Editor {
 public:
-    explicit Editor(ComponentDatabase const& component_db, SandboxRecompilationFn recompile);
-    explicit Editor(json const& content, ComponentDatabase const& component_db, SandboxRecompilationFn recompile);
+    explicit Editor(ComponentDatabase const& component_db);
+    explicit Editor(json const& content, ComponentDatabase const& component_db);
 
     [[nodiscard]] std::list<Board>& boards() { return boards_; }
     Board& board(size_t);

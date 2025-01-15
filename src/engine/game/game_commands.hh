@@ -20,6 +20,7 @@ struct FinishPlacingWire { Position pos; };
 struct AddComponent {
     std::string component_type;
     Position    pos;
+    bool        bypass_recompilation = false;
 };
 
 struct RotateComponent { Position pos; };

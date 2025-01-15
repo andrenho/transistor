@@ -4,19 +4,18 @@
 #include "engine/layout/layout.hh"
 
 Sandbox::Sandbox()
-    : editor_(component_db_, [this](){ reset(); })
+    : editor_(component_db_)
 {
 
 }
 
 Sandbox::Sandbox(json const& content)
-    : editor_(content.at("editor"), component_db_, [this](){ reset(); })
+    : editor_(content.at("editor"), component_db_)
 {
     // TODO - deal with component_db
-    reset();
 }
 
-void Sandbox::reset()
+void Sandbox::recompile()
 {
     components_cache_.clear();
 
