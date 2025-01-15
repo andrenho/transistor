@@ -51,9 +51,8 @@
   - read from const object
   - make changes through queues
 - [x] Engine
-  - [ ] Move away from component pointer
+  - [x] Fix test errors
   - [ ] Make Game and UI globals (?)
-  - [ ] Fix test errors
 - [ ] UI state
   - [ ] Create device editor manager
   - [ ] Remove events.hh
