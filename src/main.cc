@@ -2,6 +2,8 @@
 
 #include <chrono>
 #include <iostream>
+
+#include "util/exceptions.hh"
 using namespace std::chrono_literals;
 
 #include "engine/game/game.hh"
@@ -23,6 +25,9 @@ int main()
             ui().render();
 
             last_frame = new_frame;
+
+        } catch (RecoverableException& e) {
+            ui() << U::ShowException { e.what(), true };
 
         } catch (std::exception& e) {
             ui() << U::ShowException { e.what() };

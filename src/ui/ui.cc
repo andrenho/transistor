@@ -110,7 +110,10 @@ void UI::execute_queue()
                 running_ = false;
             },
             [&](U::ShowException const& cmd) {
-                state_.exception_text = cmd.text;
+                state_.exception = cmd;
+            },
+            [&](U::ClearException const&) {
+                state_.exception = {};
             },
             [&](U::SetInfoboxText const& cmd) {
                 state_.textbox = cmd.text;

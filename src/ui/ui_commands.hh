@@ -13,7 +13,11 @@ namespace U {
 struct StartDragginDevice { DeviceEditor* device_editor; };
 struct StopDraggingDevice {};
 
-struct ShowException { std::string text; };
+struct ShowException {
+    std::string text;
+    bool        recoverable = false;
+};
+struct ClearException {};
 struct SetInfoboxText { std::string text; };
 
 struct SetMouseCursor {
@@ -25,7 +29,7 @@ struct Quit {};
 
 using Command = std::variant<
     StartDragginDevice, StopDraggingDevice,
-    ShowException,
+    ShowException, ClearException, SetInfoboxText,
     SetMouseCursor, Quit
 >;
 

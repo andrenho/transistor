@@ -8,6 +8,7 @@
 
 #include "battery/embed.hpp"
 #include "engine/sandbox/sandbox.hh"
+#include "ui/ui.hh"
 
 void GUI::init(SDL_Window* window, SDL_Renderer* ren)
 {
@@ -147,21 +148,23 @@ bool GUI::render_modal_exception(UIState const& state) const
 {
     ImGui::SetNextWindowSizeConstraints({ 400.f, 0.f }, { 400.f, FLT_MAX });
     if (ImGui::BeginPopupModal("Error!", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
-        if (state.exception_text) {
+        if (state.exception) {
             ImGui::PushTextWrapPos();
-            ImGui::Text("%s", state.exception_text->c_str());
+            ImGui::Text("%s", state.exception->text.c_str());
             ImGui::PopTextWrapPos();
         }
         ImGui::Separator();
         ImGui::SetItemDefaultFocus();
         if (ImGui::Button("OK", ImVec2(120, 0))) {
             ImGui::CloseCurrentPopup();
-            return false;
+            ui() << U::ClearException {};
+            ImGui::EndPopup();
+            return state.exception->recoverable;
         }
         ImGui::EndPopup();
     }
 
-    if (state.exception_text)
+    if (state.exception)
         ImGui::OpenPopup("Error!");
 
     return true;

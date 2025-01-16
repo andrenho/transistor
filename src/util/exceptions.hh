@@ -3,9 +3,9 @@
 
 #include <stdexcept>
 
-class RecoverableErrorOptional : public std::runtime_error {
+class RecoverableException : public std::runtime_error {
 public:
-    explicit RecoverableErrorOptional(const char* what) : std::runtime_error(what) {}
+    explicit RecoverableException(const char* what) : std::runtime_error(what) {}
 };
 
 #endif //EXCEPTIONS_HH

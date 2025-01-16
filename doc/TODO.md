@@ -57,7 +57,7 @@
   - [x] Improve exception report with message queues
 - [x] Remove events.hh
 - [x] UI state
-- [ ] Improve error (don't quit sometimes)
+- [x] Improve error (don't quit sometimes)
 
 # v0.0.5 - ICs + customization
 
