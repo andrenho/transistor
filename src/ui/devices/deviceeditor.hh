@@ -2,7 +2,6 @@
 #define LAYER_HH
 
 #include "engine/game/game.hh"
-#include "ui/events.hh"
 
 class DeviceEditor {
 public:
@@ -10,11 +9,11 @@ public:
 
     virtual void render(class Scene& scene) = 0;
 
-    virtual void on_mouse_press(int x, int y, uint8_t button, bool dbl_click, Events& events) {}
-    virtual void on_mouse_release(int x, int y, uint8_t button, Events& events) {}
-    virtual void on_mouse_move(int x, int y, int rx, int ry, Events& events) {}
-    virtual void on_key_press(uint32_t key, int x, int y, Events& events) {}
-    virtual void on_key_release(uint32_t key, int x, int y, Events& events) {}
+    virtual void on_mouse_press(int x, int y, uint8_t button, bool dbl_click) {}
+    virtual void on_mouse_release(int x, int y, uint8_t button) {}
+    virtual void on_mouse_move(int x, int y, int rx, int ry) {}
+    virtual void on_key_press(uint32_t key, int x, int y) {}
+    virtual void on_key_release(uint32_t key, int x, int y) {}
 
     virtual void set_x(int pos_x) { x_ = pos_x; }
     virtual void set_y(int pos_y) { y_ = pos_y; }

@@ -42,7 +42,6 @@ private:
     void execute_queue();
 
     void draw_image(Scene::Image const& image, DeviceEditor const* layer) const;
-    void do_events(Events const& events);
 
     void                                             drag_device(DeviceEditor* layer, int xrel, int yrel);
     std::tuple<DeviceEditor*, int, int>              find_device(int x, int y) const;

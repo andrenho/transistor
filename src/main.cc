@@ -26,7 +26,9 @@ int main()
             last_frame = new_frame;
 
         } catch (std::exception& e) {
-            const_cast<UI*>(&ui())->report_exception(e);  // TODO - improve this
+
+            ui() << U::ShowException { e };
+
         }
 
     }

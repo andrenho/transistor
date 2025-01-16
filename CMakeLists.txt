@@ -109,7 +109,6 @@ set(UI_SRC
         src/ui/ui.hh
         src/ui/ui.cc
         src/ui/scene.hh
-        src/ui/events.hh
         src/ui/resources/resourcemanager.cc
         src/ui/resources/resourcemanager.hh
         src/ui/resources/resource.hh

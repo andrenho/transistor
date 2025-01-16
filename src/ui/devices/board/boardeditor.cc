@@ -4,6 +4,7 @@
 
 #include "battery/embed.hpp"
 #include "circuit_atlas.hh"
+#include "ui/ui.hh"
 
 BoardEditor::BoardEditor(ResourceManager& resource_manager, size_t board_id)
     : DeviceEditor(0, 0, (game().board(board_id).w() + 4) * TILE_SIZE, (game().board(board_id).w() + 4) * TILE_SIZE),
@@ -20,7 +21,7 @@ BoardEditor::BoardEditor(ResourceManager& resource_manager, size_t board_id)
 
 auto to_pos = [](Board const& board, int x, int y) -> Position { return { board.id(), (intpos_t) (x / TILE_SIZE - 2), (intpos_t) (y / TILE_SIZE - 2) }; };
 
-void BoardEditor::on_mouse_press(int x, int y, uint8_t button, bool dbl_click, Events& events)
+void BoardEditor::on_mouse_press(int x, int y, uint8_t button, bool dbl_click)
 {
     auto pos = to_pos(board_, x, y);
 
@@ -32,23 +33,23 @@ void BoardEditor::on_mouse_press(int x, int y, uint8_t button, bool dbl_click, E
 
     } else if (button == 2) {
 
-        start_erasing(pos, events);
+        start_erasing(pos);
 
     } else if (button == 3) {
-        events.emplace_back(event::StartDragging { this });
+        ui() << U::StartDragginDevice { this };
     }
 }
 
-void BoardEditor::on_mouse_release(int x, int y, uint8_t button, Events& events)
+void BoardEditor::on_mouse_release(int x, int y, uint8_t button)
 {
     if (button == 2) {
-        stop_erasing(events);
+        stop_erasing();
     } else if (button == 3) {
-        events.emplace_back(event::StopDragging {});
+        ui() << U::StopDraggingDevice {};
     }
 }
 
-void BoardEditor::on_mouse_move(int x, int y, int rx, int ry, Events& events)
+void BoardEditor::on_mouse_move(int x, int y, int rx, int ry)
 {
     auto pos = to_pos(board_, x, y);
 
@@ -58,7 +59,7 @@ void BoardEditor::on_mouse_move(int x, int y, int rx, int ry, Events& events)
         game() << G::ClearTile { pos };
 }
 
-void BoardEditor::on_key_press(uint32_t key, int x, int y, Events& events)
+void BoardEditor::on_key_press(uint32_t key, int x, int y)
 {
     auto pos = to_pos(board_, x, y);
 
@@ -86,13 +87,13 @@ void BoardEditor::on_key_press(uint32_t key, int x, int y, Events& events)
             game() << G::RotateComponent { pos };
             break;
         case 'x':
-            start_erasing(pos, events);
+            start_erasing(pos);
             break;
         default: break;
     }
 }
 
-void BoardEditor::on_key_release(uint32_t key, int x, int y, Events& events)
+void BoardEditor::on_key_release(uint32_t key, int x, int y)
 {
     auto pos = to_pos(board_, x, y);
 
@@ -100,21 +101,21 @@ void BoardEditor::on_key_release(uint32_t key, int x, int y, Events& events)
         drawing_wire_ = false;
         game() << G::FinishPlacingWire { pos };
     } else if (key == 'x') {
-        stop_erasing(events);
+        stop_erasing();
     }
 }
 
-void BoardEditor::start_erasing(Position const& pos, Events& events)
+void BoardEditor::start_erasing(Position const& pos)
 {
     game() << G::ClearTile { pos };
     erasing_ = true;
-    events.emplace_back(event::SetMouseCursor { event::SetMouseCursor::Delete });
+    ui() << U::SetMouseCursor { U::SetMouseCursor::Delete };
 }
 
-void BoardEditor::stop_erasing(Events& events)
+void BoardEditor::stop_erasing()
 {
     erasing_ = false;
-    events.emplace_back(event::SetMouseCursor { event::SetMouseCursor::Normal });
+    ui() << U::SetMouseCursor { U::SetMouseCursor::Normal };
 }
 
 //---------------//

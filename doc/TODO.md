@@ -54,10 +54,10 @@
   - [x] Fix test errors
   - [x] Remove editor
   - [x] Make Game and UI globals
-  - [ ] Improve exception report with message queues
+  - [x] Improve exception report with message queues
 - [ ] UI state
+  - [x] Remove events.hh
   - [ ] Create device editor manager
-  - [ ] Remove events.hh
 
 # v0.0.5 - ICs + customization
 

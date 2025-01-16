@@ -84,7 +84,31 @@ void UI::execute_queue()
     while (!commands_.empty()) {
 
         std::visit(overloaded {
-            [&](U::Quit const&) { running_ = false; },
+            [&](U::StartDragginDevice const& cmd) {
+                dragging_ = cmd.device_editor;
+                SDL_SetCursor(move_cursor_);
+            },
+            [&](U::StopDraggingDevice const&) {
+                dragging_ = {};
+                SDL_SetCursor(SDL_GetDefaultCursor());
+            },
+            [&](U::SetMouseCursor const& cmd) {
+                switch (cmd.cursor) {
+                    case U::SetMouseCursor::Normal:
+                        SDL_SetCursor(SDL_GetDefaultCursor());
+                        break;
+                    case U::SetMouseCursor::Delete:
+                        SDL_SetCursor(delete_cursor_);
+                        break;
+                    default: break;
+                }
+            },
+            [&](U::Quit const&) {
+                running_ = false;
+            },
+            [&](U::ShowException const& cmd) {
+                report_exception(cmd.exception);
+            }
         }, commands_.front());
 
         commands_.pop();
@@ -96,8 +120,6 @@ void UI::update(Duration timestep)
     ++frame_count_;
     ++frame_time_ += timestep;
     ++total_frames_;
-
-    Events events;
 
     SDL_Event e;
     while (SDL_PollEvent(&e)) {
@@ -112,15 +134,15 @@ void UI::update(Duration timestep)
                 break;
             case SDL_MOUSEBUTTONDOWN:
                 if (auto [layer, lx, ly] = find_device(e.button.x, e.button.y); layer)
-                    layer->on_mouse_press(lx, ly, e.button.button, e.button.clicks == 2, events);
+                    layer->on_mouse_press(lx, ly, e.button.button, e.button.clicks == 2);
                 break;
             case SDL_MOUSEBUTTONUP:
                 for (auto [layer, lx, ly] : find_all_devices(e.button.x, e.button.y))
-                    layer->on_mouse_release(lx, ly, e.button.button, events);
+                    layer->on_mouse_release(lx, ly, e.button.button);
                 break;
             case SDL_MOUSEMOTION:
                 if (auto [layer, lx, ly] = find_device(e.button.x, e.button.y); layer)
-                    layer->on_mouse_move(lx, ly, e.motion.xrel, e.motion.yrel, events);
+                    layer->on_mouse_move(lx, ly, e.motion.xrel, e.motion.yrel);
                 if (dragging_)
                     drag_device(*dragging_, e.motion.xrel, e.motion.yrel);
                 break;
@@ -128,7 +150,7 @@ void UI::update(Duration timestep)
                 if (e.key.repeat == 0) {
                     SDL_GetMouseState(&mx, &my);
                     if (auto [layer, lx, ly] = find_device(mx, my); layer)
-                        layer->on_key_press(e.key.keysym.sym, lx, ly, events);
+                        layer->on_key_press(e.key.keysym.sym, lx, ly);
 #ifndef NODEBUG
                     if (e.key.keysym.sym == SDLK_q)
                         running_ = false;
@@ -138,42 +160,14 @@ void UI::update(Duration timestep)
             case SDL_KEYUP:
                 SDL_GetMouseState(&mx, &my);
                 for (auto [layer, lx, ly] : find_all_devices(mx, my))
-                    layer->on_key_release(e.key.keysym.sym, lx, ly, events);
+                    layer->on_key_release(e.key.keysym.sym, lx, ly);
                 break;
             default: break;
         }
     }
 
-    do_events(events);
+    execute_queue();
 }
-
-void UI::do_events(Events const& events)
-{
-    for (auto const& event: events) {
-        std::visit(overloaded {
-            [&](event::StartDragging const& sd) {
-                dragging_ = sd.layer;
-                SDL_SetCursor(move_cursor_);
-            },
-            [&](event::StopDragging const&) {
-                dragging_ = {};
-                SDL_SetCursor(SDL_GetDefaultCursor());
-            },
-            [&](event::SetMouseCursor const& mc) {
-                switch (mc.cursor) {
-                    case event::SetMouseCursor::Normal:
-                        SDL_SetCursor(SDL_GetDefaultCursor());
-                        break;
-                    case event::SetMouseCursor::Delete:
-                        SDL_SetCursor(delete_cursor_);
-                        break;
-                    default: break;
-                }
-            },
-        }, event);
-    }
-}
-
 
 void UI::draw_image(Scene::Image const& image, DeviceEditor const* layer) const
 {
