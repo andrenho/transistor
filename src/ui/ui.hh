@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "scene.hh"
+#include "uistate.hh"
 #include "ui_commands.hh"
 #include "SDL2/SDL.h"
 
@@ -30,8 +31,6 @@ public:
 
     void update(Duration timestep);
     void render() const;
-
-    void report_exception(std::exception const& exception);
 
     [[nodiscard]] bool running() const { return running_; }
 
@@ -57,6 +56,8 @@ private:
     GUI             gui_;
     ResourceManager resource_manager_;
     Resource        bg_;
+
+    UIState         state_;
 
     std::vector<std::unique_ptr<DeviceEditor>> device_editors_;
     std::optional<DeviceEditor*> dragging_;

@@ -119,6 +119,7 @@ set(UI_SRC
         src/ui/gui/gui.cc
         src/ui/gui/gui.hh
         src/ui/ui_commands.hh
+        src/ui/uistate.hh
 )
 
 set(IMGUI_SRC

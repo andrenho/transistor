@@ -8,14 +8,13 @@ using namespace std::chrono_literals;
 
 int main()
 {
-    game(0) << G::TryLoad {};
-
     auto last_frame = hr::now();
+
+    game(0) << G::TryLoad {};
 
     while (ui().running()) {
 
         try {
-
             auto new_frame = hr::now();
 
             game_update();
@@ -26,10 +25,7 @@ int main()
             last_frame = new_frame;
 
         } catch (std::exception& e) {
-
-            ui() << U::ShowException { e };
-
+            ui() << U::ShowException { e.what() };
         }
-
     }
 }

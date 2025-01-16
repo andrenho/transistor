@@ -68,7 +68,7 @@ void GUI::process_events(SDL_Event* e)
     ImGui_ImplSDL2_ProcessEvent(e);
 }
 
-bool GUI::render(SDL_Renderer* ren) const
+bool GUI::render(SDL_Renderer* ren, UIState const& state) const
 {
     ImGui_ImplSDLRenderer2_NewFrame();
     ImGui_ImplSDL2_NewFrame();
@@ -80,9 +80,9 @@ bool GUI::render(SDL_Renderer* ren) const
     if (!render_main_menu())
         return false;
     // render_toolbox();
-    render_infobox();
+    render_infobox(state);
 
-    if (!render_modal_exception())
+    if (!render_modal_exception(state))
         return false;
 
     ImGui::Render();
@@ -112,7 +112,7 @@ bool GUI::render_main_menu() const
     return true;
 }
 
-void GUI::render_infobox() const
+void GUI::render_infobox(UIState const& state) const
 {
     constexpr float INFOBOX_WIDTH = 350.f;
 
@@ -129,27 +129,27 @@ void GUI::render_infobox() const
     ImGui::SetNextWindowBgAlpha(0.35f);
 
     if (ImGui::Begin("InfoBox", nullptr, window_flags)) {
-        ImGui::Text("This is a infobox");
+        ImGui::Text("%s", state.textbox.c_str());
     }
     ImGui::End();
 
     ImGui::PopStyleVar(2);
 }
 
-void GUI::render_toolbox() const
+void GUI::render_toolbox(UIState const& state) const
 {
     if (ImGui::Begin("Toolbox", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoCollapse)) {
     }
     ImGui::End();
 }
 
-bool GUI::render_modal_exception() const
+bool GUI::render_modal_exception(UIState const& state) const
 {
     ImGui::SetNextWindowSizeConstraints({ 400.f, 0.f }, { 400.f, FLT_MAX });
     if (ImGui::BeginPopupModal("Error!", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
-        if (modal_exception_) {
+        if (state.exception_text) {
             ImGui::PushTextWrapPos();
-            ImGui::Text("%s", modal_exception_->c_str());
+            ImGui::Text("%s", state.exception_text->c_str());
             ImGui::PopTextWrapPos();
         }
         ImGui::Separator();
@@ -161,7 +161,7 @@ bool GUI::render_modal_exception() const
         ImGui::EndPopup();
     }
 
-    if (modal_exception_)
+    if (state.exception_text)
         ImGui::OpenPopup("Error!");
 
     return true;

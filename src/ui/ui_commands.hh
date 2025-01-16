@@ -13,7 +13,8 @@ namespace U {
 struct StartDragginDevice { DeviceEditor* device_editor; };
 struct StopDraggingDevice {};
 
-struct ShowException { std::exception exception; };
+struct ShowException { std::string text; };
+struct SetInfoboxText { std::string text; };
 
 struct SetMouseCursor {
     enum MouseCursor { Normal, Delete };

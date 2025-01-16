@@ -56,11 +56,12 @@
   - [x] Make Game and UI globals
   - [x] Improve exception report with message queues
 - [x] Remove events.hh
-- [ ] UI state
-- [ ] Create device editor manager
+- [x] UI state
+- [ ] Improve error (don't quit sometimes)
 
 # v0.0.5 - ICs + customization
 
+- [ ] advanced infobox
 - [ ] toolbar
   - [ ] basic components
   - [ ] selected component

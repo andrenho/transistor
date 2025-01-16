@@ -83,6 +83,9 @@ void UI::execute_queue()
 {
     while (!commands_.empty()) {
 
+        auto command = std::move(commands_.front());
+        commands_.pop();
+
         std::visit(overloaded {
             [&](U::StartDragginDevice const& cmd) {
                 dragging_ = cmd.device_editor;
@@ -107,11 +110,12 @@ void UI::execute_queue()
                 running_ = false;
             },
             [&](U::ShowException const& cmd) {
-                report_exception(cmd.exception);
+                state_.exception_text = cmd.text;
+            },
+            [&](U::SetInfoboxText const& cmd) {
+                state_.textbox = cmd.text;
             }
-        }, commands_.front());
-
-        commands_.pop();
+        }, command);
     }
 }
 
@@ -225,7 +229,7 @@ void UI::render() const
     }
 
     // draw gui
-    if (!gui_.render(ren_))
+    if (!gui_.render(ren_, state_))
         *this << U::Quit {};
 
     // present to screen
@@ -273,16 +277,6 @@ std::vector<std::tuple<DeviceEditor*, int, int>> UI::find_all_devices(int x, int
     for (auto const& layer: device_editors_)
         r.emplace_back(layer.get(), (x - layer->x()) / layer->zoom(), (y - layer->y()) / layer->zoom());
     return r;
-}
-
-void UI::report_exception(std::exception const& exception)
-{
-    gui_.set_modal_exception(exception.what());
-
-    while (running_) {
-        update(Duration { 1000 });
-        render();
-    }
 }
 
 UI const& ui()
