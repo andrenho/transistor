@@ -6,6 +6,7 @@
 
 #include "engine/game/game.hh"
 #include "gui/infobox.hh"
+#include "gui/toolbox.hh"
 
 struct DeviceEditor;
 
@@ -21,6 +22,10 @@ struct ShowException {
 struct ClearException {};
 struct SetInfobox { InfoboxContents contents; };
 
+struct UpdateToolbox {
+    Toolbox toolbox;
+};
+
 struct SetMouseCursor {
     enum MouseCursor { Normal, Delete };
     MouseCursor cursor;
@@ -30,7 +35,7 @@ struct Quit {};
 
 using Command = std::variant<
     StartDragginDevice, StopDraggingDevice,
-    ShowException, ClearException, SetInfobox,
+    ShowException, ClearException, SetInfobox, UpdateToolbox,
     SetMouseCursor, Quit
 >;
 

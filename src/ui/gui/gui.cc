@@ -10,7 +10,7 @@
 #include "engine/sandbox/sandbox.hh"
 #include "ui/ui.hh"
 
-void GUI::init(SDL_Window* window, SDL_Renderer* ren)
+void GUI::init(SDL_Window* window, SDL_Renderer* ren, std::vector<Resource> const& icons)
 {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -29,6 +29,15 @@ void GUI::init(SDL_Window* window, SDL_Renderer* ren)
     ImFontConfig cfg;
     cfg.FontDataOwnedByAtlas = false;
     io->Fonts->AddFontFromMemoryTTF((void *) ttf.data(), (int) ttf.size(), 16, &cfg);
+
+    init_toolbox(icons);
+}
+
+void GUI::init_toolbox(std::vector<Resource> const& icons)
+{
+    ui() << U::UpdateToolbox {.toolbox = {
+        { .image = icons.at((size_t) CSprite::Arrow) }
+    }};
 }
 
 void GUI::setup_theme()
@@ -80,7 +89,7 @@ bool GUI::render(SDL_Renderer* ren, UIState const& state) const
 
     if (!render_main_menu())
         return false;
-    // render_toolbox();
+    render_toolbox(state);
     render_infobox(state);
 
     if (!render_modal_exception(state))
@@ -140,6 +149,10 @@ void GUI::render_infobox(UIState const& state) const
 void GUI::render_toolbox(UIState const& state) const
 {
     if (ImGui::Begin("Toolbox", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoCollapse)) {
+        for (auto const& button: state.toolbox) {
+            if (ImGui::Button("X", { 38, 38 }))
+                ;
+        }
     }
     ImGui::End();
 }

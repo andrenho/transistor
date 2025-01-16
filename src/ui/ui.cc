@@ -42,7 +42,7 @@ UI::UI()
     Resource circuit = resource_manager_.from_image(b::embed<"resources/images/circuit.png">().vec());
     icons_ = resource_manager_.from_atlas(circuit, circuit_coordinates, TILE_SIZE);
 
-    gui_.init(window_, ren_);
+    gui_.init(window_, ren_, icons_);
 
     move_cursor_ = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZEALL);
     delete_cursor_ = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_HAND);
@@ -108,6 +108,9 @@ void UI::execute_queue()
             },
             [&](U::Quit const&) {
                 running_ = false;
+            },
+            [&](U::UpdateToolbox const& cmd) {
+                state_.toolbox = cmd.toolbox;
             },
             [&](U::ShowException const& cmd) {
                 state_.exception = cmd;

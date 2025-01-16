@@ -62,7 +62,9 @@
 # v0.0.5 - ICs + customization
 
 - [x] advanced infobox
+- [ ] global res()
 - [ ] toolbar
+  - [ ] detach resource manager from UI?
   - [ ] basic components
   - [ ] selected component
   - [ ] component infobox

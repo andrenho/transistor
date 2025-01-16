@@ -135,6 +135,7 @@ set(IMGUI_SRC
         contrib/ImGuiFileDialog/ImGuiFileDialogConfig.h
         src/ui/gui/infobox.cc
         src/ui/gui/infobox.hh
+        src/ui/gui/toolbox.hh
 )
 
 add_executable(${CMAKE_PROJECT_NAME}
