@@ -61,7 +61,7 @@
 
 # v0.0.5 - ICs + customization
 
-- [ ] advanced infobox
+- [x] advanced infobox
 - [ ] toolbar
   - [ ] basic components
   - [ ] selected component
