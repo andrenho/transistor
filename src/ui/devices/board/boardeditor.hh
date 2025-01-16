@@ -20,7 +20,7 @@ public:
     void on_key_release(uint32_t key, int x, int y) override;
 
 private:
-    Board const& board_;
+    size_t       board_id_;
     bool         drawing_wire_ = false;
     bool         erasing_ = false;
 

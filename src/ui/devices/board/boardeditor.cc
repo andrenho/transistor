@@ -8,7 +8,7 @@
 
 BoardEditor::BoardEditor(ResourceManager& resource_manager, size_t board_id)
     : DeviceEditor(0, 0, (game().board(board_id).w() + 4) * TILE_SIZE, (game().board(board_id).w() + 4) * TILE_SIZE),
-      board_(game().board(board_id))
+      board_id_(board_id)
 {
     zoom_ = 2.f;
 }
@@ -19,16 +19,26 @@ BoardEditor::BoardEditor(ResourceManager& resource_manager, size_t board_id)
 //            //
 //------------//
 
-auto to_pos = [](Board const& board, int x, int y) -> Position { return { board.id(), (intpos_t) (x / TILE_SIZE - 2), (intpos_t) (y / TILE_SIZE - 2) }; };
+static Position to_pos(Board const& board, int x, int y)
+{
+    return { board.id(), (intpos_t) (x / TILE_SIZE - 2), (intpos_t) (y / TILE_SIZE - 2) };
+};
+
+static Position to_pos(size_t board_id, int x, int y)
+{
+    return { board_id, (intpos_t) (x / TILE_SIZE - 2), (intpos_t) (y / TILE_SIZE - 2) };
+};
+
 
 void BoardEditor::on_mouse_press(int x, int y, uint8_t button, bool dbl_click)
 {
-    auto pos = to_pos(board_, x, y);
+    Board const& board = game().board(board_id_);
+    auto pos = to_pos(board, x, y);
 
     if (button == 1) {
         // check for component click
-        auto it = board_.components().find(pos);
-        if (it != board_.components().end())
+        auto it = board.components().find(pos);
+        if (it != board.components().end())
             game() << G::ComponentClick { &it->second };
 
     } else if (button == 2) {
@@ -51,7 +61,7 @@ void BoardEditor::on_mouse_release(int x, int y, uint8_t button)
 
 void BoardEditor::on_mouse_move(int x, int y, int rx, int ry)
 {
-    auto pos = to_pos(board_, x, y);
+    auto pos = to_pos(board_id_, x, y);
 
     if (drawing_wire_)
         game() << G::ContinuePlacingWire { pos };
@@ -61,7 +71,7 @@ void BoardEditor::on_mouse_move(int x, int y, int rx, int ry)
 
 void BoardEditor::on_key_press(uint32_t key, int x, int y)
 {
-    auto pos = to_pos(board_, x, y);
+    auto pos = to_pos(board_id_, x, y);
 
     switch (key) {
         case 'w':
@@ -95,7 +105,7 @@ void BoardEditor::on_key_press(uint32_t key, int x, int y)
 
 void BoardEditor::on_key_release(uint32_t key, int x, int y)
 {
-    auto pos = to_pos(board_, x, y);
+    auto pos = to_pos(board_id_, x, y);
 
     if (key == 'w') {
         drawing_wire_ = false;
@@ -131,48 +141,54 @@ void BoardEditor::draw(Scene& scene, CSprite sprite, int x, int y, Pen const& pe
 
 void BoardEditor::render(Scene& scene)
 {
+    Board const& board = game().board(board_id_);
+
     render_border(scene);
-    for (intpos_t x = 0; x < board_.w(); ++x)
-        for (intpos_t y = 0; y < board_.h(); ++y)
+    for (intpos_t x = 0; x < board.w(); ++x)
+        for (intpos_t y = 0; y < board.h(); ++y)
             render_tile(scene, x, y);
 }
 
 void BoardEditor::render_border(Scene& scene) const
 {
-    draw(scene, CSprite::BoardTopLeft, -2, -2);
-    draw(scene, CSprite::BoardTopRight, board_.w(), -2);
-    draw(scene, CSprite::BoardBottomLeft, -2, board_.h());
-    draw(scene, CSprite::BoardBottomRight, board_.w(), board_.h());
+    Board const& board = game().board(board_id_);
 
-    for (ssize_t x = 0; x < board_.w(); ++x) {
+    draw(scene, CSprite::BoardTopLeft, -2, -2);
+    draw(scene, CSprite::BoardTopRight, board.w(), -2);
+    draw(scene, CSprite::BoardBottomLeft, -2, board.h());
+    draw(scene, CSprite::BoardBottomRight, board.w(), board.h());
+
+    for (ssize_t x = 0; x < board.w(); ++x) {
         draw(scene, CSprite::BoardTop, x, -2);
-        draw(scene, CSprite::BoardBottom, x, board_.h());
+        draw(scene, CSprite::BoardBottom, x, board.h());
     }
 
-    for (ssize_t y = 0; y < board_.h(); ++y) {
+    for (ssize_t y = 0; y < board.h(); ++y) {
         draw(scene, CSprite::BoardLeft, -2, y);
-        draw(scene, CSprite::BoardRight, board_.w(), y);
+        draw(scene, CSprite::BoardRight, board.w(), y);
     }
 }
 
 void BoardEditor::render_tile(Scene& scene, intpos_t x, intpos_t y) const
 {
+    Board const& board = game().board(board_id_);
+
     draw(scene, CSprite::Tile, x, y);
 
     for (Direction const& dir: DIRECTIONS) {
         // draw wire
-        auto it = board_.wires().find({ board_.id(), x, y, dir });
-        if (it != board_.wires().end())
+        auto it = board.wires().find({ board.id(), x, y, dir });
+        if (it != board.wires().end())
             render_wire(scene, it->first, it->second, false);
 
         // draw temporary wire
-        auto temp = board_.temporary_wire();
-        it = temp.find({ board_.id(), x, y, dir });
+        auto temp = board.temporary_wire();
+        it = temp.find({ board.id(), x, y, dir });
         if (it != temp.end())
             render_wire(scene, it->first, it->second, true);
 
-        auto itc = board_.components().find({ board_.id(), x, y });
-        if (itc != board_.components().end())
+        auto itc = board.components().find({ board.id(), x, y });
+        if (itc != board.components().end())
             render_component(scene, itc->first, itc->second);
     }
 }
