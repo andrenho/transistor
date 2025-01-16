@@ -5,7 +5,7 @@
 cmake_minimum_required(VERSION 3.28)
 
 project(transistor
-    VERSION 0.0.4
+    VERSION 0.0.5
     DESCRIPTION "A game to learn and create circuits"
     LANGUAGES C CXX ASM
 )
@@ -133,6 +133,8 @@ set(IMGUI_SRC
         contrib/ImGuiFileDialog/ImGuiFileDialog.h
         contrib/ImGuiFileDialog/ImGuiFileDialog.cpp
         contrib/ImGuiFileDialog/ImGuiFileDialogConfig.h
+        src/ui/gui/infobox.cc
+        src/ui/gui/infobox.hh
 )
 
 add_executable(${CMAKE_PROJECT_NAME}

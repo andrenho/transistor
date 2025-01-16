@@ -130,7 +130,7 @@ void GUI::render_infobox(UIState const& state) const
     ImGui::SetNextWindowBgAlpha(0.35f);
 
     if (ImGui::Begin("InfoBox", nullptr, window_flags)) {
-        ImGui::Text("%s", state.textbox.c_str());
+        ::render_infobox(state.infobox_contents);
     }
     ImGui::End();
 

@@ -115,8 +115,8 @@ void UI::execute_queue()
             [&](U::ClearException const&) {
                 state_.exception = {};
             },
-            [&](U::SetInfoboxText const& cmd) {
-                state_.textbox = cmd.text;
+            [&](U::SetInfobox const& cmd) {
+                state_.infobox_contents = cmd.contents;
             }
         }, command);
     }

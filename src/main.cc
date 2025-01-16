@@ -14,6 +14,8 @@ int main()
 
     game(0) << G::TryLoad {};
 
+    ui() << U::SetInfobox { "Hello world!" };
+
     while (ui().running()) {
 
         try {

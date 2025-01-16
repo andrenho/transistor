@@ -5,9 +5,10 @@
 #include <string>
 
 #include "ui_commands.hh"
+#include "gui/infobox.hh"
 
 struct UIState {
-    std::string textbox = "";
+    InfoboxContents                 infobox_contents;
     std::optional<U::ShowException> exception {};
 };
 
