@@ -55,9 +55,9 @@
   - [x] Remove editor
   - [x] Make Game and UI globals
   - [x] Improve exception report with message queues
+- [x] Remove events.hh
 - [ ] UI state
-  - [x] Remove events.hh
-  - [ ] Create device editor manager
+- [ ] Create device editor manager
 
 # v0.0.5 - ICs + customization
 
