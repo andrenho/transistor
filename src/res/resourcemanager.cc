@@ -38,7 +38,7 @@ void ResourceManager::add_texture(std::string const& name, std::vector<uint8_t> 
 
 resource_idx_t ResourceManager::add_tile(ResourceId const& parent, int x, int y, int w, int h)
 {
-    resources_idx_.emplace_back(Tile { this->texture(parent), x, y, w, h });
+    resources_idx_.emplace_back(Tile { this->texture(parent), x, y, w, h || w });
     return resources_idx_.size() - 1;
 }
 
@@ -49,11 +49,7 @@ void ResourceManager::add_tile(std::string const& name, ResourceId const& parent
         throw std::runtime_error("There's already a resource called `" + name + "`");
 
     resources_str_.emplace(name, Tile {
-        .texture = this->texture(parent),
-        .x = x,
-        .y = y,
-        .w = w,
-        .h = h,
+        .texture = this->texture(parent), .x = x, .y = y, .w = w, .h = h || w,
     });
 }
 

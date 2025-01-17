@@ -26,7 +26,7 @@ void BoardEditor::load_icons()
         { &board_right, 3, 2, 2, 1 },
         { &board_bottom_left, 0, 3, 2, 2 },
         { &board_bottom, 2, 3, 1, 2 },
-        { &board_bottom_right, 3, 3, 2, 2 },
+       { &board_bottom_right, 3, 3, 2, 2 },
         { &wire_top_on_north_1, 0, 7 },
         { &wire_top_on_east_1, 1, 7 },
         { &wire_top_on_west_1, 2, 7 },

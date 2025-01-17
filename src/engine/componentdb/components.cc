@@ -4,8 +4,15 @@
 
 namespace component {
 
+static constexpr int TILE_SIZE = 16;
+
 ComponentDefinition button()
 {
+    res().add_tiles("icons", {
+        { "button_off", 6, 2 },
+        { "button_on", 6, 3 },
+    }, TILE_SIZE);
+
     return {
         .name = "button",
         .type = ComponentDefinition::Type::SingleTile,
@@ -18,14 +25,19 @@ ComponentDefinition button()
             button.pins[0] = button.pins[1] = button.pins[2] = button.pins[3] = button.data[0];
         },
         .render = [](Component const& component, Scene& scene, int x, int y) {
-            scene.add(CSprite::ShadowSquare, x + 1, y + 1);
-            scene.add(component.data[0] ? CSprite::ButtonOn : CSprite::ButtonOff, x, y);
+            scene.add("shadow_square", x + 1, y + 1);
+            scene.add(component.data[0] ? "button_on" : "button_off", x, y);
         },
     };
 }
 
 ComponentDefinition led()
 {
+    res().add_tiles("icons", {
+        { "led_off", 7, 2 },
+        { "lef_on", 7, 3 },
+    }, TILE_SIZE);
+
     return {
         .name = "led",
         .type = ComponentDefinition::Type::SingleTile,
@@ -38,14 +50,16 @@ ComponentDefinition led()
             led.data[0] = led.pins[0] | led.pins[1] | led.pins[2] | led.pins[3];
         },
         .render = [](Component const& component, Scene& scene, int x, int y) {
-            scene.add(CSprite::ShadowCircle, x + 1, y + 1);
-            scene.add(component.data[0] ? CSprite::LedOn: CSprite::LedOff, x, y);
+            scene.add("shadow_circle", x + 1, y + 1);
+            scene.add(component.data[0] ? "led_on" : "led_off", x, y);
         },
     };
 }
 
 ComponentDefinition vcc()
 {
+    res().add_tile("vcc", "icons", 8, 2, TILE_SIZE);
+
     return {
         .name = "vcc",
         .type = ComponentDefinition::Type::SingleTile,
@@ -55,14 +69,16 @@ ComponentDefinition vcc()
             vcc.pins[0] = vcc.pins[1] = vcc.pins[2] = vcc.pins[3] = 1;
         },
         .render = [](Component const& component, Scene& scene, int x, int y) {
-            scene.add(CSprite::ShadowSquare, x + 1, y + 1);
-            scene.add(CSprite::VCC, x, y);
+            scene.add("shadow_square", x + 1, y + 1);
+            scene.add("vcc", x, y);
         },
     };
 }
 
 ComponentDefinition npn()
 {
+    res().add_tile("npn", "icons", 5, 2, TILE_SIZE);
+
     return {
         .name = "npn",
         .type = ComponentDefinition::Type::SingleTile,
@@ -77,14 +93,16 @@ ComponentDefinition npn()
         },
         .render = [](Component const& component, Scene& scene, int x, int y) {
             Pen pen = { .rotation = component.rotation };
-            scene.add(CSprite::ShadowRect, x + 1, y + 1, pen);
-            scene.add(CSprite::NPN, x, y, pen);
+            scene.add("shadow_rect", x + 1, y + 1, pen);
+            scene.add("npn", x, y, pen);
         },
     };
 }
 
 ComponentDefinition pnp()
 {
+    res().add_tile("pnp", "icons", 5, 3, TILE_SIZE);
+
     return {
         .name = "pnp",
         .type = ComponentDefinition::Type::SingleTile,
@@ -99,8 +117,8 @@ ComponentDefinition pnp()
         },
         .render = [](Component const& component, Scene& scene, int x, int y) {
             Pen pen = { .rotation = component.rotation };
-            scene.add(CSprite::ShadowRect, x + 1, y + 1, pen);
-            scene.add(CSprite::PNP, x, y, pen);
+            scene.add("shadow_rect", x + 1, y + 1, pen);
+            scene.add("pnp", x, y, pen);
         },
     };
 }
