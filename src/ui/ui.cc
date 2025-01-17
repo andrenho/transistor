@@ -49,7 +49,7 @@ void UI::init()
     move_cursor_ = res().add_cursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZEALL));
     delete_cursor_ = res().add_cursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_HAND));
 
-    recreate_devices();
+    recreate_devices();  // TODO - do it frequently
 }
 
 UI::~UI()
@@ -231,7 +231,7 @@ void UI::render() const
 
     // draw gui
     if (!gui_.render(ren_, state_))
-        *this << U::Quit {};
+         *this << U::Quit {};
 
     // present to screen
     SDL_RenderPresent(ren_);

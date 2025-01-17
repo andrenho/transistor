@@ -39,8 +39,8 @@ public:
 
     void add_texture(std::string const& name, std::vector<uint8_t> const& data);
 
-    resource_idx_t add_tile(ResourceId const& parent, int x, int y, int w, int h=0);
-    void           add_tile(std::string const& name, ResourceId const& parent, int x, int y, int w, int h=0);
+    resource_idx_t add_tile(ResourceId const& parent, int tile_size, int x, int y, int w=1, int h=1);
+    void           add_tile(std::string const& name, ResourceId const& parent, int tile_size, int x, int y, int w=1, int h=1);
 
     void           add_tiles(ResourceId const& parent_resource, std::vector<TileDefName> const& tiles, int tile_size);
     void           add_tiles(ResourceId const& parent_resource, std::vector<TileDefIdx> const& tiles, int tile_size);

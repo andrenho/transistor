@@ -2,7 +2,6 @@
 
 #include <iostream>
 
-#include "battery/embed.hpp"
 #include "res/resourcemanager.hh"
 #include "ui/ui.hh"
 
@@ -252,10 +251,10 @@ void BoardEditor::render_wire(Scene& scene, Position const& pos, Wire const& wir
         { { { Wire::Width::W1, Wire::Layer::Top }, Direction::S, true }, wire_top_on_south_1 },
         { { { Wire::Width::W1, Wire::Layer::Top }, Direction::W, true }, wire_top_on_west_1 },
         { { { Wire::Width::W1, Wire::Layer::Top }, Direction::E, true }, wire_top_on_east_1 },
-        { { { Wire::Width::W1, Wire::Layer::Top }, Direction::N, false }, wire_top_on_north_1 },
-        { { { Wire::Width::W1, Wire::Layer::Top }, Direction::S, false }, wire_top_on_south_1 },
-        { { { Wire::Width::W1, Wire::Layer::Top }, Direction::W, false }, wire_top_on_west_1 },
-        { { { Wire::Width::W1, Wire::Layer::Top }, Direction::E, false }, wire_top_on_east_1 },
+        { { { Wire::Width::W1, Wire::Layer::Top }, Direction::N, false }, wire_top_off_north_1 },
+        { { { Wire::Width::W1, Wire::Layer::Top }, Direction::S, false }, wire_top_off_south_1 },
+        { { { Wire::Width::W1, Wire::Layer::Top }, Direction::W, false }, wire_top_off_west_1 },
+        { { { Wire::Width::W1, Wire::Layer::Top }, Direction::E, false }, wire_top_off_east_1 },
     };
 
     auto it = wire_sprites.find({ wire, pos.dir, game().sandbox().wire_value(pos) });

@@ -35,20 +35,23 @@ void ResourceManager::add_texture(std::string const& name, std::vector<uint8_t> 
     resources_str_.emplace(name, create_texture(data));
 }
 
-resource_idx_t ResourceManager::add_tile(ResourceId const& parent, int x, int y, int w, int h)
+resource_idx_t ResourceManager::add_tile(ResourceId const& parent, int tile_size, int x, int y, int w, int h)
 {
-    resources_idx_.emplace_back(Tile { this->texture(parent), x, y, w, h || w });
+    resources_idx_.emplace_back(Tile { this->texture(parent), x * tile_size, y * tile_size, w * tile_size, h * tile_size });
     return resources_idx_.size() - 1;
 }
 
-void ResourceManager::add_tile(std::string const& name, ResourceId const& parent, int x, int y, int w, int h)
+void ResourceManager::add_tile(std::string const& name, ResourceId const& parent, int tile_size, int x, int y, int w, int h)
 {
     auto it = resources_str_.find(name);
     if (it != resources_str_.end())
         throw std::runtime_error("There's already a resource called `" + name + "`");
 
+    if (h == 0)
+        h = w;
+
     resources_str_.emplace(name, Tile {
-        .texture = this->texture(parent), .x = x, .y = y, .w = w, .h = h || w,
+        .texture = this->texture(parent), .x = x * tile_size, .y = y * tile_size, .w = w * tile_size, .h = h * tile_size,
     });
 }
 
@@ -56,13 +59,13 @@ void ResourceManager::add_tile(std::string const& name, ResourceId const& parent
 void ResourceManager::add_tiles(ResourceId const& parent_resource, std::vector<TileDefName> const& tiles, int tile_size)
 {
     for (auto const& tile: tiles)
-        add_tile(tile.name, parent_resource, tile.x, tile.y, tile.w * tile_size, tile.h * tile_size);
+        add_tile(tile.name, parent_resource, tile_size, tile.x, tile.y, tile.w, tile.h);
 }
 
 void ResourceManager::add_tiles(ResourceId const& parent_resource, std::vector<TileDefIdx> const& tiles, int tile_size)
 {
     for (auto const& tile: tiles)
-        *tile.idx = add_tile(parent_resource, tile.x, tile.y, tile.w * tile_size, tile.h * tile_size);
+        *tile.idx = add_tile(parent_resource, tile_size, tile.x, tile.y, tile.w, tile.h);
 }
 
 resource_idx_t ResourceManager::add_cursor(SDL_Cursor* cursor)
