@@ -14,7 +14,6 @@ ResourceManager::~ResourceManager()
 
 SDL_Texture* ResourceManager::create_texture(std::vector<uint8_t> const& data)
 {
-    ui(); // just make sure it's initialized
     SDL_Surface* sf = IMG_Load_RW(SDL_RWFromMem((void *) data.data(), (int) data.size()), 1);
     SDL_Texture* texture = SDL_CreateTextureFromSurface(ui().ren(), sf);
     SDL_FreeSurface(sf);

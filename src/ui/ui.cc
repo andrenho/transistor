@@ -17,7 +17,7 @@ using namespace std::string_literals;
 
 #include "devices/deviceeditor.hh"
 
-UI::UI()
+void UI::init()
 {
     SDL_Init(SDL_INIT_EVERYTHING);
     TTF_Init();
@@ -282,6 +282,11 @@ UI const& ui()
 {
     static const UI ui;
     return ui;
+}
+
+void ui_init()
+{
+    const_cast<UI*>(&ui())->init();
 }
 
 void ui_update(Duration timestep)

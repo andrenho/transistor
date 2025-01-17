@@ -12,6 +12,7 @@ int main()
 {
     auto last_frame = hr::now();
 
+    ui_init();
     game(0) << G::TryLoad {};
 
     while (ui().running()) {

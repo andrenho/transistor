@@ -8,6 +8,25 @@
 
 constexpr int TILE_SIZE = 16;
 
+resource_idx_t
+    BoardEditor::tile,
+    BoardEditor::board_top_left,
+    BoardEditor::board_top,
+    BoardEditor::board_top_right,
+    BoardEditor::board_left,
+    BoardEditor::board_right,
+    BoardEditor::board_bottom_left,
+    BoardEditor::board_bottom,
+    BoardEditor::board_bottom_right,
+    BoardEditor::wire_top_on_north_1,
+    BoardEditor::wire_top_on_east_1,
+    BoardEditor::wire_top_on_west_1,
+    BoardEditor::wire_top_on_south_1,
+    BoardEditor::wire_top_off_north_1,
+    BoardEditor::wire_top_off_east_1,
+    BoardEditor::wire_top_off_west_1,
+    BoardEditor::wire_top_off_south_1;
+
 BoardEditor::BoardEditor(size_t board_id)
     : DeviceEditor(0, 0, (game().board(board_id).w() + 4) * TILE_SIZE, (game().board(board_id).w() + 4) * TILE_SIZE),
       board_id_(board_id)
@@ -26,7 +45,7 @@ void BoardEditor::load_icons()
         { &board_right, 3, 2, 2, 1 },
         { &board_bottom_left, 0, 3, 2, 2 },
         { &board_bottom, 2, 3, 1, 2 },
-       { &board_bottom_right, 3, 3, 2, 2 },
+        { &board_bottom_right, 3, 3, 2, 2 },
         { &wire_top_on_north_1, 0, 7 },
         { &wire_top_on_east_1, 1, 7 },
         { &wire_top_on_west_1, 2, 7 },

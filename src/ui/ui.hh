@@ -36,7 +36,8 @@ public:
     [[nodiscard]] SDL_Renderer* ren() const { return ren_; }
 
 private:
-    UI();
+    UI() = default;
+    void init();
 
     void recreate_devices();
     void execute_queue();
@@ -49,14 +50,14 @@ private:
 
     bool running_ = true;
 
-    SDL_Window*    window_;
-    SDL_Renderer*  ren_;
-    resource_idx_t move_cursor_, delete_cursor_;
+    SDL_Window*    window_ = nullptr;
+    SDL_Renderer*  ren_ = nullptr;
+    resource_idx_t move_cursor_ = 0, delete_cursor_ = 0;
 
     GUI             gui_;
     UIState         state_;
 
-    resource_idx_t  bg_;
+    resource_idx_t  bg_ = 0;
 
     std::vector<std::unique_ptr<DeviceEditor>> device_editors_;
     std::optional<DeviceEditor*> dragging_;
@@ -67,9 +68,11 @@ private:
     size_t           total_frames_ = 0;
 
     friend UI const& ui();
+    friend void ui_init();
 };
 
 UI const& ui();
+void      ui_init();
 void      ui_update(Duration timestep);
 
 #endif
