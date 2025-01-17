@@ -49,9 +49,9 @@ private:
 
     bool running_ = true;
 
-    SDL_Window*   window_;
-    SDL_Renderer* ren_;
-    SDL_Cursor    *move_cursor_, *delete_cursor_; // TODO
+    SDL_Window*    window_;
+    SDL_Renderer*  ren_;
+    resource_idx_t move_cursor_, delete_cursor_;
 
     GUI             gui_;
     UIState         state_;

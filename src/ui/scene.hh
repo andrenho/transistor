@@ -5,6 +5,7 @@
 #include <queue>
 
 #include "engine/geometry/direction.hh"
+#include "res/resourcemanager.hh"
 
 struct Pen {
     bool semitransparent = false;
@@ -14,12 +15,12 @@ struct Pen {
 class Scene {
 public:
     struct Image {
-        std::string resource;
+        ResourceId  resource;
         int         x, y;
         Pen         pen;
     };
 
-    void add(std::string const& resource, int x, int y, Pen const& pen={}) {
+    void add(ResourceId const& resource, int x, int y, Pen const& pen={}) {
         images_.emplace(resource, x, y, pen);
     }
 

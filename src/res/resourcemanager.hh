@@ -44,7 +44,7 @@ public:
     void           add_tile(std::string const& name, ResourceId const& parent, int x, int y, int w, int h=w);
 
     void           add_tiles(ResourceId const& parent_resource, std::vector<TileDefName> const& tiles, int tile_size);
-    void           add_tiles(ResourceId const& parent_resource, std::vector<TileDefIdx>& tiles, int tile_size);
+    void           add_tiles(ResourceId const& parent_resource, std::vector<TileDefIdx> const& tiles, int tile_size);
 
     resource_idx_t add_cursor(SDL_Cursor* cursor);
     void           add_cursor(std::string const& name, SDL_Cursor* cursor);

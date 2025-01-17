@@ -3,7 +3,6 @@
 #include <iostream>
 #include <string>
 
-#include "icons.hh"
 #include "res/resourcemanager.hh"
 #include "util/visitor.hh"
 using namespace std::string_literals;
@@ -43,10 +42,10 @@ UI::UI()
 
     BoardEditor::load_icons();
 
-    gui_.init(window_, ren_, icons_);
+    gui_.init(window_, ren_);
 
-    move_cursor_ = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZEALL);
-    delete_cursor_ = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_HAND);
+    move_cursor_ = res().add_cursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZEALL));
+    delete_cursor_ = res().add_cursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_HAND));
 
     recreate_devices();
 }
@@ -57,8 +56,6 @@ UI::~UI()
 
     res().cleanup();
 
-    SDL_FreeCursor(delete_cursor_);
-    SDL_FreeCursor(move_cursor_);
     if (ren_)
         SDL_DestroyRenderer(ren_);
     if (window_)
@@ -90,7 +87,7 @@ void UI::execute_queue()
         std::visit(overloaded {
             [&](U::StartDragginDevice const& cmd) {
                 dragging_ = cmd.device_editor;
-                SDL_SetCursor(move_cursor_);
+                SDL_SetCursor(res().cursor(move_cursor_));
             },
             [&](U::StopDraggingDevice const&) {
                 dragging_ = {};
@@ -102,7 +99,7 @@ void UI::execute_queue()
                         SDL_SetCursor(SDL_GetDefaultCursor());
                         break;
                     case U::SetMouseCursor::Delete:
-                        SDL_SetCursor(delete_cursor_);
+                        SDL_SetCursor(res().cursor(delete_cursor_));
                         break;
                     default: break;
                 }

@@ -64,7 +64,7 @@ void ResourceManager::add_tiles(ResourceId const& parent_resource, std::vector<T
         add_tile(tile.name, parent_resource, tile.x, tile.y, tile.w * tile_size, tile.h * tile_size);
 }
 
-void ResourceManager::add_tiles(ResourceId const& parent_resource, std::vector<TileDefIdx>& tiles, int tile_size)
+void ResourceManager::add_tiles(ResourceId const& parent_resource, std::vector<TileDefIdx> const& tiles, int tile_size)
 {
     for (auto const& tile: tiles)
         *tile.idx = add_tile(parent_resource, tile.x, tile.y, tile.w * tile_size, tile.h * tile_size);

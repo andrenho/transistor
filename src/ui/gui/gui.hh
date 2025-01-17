@@ -1,15 +1,12 @@
 #ifndef GUI_HH
 #define GUI_HH
 
-#include <string>
-
-#include "engine/game/game.hh"
 #include "SDL2/SDL.h"
 #include "ui/uistate.hh"
 
 class GUI {
 public:
-    void init(SDL_Window* window, SDL_Renderer* ren, std::vector<Resource> const& icons);
+    void init(SDL_Window* window, SDL_Renderer* ren);
     void shutdown();
 
     void process_events(SDL_Event* e);
@@ -18,7 +15,7 @@ public:
 
 private:
     void setup_theme();
-    void init_toolbox(std::vector<Resource> const& icons);
+    void init_toolbox();
 
     bool render_main_menu() const;
     void render_infobox(UIState const& state) const;

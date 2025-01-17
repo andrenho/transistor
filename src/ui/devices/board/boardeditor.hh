@@ -4,6 +4,7 @@
 #include "engine/board/board.hh"
 #include "../deviceeditor.hh"
 #include "engine/sandbox/sandbox.hh"
+#include "res/resourcemanager.hh"
 #include "ui/scene.hh"
 
 class BoardEditor : public DeviceEditor {
@@ -30,10 +31,16 @@ private:
     void render_wire(Scene& scene, Position const& pos, Wire const& wire, bool semitransparent) const;
     void render_component(Scene& scene, Position const& pos, Component const& component) const;
 
-    void draw(Scene& scene, std::string const& resource, int x, int y, Pen const& pen={}) const;
+    void draw(Scene& scene, ResourceId const& resource, int x, int y, Pen const& pen={}) const;
 
     void start_erasing(Position const& pos);
     void stop_erasing();
+
+    static resource_idx_t
+        tile,
+        board_top_left, board_top, board_top_right, board_left, board_right, board_bottom_left, board_bottom, board_bottom_right,
+        wire_top_on_north_1, wire_top_on_east_1, wire_top_on_west_1, wire_top_on_south_1,
+        wire_top_off_north_1, wire_top_off_east_1, wire_top_off_west_1, wire_top_off_south_1;
 };
 
 #endif //BOARDEDITOR_HH

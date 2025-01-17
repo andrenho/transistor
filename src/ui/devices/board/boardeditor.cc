@@ -18,33 +18,23 @@ BoardEditor::BoardEditor(size_t board_id)
 void BoardEditor::load_icons()
 {
     res().add_tiles("icons", {
-        { "tile", 2, 2 },
-        { "board_top_left", 0, 0, 2, 2 },
-        { "board_top", 2, 0, 1, 2 },
-        { "board_top_right", 3, 0, 2, 2 },
-        { "board_left", 0, 2, 2, 1 },
-        { "board_right", 3, 2, 2, 1 },
-        { "board_bottom_left", 0, 3, 2, 2 },
-        { "board_bottom", 2, 3, 1, 2 },
-        { "board_bottom_right", 3, 3, 2, 2 },
-        { "vcc", 8, 2 },
-        { "npn", 5, 2 },
-        { "pnp", 5, 3 },
-        { "button_off", 6, 2 },
-        { "button_on", 6, 3 },
-        { "led_off", 7, 2 },
-        { "lef_on", 7, 3 },
-        { "shadow_rect", 5, 4 },
-        { "shadow_square", 6, 4 },
-        { "shadow_circle", 7, 4 },
-        { "wire_top_on_north_1", 0, 7 },
-        { "wire_top_on_east_1", 1, 7 },
-        { "wire_top_on_west_1", 2, 7 },
-        { "wire_top_on_south_1", 3, 7 },
-        { "wire_top_off_north_1", 0, 5 },
-        { "wire_top_off_east_1", 1, 5 },
-        { "wire_top_off_west_1", 2, 5 },
-        { "wire_top_off_south_1", 3, 5 },
+        { &tile, 2, 2 },
+        { &board_top_left, 0, 0, 2, 2 },
+        { &board_top, 2, 0, 1, 2 },
+        { &board_top_right, 3, 0, 2, 2 },
+        { &board_left, 0, 2, 2, 1 },
+        { &board_right, 3, 2, 2, 1 },
+        { &board_bottom_left, 0, 3, 2, 2 },
+        { &board_bottom, 2, 3, 1, 2 },
+        { &board_bottom_right, 3, 3, 2, 2 },
+        { &wire_top_on_north_1, 0, 7 },
+        { &wire_top_on_east_1, 1, 7 },
+        { &wire_top_on_west_1, 2, 7 },
+        { &wire_top_on_south_1, 3, 7 },
+        { &wire_top_off_north_1, 0, 5 },
+        { &wire_top_off_east_1, 1, 5 },
+        { &wire_top_off_west_1, 2, 5 },
+        { &wire_top_off_south_1, 3, 5 },
     }, TILE_SIZE);
 }
 
@@ -169,7 +159,7 @@ void BoardEditor::stop_erasing()
 //               //
 //---------------//
 
-void BoardEditor::draw(Scene& scene, std::string const& resource, int x, int y, Pen const& pen) const
+void BoardEditor::draw(Scene& scene, ResourceId const& resource, int x, int y, Pen const& pen) const
 {
     scene.add(resource, (x + 2) * TILE_SIZE, (y + 2) * TILE_SIZE, pen);
 }
@@ -188,19 +178,19 @@ void BoardEditor::render_border(Scene& scene) const
 {
     Board const& board = game().board(board_id_);
 
-    draw(scene, CSprite::BoardTopLeft, -2, -2);
-    draw(scene, CSprite::BoardTopRight, board.w(), -2);
-    draw(scene, CSprite::BoardBottomLeft, -2, board.h());
-    draw(scene, CSprite::BoardBottomRight, board.w(), board.h());
+    draw(scene, board_top_left, -2, -2);
+    draw(scene, board_top_right, board.w(), -2);
+    draw(scene, board_bottom_left, -2, board.h());
+    draw(scene, board_bottom_right, board.w(), board.h());
 
     for (ssize_t x = 0; x < board.w(); ++x) {
-        draw(scene, CSprite::BoardTop, x, -2);
-        draw(scene, CSprite::BoardBottom, x, board.h());
+        draw(scene, board_top, x, -2);
+        draw(scene, board_bottom, x, board.h());
     }
 
     for (ssize_t y = 0; y < board.h(); ++y) {
-        draw(scene, CSprite::BoardLeft, -2, y);
-        draw(scene, CSprite::BoardRight, board.w(), y);
+        draw(scene, board_left, -2, y);
+        draw(scene, board_right, board.w(), y);
     }
 }
 
@@ -208,7 +198,7 @@ void BoardEditor::render_tile(Scene& scene, intpos_t x, intpos_t y) const
 {
     Board const& board = game().board(board_id_);
 
-    draw(scene, CSprite::Tile, x, y);
+    draw(scene, tile, x, y);
 
     for (Direction const& dir: DIRECTIONS) {
         // draw wire
@@ -238,15 +228,15 @@ struct std::hash<std::tuple<Wire, Direction, bool>> {
 
 void BoardEditor::render_wire(Scene& scene, Position const& pos, Wire const& wire, bool semitransparent) const
 {
-    static const std::unordered_map<std::tuple<Wire, Direction, bool>, CSprite> wire_sprites {
-        { { { Wire::Width::W1, Wire::Layer::Top }, Direction::N, true }, CSprite::WireTopOnNorth_1 },
-        { { { Wire::Width::W1, Wire::Layer::Top }, Direction::S, true }, CSprite::WireTopOnSouth_1 },
-        { { { Wire::Width::W1, Wire::Layer::Top }, Direction::W, true }, CSprite::WireTopOnWest_1 },
-        { { { Wire::Width::W1, Wire::Layer::Top }, Direction::E, true }, CSprite::WireTopOnEast_1 },
-        { { { Wire::Width::W1, Wire::Layer::Top }, Direction::N, false }, CSprite::WireTopOffNorth_1 },
-        { { { Wire::Width::W1, Wire::Layer::Top }, Direction::S, false }, CSprite::WireTopOffSouth_1 },
-        { { { Wire::Width::W1, Wire::Layer::Top }, Direction::W, false }, CSprite::WireTopOffWest_1 },
-        { { { Wire::Width::W1, Wire::Layer::Top }, Direction::E, false }, CSprite::WireTopOffEast_1 },
+    static const std::unordered_map<std::tuple<Wire, Direction, bool>, resource_idx_t> wire_sprites {
+        { { { Wire::Width::W1, Wire::Layer::Top }, Direction::N, true }, wire_top_on_north_1 },
+        { { { Wire::Width::W1, Wire::Layer::Top }, Direction::S, true }, wire_top_on_south_1 },
+        { { { Wire::Width::W1, Wire::Layer::Top }, Direction::W, true }, wire_top_on_west_1 },
+        { { { Wire::Width::W1, Wire::Layer::Top }, Direction::E, true }, wire_top_on_east_1 },
+        { { { Wire::Width::W1, Wire::Layer::Top }, Direction::N, false }, wire_top_on_north_1 },
+        { { { Wire::Width::W1, Wire::Layer::Top }, Direction::S, false }, wire_top_on_south_1 },
+        { { { Wire::Width::W1, Wire::Layer::Top }, Direction::W, false }, wire_top_on_west_1 },
+        { { { Wire::Width::W1, Wire::Layer::Top }, Direction::E, false }, wire_top_on_east_1 },
     };
 
     auto it = wire_sprites.find({ wire, pos.dir, game().sandbox().wire_value(pos) });

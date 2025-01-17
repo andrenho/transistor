@@ -10,7 +10,7 @@
 #include "engine/sandbox/sandbox.hh"
 #include "ui/ui.hh"
 
-void GUI::init(SDL_Window* window, SDL_Renderer* ren, std::vector<Resource> const& icons)
+void GUI::init(SDL_Window* window, SDL_Renderer* ren)
 {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -30,13 +30,13 @@ void GUI::init(SDL_Window* window, SDL_Renderer* ren, std::vector<Resource> cons
     cfg.FontDataOwnedByAtlas = false;
     io->Fonts->AddFontFromMemoryTTF((void *) ttf.data(), (int) ttf.size(), 16, &cfg);
 
-    init_toolbox(icons);
+    init_toolbox();
 }
 
-void GUI::init_toolbox(std::vector<Resource> const& icons)
+void GUI::init_toolbox()
 {
     ui() << U::UpdateToolbox {.toolbox = {
-        { .image = icons.at((size_t) CSprite::Arrow) }
+        { }
     }};
 }
 
