@@ -119,6 +119,8 @@ set(UI_SRC
         src/res/resourcemanager.cc
         src/res/resourcemanager.hh
         src/ui/shared_res.hh
+        src/ui/gui/toolbox.cc
+        src/ui/gui/toolbox.hh
 )
 
 set(IMGUI_SRC
@@ -134,7 +136,6 @@ set(IMGUI_SRC
         contrib/ImGuiFileDialog/ImGuiFileDialogConfig.h
         src/ui/gui/infobox.cc
         src/ui/gui/infobox.hh
-        src/ui/gui/toolbox.hh
 )
 
 add_executable(${CMAKE_PROJECT_NAME}

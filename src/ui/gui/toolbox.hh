@@ -1,12 +1,17 @@
 #ifndef TOOLBOX_HH
 #define TOOLBOX_HH
+#include "res/resourcemanager.hh"
 
-#include <vector>
+class Toolbox {
+public:
+    void init();
+    void render() const;
 
-struct ToolboxButton {
-    // Resource image;
+private:
+    int icons_tx_w = 0, icons_tx_h = 0;
+    resource_idx_t tb_arrow = -1;
+
+    bool image_button(ResourceId const& resource) const;
 };
-
-using Toolbox = std::vector<ToolboxButton>;
 
 #endif //TOOLBOX_HH

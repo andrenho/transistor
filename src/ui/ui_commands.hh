@@ -22,10 +22,6 @@ struct ShowException {
 struct ClearException {};
 struct SetInfobox { InfoboxContents contents; };
 
-struct UpdateToolbox {
-    Toolbox toolbox;
-};
-
 struct SetMouseCursor {
     enum MouseCursor { Normal, Delete };
     MouseCursor cursor;
@@ -35,7 +31,7 @@ struct Quit {};
 
 using Command = std::variant<
     StartDragginDevice, StopDraggingDevice,
-    ShowException, ClearException, SetInfobox, UpdateToolbox,
+    ShowException, ClearException, SetInfobox,
     SetMouseCursor, Quit
 >;
 

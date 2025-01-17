@@ -33,6 +33,8 @@ public:
 
     [[nodiscard]] bool running() const { return running_; }
 
+    [[nodiscard]] UIState const& state() const { return state_; }
+
     [[nodiscard]] SDL_Renderer* ren() const { return ren_; }
 
 private:

@@ -1,8 +1,8 @@
 #ifndef GUI_HH
 #define GUI_HH
 
+#include "toolbox.hh"
 #include "SDL2/SDL.h"
-#include "ui/uistate.hh"
 
 class GUI {
 public:
@@ -11,19 +11,18 @@ public:
 
     void process_events(SDL_Event* e);
 
-    bool render(SDL_Renderer* ren, UIState const& state) const;
+    bool render() const;
 
 private:
     void setup_theme();
-    void init_toolbox();
 
     bool render_main_menu() const;
-    void render_infobox(UIState const& state) const;
-    void render_toolbox(UIState const& state) const;
-    bool render_modal_exception(UIState const& state) const;
+    void render_infobox() const;
+    bool render_modal_exception() const;
 
     struct ImGuiIO* io = nullptr;
     mutable bool    show_demo_window_ = false;
+    Toolbox         toolbox_;
 };
 
 #endif //GUI_HH

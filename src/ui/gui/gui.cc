@@ -30,14 +30,7 @@ void GUI::init(SDL_Window* window, SDL_Renderer* ren)
     cfg.FontDataOwnedByAtlas = false;
     io->Fonts->AddFontFromMemoryTTF((void *) ttf.data(), (int) ttf.size(), 16, &cfg);
 
-    init_toolbox();
-}
-
-void GUI::init_toolbox()
-{
-    ui() << U::UpdateToolbox {.toolbox = {
-        { }
-    }};
+    toolbox_.init();
 }
 
 void GUI::setup_theme()
@@ -78,7 +71,7 @@ void GUI::process_events(SDL_Event* e)
     ImGui_ImplSDL2_ProcessEvent(e);
 }
 
-bool GUI::render(SDL_Renderer* ren, UIState const& state) const
+bool GUI::render() const
 {
     ImGui_ImplSDLRenderer2_NewFrame();
     ImGui_ImplSDL2_NewFrame();
@@ -89,14 +82,14 @@ bool GUI::render(SDL_Renderer* ren, UIState const& state) const
 
     if (!render_main_menu())
         return false;
-    render_toolbox(state);
-    render_infobox(state);
+    toolbox_.render();
+    render_infobox();   // TODO - use class for that
 
-    if (!render_modal_exception(state))
+    if (!render_modal_exception())
         return false;
 
     ImGui::Render();
-    ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData(), ren);
+    ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData(), ui().ren());
 
     return true;
 }
@@ -122,7 +115,7 @@ bool GUI::render_main_menu() const
     return true;
 }
 
-void GUI::render_infobox(UIState const& state) const
+void GUI::render_infobox() const
 {
     constexpr float INFOBOX_WIDTH = 350.f;
 
@@ -139,31 +132,20 @@ void GUI::render_infobox(UIState const& state) const
     ImGui::SetNextWindowBgAlpha(0.35f);
 
     if (ImGui::Begin("InfoBox", nullptr, window_flags)) {
-        ::render_infobox(state.infobox_contents);
+        ::render_infobox(ui().state().infobox_contents);
     }
     ImGui::End();
 
     ImGui::PopStyleVar(2);
 }
 
-void GUI::render_toolbox(UIState const& state) const
-{
-    if (ImGui::Begin("Toolbox", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoCollapse)) {
-        for (auto const& button: state.toolbox) {
-            if (ImGui::Button("X", { 38, 38 }))
-                ;
-        }
-    }
-    ImGui::End();
-}
-
-bool GUI::render_modal_exception(UIState const& state) const
+bool GUI::render_modal_exception() const
 {
     ImGui::SetNextWindowSizeConstraints({ 400.f, 0.f }, { 400.f, FLT_MAX });
     if (ImGui::BeginPopupModal("Error!", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
-        if (state.exception) {
+        if (ui().state().exception) {
             ImGui::PushTextWrapPos();
-            ImGui::Text("%s", state.exception->text.c_str());
+            ImGui::Text("%s", ui().state().exception->text.c_str());
             ImGui::PopTextWrapPos();
         }
         ImGui::Separator();
@@ -172,12 +154,12 @@ bool GUI::render_modal_exception(UIState const& state) const
             ImGui::CloseCurrentPopup();
             ui() << U::ClearException {};
             ImGui::EndPopup();
-            return state.exception->recoverable;
+            return ui().state().exception->recoverable;
         }
         ImGui::EndPopup();
     }
 
-    if (state.exception)
+    if (ui().state().exception)
         ImGui::OpenPopup("Error!");
 
     return true;

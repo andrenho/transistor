@@ -109,9 +109,6 @@ void UI::execute_queue()
             [&](U::Quit const&) {
                 running_ = false;
             },
-            [&](U::UpdateToolbox const& cmd) {
-                state_.toolbox = cmd.toolbox;
-            },
             [&](U::ShowException const& cmd) {
                 state_.exception = cmd;
             },
@@ -230,7 +227,7 @@ void UI::render() const
     }
 
     // draw gui
-    if (!gui_.render(ren_, state_))
+    if (!gui_.render())
          *this << U::Quit {};
 
     // present to screen

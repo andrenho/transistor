@@ -32,7 +32,11 @@ int main()
             ui() << U::ShowException { e.what(), true };
 
         } catch (std::exception& e) {
+#ifdef NDEBUG
             ui() << U::ShowException { e.what() };
+#else
+            throw e;
+#endif
         }
     }
 }
