@@ -34,6 +34,8 @@ public:
 
     [[nodiscard]] bool running() const { return running_; }
 
+    [[nodiscard]] SDL_Renderer* ren() const { return ren_; }
+
 private:
     UI();
 

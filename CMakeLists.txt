@@ -120,6 +120,8 @@ set(UI_SRC
         src/ui/gui/gui.hh
         src/ui/ui_commands.hh
         src/ui/uistate.hh
+        src/res/resourcemanager.cc
+        src/res/resourcemanager.hh
 )
 
 set(IMGUI_SRC
