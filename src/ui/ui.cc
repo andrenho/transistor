@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 
+#include "shared_res.hh"
 #include "res/resourcemanager.hh"
 #include "util/visitor.hh"
 using namespace std::string_literals;
@@ -39,6 +40,7 @@ void UI::init()
 
     bg_ = res().add_texture<"resources/images/bg.jpg">();
     res().add_texture<"resources/images/circuit.png">("icons");
+    load_shared_resources();
 
     BoardEditor::load_icons();
 

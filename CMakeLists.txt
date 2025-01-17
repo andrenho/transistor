@@ -118,6 +118,7 @@ set(UI_SRC
         src/ui/uistate.hh
         src/res/resourcemanager.cc
         src/res/resourcemanager.hh
+        src/ui/shared_res.hh
 )
 
 set(IMGUI_SRC

@@ -4,14 +4,6 @@
 
 ComponentDatabase::ComponentDatabase()
 {
-    /*
-    res().add_tiles("icons", {
-        { "shadow_rect", 5, 4 },
-        { "shadow_square", 6, 4 },
-        { "shadow_circle", 7, 4 },
-    }, 16);
-    */
-
     static const ComponentDefinition native_components[] = {
         component::button(), component::led(), component::vcc(), component::npn(), component::pnp(),
     };

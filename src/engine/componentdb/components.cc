@@ -4,15 +4,8 @@
 
 namespace component {
 
-static constexpr int TILE_SIZE = 16;
-
 ComponentDefinition button()
 {
-    res().add_tiles("icons", {
-        { "button_off", 6, 2 },
-        { "button_on", 6, 3 },
-    }, TILE_SIZE);
-
     return {
         .name = "button",
         .type = ComponentDefinition::Type::SingleTile,
@@ -33,11 +26,6 @@ ComponentDefinition button()
 
 ComponentDefinition led()
 {
-    res().add_tiles("icons", {
-        { "led_off", 7, 2 },
-        { "lef_on", 7, 3 },
-    }, TILE_SIZE);
-
     return {
         .name = "led",
         .type = ComponentDefinition::Type::SingleTile,
@@ -58,8 +46,6 @@ ComponentDefinition led()
 
 ComponentDefinition vcc()
 {
-    res().add_tile("vcc", "icons", 8, 2, TILE_SIZE);
-
     return {
         .name = "vcc",
         .type = ComponentDefinition::Type::SingleTile,
@@ -77,8 +63,6 @@ ComponentDefinition vcc()
 
 ComponentDefinition npn()
 {
-    res().add_tile("npn", "icons", 5, 2, TILE_SIZE);
-
     return {
         .name = "npn",
         .type = ComponentDefinition::Type::SingleTile,
@@ -101,8 +85,6 @@ ComponentDefinition npn()
 
 ComponentDefinition pnp()
 {
-    res().add_tile("pnp", "icons", 5, 3, TILE_SIZE);
-
     return {
         .name = "pnp",
         .type = ComponentDefinition::Type::SingleTile,
