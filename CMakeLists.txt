@@ -109,9 +109,6 @@ set(UI_SRC
         src/ui/ui.hh
         src/ui/ui.cc
         src/ui/scene.hh
-        src/ui/resources/resourcemanager.cc
-        src/ui/resources/resourcemanager.hh
-        src/ui/resources/resource.hh
         src/ui/devices/deviceeditor.hh
         src/ui/devices/board/boardeditor.cc
         src/ui/devices/board/boardeditor.hh
@@ -122,6 +119,7 @@ set(UI_SRC
         src/ui/uistate.hh
         src/res/resourcemanager.cc
         src/res/resourcemanager.hh
+        src/ui/icons.hh
 )
 
 set(IMGUI_SRC

@@ -3,6 +3,8 @@
 #include <iostream>
 #include <string>
 
+#include "icons.hh"
+#include "res/resourcemanager.hh"
 #include "util/visitor.hh"
 using namespace std::string_literals;
 
@@ -36,11 +38,9 @@ UI::UI()
     SDL_GetRendererInfo(ren_, &info);
     SDL_Log("Current SDL_Renderer: %s", info.name);
 
-    resource_manager_.set_renderer(ren_);
-    bg_ = resource_manager_.from_image(b::embed<"resources/images/bg.jpg">().vec());
-
-    Resource circuit = resource_manager_.from_image(b::embed<"resources/images/circuit.png">().vec());
-    icons_ = resource_manager_.from_atlas(circuit, circuit_coordinates, TILE_SIZE);
+    res().add_texture<"resources/images/bg.jpg">("bg");
+    res().add_texture<"resources/images/circuit.png">("icons");
+    load_icons();
 
     gui_.init(window_, ren_, icons_);
 
@@ -54,7 +54,7 @@ UI::~UI()
 {
     gui_.shutdown();
 
-    resource_manager_.cleanup();
+    res().cleanup();
 
     SDL_FreeCursor(delete_cursor_);
     SDL_FreeCursor(move_cursor_);
@@ -71,7 +71,7 @@ void UI::recreate_devices()
 {
     device_editors_.clear();
     for (auto const& board: game().sandbox().boards())
-        device_editors_.push_back(std::make_unique<BoardEditor>(resource_manager_, board.id()));
+        device_editors_.push_back(std::make_unique<BoardEditor>(board.id()));
 }
 
 void UI::operator<<(U::Command&& command) const
@@ -184,20 +184,15 @@ void UI::draw_image(Scene::Image const& image, DeviceEditor const* layer) const
     SDL_Texture* texture = nullptr;
     SDL_Rect origin;
 
-    Resource res;
-    if (auto resource = std::get_if<Resource>(&image.image))
-        res = *resource;
-    else if (auto sprite = std::get_if<CSprite>(&image.image))
-        res = icons_.at((size_t) *sprite);
+    auto resource = res().get(image.resource);
 
-    if (res.is_texture()) {
-        texture = res;
+    if (auto tx = std::get_if<SDL_Texture*>(&resource)) {
+        texture = *tx;
         origin.x = origin.y = 0;
         SDL_QueryTexture(texture, nullptr, nullptr, &origin.w, &origin.h);
-    } else if (res.is_subtexture()) {
-        Resource::SubTexture st = res;
-        texture = st.texture;
-        origin = { st.x, st.y, st.w, st.h };
+    } else if (auto tile = std::get_if<Tile>(&resource)) {
+        texture = tile->texture;
+        origin = { tile->x, tile->y, tile->w, tile->h };
     } else {
         throw std::runtime_error("Invalid resource.");
     }
@@ -223,7 +218,7 @@ void UI::render() const
     SDL_RenderClear(ren_);
 
     // draw background
-    SDL_RenderCopy(ren_, bg_, nullptr, nullptr);
+    SDL_RenderCopy(ren_, res().texture("bg"), nullptr, nullptr);
 
     // draw layers
     for (auto& layer: device_editors_) {

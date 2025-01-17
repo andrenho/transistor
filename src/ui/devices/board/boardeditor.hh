@@ -3,13 +3,12 @@
 
 #include "engine/board/board.hh"
 #include "../deviceeditor.hh"
-#include "circuit_atlas.hh"
 #include "engine/sandbox/sandbox.hh"
 #include "ui/scene.hh"
 
 class BoardEditor : public DeviceEditor {
 public:
-    BoardEditor(ResourceManager& resource_manager, size_t board_id);
+    explicit BoardEditor(size_t board_id);
 
     void render(Scene& scene) override;
 
@@ -29,7 +28,7 @@ private:
     void render_wire(Scene& scene, Position const& pos, Wire const& wire, bool semitransparent) const;
     void render_component(Scene& scene, Position const& pos, Component const& component) const;
 
-    void draw(Scene& scene, CSprite sprite, int x, int y, Pen const& pen={}) const;
+    void draw(Scene& scene, std::string const& resource, int x, int y, Pen const& pen={}) const;
 
     void start_erasing(Position const& pos);
     void stop_erasing();

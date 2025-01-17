@@ -6,7 +6,7 @@
 #include "circuit_atlas.hh"
 #include "ui/ui.hh"
 
-BoardEditor::BoardEditor(ResourceManager& resource_manager, size_t board_id)
+BoardEditor::BoardEditor(size_t board_id)
     : DeviceEditor(0, 0, (game().board(board_id).w() + 4) * TILE_SIZE, (game().board(board_id).w() + 4) * TILE_SIZE),
       board_id_(board_id)
 {
@@ -134,9 +134,9 @@ void BoardEditor::stop_erasing()
 //               //
 //---------------//
 
-void BoardEditor::draw(Scene& scene, CSprite sprite, int x, int y, Pen const& pen) const
+void BoardEditor::draw(Scene& scene, std::string const& resource, int x, int y, Pen const& pen) const
 {
-    scene.add(sprite, (x + 2) * TILE_SIZE, (y + 2) * TILE_SIZE, pen);
+    scene.add(resource, (x + 2) * TILE_SIZE, (y + 2) * TILE_SIZE, pen);
 }
 
 void BoardEditor::render(Scene& scene)

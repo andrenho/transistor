@@ -4,8 +4,6 @@
 #include <optional>
 #include <queue>
 
-#include "devices/board/circuit_atlas.hh"
-#include "resources/resource.hh"
 #include "engine/geometry/direction.hh"
 
 struct Pen {
@@ -16,13 +14,13 @@ struct Pen {
 class Scene {
 public:
     struct Image {
-        std::variant<Resource, CSprite> image;
-        int      x, y;
-        Pen      pen;
+        std::string resource;
+        int         x, y;
+        Pen         pen;
     };
 
-    void add(std::variant<Resource, CSprite> image, int x, int y, Pen const& pen={}) {
-        images_.emplace(image, x, y, pen);
+    void add(std::string const& resource, int x, int y, Pen const& pen={}) {
+        images_.emplace(resource, x, y, pen);
     }
 
     std::optional<Image> next_image() {

@@ -14,7 +14,6 @@ using json = nlohmann::json;
 
 class  ResourceManager;
 class  Scene;
-struct Resource;
 struct Component;
 
 struct ComponentDefinition {

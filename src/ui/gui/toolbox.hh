@@ -3,10 +3,8 @@
 
 #include <vector>
 
-#include "ui/resources/resource.hh"
-
 struct ToolboxButton {
-    Resource image;
+    // Resource image;
 };
 
 using Toolbox = std::vector<ToolboxButton>;

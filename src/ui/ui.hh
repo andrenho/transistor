@@ -2,7 +2,6 @@
 #define UI_UI_HH_
 
 #include <chrono>
-#include <functional>
 #include <memory>
 #include <optional>
 #include <tuple>
@@ -15,7 +14,6 @@
 
 #include "devices/deviceeditor.hh"
 #include "gui/gui.hh"
-#include "resources/resourcemanager.hh"
 
 using hr = std::chrono::high_resolution_clock;
 using Duration = decltype(hr::now() - hr::now());
@@ -56,9 +54,6 @@ private:
     std::vector<Resource> icons_;
 
     GUI             gui_;
-    ResourceManager resource_manager_;
-    Resource        bg_;
-
     UIState         state_;
 
     std::vector<std::unique_ptr<DeviceEditor>> device_editors_;
