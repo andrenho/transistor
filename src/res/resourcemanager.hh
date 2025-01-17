@@ -17,10 +17,16 @@ public:
         int x, y, w, h;
     };
 
+    struct TileDef {
+        std::string name;
+        int x, y, w, h;
+    };
+
     ~ResourceManager();
 
     void add_texture(std::string const& name, std::vector<uint8_t> const& data);
     void add_tile(std::string const& name, std::string const& texture, int x, int y, int w, int h);
+    void add_tiles(std::string const& name, std::vector<TileDef> const& tiles);
     void add_cursor(std::string const& name, SDL_Cursor* cursor);
 
     void cleanup();

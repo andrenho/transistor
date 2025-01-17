@@ -30,6 +30,12 @@ void ResourceManager::add_tile(std::string const& name, std::string const& textu
     });
 }
 
+void ResourceManager::add_tiles(std::string const& name, std::vector<TileDef> const& tiles)
+{
+    for (auto const& tile: tiles)
+        add_tile(name, tile.name, tile.x, tile.y, tile.w, tile.h);
+}
+
 void ResourceManager::add_cursor(std::string const& name, SDL_Cursor* cursor)
 {
     resources_.emplace(name, cursor);
