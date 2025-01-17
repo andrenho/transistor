@@ -3,14 +3,49 @@
 #include <iostream>
 
 #include "battery/embed.hpp"
-#include "circuit_atlas.hh"
+#include "res/resourcemanager.hh"
 #include "ui/ui.hh"
+
+constexpr int TILE_SIZE = 16;
 
 BoardEditor::BoardEditor(size_t board_id)
     : DeviceEditor(0, 0, (game().board(board_id).w() + 4) * TILE_SIZE, (game().board(board_id).w() + 4) * TILE_SIZE),
       board_id_(board_id)
 {
     zoom_ = 2.f;
+}
+
+void BoardEditor::load_icons()
+{
+    res().add_tiles("icons", {
+        { "tile", 2, 2 },
+        { "board_top_left", 0, 0, 2, 2 },
+        { "board_top", 2, 0, 1, 2 },
+        { "board_top_right", 3, 0, 2, 2 },
+        { "board_left", 0, 2, 2, 1 },
+        { "board_right", 3, 2, 2, 1 },
+        { "board_bottom_left", 0, 3, 2, 2 },
+        { "board_bottom", 2, 3, 1, 2 },
+        { "board_bottom_right", 3, 3, 2, 2 },
+        { "vcc", 8, 2 },
+        { "npn", 5, 2 },
+        { "pnp", 5, 3 },
+        { "button_off", 6, 2 },
+        { "button_on", 6, 3 },
+        { "led_off", 7, 2 },
+        { "lef_on", 7, 3 },
+        { "shadow_rect", 5, 4 },
+        { "shadow_square", 6, 4 },
+        { "shadow_circle", 7, 4 },
+        { "wire_top_on_north_1", 0, 7 },
+        { "wire_top_on_east_1", 1, 7 },
+        { "wire_top_on_west_1", 2, 7 },
+        { "wire_top_on_south_1", 3, 7 },
+        { "wire_top_off_north_1", 0, 5 },
+        { "wire_top_off_east_1", 1, 5 },
+        { "wire_top_off_west_1", 2, 5 },
+        { "wire_top_off_south_1", 3, 5 },
+    }, TILE_SIZE);
 }
 
 //------------//

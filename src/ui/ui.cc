@@ -40,7 +40,8 @@ UI::UI()
 
     res().add_texture<"resources/images/bg.jpg">("bg");
     res().add_texture<"resources/images/circuit.png">("icons");
-    load_icons();
+
+    BoardEditor::load_icons();
 
     gui_.init(window_, ren_, icons_);
 

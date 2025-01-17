@@ -112,14 +112,12 @@ set(UI_SRC
         src/ui/devices/deviceeditor.hh
         src/ui/devices/board/boardeditor.cc
         src/ui/devices/board/boardeditor.hh
-        src/ui/devices/board/circuit_atlas.hh
         src/ui/gui/gui.cc
         src/ui/gui/gui.hh
         src/ui/ui_commands.hh
         src/ui/uistate.hh
         src/res/resourcemanager.cc
         src/res/resourcemanager.hh
-        src/ui/icons.hh
 )
 
 set(IMGUI_SRC

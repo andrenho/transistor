@@ -10,6 +10,8 @@ class BoardEditor : public DeviceEditor {
 public:
     explicit BoardEditor(size_t board_id);
 
+    static void load_icons();
+
     void render(Scene& scene) override;
 
     void on_mouse_press(int x, int y, uint8_t button, bool dbl_click) override;
