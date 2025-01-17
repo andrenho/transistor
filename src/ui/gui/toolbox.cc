@@ -28,7 +28,7 @@ bool Toolbox::image_button(ResourceId const& resource) const
         (float)(tile.y + tile.h) / icons_tx_h
     );
 
-    return ImGui::ImageButton("X", (ImTextureID)(intptr_t) tile.texture, { 34, 34 }, uv0, uv1);
+    return ImGui::ImageButton("X", (ImTextureID)(intptr_t) tile.texture, { 32, 32 }, uv0, uv1);
 }
 
 void Toolbox::render() const
