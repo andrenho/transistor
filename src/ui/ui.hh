@@ -14,6 +14,7 @@
 
 #include "devices/deviceeditor.hh"
 #include "gui/gui.hh"
+#include "res/resourcemanager.hh"
 
 using hr = std::chrono::high_resolution_clock;
 using Duration = decltype(hr::now() - hr::now());
@@ -50,11 +51,12 @@ private:
 
     SDL_Window*   window_;
     SDL_Renderer* ren_;
-    SDL_Cursor    *move_cursor_, *delete_cursor_;
-    std::vector<Resource> icons_;
+    SDL_Cursor    *move_cursor_, *delete_cursor_; // TODO
 
     GUI             gui_;
     UIState         state_;
+
+    resource_idx_t  bg_;
 
     std::vector<std::unique_ptr<DeviceEditor>> device_editors_;
     std::optional<DeviceEditor*> dragging_;

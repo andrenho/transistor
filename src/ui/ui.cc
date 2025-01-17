@@ -38,7 +38,7 @@ UI::UI()
     SDL_GetRendererInfo(ren_, &info);
     SDL_Log("Current SDL_Renderer: %s", info.name);
 
-    res().add_texture<"resources/images/bg.jpg">("bg");
+    bg_ = res().add_texture<"resources/images/bg.jpg">();
     res().add_texture<"resources/images/circuit.png">("icons");
 
     BoardEditor::load_icons();
@@ -219,7 +219,7 @@ void UI::render() const
     SDL_RenderClear(ren_);
 
     // draw background
-    SDL_RenderCopy(ren_, res().texture("bg"), nullptr, nullptr);
+    SDL_RenderCopy(ren_, res().texture(bg_), nullptr, nullptr);
 
     // draw layers
     for (auto& layer: device_editors_) {
