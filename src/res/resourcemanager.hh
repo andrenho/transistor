@@ -1,7 +1,7 @@
 #ifndef RESOURCEMANAGER_HH
 #define RESOURCEMANAGER_HH
 
-#include <SDL_render.h>
+#include "SDL2/SDL.h"
 #include <stdexcept>
 #include <string>
 #include <unordered_map>
