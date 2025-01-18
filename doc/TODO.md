@@ -68,9 +68,9 @@
   - [x] basic components
   - [x] selected component
     - [x] shadow draw
-    - [ ] component shortcuts
-    - [ ] place component
-    - [ ] rotate cursor
+    - [x] component shortcuts
+    - [x] place component
+    - [x] rotate cursor
     - [ ] don't place over existing component, overwrite wires
   - [ ] component infobox
 - [ ] ic support

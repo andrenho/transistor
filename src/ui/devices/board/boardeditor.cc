@@ -79,13 +79,17 @@ void BoardEditor::on_mouse_press(int x, int y, uint8_t button, bool dbl_click)
     auto pos = to_pos(board, x, y);
 
     if (button == 1) {
-        // check for component click
-        auto it = board.components().find(pos);
-        if (it != board.components().end())
-            game() << G::ComponentClick { &it->second };
+        auto def = selected_component_definition();
+        if (def) {
+            game() << G::AddComponent { def->name, pos, ui().state().selected_tool_direction };
+        } else {
+            // check for component click
+            auto it = board.components().find(pos);
+            if (it != board.components().end())
+                game() << G::ComponentClick { &it->second };
+        }
 
     } else if (button == 2) {
-
         start_erasing(pos);
 
     } else if (button == 3) {
@@ -119,6 +123,7 @@ void BoardEditor::on_key_press(uint32_t key, int x, int y)
     switch (key) {
         case 'w':
             drawing_wire_ = true;
+            ui() << U::SelectTool { SelectedTool::Nothing };
             game() << G::StartPlacingWire { Wire::Width::W1, Wire::Layer::Top, pos };
             break;
         case 'b':
@@ -137,10 +142,16 @@ void BoardEditor::on_key_press(uint32_t key, int x, int y)
             game() << G::AddComponent { "pnp", pos };
             break;
         case 'r':
-            game() << G::RotateComponent { pos };
+            if (ui().state().selected_tool == SelectedTool::Nothing)
+                game() << G::RotateComponent { pos };
+            else if (selected_component_definition()->can_rotate)
+                ui() << U::SelectTool { ui().state().selected_tool, dir_rotate_component(ui().state().selected_tool_direction) };
             break;
         case 'x':
             start_erasing(pos);
+            break;
+        case 27:  // ESC
+            ui() << U::SelectTool { SelectedTool::Nothing };
             break;
         default: break;
     }
@@ -272,6 +283,19 @@ void BoardEditor::render_component(Scene& scene, Position const& pos, Component 
     component.def->render(component, scene, (pos.x + 2) * TILE_SIZE, (pos.y + 2) * TILE_SIZE, pen);
 }
 
+std::optional<ComponentDefinition> BoardEditor::selected_component_definition() const
+{
+    ComponentDatabase const& db = game().sandbox().component_db();
+    switch (ui().state().selected_tool) {
+        case SelectedTool::VCC:    return db.component_def("vcc");
+        case SelectedTool::Button: return db.component_def("button");
+        case SelectedTool::LED:    return db.component_def("led");
+        case SelectedTool::NPN:    return db.component_def("npn");
+        case SelectedTool::PNP:    return db.component_def("pnp");
+        default:                   return {};
+    }
+}
+
 void BoardEditor::render_cursor(Scene& scene, int mx, int my) const
 {
     Board const& board = game().board(board_id_);
@@ -279,22 +303,15 @@ void BoardEditor::render_cursor(Scene& scene, int mx, int my) const
     if (pos.x < 0 || pos.y < 0 || pos.x >= board.w() || pos.y >= board.h())
         return;
 
-    ComponentDefinition def;
-    ComponentDatabase const& db = game().sandbox().component_db();
-    switch (ui().state().selected_tool) {
-        case SelectedTool::VCC:    def = db.component_def("vcc"); break;
-        case SelectedTool::Button: def = db.component_def("button"); break;
-        case SelectedTool::LED:    def = db.component_def("led"); break;
-        case SelectedTool::NPN:    def = db.component_def("npn"); break;
-        case SelectedTool::PNP:    def = db.component_def("pnp"); break;
-        default:
-            return;
-    }
+    auto def = selected_component_definition();
+    if (!def)
+        return;
 
     Direction dir = Direction::N;
-    if (def.can_rotate)
-        dir = ui().state().selected_tool_rotation;
+    if (def->can_rotate)
+        dir = ui().state().selected_tool_direction;
 
     Pen pen { .semitransparent = true, .rotation = dir };
-    def.cursor_render(scene, (pos.x + 2) * TILE_SIZE, (pos.y + 2) * TILE_SIZE, pen);
+    def->cursor_render(scene, (pos.x + 2) * TILE_SIZE, (pos.y + 2) * TILE_SIZE, pen);
 }
+

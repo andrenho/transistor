@@ -23,6 +23,7 @@ struct FinishPlacingWire { Position pos; };
 struct AddComponent {
     std::string component_type;
     Position    pos;
+    Direction   dir = Direction::N;
     bool        bypass_recompilation = false;
 };
 

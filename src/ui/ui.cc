@@ -116,6 +116,7 @@ void UI::execute_queue()
             },
             [&](U::SelectTool const& cmd) {
                 state_.selected_tool = cmd.tool;
+                state_.selected_tool_direction = cmd.dir;
             },
             [&](U::ShowException const& cmd) {
                 state_.exception = cmd.text;

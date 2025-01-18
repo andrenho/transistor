@@ -37,6 +37,8 @@ private:
     void start_erasing(Position const& pos);
     void stop_erasing();
 
+    std::optional<ComponentDefinition> selected_component_definition() const;
+
     static resource_idx_t
         tile,
         board_top_left, board_top, board_top_right, board_left, board_right, board_bottom_left, board_bottom, board_bottom_right,

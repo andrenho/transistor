@@ -27,6 +27,7 @@ struct SetMouseCursor {
 
 struct SelectTool {
     SelectedTool tool;
+    Direction    dir = Direction::N;
 };
 
 struct Quit {};
