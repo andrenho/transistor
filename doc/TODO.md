@@ -71,7 +71,7 @@
     - [x] component shortcuts
     - [x] place component
     - [x] rotate cursor
-    - [ ] don't place over existing component, overwrite wires
+    - [x] don't place over existing component, overwrite wires
   - [ ] component infobox
 - [ ] ic support
   - [ ] select IC
