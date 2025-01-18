@@ -77,6 +77,7 @@
 
 # v0.0.6 - circuits QOL
 
+- [ ] improve error handling (ImGui)
 - [ ] resize board
 - [ ] selection
 - [ ] cut/copy/paste
