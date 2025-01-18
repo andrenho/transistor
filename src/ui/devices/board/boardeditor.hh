@@ -9,7 +9,7 @@
 
 class BoardEditor : public DeviceEditor {
 public:
-    explicit BoardEditor(size_t board_id);
+    BoardEditor(size_t board_id, int x, int y);
 
     static void load_icons();
 

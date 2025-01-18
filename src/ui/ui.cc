@@ -69,9 +69,14 @@ UI::~UI()
 
 void UI::recreate_devices()
 {
+    constexpr int STEP = 32;
+    int x = STEP * 4, y = STEP;
     device_editors_.clear();
-    for (auto const& board: game().sandbox().boards())
-        device_editors_.push_back(std::make_unique<BoardEditor>(board.id()));
+    for (auto const& board: game().sandbox().boards()) {
+        device_editors_.push_back(std::make_unique<BoardEditor>(board.id(), x, y));
+        x += STEP;
+        y += STEP;
+    }
 }
 
 void UI::operator<<(U::Command&& command) const

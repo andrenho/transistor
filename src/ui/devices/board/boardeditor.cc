@@ -26,8 +26,8 @@ resource_idx_t
     BoardEditor::wire_top_off_west_1,
     BoardEditor::wire_top_off_south_1;
 
-BoardEditor::BoardEditor(size_t board_id)
-    : DeviceEditor(0, 0, (game().board(board_id).w() + 4) * TILE_SIZE, (game().board(board_id).w() + 4) * TILE_SIZE),
+BoardEditor::BoardEditor(size_t board_id, int x, int y)
+    : DeviceEditor(x, y, (game().board(board_id).w() + 4) * TILE_SIZE, (game().board(board_id).w() + 4) * TILE_SIZE),
       board_id_(board_id)
 {
     zoom_ = 2.f;
