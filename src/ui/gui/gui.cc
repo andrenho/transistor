@@ -31,6 +31,7 @@ void GUI::init(SDL_Window* window, SDL_Renderer* ren)
     io->Fonts->AddFontFromMemoryTTF((void *) ttf.data(), (int) ttf.size(), 16, &cfg);
 
     toolbox_.init();
+    infobox_.init();
 }
 
 void GUI::setup_theme()
@@ -83,7 +84,7 @@ bool GUI::render() const
     if (!render_main_menu())
         return false;
     toolbox_.render();
-    render_infobox();   // TODO - use class for that
+    infobox_.render();
 
     if (!render_modal_exception())
         return false;
@@ -113,30 +114,6 @@ bool GUI::render_main_menu() const
     ImGui::EndMainMenuBar();
 
     return true;
-}
-
-void GUI::render_infobox() const
-{
-    constexpr float INFOBOX_WIDTH = 350.f;
-
-    ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoBringToFrontOnFocus;
-
-    const ImGuiViewport* viewport = ImGui::GetMainViewport();
-    ImVec2 window_pos = { viewport->WorkSize.x - INFOBOX_WIDTH, viewport->WorkPos.y };
-    ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always);
-    ImGui::SetNextWindowSize({ INFOBOX_WIDTH, viewport->WorkSize.y });
-
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0);
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 16, 16 });
-
-    ImGui::SetNextWindowBgAlpha(0.35f);
-
-    if (ImGui::Begin("InfoBox", nullptr, window_flags)) {
-        ::render_infobox(ui().state().infobox_contents);
-    }
-    ImGui::End();
-
-    ImGui::PopStyleVar(2);
 }
 
 bool GUI::render_modal_exception() const

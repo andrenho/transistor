@@ -4,7 +4,17 @@
 #include <optional>
 
 #include "engine/geometry/direction.hh"
-#include "gui/infobox.hh"
+
+struct InfoboxContents {
+    using Type = std::variant<std::string>;
+
+    std::vector<Type> contents;
+
+    InfoboxContents() = default;
+    InfoboxContents(Type const& item) : contents({ item }) {}
+    InfoboxContents(const char* item) : contents({ std::string(item) }) {}
+    InfoboxContents(std::initializer_list<Type> c) : contents(c) {}
+};
 
 enum class SelectedTool {
     Nothing, VCC, Button, LED, NPN, PNP,

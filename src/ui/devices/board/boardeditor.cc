@@ -292,6 +292,7 @@ std::optional<ComponentDefinition> BoardEditor::selected_component_definition() 
         case SelectedTool::LED:    return db.component_def("led");
         case SelectedTool::NPN:    return db.component_def("npn");
         case SelectedTool::PNP:    return db.component_def("pnp");
+        case SelectedTool::Nothing:
         default:                   return {};
     }
 }
