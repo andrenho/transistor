@@ -67,7 +67,8 @@
   - [x] detach resource manager from UI?
   - [x] basic components
   - [x] selected component
-    - [ ] shadow draw
+    - [x] shadow draw
+    - [ ] component shortcuts
     - [ ] place component
     - [ ] rotate cursor
     - [ ] don't place over existing component, overwrite wires
