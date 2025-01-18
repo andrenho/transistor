@@ -1,12 +1,10 @@
 #ifndef UI_COMMANDS_HH
 #define UI_COMMANDS_HH
 
-#include <stdexcept>
 #include <variant>
 
-#include "engine/game/game.hh"
+#include "uistate.hh"
 #include "gui/infobox.hh"
-#include "gui/toolbox.hh"
 
 struct DeviceEditor;
 
@@ -27,11 +25,15 @@ struct SetMouseCursor {
     MouseCursor cursor;
 };
 
+struct SelectTool {
+    SelectedTool tool;
+};
+
 struct Quit {};
 
 using Command = std::variant<
     StartDragginDevice, StopDraggingDevice,
-    ShowException, ClearException, SetInfobox,
+    ShowException, ClearException, SetInfobox, SelectTool,
     SetMouseCursor, Quit
 >;
 

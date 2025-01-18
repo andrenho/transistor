@@ -145,7 +145,7 @@ bool GUI::render_modal_exception() const
     if (ImGui::BeginPopupModal("Error!", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
         if (ui().state().exception) {
             ImGui::PushTextWrapPos();
-            ImGui::Text("%s", ui().state().exception->text.c_str());
+            ImGui::Text("%s", ui().state().exception->c_str());
             ImGui::PopTextWrapPos();
         }
         ImGui::Separator();
@@ -154,7 +154,7 @@ bool GUI::render_modal_exception() const
             ImGui::CloseCurrentPopup();
             ui() << U::ClearException {};
             ImGui::EndPopup();
-            return ui().state().exception->recoverable;
+            return ui().state().exception_recoverable;
         }
         ImGui::EndPopup();
     }

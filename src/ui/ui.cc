@@ -109,8 +109,12 @@ void UI::execute_queue()
             [&](U::Quit const&) {
                 running_ = false;
             },
+            [&](U::SelectTool const& cmd) {
+                state_.selected_tool = cmd.tool;
+            },
             [&](U::ShowException const& cmd) {
-                state_.exception = cmd;
+                state_.exception = cmd.text;
+                state_.exception_recoverable = cmd.recoverable;
             },
             [&](U::ClearException const&) {
                 state_.exception = {};

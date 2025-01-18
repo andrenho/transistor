@@ -3,14 +3,17 @@
 
 #include <optional>
 
-#include "ui_commands.hh"
 #include "gui/infobox.hh"
-#include "gui/toolbox.hh"
+
+enum class SelectedTool {
+    Nothing, VCC, Button, LED, NPN, PNP,
+};
 
 struct UIState {
-    InfoboxContents                 infobox_contents;
-    std::optional<U::ShowException> exception {};
-    Toolbox                         toolbox;
+    InfoboxContents            infobox_contents;
+    std::optional<std::string> exception {};
+    bool                       exception_recoverable = false;
+    SelectedTool               selected_tool = SelectedTool::Nothing;
 };
 
 #endif //UISTATE_HH
