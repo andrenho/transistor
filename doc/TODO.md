@@ -65,11 +65,15 @@
 - [x] global res()
 - [ ] toolbar
   - [x] detach resource manager from UI?
-  - [ ] basic components
-  - [ ] selected component
+  - [x] basic components
+  - [x] selected component
+    - [ ] shadow draw
+    - [ ] place component
+    - [ ] rotate cursor
+    - [ ] don't place over existing component, overwrite wires
   - [ ] component infobox
-  - [ ] ics
 - [ ] ic support
+  - [ ] select IC
   - [ ] rotation
 - [ ] ic native behaviour
 - [ ] ic Lua support

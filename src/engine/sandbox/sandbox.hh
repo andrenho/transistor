@@ -25,8 +25,9 @@ public:
     void simulate();
 
     [[nodiscard]] bus_data_t wire_value(Position const& pos) const;
+    [[nodiscard]] ComponentDatabase const& component_db() const { return component_db_; }
 
-    [[nodiscard]] json serialize() const;
+    [[nodiscard]] json                     serialize() const;
 
     friend bool operator==(Sandbox const& lhs, Sandbox const& rhs) { return lhs.boards_ == rhs.boards_; }
     friend bool operator!=(Sandbox const& lhs, Sandbox const& rhs) { return !(lhs == rhs); }

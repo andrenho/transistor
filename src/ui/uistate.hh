@@ -3,6 +3,7 @@
 
 #include <optional>
 
+#include "engine/geometry/direction.hh"
 #include "gui/infobox.hh"
 
 enum class SelectedTool {
@@ -14,6 +15,7 @@ struct UIState {
     std::optional<std::string> exception {};
     bool                       exception_recoverable = false;
     SelectedTool               selected_tool = SelectedTool::Nothing;
+    Direction                  selected_tool_rotation = Direction::N;
 };
 
 #endif //UISTATE_HH

@@ -214,6 +214,10 @@ void UI::draw_image(Scene::Image const& image, DeviceEditor const* layer) const
 
 void UI::render() const
 {
+    // get mouse position
+    int mx, my;
+    SDL_GetMouseState(&mx, &my);
+
     // clear screen
     SDL_SetRenderDrawColor(ren_, 0, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(ren_);
@@ -224,7 +228,7 @@ void UI::render() const
     // draw layers
     for (auto& layer: device_editors_) {
         Scene scene;
-        layer->render(scene);
+        layer->render(scene, (mx - layer->x()) / layer->zoom(), (my - layer->y()) / layer->zoom());
         while (auto image = scene.next_image()) {
             draw_image(*image, layer.get());
         }

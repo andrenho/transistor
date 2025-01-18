@@ -7,7 +7,7 @@ class DeviceEditor {
 public:
     virtual ~DeviceEditor() = default;
 
-    virtual void render(class Scene& scene) = 0;
+    virtual void render(class Scene& scene, int mx, int my) = 0;
 
     virtual void on_mouse_press(int x, int y, uint8_t button, bool dbl_click) {}
     virtual void on_mouse_release(int x, int y, uint8_t button) {}

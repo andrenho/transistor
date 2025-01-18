@@ -182,7 +182,7 @@ void BoardEditor::draw(Scene& scene, ResourceId const& resource, int x, int y, P
     scene.add(resource, (x + 2) * TILE_SIZE, (y + 2) * TILE_SIZE, pen);
 }
 
-void BoardEditor::render(Scene& scene)
+void BoardEditor::render(Scene& scene, int mx, int my)
 {
     Board const& board = game().board(board_id_);
 
@@ -190,6 +190,7 @@ void BoardEditor::render(Scene& scene)
     for (intpos_t x = 0; x < board.w(); ++x)
         for (intpos_t y = 0; y < board.h(); ++y)
             render_tile(scene, x, y);
+    render_cursor(scene, mx, my);
 }
 
 void BoardEditor::render_border(Scene& scene) const
@@ -265,5 +266,35 @@ void BoardEditor::render_wire(Scene& scene, Position const& pos, Wire const& wir
 
 void BoardEditor::render_component(Scene& scene, Position const& pos, Component const& component) const
 {
-    component.def->render(component, scene, (pos.x + 2) * TILE_SIZE, (pos.y + 2) * TILE_SIZE);
+    Pen pen;
+    if (component.def->can_rotate)
+        pen.rotation = component.rotation;
+    component.def->render(component, scene, (pos.x + 2) * TILE_SIZE, (pos.y + 2) * TILE_SIZE, pen);
+}
+
+void BoardEditor::render_cursor(Scene& scene, int mx, int my) const
+{
+    Board const& board = game().board(board_id_);
+    auto pos = to_pos(board, mx, my);
+    if (pos.x < 0 || pos.y < 0 || pos.x >= board.w() || pos.y >= board.h())
+        return;
+
+    ComponentDefinition def;
+    ComponentDatabase const& db = game().sandbox().component_db();
+    switch (ui().state().selected_tool) {
+        case SelectedTool::VCC:    def = db.component_def("vcc"); break;
+        case SelectedTool::Button: def = db.component_def("button"); break;
+        case SelectedTool::LED:    def = db.component_def("led"); break;
+        case SelectedTool::NPN:    def = db.component_def("npn"); break;
+        case SelectedTool::PNP:    def = db.component_def("pnp"); break;
+        default:
+            return;
+    }
+
+    Direction dir = Direction::N;
+    if (def.can_rotate)
+        dir = ui().state().selected_tool_rotation;
+
+    Pen pen { .semitransparent = true, .rotation = dir };
+    def.cursor_render(scene, (pos.x + 2) * TILE_SIZE, (pos.y + 2) * TILE_SIZE, pen);
 }
