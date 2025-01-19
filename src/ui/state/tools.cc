@@ -26,8 +26,8 @@ void tools_init()
         { "__infobox_npn_1", 5, 9, 5, 4 },
         { "__infobox_pnp_0", 5, 13, 5, 4 },
         { "__infobox_pnp_1", 0, 13, 5, 4 },
-        { "__infobox_diode_0", 9, 0, 4, 4 },
-        { "__infobox_diode_1", 9, 4, 4, 4 },
+        { "__infobox_diode_0", 6, 0, 3, 3 },
+        { "__infobox_diode_1", 6, 3, 3, 3 },
     }, 16);
 
     tools_ = {
@@ -69,8 +69,7 @@ void tools_init()
                 `NPN transistors` allow the passage of a signal if their input is `1`, and block it otherwise.
                 There are two inputs, the input is considered `1` if one of the inputs is `1`.
                 ${image: __infobox_npn_0}${image: __infobox_npn_1}
-                The NPN transistor can also serve as a diode, blocking the signal in one direction but not the other.
-                ${image: __infobox_diode_0}${image_sl: __infobox_diode_1})",
+                Press `R` to rotate the component.)",
         },
         {
             .tool    = SelectedTool::PNP,
@@ -79,7 +78,10 @@ void tools_init()
             .infobox = R"(
                 `PNP transistors` allow the passage of a signal if their input is `0`, and block it otherwise.
                 There are two inputs, the input is considered `1` if one of the inputs is `1`.
-                ${image: __infobox_pnp_0}${image: __infobox_pnp_1})",
+                ${image: __infobox_pnp_0}${image: __infobox_pnp_1}
+                The PNP transistor also works as a diode, blocking the signal in one direction but not the other.
+                ${image: __infobox_diode_0}${image_sl: __infobox_diode_1}
+                Press `R` to rotate the component.)",
         },
     };
 }

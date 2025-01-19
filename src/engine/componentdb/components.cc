@@ -85,7 +85,7 @@ ComponentDefinition npn()
         },
         .simulate = [](Component& npn) {
             constexpr size_t IN = 1, SWITCH_1 = 0, SWITCH_2 = 2, OUT = 3;
-            npn.pins[OUT] = npn.pins[IN] & !(npn.pins[SWITCH_1] | npn.pins[SWITCH_2]);
+            npn.pins[OUT] = npn.pins[IN] & (npn.pins[SWITCH_1] | npn.pins[SWITCH_2]);
         },
         .cursor_render = [](Scene& scene, int x, int y, Pen pen) {
             scene.add("shadow_rect", x + 1, y + 1, pen);
@@ -110,7 +110,7 @@ ComponentDefinition pnp()
         },
         .simulate = [](Component& pnp) {
             constexpr size_t IN = 1, SWITCH_1 = 0, SWITCH_2 = 2, OUT = 3;
-            pnp.pins[OUT] = pnp.pins[IN] & (pnp.pins[SWITCH_1] | pnp.pins[SWITCH_2]);
+            pnp.pins[OUT] = pnp.pins[IN] & !(pnp.pins[SWITCH_1] | pnp.pins[SWITCH_2]);
         },
         .cursor_render = [](Scene& scene, int x, int y, Pen pen) {
             scene.add("shadow_rect", x + 1, y + 1, pen);
