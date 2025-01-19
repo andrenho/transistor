@@ -76,7 +76,7 @@
     - [x] create a selected tool dataset
     - [x] clear confusion between NPN and PNP
 - [ ] simplify single-tile component
-  - [ ] Join cursor render and render
+  - [x] Join cursor render and render
   - [ ] Return list of Pins
 - [ ] ic support
   - [ ] select IC

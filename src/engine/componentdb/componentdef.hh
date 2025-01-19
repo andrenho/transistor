@@ -30,8 +30,8 @@ struct ComponentDefinition {
     std::function<std::vector<uintpin_t>(Component const& component)> input_pins = [](Component const&) { return std::vector<uintpin_t>{}; };
     std::function<void(Component& component)>                         simulate = [](Component&) {};
 
-    using RenderFunction = std::function<void(std::optional<Component const*> opt_component, Scene& scene, int x, int y, Pen pen)>;
-    RenderFunction                                                    render = [](std::optional<Component const*>, Scene&, int, int, Pen) {};
+    std::function<void(std::optional<Component const*> opt_component, Scene& scene, int x, int y, Pen pen)>
+                                                                      render = [](std::optional<Component const*>, Scene&, int, int, Pen) {};
 
     std::function<std::string(Component const& component)>            serialize_component = [](Component const&) { return ""; };
     std::function<void(Component& component, json const& content)>    unserialize_component = [](Component&, json const&) {};
