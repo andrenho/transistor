@@ -8,8 +8,8 @@
 #include <vector>
 
 #include "scene.hh"
-#include "uistate.hh"
-#include "ui_commands.hh"
+#include "state/uistate.hh"
+#include "state/ui_commands.hh"
 #include "SDL2/SDL.h"
 
 #include "devices/deviceeditor.hh"

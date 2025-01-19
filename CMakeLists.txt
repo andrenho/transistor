@@ -114,8 +114,8 @@ set(UI_SRC
         src/ui/devices/board/boardeditor.hh
         src/ui/gui/gui.cc
         src/ui/gui/gui.hh
-        src/ui/ui_commands.hh
-        src/ui/uistate.hh
+        src/ui/state/ui_commands.hh
+        src/ui/state/uistate.hh
         src/res/resourcemanager.cc
         src/res/resourcemanager.hh
         src/ui/shared_res.hh
@@ -136,8 +136,8 @@ set(IMGUI_SRC
         contrib/ImGuiFileDialog/ImGuiFileDialogConfig.h
         src/ui/gui/infobox.cc
         src/ui/gui/infobox.hh
-        src/ui/tools.hh
-        src/ui/tools.cc
+        src/ui/state/tools.hh
+        src/ui/state/tools.cc
 )
 
 add_executable(${CMAKE_PROJECT_NAME}

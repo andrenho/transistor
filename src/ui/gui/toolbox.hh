@@ -2,7 +2,7 @@
 #define TOOLBOX_HH
 
 #include "res/resourcemanager.hh"
-#include "ui/uistate.hh"
+#include "ui/state/uistate.hh"
 
 class Toolbox {
 public:
