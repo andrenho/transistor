@@ -11,7 +11,7 @@
 
 void Toolbox::init()
 {
-    SDL_Texture* icons = res().texture("icons");
+    SDL_Texture* icons = res().texture("__icons");
     SDL_QueryTexture(icons, nullptr, nullptr, &icons_tx_w, &icons_tx_h);
 }
 

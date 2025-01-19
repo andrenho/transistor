@@ -35,7 +35,7 @@ BoardEditor::BoardEditor(size_t board_id, int x, int y)
 
 void BoardEditor::load_icons()
 {
-    res().add_tiles("icons", {
+    res().add_tiles("__icons", {
         { &tile, 2, 2 },
         { &board_top_left, 0, 0, 2, 2 },
         { &board_top, 2, 0, 1, 2 },

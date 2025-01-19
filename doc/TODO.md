@@ -72,8 +72,9 @@
     - [x] place component
     - [x] rotate cursor
     - [x] don't place over existing component, overwrite wires
-  - [ ] component infobox
-    - [ ] create a selected tool dataset
+  - [x] component infobox
+    - [x] create a selected tool dataset
+    - [ ] clear confusion between NPN and PNP
 - [ ] ic support
   - [ ] select IC
   - [ ] rotation

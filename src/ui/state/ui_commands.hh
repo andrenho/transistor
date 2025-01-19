@@ -18,7 +18,6 @@ struct ShowException {
     bool        recoverable = false;
 };
 struct ClearException {};
-struct SetInfobox { InfoboxContents contents; };
 
 struct SetMouseCursor {
     enum MouseCursor { Normal, Delete };
@@ -34,7 +33,7 @@ struct Quit {};
 
 using Command = std::variant<
     StartDragginDevice, StopDraggingDevice,
-    ShowException, ClearException, SetInfobox, SelectTool,
+    ShowException, ClearException, SelectTool,
     SetMouseCursor, Quit
 >;
 

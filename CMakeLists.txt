@@ -73,6 +73,8 @@ FetchContent_MakeAvailable(json)
 set(ENGINE_SRC
         src/lua/luaengine.cc
         src/lua/luaengine.hh
+        src/util/visitor.hh
+        src/util/exceptions.hh
         src/engine/util/types.hh
         src/engine/geometry/direction.hh
         src/engine/geometry/position.hh
@@ -96,8 +98,6 @@ set(ENGINE_SRC
         src/engine/sandbox/sandbox.cc
         src/engine/sandbox/compiler.cc
         src/engine/sandbox/compiler.hh
-        src/util/visitor.hh
-        src/util/exceptions.hh
         src/engine/game/game.cc
         src/engine/game/game.hh
         src/engine/game/game_commands.hh
@@ -121,6 +121,10 @@ set(UI_SRC
         src/ui/shared_res.hh
         src/ui/gui/toolbox.cc
         src/ui/gui/toolbox.hh
+        src/ui/gui/infobox.cc
+        src/ui/gui/infobox.hh
+        src/ui/state/tools.hh
+        src/ui/state/tools.cc
 )
 
 set(IMGUI_SRC
@@ -134,10 +138,6 @@ set(IMGUI_SRC
         contrib/ImGuiFileDialog/ImGuiFileDialog.h
         contrib/ImGuiFileDialog/ImGuiFileDialog.cpp
         contrib/ImGuiFileDialog/ImGuiFileDialogConfig.h
-        src/ui/gui/infobox.cc
-        src/ui/gui/infobox.hh
-        src/ui/state/tools.hh
-        src/ui/state/tools.cc
 )
 
 add_executable(${CMAKE_PROJECT_NAME}
@@ -151,6 +151,7 @@ add_executable(${CMAKE_PROJECT_NAME}
 set_source_files_properties(${IMGUI_SRC} PROPERTIES COMPILE_FLAGS "-w")
 
 b_embed(${CMAKE_PROJECT_NAME} resources/images/circuit.png)
+b_embed(${CMAKE_PROJECT_NAME} resources/images/infobox.png)
 b_embed(${CMAKE_PROJECT_NAME} resources/images/bg.jpg)
 b_embed(${CMAKE_PROJECT_NAME} resources/scripts/hello.lua)
 b_embed(${CMAKE_PROJECT_NAME} resources/fonts/Pixellari.ttf)

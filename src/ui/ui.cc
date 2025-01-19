@@ -40,7 +40,7 @@ void UI::init()
     SDL_Log("Current SDL_Renderer: %s", info.name);
 
     bg_ = res().add_texture<"resources/images/bg.jpg">();
-    res().add_texture<"resources/images/circuit.png">("icons");
+    res().add_texture<"resources/images/circuit.png">("__icons");
     load_shared_resources();
 
     BoardEditor::load_icons();
@@ -127,9 +127,6 @@ void UI::execute_queue()
             [&](U::ClearException const&) {
                 state_.exception = {};
             },
-            [&](U::SetInfobox const& cmd) {
-                state_.infobox_contents = cmd.contents;
-            }
         }, command);
     }
 }

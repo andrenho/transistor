@@ -5,7 +5,7 @@ inline void load_shared_resources()
 {
     constexpr int TILE_SIZE = 16;
 
-    res().add_tiles("icons", {
+    res().add_tiles("__icons", {
         { "shadow_rect", 5, 4 },
         { "shadow_square", 6, 4 },
         { "shadow_circle", 7, 4 },

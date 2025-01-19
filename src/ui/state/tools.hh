@@ -8,12 +8,13 @@ enum class SelectedTool {
 };
 
 struct Tool {
-    SelectedTool          tool;
-    resource_idx_t        image;
-    std::string           tooltip;
+    SelectedTool   tool;
+    resource_idx_t image;
+    std::string    tooltip;
+    std::string    infobox {};
 };
 
-void tools_init();
-std::vector<Tool> tools();
+void                     tools_init();
+std::vector<Tool> const& tools();
 
 #endif //TOOLS_HH

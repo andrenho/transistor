@@ -6,19 +6,7 @@
 #include "tools.hh"
 #include "engine/geometry/direction.hh"
 
-struct InfoboxContents {
-    using Type = std::variant<std::string>;
-
-    std::vector<Type> contents;
-
-    InfoboxContents() = default;
-    InfoboxContents(Type const& item) : contents({ item }) {}
-    InfoboxContents(const char* item) : contents({ std::string(item) }) {}
-    InfoboxContents(std::initializer_list<Type> c) : contents(c) {}
-};
-
 struct UIState {
-    InfoboxContents            infobox_contents;
     std::optional<std::string> exception {};
     bool                       exception_recoverable = false;
     SelectedTool               selected_tool = SelectedTool::Nothing;
