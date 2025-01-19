@@ -22,7 +22,7 @@ std::vector<std::pair<uintpin_t, Position>> Component::pin_positions(Position co
             pin_positions.push_back({ i, { component_pos.board_id, component_pos.x, component_pos.y, dir } });
             dir = single_tile_next_pin(dir);
         }
-    } else if (def->type == ComponentDefinition::Type::IC) {
+    } else {
         throw std::runtime_error("`pin_positions` for IC not supported yet"); // TODO
     }
 

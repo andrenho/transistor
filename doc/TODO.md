@@ -63,7 +63,7 @@
 
 - [x] advanced infobox
 - [x] global res()
-- [ ] toolbar
+- [x] toolbar
   - [x] detach resource manager from UI?
   - [x] basic components
   - [x] selected component
@@ -74,7 +74,10 @@
     - [x] don't place over existing component, overwrite wires
   - [x] component infobox
     - [x] create a selected tool dataset
-    - [ ] clear confusion between NPN and PNP
+    - [x] clear confusion between NPN and PNP
+- [ ] simplify single-tile component
+  - [ ] Join cursor render and render
+  - [ ] Return list of Pins
 - [ ] ic support
   - [ ] select IC
   - [ ] rotation

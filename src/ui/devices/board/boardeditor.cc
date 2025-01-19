@@ -280,7 +280,7 @@ void BoardEditor::render_component(Scene& scene, Position const& pos, Component 
     Pen pen;
     if (component.def->can_rotate)
         pen.rotation = component.rotation;
-    component.def->render(component, scene, (pos.x + 2) * TILE_SIZE, (pos.y + 2) * TILE_SIZE, pen);
+    component.def->render(&component, scene, (pos.x + 2) * TILE_SIZE, (pos.y + 2) * TILE_SIZE, pen);
 }
 
 std::optional<ComponentDefinition> BoardEditor::selected_component_definition() const
@@ -313,6 +313,6 @@ void BoardEditor::render_cursor(Scene& scene, int mx, int my) const
         dir = ui().state().selected_tool_direction;
 
     Pen pen { .semitransparent = true, .rotation = dir };
-    def->cursor_render(scene, (pos.x + 2) * TILE_SIZE, (pos.y + 2) * TILE_SIZE, pen);
+    def->render({}, scene, (pos.x + 2) * TILE_SIZE, (pos.y + 2) * TILE_SIZE, pen);
 }
 

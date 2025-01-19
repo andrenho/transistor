@@ -17,7 +17,7 @@ class  Scene;
 struct Component;
 
 struct ComponentDefinition {
-    enum class Type { SingleTile, IC };
+    enum class Type { SingleTile, IC_DIP, IC_Quad };
 
     std::string name;
     Type        type;
@@ -26,15 +26,15 @@ struct ComponentDefinition {
     size_t      data_size = 0;
 
 
-    std::function<void(Component& component)>                                   on_click = [](Component&) {};
-    std::function<std::vector<uintpin_t>(Component const& component)>           input_pins = [](Component const&) { return std::vector<uintpin_t>{}; };
-    std::function<void(Component& component)>                                   simulate = [](Component&) {};
+    std::function<void(Component& component)>                         on_click = [](Component&) {};
+    std::function<std::vector<uintpin_t>(Component const& component)> input_pins = [](Component const&) { return std::vector<uintpin_t>{}; };
+    std::function<void(Component& component)>                         simulate = [](Component&) {};
 
-    std::function<void(Scene& scene, int x, int y, Pen pen)>                    cursor_render = [](Scene&, int, int, Pen) {};
-    std::function<void(Component const& component, Scene& scene, int x, int y, Pen pen)> render = [](Component const&, Scene&, int, int, Pen) {};
+    using RenderFunction = std::function<void(std::optional<Component const*> opt_component, Scene& scene, int x, int y, Pen pen)>;
+    RenderFunction                                                    render = [](std::optional<Component const*>, Scene&, int, int, Pen) {};
 
-    std::function<std::string(Component const& component)>                      serialize_component = [](Component const&) { return ""; };
-    std::function<void(Component& component, json const& content)>              unserialize_component = [](Component&, json const&) {};
+    std::function<std::string(Component const& component)>            serialize_component = [](Component const&) { return ""; };
+    std::function<void(Component& component, json const& content)>    unserialize_component = [](Component&, json const&) {};
 
     constexpr uintpin_t pin_count() const {
         if (type == Type::SingleTile)
