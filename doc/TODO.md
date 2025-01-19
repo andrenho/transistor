@@ -73,6 +73,7 @@
     - [x] rotate cursor
     - [x] don't place over existing component, overwrite wires
   - [ ] component infobox
+    - [ ] create a selected tool dataset
 - [ ] ic support
   - [ ] select IC
   - [ ] rotation

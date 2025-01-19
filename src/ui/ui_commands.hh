@@ -3,8 +3,8 @@
 
 #include <variant>
 
+#include "tools.hh"
 #include "uistate.hh"
-#include "gui/infobox.hh"
 
 struct DeviceEditor;
 

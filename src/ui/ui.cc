@@ -4,6 +4,7 @@
 #include <string>
 
 #include "shared_res.hh"
+#include "tools.hh"
 #include "res/resourcemanager.hh"
 #include "util/visitor.hh"
 using namespace std::string_literals;
@@ -44,6 +45,7 @@ void UI::init()
 
     BoardEditor::load_icons();
 
+    tools_init();
     gui_.init(window_, ren_);
 
     move_cursor_ = res().add_cursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZEALL));

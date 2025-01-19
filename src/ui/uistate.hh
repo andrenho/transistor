@@ -3,6 +3,7 @@
 
 #include <optional>
 
+#include "tools.hh"
 #include "engine/geometry/direction.hh"
 
 struct InfoboxContents {
@@ -14,10 +15,6 @@ struct InfoboxContents {
     InfoboxContents(Type const& item) : contents({ item }) {}
     InfoboxContents(const char* item) : contents({ std::string(item) }) {}
     InfoboxContents(std::initializer_list<Type> c) : contents(c) {}
-};
-
-enum class SelectedTool {
-    Nothing, VCC, Button, LED, NPN, PNP,
 };
 
 struct UIState {
