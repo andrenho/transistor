@@ -5,7 +5,7 @@
 cmake_minimum_required(VERSION 3.28)
 
 project(transistor
-    VERSION 0.0.5
+    VERSION 0.0.6
     DESCRIPTION "A game to learn and create circuits"
     LANGUAGES C CXX ASM
 )
@@ -103,6 +103,7 @@ set(ENGINE_SRC
         src/engine/game/game_commands.hh
         src/engine/game/gamefilemanager.cc
         src/engine/game/gamefilemanager.hh
+        tests/pins.cc
 )
 
 set(UI_SRC
@@ -205,6 +206,7 @@ add_executable(${PROJECT_NAME}-tests
         tests/main.cc
         tests/compilation.cc
         tests/connected_wires.cc
+        tests/ic.cc
 )
 target_compile_definitions(${PROJECT_NAME}-tests PUBLIC ${DEF})
 target_compile_options(${PROJECT_NAME}-tests PRIVATE ${warnings})
@@ -226,6 +228,6 @@ install(TARGETS ${CMAKE_PROJECT_NAME}
 # packaging
 
 set(CPACK_SOURCE_GENERATOR "TBZ2")
-set(CPACK_SOURCE_IGNORE_FILES .git/ .github/ .idea/ _CPack_Packages/ ${CMAKE_BINARY_DIR}/ ${PROJECT_BINARY_DIR}/)
+set(CPACK_SOURCE_IGNORE_FILES .git/ .github/ .idea/ _CPack_Packages/ ${CMAKE_BINARY_DIR}/ ${PROJECT_BINARY_DIR}/ resources/images/rpi.png)
 set(CPACK_SOURCE_PACKAGE_FILE_NAME ${CMAKE_PROJECT_NAME}-${CMAKE_PROJECT_VERSION})
 include(CPack)

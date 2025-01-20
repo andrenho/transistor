@@ -11,6 +11,8 @@ ComponentDefinition vcc();
 ComponentDefinition npn();
 ComponentDefinition pnp();
 
+ComponentDefinition or_2i();
+
 }
 
 #endif //COMPONENTS_HH

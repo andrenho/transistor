@@ -91,6 +91,7 @@
   - [ ] UI
     - [ ] select from the toolbox
     - [ ] rotation/placement
+    - [ ] show pin names
 - [ ] ic Lua support
   - [ ] serialize/deserialize
 
