@@ -1,6 +1,7 @@
 #include "componentdb.hh"
 
 #include "components.hh"
+#include "util/exceptions.hh"
 
 ComponentDatabase::ComponentDatabase()
 {
@@ -9,7 +10,7 @@ ComponentDatabase::ComponentDatabase()
     };
 
     for (auto const& c: native_components)
-        components_[c.name] = std::make_unique<ComponentDefinition>(c);
+        add_component_def(c);
 }
 
 Component ComponentDatabase::create_component(std::string const& name) const
@@ -22,6 +23,23 @@ Component ComponentDatabase::create_component(std::string const& name) const
     if (def->data_size > 0)
         component.data = std::make_unique<uint8_t[]>(def->data_size);
     return component;
+}
+
+void ComponentDatabase::add_component_def(ComponentDefinition const& def)
+{
+    if (def.name.empty())
+        throw ComponentValidationFailed("Component doesn't have a valid name");
+
+    size_t n_pins = def.pins.size();
+    if (n_pins == 0)
+        throw ComponentValidationFailed("Component can't have zero pins");
+
+    if (def.type == ComponentDefinition::Type::SingleTile) {
+        if (n_pins != 1 && n_pins != 2 && n_pins != 4)
+            throw ComponentValidationFailed("Single-tile component must have 1, 2 or 4 pins.");
+    }
+
+    components_[def.name] = std::make_unique<ComponentDefinition>(def);
 }
 
 json ComponentDatabase::serialize() const

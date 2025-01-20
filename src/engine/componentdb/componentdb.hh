@@ -21,6 +21,8 @@ public:
 
 private:
     std::unordered_map<std::string, std::unique_ptr<ComponentDefinition>> components_;
+
+    void add_component_def(ComponentDefinition const& def);
 };
 
 #endif //COMPONENTDATABASE_HH

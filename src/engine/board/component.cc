@@ -16,12 +16,22 @@ std::vector<std::pair<uintpin_t, Position>> Component::pin_positions(Position co
 {
     std::vector<std::pair<uintpin_t, Position>> pin_positions;
 
+    uintpin_t n_pins = def->pins.size();
     if (def->type == ComponentDefinition::Type::SingleTile) {
         Direction dir = rotation;
-        for (uintpin_t i = 0; i < 4; ++i) {
-            pin_positions.push_back({ i, { component_pos.board_id, component_pos.x, component_pos.y, dir } });
-            dir = single_tile_next_pin(dir);
+        if (n_pins == 4) {
+            for (uintpin_t i = 0; i < n_pins; ++i) {
+                pin_positions.push_back({ i, { component_pos.board_id, component_pos.x, component_pos.y, dir } });
+                dir = single_tile_next_pin(dir);
+            }
+        } else if (n_pins == 2) {
+            pin_positions.push_back({ 0, { component_pos.board_id, component_pos.x, component_pos.y, dir } });
+            dir = single_tile_next_pin(single_tile_next_pin(dir));
+            pin_positions.push_back({ 1, { component_pos.board_id, component_pos.x, component_pos.y, dir } });
+        } else if (n_pins == 1) {
+            pin_positions.push_back({ 0, { component_pos.board_id, component_pos.x, component_pos.y, dir } });
         }
+
     } else {
         throw std::runtime_error("`pin_positions` for IC not supported yet"); // TODO
     }

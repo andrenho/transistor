@@ -75,10 +75,10 @@
   - [x] component infobox
     - [x] create a selected tool dataset
     - [x] clear confusion between NPN and PNP
-- [ ] simplify single-tile component
+- [x] simplify single-tile component
   - [x] Join cursor render and render
   - [x] Return list of Pins
-  - [ ] Validate component
+  - [x] Validate component
 - [ ] ic support
   - [ ] select IC
   - [ ] rotation
