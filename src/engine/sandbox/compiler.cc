@@ -11,7 +11,14 @@ Layout compile_to_layout(Board const& board)
 
     // create components
     for (auto& [pos, component]: board.components()) {
-        auto input_pins = component.def->input_pins(component);
+
+        // find input pins
+        std::vector<uintpin_t> input_pins;
+        for (size_t i = 0; i < component.def->pins.size(); ++i)
+            if (component.def->pins.at(i).type == InputPinType::Input)
+                input_pins.push_back(i);
+
+        // create component
         for (auto const& [idx, pin_pos]: component.pin_positions(pos))
             layout.pins[pin_pos] = Pin { .component = &component, .pin_no = idx, .input = r::contains(input_pins, idx) };
     }

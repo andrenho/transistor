@@ -77,7 +77,8 @@
     - [x] clear confusion between NPN and PNP
 - [ ] simplify single-tile component
   - [x] Join cursor render and render
-  - [ ] Return list of Pins
+  - [x] Return list of Pins
+  - [ ] Validate component
 - [ ] ic support
   - [ ] select IC
   - [ ] rotation

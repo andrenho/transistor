@@ -10,6 +10,10 @@ ComponentDefinition button()
         .name = "button",
         .type = ComponentDefinition::Type::SingleTile,
         .can_rotate = false,
+        .pins = {
+            { InputPinType::Output }, { InputPinType::Output },
+            { InputPinType::Output }, { InputPinType::Output },
+        },
         .data_size = 1,
         .on_click = [](Component& button) {
             button.data[0] = (!button.data[0]) & 1;
@@ -33,10 +37,11 @@ ComponentDefinition led()
         .name = "led",
         .type = ComponentDefinition::Type::SingleTile,
         .can_rotate = false,
-        .data_size = 1,
-        .input_pins = [](Component const& component) {
-            return std::vector<uintpin_t> { 0, 1, 2, 3 };
+        .pins = {
+            { InputPinType::Input }, { InputPinType::Input },
+            { InputPinType::Input }, { InputPinType::Input },
         },
+        .data_size = 1,
         .simulate = [](Component& led) {
             led.data[0] = led.pins[0] | led.pins[1] | led.pins[2] | led.pins[3];
         },
@@ -56,7 +61,10 @@ ComponentDefinition vcc()
         .name = "vcc",
         .type = ComponentDefinition::Type::SingleTile,
         .can_rotate = false,
-        .data_size = 0,
+        .pins = {
+            { InputPinType::Output }, { InputPinType::Output },
+            { InputPinType::Output }, { InputPinType::Output },
+        },
         .simulate = [](Component& vcc) {
             vcc.pins[0] = vcc.pins[1] = vcc.pins[2] = vcc.pins[3] = 1;
         },
@@ -73,9 +81,9 @@ ComponentDefinition npn()
         .name = "npn",
         .type = ComponentDefinition::Type::SingleTile,
         .can_rotate = true,
-        .data_size = 0,
-        .input_pins = [](Component const& component) {
-            return std::vector<uintpin_t> { 0, 1, 2 };
+        .pins = {
+            { InputPinType::Input }, { InputPinType::Input },
+            { InputPinType::Input }, { InputPinType::Output },
         },
         .simulate = [](Component& npn) {
             constexpr size_t IN = 1, SWITCH_1 = 0, SWITCH_2 = 2, OUT = 3;
@@ -94,9 +102,9 @@ ComponentDefinition pnp()
         .name = "pnp",
         .type = ComponentDefinition::Type::SingleTile,
         .can_rotate = true,
-        .data_size = 0,
-        .input_pins = [](Component const& component) {
-            return std::vector<uintpin_t> { 0, 1, 2 };
+        .pins = {
+            { InputPinType::Input }, { InputPinType::Input },
+            { InputPinType::Input }, { InputPinType::Output },
         },
         .simulate = [](Component& pnp) {
             constexpr size_t IN = 1, SWITCH_1 = 0, SWITCH_2 = 2, OUT = 3;
