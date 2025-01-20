@@ -15,6 +15,7 @@ struct Component {
     std::unique_ptr<uint8_t[]>    data = nullptr;
     std::unique_ptr<bus_data_t[]> pins = nullptr;
 
+    std::pair<Position, Position> rect(Position const& component_pos) const;
     std::vector<std::pair<uintpin_t, Position>> pin_positions(Position const& component_pos) const;
 
     void      on_click() { def->on_click(*this); }

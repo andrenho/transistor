@@ -8,10 +8,10 @@
 #include "engine/util/types.hh"
 
 struct Position {
-    Position(size_t _board_id, intpos_t _x, intpos_t _y, Direction _dir = Direction::Center)
+    Position(size_t _board_id, ssize_t _x, ssize_t _y, Direction _dir = Direction::Center)
         : board_id(_board_id), x(_x), y(_y), dir(_dir) {}
 
-    Position(struct Board* board, intpos_t x, intpos_t y, Direction dir = Direction::Center);
+    Position(struct Board* board, ssize_t x, ssize_t y, Direction dir = Direction::Center);
 
     explicit Position(std::string const& from);
 
@@ -22,6 +22,7 @@ struct Position {
     bool        operator<(Position const& p) const;
 
     std::vector<Position> neighbours(bool has_single_tile_component_pin) const;
+    Position add(intpos_t x, intpos_t y) const;
 
     friend bool operator==(Position const& lhs, Position const& rhs) { return std::tie(lhs.board_id, lhs.x, lhs.y, lhs.dir) == std::tie(rhs.board_id, rhs.x, rhs.y, rhs.dir); }
     friend bool operator!=(Position const& lhs, Position const& rhs) { return !(lhs == rhs); }

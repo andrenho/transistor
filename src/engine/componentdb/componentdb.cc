@@ -38,6 +38,12 @@ void ComponentDatabase::add(ComponentDefinition const& def)
     if (def.type == ComponentDefinition::Type::SingleTile) {
         if (n_pins != 1 && n_pins != 2 && n_pins != 4)
             throw ComponentValidationFailed("Single-tile component must have 1, 2 or 4 pins.");
+    } else if (def.type == ComponentDefinition::Type::IC_DIP) {
+        if (n_pins % 2 != 0)
+            throw ComponentValidationFailed("IC_DIP component pin count must be divisible per 2");
+    } else if (def.type == ComponentDefinition::Type::IC_Quad) {
+        if (n_pins % 4 != 0)
+            throw ComponentValidationFailed("IC_Quad component pin count must be divisible per 4");
     }
 
     components_[def.name] = std::make_unique<ComponentDefinition>(def);

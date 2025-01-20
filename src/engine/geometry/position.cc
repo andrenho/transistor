@@ -4,8 +4,8 @@
 
 #include "engine/board/board.hh"
 
-Position::Position(Board* board, intpos_t _x, intpos_t _y, Direction _dir)
-    : board_id(board->id()), x(_x), y(_y), dir(_dir)
+Position::Position(Board* board, ssize_t _x, ssize_t _y, Direction _dir)
+    : board_id(board->id()), x((intpos_t) _x), y((intpos_t) _y), dir(_dir)
 {
 }
 
@@ -18,6 +18,11 @@ Position::Position(std::string const& from)
     getline(ss, temp, ','); x = (intpos_t) std::stoi(temp);
     getline(ss, temp, ','); y = (intpos_t) std::stoi(temp);
     getline(ss, temp);            dir = (Direction) temp[0];
+}
+
+Position Position::add(intpos_t x, intpos_t y) const
+{
+    return { board_id, (intpos_t) (x + this->x), (intpos_t) (y + this->y), dir };
 }
 
 std::vector<Position> Position::neighbours(bool has_single_tile_component_pin) const

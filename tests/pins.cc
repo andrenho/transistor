@@ -46,7 +46,6 @@ TEST_SUITE("Pin positions")
             component.rotation = dir_rotate_component(component.rotation);
             auto pins = component.pin_positions(Position(B, 1, 1));
 
-            CHECK(pins.at(0).first == 0);
             CHECK(pins.at(0).second == Position(B, 1, 1, Direction::E));
         }
     }
@@ -70,9 +69,7 @@ TEST_SUITE("Pin positions")
             auto pins = component.pin_positions(Position(B, 1, 1));
 
             CHECK(pins.size() == 2);
-            CHECK(pins.at(0).first == 0);
             CHECK(pins.at(0).second == Position(B, 1, 1, Direction::E));
-            CHECK(pins.at(1).first == 1);
             CHECK(pins.at(1).second == Position(B, 1, 1, Direction::W));
         }
     }
@@ -100,14 +97,37 @@ TEST_SUITE("Pin positions")
             auto pins = component.pin_positions(Position(B, 1, 1));
 
             CHECK(pins.size() == 4);
-            CHECK(pins.at(0).first == 0);
             CHECK(pins.at(0).second == Position(B, 1, 1, Direction::E));
-            CHECK(pins.at(1).first == 1);
             CHECK(pins.at(1).second == Position(B, 1, 1, Direction::N));
-            CHECK(pins.at(2).first == 2);
             CHECK(pins.at(2).second == Position(B, 1, 1, Direction::W));
-            CHECK(pins.at(3).first == 3);
             CHECK(pins.at(3).second == Position(B, 1, 1, Direction::S));
+        }
+    }
+
+    TEST_CASE("DIP component 6 pins")
+    {
+        Component component = new_component(db, Type::IC_DIP, { Input, Input, Input, Input, Input, Input });
+
+        {
+            auto [e0, e1] = component.rect(Position(B, 1, 1));
+            CHECK(e0 == Position(B, 0, 0));
+            CHECK(e1 == Position(B, 2, 4));
+
+            auto pins = component.pin_positions(Position(B, 1, 1));
+
+            CHECK(pins.size() == 6);
+            CHECK(pins.at(0).first == 0);
+            CHECK(pins.at(0).second == Position(B, 0, 1));
+            CHECK(pins.at(1).first == 1);
+            CHECK(pins.at(1).second == Position(B, 0, 2));
+            CHECK(pins.at(2).first == 2);
+            CHECK(pins.at(2).second == Position(B, 0, 3));
+            CHECK(pins.at(3).first == 3);
+            CHECK(pins.at(3).second == Position(B, 2, 3));
+            CHECK(pins.at(4).first == 4);
+            CHECK(pins.at(4).second == Position(B, 2, 2));
+            CHECK(pins.at(5).first == 5);
+            CHECK(pins.at(5).second == Position(B, 2, 1));
         }
     }
 }

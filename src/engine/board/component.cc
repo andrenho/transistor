@@ -12,6 +12,22 @@ static constexpr Direction single_tile_next_pin(Direction dir)
     }
 }
 
+std::pair<Position, Position> Component::rect(Position const& component_pos) const
+{
+    if (def->type == ComponentDefinition::Type::SingleTile)
+        return { component_pos, component_pos };
+
+    if (def->type == ComponentDefinition::Type::IC_DIP) {
+        auto h = (intpos_t) (def->pins.size() / 2);
+        if (rotation == Direction::N || rotation == Direction::S)
+            return { component_pos.add(-1, -1), component_pos.add(1, h) };
+        else
+            return { component_pos.add(-1, -1), component_pos.add(h, 1) };
+    }
+
+    throw std::runtime_error("Not implemented yet.");  // TODO
+}
+
 std::vector<std::pair<uintpin_t, Position>> Component::pin_positions(Position const& component_pos) const
 {
     std::vector<std::pair<uintpin_t, Position>> pin_positions;
@@ -30,6 +46,24 @@ std::vector<std::pair<uintpin_t, Position>> Component::pin_positions(Position co
             pin_positions.push_back({ 1, { component_pos.board_id, component_pos.x, component_pos.y, dir } });
         } else if (n_pins == 1) {
             pin_positions.push_back({ 0, { component_pos.board_id, component_pos.x, component_pos.y, dir } });
+        }
+
+    } else if (def->type == ComponentDefinition::Type::IC_DIP) {
+        auto h = (intpos_t) (n_pins / 2);
+        uintpin_t j = 0;
+        switch (rotation) {
+            case Direction::N:
+                for (int i = 0; i < h; ++i)
+                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x - 1, component_pos.y + i } });
+                for (int i = (h-1); i >= 0; --i)
+                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + 1, component_pos.y + i } });
+                break;
+            case Direction::W:
+                break;
+            case Direction::E:
+                break;
+            case Direction::S:
+                break;
         }
 
     } else {
