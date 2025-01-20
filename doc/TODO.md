@@ -88,6 +88,7 @@
     - [x] pin placement
       - [x] IC DIP
       - [x] IC DIP (configurable width)
+      - [ ] IC Quad
     - [ ] don't allow placing on top of other components, remove wires underneath
     - [ ] rotate
     - [ ] simulate
@@ -111,7 +112,6 @@
 - [ ] lower layer wiring
 - [ ] bus
 - [ ] bus adapter
-- [ ] IC Quad
 
 # v0.0.9 - subcircuits
 

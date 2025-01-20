@@ -89,47 +89,27 @@ std::vector<std::pair<uintpin_t, Position>> Component::pin_positions(Position co
     } else if (def->type == ComponentDefinition::Type::IC_Quad) {
         auto h = (intpos_t) (n_pins / 4);
         uintpin_t j = 0;
+        auto add_w = [&]() {
+            for (int i = 0; i < h; ++i)
+                pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x - 1, component_pos.y + i } });
+        };
+        auto add_s = [&]() {
+            for (int i = 0; i < h; ++i)
+                pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + i, component_pos.y + h } });
+        };
+        auto add_e = [&]() {
+            for (int i = (h-1); i >= 0; --i)
+                pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + h, component_pos.y + i } });
+        };
+        auto add_n = [&]() {
+            for (int i = (h-1); i >= 0; --i)
+                pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + i, component_pos.y - 1 } });
+        };
         switch (rotation) {
-            case Direction::N:
-                for (int i = 0; i < h; ++i)
-                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x - 1, component_pos.y + i } });
-                for (int i = 0; i < h; ++i)
-                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + i, component_pos.y + h } });
-                for (int i = (h-1); i >= 0; --i)
-                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + h, component_pos.y + i } });
-                for (int i = (h-1); i >= 0; --i)
-                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + i, component_pos.y - 1 } });
-                break;
-            case Direction::E:
-                for (int i = (h-1); i >= 0; --i)
-                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + i, component_pos.y - 1 } });
-                for (int i = 0; i < h; ++i)
-                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x - 1, component_pos.y + i } });
-                for (int i = 0; i < h; ++i)
-                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + i, component_pos.y + h } });
-                for (int i = (h-1); i >= 0; --i)
-                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + h, component_pos.y + i } });
-                break;
-            case Direction::S:
-                for (int i = (h-1); i >= 0; --i)
-                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + h, component_pos.y + i } });
-                for (int i = (h-1); i >= 0; --i)
-                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + i, component_pos.y - 1 } });
-                for (int i = 0; i < h; ++i)
-                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x - 1, component_pos.y + i } });
-                for (int i = 0; i < h; ++i)
-                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + i, component_pos.y + h } });
-                break;
-            case Direction::W:
-                for (int i = 0; i < h; ++i)
-                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + i, component_pos.y + h } });
-                for (int i = (h-1); i >= 0; --i)
-                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + h, component_pos.y + i } });
-                for (int i = (h-1); i >= 0; --i)
-                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + i, component_pos.y - 1 } });
-                for (int i = 0; i < h; ++i)
-                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x - 1, component_pos.y + i } });
-                break;
+            case Direction::N: add_w(), add_s(), add_e(), add_n(); break;
+            case Direction::E: add_n(), add_w(), add_s(), add_e(); break;
+            case Direction::S: add_e(), add_n(), add_w(), add_s(); break;
+            case Direction::W: add_s(), add_e(), add_n(), add_w(); break;
             case Direction::Center:
             default:
                 throw std::runtime_error("Not applicable");
