@@ -22,15 +22,15 @@ Board::Board(json const& content, ComponentDatabase const& component_db)
 
     for (auto const& jcomp: content.at("components").items()) {
         Position pos(jcomp.key());
-        Component* component = add_component(jcomp.value().at("name"), pos.x, pos.y);
-        if (jcomp.value().contains("value"))
-            component->def->unserialize_component(*component, jcomp.value().at("value"));
+        auto o_component = add_component(jcomp.value().at("name"), pos.x, pos.y);
+        if (o_component && jcomp.value().contains("value"))
+            (*o_component)->def->unserialize_component(**o_component, jcomp.value().at("value"));
     }
 
     // recompile_();
 }
 
-Component* Board::add_component(std::string const& component_name, intpos_t x, intpos_t y)
+std::optional<Component*> Board::add_component(std::string const& component_name, intpos_t x, intpos_t y)
 {
     // TODO - check - is there a component here already?
     auto it = components_.emplace(Position { this, x, y, Direction::Center }, component_db_.create_component(component_name));

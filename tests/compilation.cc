@@ -20,8 +20,8 @@ TEST_SUITE("Engine")
     {
         e_board.clear();
 
-        Component* button = e_board.add_component("button", 1, 1);
-        Component* led = e_board.add_component("led", 3, 1);
+        Component* button = *e_board.add_component("button", 1, 1);
+        Component* led = *e_board.add_component("led", 3, 1);
         e_board.draw_wire(Wire::Width::W1, Wire::Layer::Top, 1, 1, 3, 1, Orientation::Horizontal);
 
         Layout layout = compiler::compile_to_layout(e_board);
@@ -158,7 +158,7 @@ TEST_SUITE("Engine")
     {
         e_board.clear();
 
-        Component* led = e_board.add_component("led", 1, 1);
+        Component* led = *e_board.add_component("led", 1, 1);
         e_board.draw_wire(Wire::Width::W1, Wire::Layer::Top, 0, 1, 1, 1, Orientation::Horizontal);
         e_board.draw_wire(Wire::Width::W1, Wire::Layer::Top, 1, 0, 1, 1, Orientation::Vertical);
 
@@ -172,9 +172,9 @@ TEST_SUITE("Engine")
     {
         e_board.clear();
 
-        Component* button = e_board.add_component("button", 1, 0);
-        Component* led1 = e_board.add_component("led", 0, 2);
-        Component* led2 = e_board.add_component("led", 1, 3);
+        Component* button = *e_board.add_component("button", 1, 0);
+        Component* led1 = *e_board.add_component("led", 0, 2);
+        Component* led2 = *e_board.add_component("led", 1, 3);
 
         e_board.draw_wire(Wire::Width::W1, Wire::Layer::Top, 1, 0, 1, 3, Orientation::Vertical);
         e_board.draw_wire(Wire::Width::W1, Wire::Layer::Top, 1, 2, 0, 2, Orientation::Horizontal);
@@ -211,7 +211,7 @@ TEST_SUITE("Engine")
     {
         e_board.clear();
 
-        Component* npn = e_board.add_component("npn", 1, 1);
+        Component* npn = *e_board.add_component("npn", 1, 1);
         e_board.rotate_component(1, 1);
 
         Layout layout = compiler::compile_to_layout(e_board);
