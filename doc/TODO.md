@@ -59,7 +59,7 @@
 - [x] UI state
 - [x] Improve error (don't quit sometimes)
 
-# v0.0.5 - ICs + customization
+# v0.0.5 - improvements + refactoring
 
 - [x] advanced infobox
 - [x] global res()
@@ -79,14 +79,22 @@
   - [x] Join cursor render and render
   - [x] Return list of Pins
   - [x] Validate component
+
+# v0.0.6 - IC support
+
 - [ ] ic support
-  - [ ] select IC
-  - [ ] rotation
-- [ ] ic native behaviour
+  - [ ] logic (write unit tests)
+    - [ ] create OR ic
+    - [ ] pin placement
+    - [ ] don't allow placing on top of other components, remove wires underneath
+    - [ ] rotate
+  - [ ] UI
+    - [ ] select from the toolbox
+    - [ ] rotation/placement
 - [ ] ic Lua support
   - [ ] serialize/deserialize
 
-# v0.0.6 - circuits QOL
+# v0.0.7 - UI improvements
 
 - [ ] improve error handling (ImGui)
 - [ ] resize board
@@ -94,22 +102,22 @@
 - [ ] cut/copy/paste
 - [ ] add text to board
 
-# v0.0.7 - advanced wiring
+# v0.0.8 - advanced wiring
 
 - [ ] lower layer wiring
 - [ ] bus
 - [ ] bus adapter
 
-# v0.0.8 - subcircuits
+# v0.0.9 - subcircuits
 
 - [ ] ?
 
-# v0.0.9 - game
+# v0.0.10 - game
 
 - [ ] title screen
 - [ ] game level support
 
-# v0.0.10 - custom boards
+# v0.0.11 - custom boards
 
 - [ ] video
 - [ ] audio
