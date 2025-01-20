@@ -58,12 +58,22 @@ std::vector<std::pair<uintpin_t, Position>> Component::pin_positions(Position co
                 for (int i = (h-1); i >= 0; --i)
                     pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + 1, component_pos.y + i } });
                 break;
-            case Direction::W:
-                break;
             case Direction::E:
+                for (int i = 0; i < h; ++i)
+                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + i, component_pos.y + 1 } });
+                for (int i = (h-1); i >= 0; --i)
+                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + i, component_pos.y - 1 } });
                 break;
             case Direction::S:
+                for (int i = (h-1); i >= 0; --i)
+                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + 1, component_pos.y + i } });
+                for (int i = 0; i < h; ++i)
+                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x - 1, component_pos.y + i } });
                 break;
+            case Direction::W:
+                break;
+            default:
+                throw std::runtime_error("Unsupported");
         }
 
     } else {

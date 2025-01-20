@@ -20,9 +20,9 @@ Position::Position(std::string const& from)
     getline(ss, temp);            dir = (Direction) temp[0];
 }
 
-Position Position::add(intpos_t x, intpos_t y) const
+Position Position::add(intpos_t x_, intpos_t y_) const
 {
-    return { board_id, (intpos_t) (x + this->x), (intpos_t) (y + this->y), dir };
+    return { board_id, (intpos_t) (x_ + this->x), (intpos_t) (y_ + this->y), dir };
 }
 
 std::vector<Position> Position::neighbours(bool has_single_tile_component_pin) const

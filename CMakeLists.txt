@@ -103,7 +103,6 @@ set(ENGINE_SRC
         src/engine/game/game_commands.hh
         src/engine/game/gamefilemanager.cc
         src/engine/game/gamefilemanager.hh
-        tests/pins.cc
 )
 
 set(UI_SRC
@@ -207,6 +206,7 @@ add_executable(${PROJECT_NAME}-tests
         tests/compilation.cc
         tests/connected_wires.cc
         tests/ic.cc
+        tests/pins.cc
 )
 target_compile_definitions(${PROJECT_NAME}-tests PUBLIC ${DEF})
 target_compile_options(${PROJECT_NAME}-tests PRIVATE ${warnings})

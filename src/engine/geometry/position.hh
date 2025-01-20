@@ -22,7 +22,7 @@ struct Position {
     bool        operator<(Position const& p) const;
 
     std::vector<Position> neighbours(bool has_single_tile_component_pin) const;
-    Position add(intpos_t x, intpos_t y) const;
+    Position add(intpos_t x_, intpos_t y_) const;
 
     friend bool operator==(Position const& lhs, Position const& rhs) { return std::tie(lhs.board_id, lhs.x, lhs.y, lhs.dir) == std::tie(rhs.board_id, rhs.x, rhs.y, rhs.dir); }
     friend bool operator!=(Position const& lhs, Position const& rhs) { return !(lhs == rhs); }

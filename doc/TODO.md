@@ -86,6 +86,9 @@
   - [ ] logic (write unit tests)
     - [ ] create OR ic
     - [ ] pin placement
+      - [ ] IC DIP
+      - [ ] IC DIP (configurable width)
+      - [ ] IC Quad
     - [ ] don't allow placing on top of other components, remove wires underneath
     - [ ] rotate
   - [ ] UI
