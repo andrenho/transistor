@@ -176,5 +176,24 @@ TEST_SUITE("Pin positions")
             CHECK(pins.at(4).second == Position(B, 0, 2));
             CHECK(pins.at(5).second == Position(B, 0, 3));
         }
+
+        SUBCASE("Direction W")
+        {
+            component.rotation = Direction::W;
+
+            auto [e0, e1] = component.rect(Position(B, 1, 1));
+            CHECK(e0 == Position(B, 0, 0));
+            CHECK(e1 == Position(B, 4, 2));
+
+            auto pins = component.pin_positions(Position(B, 1, 1));
+
+            CHECK(pins.size() == 6);
+            CHECK(pins.at(0).second == Position(B, 3, 0));
+            CHECK(pins.at(1).second == Position(B, 2, 0));
+            CHECK(pins.at(2).second == Position(B, 1, 0));
+            CHECK(pins.at(3).second == Position(B, 1, 2));
+            CHECK(pins.at(4).second == Position(B, 2, 2));
+            CHECK(pins.at(5).second == Position(B, 3, 2));
+        }
     }
 }
