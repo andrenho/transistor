@@ -284,4 +284,91 @@ TEST_SUITE("Pin positions")
             CHECK(pins.at(5).second == Position(B, 3, 3));
         }
     }
+
+    TEST_CASE("QUAD component - 8 pins")
+    {
+        Component component = new_component(db, Type::IC_Quad, { Input, Input, Input, Input, Input, Input, Input, Input });
+
+        SUBCASE("Direction N")
+        {
+            auto [e0, e1] = component.rect(Position(B, 1, 1));
+            CHECK(e0 == Position(B, 0, 0));
+            CHECK(e1 == Position(B, 3, 3));
+
+            auto pins = component.pin_positions(Position(B, 1, 1));
+
+            CHECK(pins.size() == 8);
+            CHECK(pins.at(0).second == Position(B, 0, 1));
+            CHECK(pins.at(1).second == Position(B, 0, 2));
+            CHECK(pins.at(2).second == Position(B, 1, 3));
+            CHECK(pins.at(3).second == Position(B, 2, 3));
+            CHECK(pins.at(4).second == Position(B, 3, 2));
+            CHECK(pins.at(5).second == Position(B, 3, 1));
+            CHECK(pins.at(6).second == Position(B, 2, 0));
+            CHECK(pins.at(7).second == Position(B, 1, 0));
+        }
+
+        SUBCASE("Direction E")
+        {
+            component.rotation = Direction::E;
+
+            auto [e0, e1] = component.rect(Position(B, 1, 1));
+            CHECK(e0 == Position(B, 0, 0));
+            CHECK(e1 == Position(B, 3, 3));
+
+            auto pins = component.pin_positions(Position(B, 1, 1));
+
+            CHECK(pins.size() == 8);
+            CHECK(pins.at(0).second == Position(B, 2, 0));
+            CHECK(pins.at(1).second == Position(B, 1, 0));
+            CHECK(pins.at(2).second == Position(B, 0, 1));
+            CHECK(pins.at(3).second == Position(B, 0, 2));
+            CHECK(pins.at(4).second == Position(B, 1, 3));
+            CHECK(pins.at(5).second == Position(B, 2, 3));
+            CHECK(pins.at(6).second == Position(B, 3, 2));
+            CHECK(pins.at(7).second == Position(B, 3, 1));
+        }
+
+        SUBCASE("Direction S")
+        {
+            component.rotation = Direction::S;
+
+            auto [e0, e1] = component.rect(Position(B, 1, 1));
+            CHECK(e0 == Position(B, 0, 0));
+            CHECK(e1 == Position(B, 3, 3));
+
+            auto pins = component.pin_positions(Position(B, 1, 1));
+
+            CHECK(pins.size() == 8);
+            CHECK(pins.at(0).second == Position(B, 3, 2));
+            CHECK(pins.at(1).second == Position(B, 3, 1));
+            CHECK(pins.at(2).second == Position(B, 2, 0));
+            CHECK(pins.at(3).second == Position(B, 1, 0));
+            CHECK(pins.at(4).second == Position(B, 0, 1));
+            CHECK(pins.at(5).second == Position(B, 0, 2));
+            CHECK(pins.at(6).second == Position(B, 1, 3));
+            CHECK(pins.at(7).second == Position(B, 2, 3));
+        }
+
+        SUBCASE("Direction W")
+        {
+            component.rotation = Direction::W;
+
+            auto [e0, e1] = component.rect(Position(B, 1, 1));
+            CHECK(e0 == Position(B, 0, 0));
+            CHECK(e1 == Position(B, 3, 3));
+
+            auto pins = component.pin_positions(Position(B, 1, 1));
+
+            CHECK(pins.size() == 8);
+            CHECK(pins.at(0).second == Position(B, 1, 3));
+            CHECK(pins.at(1).second == Position(B, 2, 3));
+            CHECK(pins.at(2).second == Position(B, 3, 2));
+            CHECK(pins.at(3).second == Position(B, 3, 1));
+            CHECK(pins.at(4).second == Position(B, 2, 0));
+            CHECK(pins.at(5).second == Position(B, 1, 0));
+            CHECK(pins.at(6).second == Position(B, 0, 1));
+            CHECK(pins.at(7).second == Position(B, 0, 2));
+        }
+    }
 }

@@ -25,6 +25,11 @@ std::pair<Position, Position> Component::rect(Position const& component_pos) con
             return { component_pos.add(-1, -1), component_pos.add(h, def->width) };
     }
 
+    if (def->type == ComponentDefinition::Type::IC_Quad) {
+        auto h = (intpos_t) (def->pins.size() / 4);
+        return { component_pos.add(-1, -1), component_pos.add(h, h) };
+    }
+
     throw std::runtime_error("Not implemented yet.");  // TODO
 }
 
@@ -81,8 +86,57 @@ std::vector<std::pair<uintpin_t, Position>> Component::pin_positions(Position co
                 throw std::runtime_error("Not applicable");
         }
 
+    } else if (def->type == ComponentDefinition::Type::IC_Quad) {
+        auto h = (intpos_t) (n_pins / 4);
+        uintpin_t j = 0;
+        switch (rotation) {
+            case Direction::N:
+                for (int i = 0; i < h; ++i)
+                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x - 1, component_pos.y + i } });
+                for (int i = 0; i < h; ++i)
+                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + i, component_pos.y + h } });
+                for (int i = (h-1); i >= 0; --i)
+                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + h, component_pos.y + i } });
+                for (int i = (h-1); i >= 0; --i)
+                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + i, component_pos.y - 1 } });
+                break;
+            case Direction::E:
+                for (int i = (h-1); i >= 0; --i)
+                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + i, component_pos.y - 1 } });
+                for (int i = 0; i < h; ++i)
+                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x - 1, component_pos.y + i } });
+                for (int i = 0; i < h; ++i)
+                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + i, component_pos.y + h } });
+                for (int i = (h-1); i >= 0; --i)
+                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + h, component_pos.y + i } });
+                break;
+            case Direction::S:
+                for (int i = (h-1); i >= 0; --i)
+                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + h, component_pos.y + i } });
+                for (int i = (h-1); i >= 0; --i)
+                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + i, component_pos.y - 1 } });
+                for (int i = 0; i < h; ++i)
+                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x - 1, component_pos.y + i } });
+                for (int i = 0; i < h; ++i)
+                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + i, component_pos.y + h } });
+                break;
+            case Direction::W:
+                for (int i = 0; i < h; ++i)
+                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + i, component_pos.y + h } });
+                for (int i = (h-1); i >= 0; --i)
+                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + h, component_pos.y + i } });
+                for (int i = (h-1); i >= 0; --i)
+                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + i, component_pos.y - 1 } });
+                for (int i = 0; i < h; ++i)
+                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x - 1, component_pos.y + i } });
+                break;
+            case Direction::Center:
+            default:
+                throw std::runtime_error("Not applicable");
+        }
+
     } else {
-        throw std::runtime_error("`pin_positions` for IC not supported yet"); // TODO
+        throw std::runtime_error("Not applicable");
     }
 
     return pin_positions;
