@@ -38,6 +38,7 @@ struct ComponentDefinition {
     std::vector<ComponentPin> pins;
 
     size_t                    data_size = 0;
+    uint8_t                   width = 1;
 
     std::function<void(Component& component)>                      on_click = [](Component&) {};
     std::function<void(Component& component)>                      simulate = [](Component&) {};

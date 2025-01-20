@@ -84,13 +84,13 @@
 
 - [ ] ic support
   - [ ] logic (write unit tests)
-    - [ ] create OR ic
-    - [ ] pin placement
-      - [ ] IC DIP
-      - [ ] IC DIP (configurable width)
-      - [ ] IC Quad
+    - [x] create OR ic
+    - [x] pin placement
+      - [x] IC DIP
+      - [x] IC DIP (configurable width)
     - [ ] don't allow placing on top of other components, remove wires underneath
     - [ ] rotate
+    - [ ] simulate
   - [ ] UI
     - [ ] select from the toolbox
     - [ ] rotation/placement
@@ -111,6 +111,7 @@
 - [ ] lower layer wiring
 - [ ] bus
 - [ ] bus adapter
+- [ ] IC Quad
 
 # v0.0.9 - subcircuits
 

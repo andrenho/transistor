@@ -13,7 +13,7 @@ TEST_SUITE("Pin positions")
 
     ComponentDatabase db;
 
-    static Component new_component(ComponentDatabase& db_, ComponentDefinition::Type type, std::vector<InputPinType> const& types)
+    static Component new_component(ComponentDatabase& db_, ComponentDefinition::Type type, std::vector<InputPinType> const& types, uint8_t width = 1)
     {
         auto rnd = [](){ return std::string(15, rand() % 26 + 'a'); };
 
@@ -25,6 +25,7 @@ TEST_SUITE("Pin positions")
             .name = rnd(),
             .type = type,
             .pins = pins,
+            .width = width,
         };
         db_.add(def);
         return db_.create_component(def.name);
@@ -110,7 +111,7 @@ TEST_SUITE("Pin positions")
         }
     }
 
-    TEST_CASE("DIP component 6 pins")
+    TEST_CASE("DIP component - 6 pins")
     {
         Component component = new_component(db, Type::IC_DIP, { Input, Input, Input, Input, Input, Input });
 
@@ -194,6 +195,93 @@ TEST_SUITE("Pin positions")
             CHECK(pins.at(3).second == Position(B, 1, 2));
             CHECK(pins.at(4).second == Position(B, 2, 2));
             CHECK(pins.at(5).second == Position(B, 3, 2));
+        }
+    }
+
+    TEST_CASE("DIP component - 6 pins, width 2")
+    {
+        Component component = new_component(db, Type::IC_DIP, { Input, Input, Input, Input, Input, Input }, 2);
+
+        SUBCASE("Direction N")
+        {
+            CHECK(component.rotation == Direction::N);
+
+            auto [e0, e1] = component.rect(Position(B, 1, 1));
+            CHECK(e0 == Position(B, 0, 0));
+            CHECK(e1 == Position(B, 3, 4));
+
+            auto pins = component.pin_positions(Position(B, 1, 1));
+
+            CHECK(pins.size() == 6);
+            CHECK(pins.at(0).first == 0);
+            CHECK(pins.at(0).second == Position(B, 0, 1));
+            CHECK(pins.at(1).first == 1);
+            CHECK(pins.at(1).second == Position(B, 0, 2));
+            CHECK(pins.at(2).first == 2);
+            CHECK(pins.at(2).second == Position(B, 0, 3));
+            CHECK(pins.at(3).first == 3);
+            CHECK(pins.at(3).second == Position(B, 3, 3));
+            CHECK(pins.at(4).first == 4);
+            CHECK(pins.at(4).second == Position(B, 3, 2));
+            CHECK(pins.at(5).first == 5);
+            CHECK(pins.at(5).second == Position(B, 3, 1));
+        }
+
+        SUBCASE("Direction E")
+        {
+            component.rotation = Direction::E;
+
+            auto [e0, e1] = component.rect(Position(B, 1, 1));
+            CHECK(e0 == Position(B, 0, 0));
+            CHECK(e1 == Position(B, 4, 3));
+
+            auto pins = component.pin_positions(Position(B, 1, 1));
+
+            CHECK(pins.size() == 6);
+            CHECK(pins.at(0).second == Position(B, 1, 3));
+            CHECK(pins.at(1).second == Position(B, 2, 3));
+            CHECK(pins.at(2).second == Position(B, 3, 3));
+            CHECK(pins.at(3).second == Position(B, 3, 0));
+            CHECK(pins.at(4).second == Position(B, 2, 0));
+            CHECK(pins.at(5).second == Position(B, 1, 0));
+        }
+
+        SUBCASE("Direction S")
+        {
+            component.rotation = Direction::S;
+
+            auto [e0, e1] = component.rect(Position(B, 1, 1));
+            CHECK(e0 == Position(B, 0, 0));
+            CHECK(e1 == Position(B, 3, 4));
+
+            auto pins = component.pin_positions(Position(B, 1, 1));
+
+            CHECK(pins.size() == 6);
+            CHECK(pins.at(0).second == Position(B, 3, 3));
+            CHECK(pins.at(1).second == Position(B, 3, 2));
+            CHECK(pins.at(2).second == Position(B, 3, 1));
+            CHECK(pins.at(3).second == Position(B, 0, 1));
+            CHECK(pins.at(4).second == Position(B, 0, 2));
+            CHECK(pins.at(5).second == Position(B, 0, 3));
+        }
+
+        SUBCASE("Direction W")
+        {
+            component.rotation = Direction::W;
+
+            auto [e0, e1] = component.rect(Position(B, 1, 1));
+            CHECK(e0 == Position(B, 0, 0));
+            CHECK(e1 == Position(B, 4, 3));
+
+            auto pins = component.pin_positions(Position(B, 1, 1));
+
+            CHECK(pins.size() == 6);
+            CHECK(pins.at(0).second == Position(B, 3, 0));
+            CHECK(pins.at(1).second == Position(B, 2, 0));
+            CHECK(pins.at(2).second == Position(B, 1, 0));
+            CHECK(pins.at(3).second == Position(B, 1, 3));
+            CHECK(pins.at(4).second == Position(B, 2, 3));
+            CHECK(pins.at(5).second == Position(B, 3, 3));
         }
     }
 }

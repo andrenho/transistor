@@ -20,9 +20,9 @@ std::pair<Position, Position> Component::rect(Position const& component_pos) con
     if (def->type == ComponentDefinition::Type::IC_DIP) {
         auto h = (intpos_t) (def->pins.size() / 2);
         if (rotation == Direction::N || rotation == Direction::S)
-            return { component_pos.add(-1, -1), component_pos.add(1, h) };
+            return { component_pos.add(-1, -1), component_pos.add(def->width, h) };
         else
-            return { component_pos.add(-1, -1), component_pos.add(h, 1) };
+            return { component_pos.add(-1, -1), component_pos.add(h, def->width) };
     }
 
     throw std::runtime_error("Not implemented yet.");  // TODO
@@ -56,17 +56,17 @@ std::vector<std::pair<uintpin_t, Position>> Component::pin_positions(Position co
                 for (int i = 0; i < h; ++i)
                     pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x - 1, component_pos.y + i } });
                 for (int i = (h-1); i >= 0; --i)
-                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + 1, component_pos.y + i } });
+                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + def->width, component_pos.y + i } });
                 break;
             case Direction::E:
                 for (int i = 0; i < h; ++i)
-                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + i, component_pos.y + 1 } });
+                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + i, component_pos.y + def->width } });
                 for (int i = (h-1); i >= 0; --i)
                     pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + i, component_pos.y - 1 } });
                 break;
             case Direction::S:
                 for (int i = (h-1); i >= 0; --i)
-                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + 1, component_pos.y + i } });
+                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + def->width, component_pos.y + i } });
                 for (int i = 0; i < h; ++i)
                     pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x - 1, component_pos.y + i } });
                 break;
@@ -74,10 +74,11 @@ std::vector<std::pair<uintpin_t, Position>> Component::pin_positions(Position co
                 for (int i = (h-1); i >= 0; --i)
                     pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + i, component_pos.y - 1 } });
                 for (int i = 0; i < h; ++i)
-                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + i, component_pos.y + 1 } });
+                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + i, component_pos.y + def->width } });
                 break;
+            case Direction::Center:
             default:
-                throw std::runtime_error("Unsupported");
+                throw std::runtime_error("Not applicable");
         }
 
     } else {

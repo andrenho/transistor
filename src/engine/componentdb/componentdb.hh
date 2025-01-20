@@ -15,6 +15,7 @@ public:
     ComponentDatabase();
 
     Component create_component(std::string const& name) const;
+
     ComponentDefinition const& component_def(std::string const& name) const { return *components_.at(name).get(); }
 
     void add(ComponentDefinition const& def);
@@ -24,6 +25,8 @@ public:
 
 private:
     std::unordered_map<std::string, std::unique_ptr<ComponentDefinition>> components_;
+
+    void validate_component(ComponentDefinition const& def);
 };
 
 #endif //COMPONENTDATABASE_HH
