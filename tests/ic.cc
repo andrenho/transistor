@@ -12,18 +12,25 @@ TEST_SUITE("ICs")
 
     TEST_CASE("IC placement")
     {
-        SUBCASE("Don't place over single-tile components")
+        SUBCASE("Don't place ICs over single-tile components")
         {
             i_board.clear();
-            i_board.add_component("button", 2, 2);
-            CHECK(i_board.add_component("or_2i", 1, 1) == std::optional<Component*>{});
+            i_board.add_component("button", 2, 2, Direction::N);
+            CHECK(i_board.add_component("or_2i", 1, 1, Direction::N) == std::optional<Component*>{});
         }
 
-        SUBCASE("Don't place over other IC components")
+        SUBCASE("Don't place ICs over other IC components")
         {
             i_board.clear();
-            i_board.add_component("button", 1, 1);
-            CHECK(i_board.add_component("or_2i", 3, 3) == std::optional<Component*>{});
+            i_board.add_component("or_2i", 1, 1, Direction::N);
+            CHECK(i_board.add_component("or_2i", 3, 3, Direction::N) == std::optional<Component*>{});
+        }
+
+        SUBCASE("Don't place single-tile components over IC components")
+        {
+            i_board.clear();
+            i_board.add_component("or_2i", 1, 1, Direction::N);
+            CHECK(i_board.add_component("button", 2, 2, Direction::N)  == std::optional<Component*>{});
         }
     }
 }

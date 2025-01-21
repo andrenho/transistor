@@ -82,12 +82,12 @@ set(ENGINE_SRC
         src/engine/componentdb/componentdb.hh
         src/engine/componentdb/componentdb.cc
         src/engine/componentdb/componentdef.hh
+        src/engine/componentdb/componentdef.cc
         src/engine/componentdb/components.hh
         src/engine/componentdb/components.cc
         src/engine/board/board.hh
         src/engine/board/board.cc
         src/engine/board/component.hh
-        src/engine/board/component.cc
         src/engine/board/wire.hh
         src/engine/board/wiremanagement.hh
         src/engine/board/wiremanagement.cc
@@ -103,6 +103,8 @@ set(ENGINE_SRC
         src/engine/game/game_commands.hh
         src/engine/game/gamefilemanager.cc
         src/engine/game/gamefilemanager.hh
+        src/engine/geometry/rect.cc
+        src/engine/geometry/rect.hh
 )
 
 set(UI_SRC

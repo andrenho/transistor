@@ -70,9 +70,8 @@ void Game::execute_queue()
             },
 
             [&](G::AddComponent const& cmd) {
-                auto c = board(cmd.pos.board_id).add_component(cmd.component_type, cmd.pos.x, cmd.pos.y);
+                auto c = board(cmd.pos.board_id).add_component(cmd.component_type, cmd.pos.x, cmd.pos.y, cmd.dir);
                 if (c) {
-                    (*c)->rotation = cmd.dir;
                     if (!cmd.bypass_recompilation)
                         sandbox_->recompile();
                 }

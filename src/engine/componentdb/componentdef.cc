@@ -1,4 +1,40 @@
-#include "component.hh"
+#include "componentdef.hh"
+
+#include "engine/board/component.hh"
+
+json ComponentDefinition::serialize(Component const& component) const
+{
+    json r {
+        { "name", name },
+        { "dir", std::string(1, (char) component.rotation) },
+    };
+    std::string value = serialize_component(component);
+    if (!value.empty())
+        r["value"] = value;
+    return r;
+}
+
+std::pair<Position, Position> ComponentDefinition::rect(Position const& component_pos, Direction rotation) const
+{
+    if (type == ComponentDefinition::Type::SingleTile)
+        return { component_pos, component_pos };
+
+    if (type == ComponentDefinition::Type::IC_DIP) {
+        auto h = (intpos_t) (pins.size() / 2);
+        if (rotation == Direction::N || rotation == Direction::S)
+            return { component_pos.add(-1, -1), component_pos.add(width, h) };
+        else
+            return { component_pos.add(-1, -1), component_pos.add(h, width) };
+    }
+
+    if (type == ComponentDefinition::Type::IC_Quad) {
+        auto h = (intpos_t) (pins.size() / 4);
+        return { component_pos.add(-1, -1), component_pos.add(h, h) };
+    }
+
+    throw std::runtime_error("Not applicable.");
+
+}
 
 static constexpr Direction single_tile_next_pin(Direction dir)
 {
@@ -12,33 +48,12 @@ static constexpr Direction single_tile_next_pin(Direction dir)
     }
 }
 
-std::pair<Position, Position> Component::rect(Position const& component_pos) const
-{
-    if (def->type == ComponentDefinition::Type::SingleTile)
-        return { component_pos, component_pos };
-
-    if (def->type == ComponentDefinition::Type::IC_DIP) {
-        auto h = (intpos_t) (def->pins.size() / 2);
-        if (rotation == Direction::N || rotation == Direction::S)
-            return { component_pos.add(-1, -1), component_pos.add(def->width, h) };
-        else
-            return { component_pos.add(-1, -1), component_pos.add(h, def->width) };
-    }
-
-    if (def->type == ComponentDefinition::Type::IC_Quad) {
-        auto h = (intpos_t) (def->pins.size() / 4);
-        return { component_pos.add(-1, -1), component_pos.add(h, h) };
-    }
-
-    throw std::runtime_error("Not implemented yet.");  // TODO
-}
-
-std::vector<std::pair<uintpin_t, Position>> Component::pin_positions(Position const& component_pos) const
+std::vector<std::pair<uintpin_t, Position>> ComponentDefinition::pin_positions(Position const& component_pos, Direction rotation) const
 {
     std::vector<std::pair<uintpin_t, Position>> pin_positions;
 
-    uintpin_t n_pins = def->pins.size();
-    if (def->type == ComponentDefinition::Type::SingleTile) {
+    uintpin_t n_pins = pins.size();
+    if (type == ComponentDefinition::Type::SingleTile) {
         Direction dir = rotation;
         if (n_pins == 4) {
             for (uintpin_t i = 0; i < n_pins; ++i) {
@@ -53,7 +68,7 @@ std::vector<std::pair<uintpin_t, Position>> Component::pin_positions(Position co
             pin_positions.push_back({ 0, { component_pos.board_id, component_pos.x, component_pos.y, dir } });
         }
 
-    } else if (def->type == ComponentDefinition::Type::IC_DIP) {
+    } else if (type == ComponentDefinition::Type::IC_DIP) {
         auto h = (intpos_t) (n_pins / 2);
         uintpin_t j = 0;
         switch (rotation) {
@@ -61,17 +76,17 @@ std::vector<std::pair<uintpin_t, Position>> Component::pin_positions(Position co
                 for (int i = 0; i < h; ++i)
                     pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x - 1, component_pos.y + i } });
                 for (int i = (h-1); i >= 0; --i)
-                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + def->width, component_pos.y + i } });
+                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + width, component_pos.y + i } });
                 break;
             case Direction::E:
                 for (int i = 0; i < h; ++i)
-                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + i, component_pos.y + def->width } });
+                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + i, component_pos.y + width } });
                 for (int i = (h-1); i >= 0; --i)
                     pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + i, component_pos.y - 1 } });
                 break;
             case Direction::S:
                 for (int i = (h-1); i >= 0; --i)
-                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + def->width, component_pos.y + i } });
+                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + width, component_pos.y + i } });
                 for (int i = 0; i < h; ++i)
                     pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x - 1, component_pos.y + i } });
                 break;
@@ -79,14 +94,14 @@ std::vector<std::pair<uintpin_t, Position>> Component::pin_positions(Position co
                 for (int i = (h-1); i >= 0; --i)
                     pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + i, component_pos.y - 1 } });
                 for (int i = 0; i < h; ++i)
-                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + i, component_pos.y + def->width } });
+                    pin_positions.push_back({ j++, { component_pos.board_id, component_pos.x + i, component_pos.y + width } });
                 break;
             case Direction::Center:
             default:
                 throw std::runtime_error("Not applicable");
         }
 
-    } else if (def->type == ComponentDefinition::Type::IC_Quad) {
+    } else if (type == ComponentDefinition::Type::IC_Quad) {
         auto h = (intpos_t) (n_pins / 4);
         uintpin_t j = 0;
         auto add_w = [&]() {
@@ -120,4 +135,5 @@ std::vector<std::pair<uintpin_t, Position>> Component::pin_positions(Position co
     }
 
     return pin_positions;
+
 }

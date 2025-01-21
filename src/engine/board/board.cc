@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+#include "engine/geometry/rect.hh"
 #include "engine/sandbox/sandbox.hh"
 
 size_t Board::board_counter_ = 0;
@@ -22,7 +23,8 @@ Board::Board(json const& content, ComponentDatabase const& component_db)
 
     for (auto const& jcomp: content.at("components").items()) {
         Position pos(jcomp.key());
-        auto o_component = add_component(jcomp.value().at("name"), pos.x, pos.y);
+        std::string dir_s = jcomp.value().at("dir");
+        auto o_component = add_component(jcomp.value().at("name"), pos.x, pos.y, (Direction) dir_s[0]);
         if (o_component && jcomp.value().contains("value"))
             (*o_component)->def->unserialize_component(**o_component, jcomp.value().at("value"));
     }
@@ -30,10 +32,20 @@ Board::Board(json const& content, ComponentDatabase const& component_db)
     // recompile_();
 }
 
-std::optional<Component*> Board::add_component(std::string const& component_name, intpos_t x, intpos_t y)
+std::optional<Component*> Board::add_component(std::string const& component_name, intpos_t x, intpos_t y, Direction dir)
 {
-    // TODO - check - is there a component here already?
+    ComponentDefinition const& def = component_db_.component_def(component_name);
+    auto [r1, r2] = def.rect({ id_, x, y }, dir);
+
+    for (auto const& [pos, component]: components_) {
+        auto [c1, c2] = component.rect(pos);
+        if (overlap(r1, r2, c1, c2))
+            return {};
+    }
+
     auto it = components_.emplace(Position { this, x, y, Direction::Center }, component_db_.create_component(component_name));
+    Component* component = &it.first->second;
+    component->rotation = dir;
     return &it.first->second;
 }
 

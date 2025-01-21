@@ -88,10 +88,10 @@
     - [x] pin placement
       - [x] IC DIP
       - [x] IC DIP (configurable width)
-      - [ ] IC Quad
-    - [ ] don't allow placing on top of other components, remove wires underneath
-    - [ ] rotate
+      - [x] IC Quad
+    - [x] don't allow placing on top of other components, remove wires underneath
     - [ ] simulate
+      - [ ] rotate
   - [ ] UI
     - [ ] select from the toolbox
     - [ ] rotation/placement

@@ -11,6 +11,7 @@
 #include <nlohmann/json.hpp>
 
 #include "engine/board/wire.hh"
+#include "engine/geometry/position.hh"
 
 using json = nlohmann::json;
 
@@ -49,13 +50,10 @@ struct ComponentDefinition {
     std::function<std::string(Component const& component)>         serialize_component = [](Component const&) { return ""; };
     std::function<void(Component& component, json const& content)> unserialize_component = [](Component&, json const&) {};
 
-    [[nodiscard]] json serialize(Component const& component) const {
-        json r { { "name", name } };
-        std::string value = serialize_component(component);
-        if (value != "")
-            r["value"] = value;
-        return r;
-    }
+    [[nodiscard]] json serialize(Component const& component) const;
+
+    [[nodiscard]] std::pair<Position, Position> rect(Position const& component_pos, Direction dir) const;
+    [[nodiscard]] std::vector<std::pair<uintpin_t, Position>> pin_positions(Position const& component_pos, Direction dir) const;
 
     // TODO - add IC fields (size, pins)
 };

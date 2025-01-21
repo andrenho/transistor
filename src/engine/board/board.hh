@@ -22,7 +22,7 @@ public:
     [[nodiscard]] std::map<Position, Component>& components() { return components_; }
     [[nodiscard]] std::map<Position, Wire> const& wires() const { return wires_; }
 
-    std::optional<Component*> add_component(std::string const& component_name, intpos_t x, intpos_t y);
+    std::optional<Component*> add_component(std::string const& component_name, intpos_t x, intpos_t y, Direction dir);
     void       draw_wire(Wire::Width width, Wire::Layer layer, intpos_t x0, intpos_t y0, intpos_t x1, intpos_t y1, Orientation orientation);
     void       merge_wires(std::map<Position, Wire> const& wires);
 
