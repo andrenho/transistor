@@ -37,7 +37,7 @@ TEST_SUITE("ICs")
         {
             i_board.clear();
             i_board.draw_wire(Wire::Width::W1, Wire::Layer::Top, 0, 1, 4, 1, Orientation::Horizontal);
-            i_board.add_component("or_2i", 1, 0, Direction::N);
+            i_board.add_component("or_2i", 2, 1, Direction::N);
 
             CHECK(i_board.wires().size() == 4);
             CHECK(i_board.wires().contains({ i_board.id(), 0, 1, Direction::E }));
