@@ -105,7 +105,24 @@ void Board::clear_tile(intpos_t x, intpos_t y)
     wires_.erase({ this, x, y, Direction::Center });
     for (Direction dir: DIRECTIONS)
         wires_.erase({ this, x, y, dir });
-    components_.erase({ this, x, y });
+    for (auto it = components_.begin(); it != components_.end(); ) {
+        auto const& [pos, component] = *it;
+
+        bool erase = false;
+        if (component.def->type == ComponentDefinition::Type::SingleTile) {
+            if (pos.x == x && pos.y == y)
+                erase = true;
+        } else {
+            auto [r1, r2] = component.rect(pos);
+            if (overlap(pos, r1, r2))
+                erase = true;
+        }
+
+        if (erase)
+            it = components_.erase(it);
+        else
+            ++it;
+    }
 }
 
 void Board::clear()
@@ -119,12 +136,8 @@ void Board::rotate_component(intpos_t x, intpos_t y)
     auto it = components_.find({ id_, x, y });
     if (it != components_.end()) {
         Component& component = it->second;
-        if (component.def->type == ComponentDefinition::Type::SingleTile) {
-            if (component.def->can_rotate)
-                component.rotation = dir_rotate_component(component.rotation);
-        } else {
-            throw std::runtime_error("IC rotation not supported yet.");  // TODO - implement for ICs
-        }
+        if (component.def->type == ComponentDefinition::Type::SingleTile && component.def->can_rotate)
+            component.rotation = dir_rotate_component(component.rotation);
     }
 }
 

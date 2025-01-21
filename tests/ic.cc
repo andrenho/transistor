@@ -45,5 +45,15 @@ TEST_SUITE("ICs")
             CHECK(i_board.wires().contains({ i_board.id(), 3, 1, Direction::E }));
             CHECK(i_board.wires().contains({ i_board.id(), 4, 1, Direction::W }));
         }
+
+        SUBCASE("Remove IC")
+        {
+            i_board.clear();
+            i_board.add_component("or_2i", 2, 1, Direction::N);
+            CHECK(i_board.components().size() == 1);
+
+            i_board.clear_tile(3, 2);
+            CHECK(i_board.components().empty());
+        }
     }
 }

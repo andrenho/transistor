@@ -90,8 +90,8 @@
       - [x] IC DIP (configurable width)
       - [x] IC Quad
     - [x] don't allow placing on top of other components
-    - [ ] remove wires underneath
-    - [ ] don't allow rotation
+    - [x] remove wires underneath
+    - [x] don't allow rotation
     - [ ] clear tile
     - [ ] simulate
       - [ ] rotate (before placement)

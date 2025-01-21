@@ -1,5 +1,10 @@
 #include "rect.hh"
 
+bool overlap(Position const& p, Position const& r1, Position const& r2)
+{
+    return p.x >= r1.x && p.x <= r2.x && p.y >= r1.x && p.y <= r2.y;
+}
+
 bool overlap(Position const& p1, Position const& p2, Position const& r1, Position const& r2)
 {
     // Calculate the corners of first rectangle
