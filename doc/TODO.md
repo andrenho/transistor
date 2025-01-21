@@ -92,7 +92,7 @@
     - [x] don't allow placing on top of other components
     - [x] remove wires underneath
     - [x] don't allow rotation
-    - [ ] clear tile
+    - [x] clear tile
     - [ ] simulate
       - [ ] rotate (before placement)
   - [ ] UI
