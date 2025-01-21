@@ -23,8 +23,8 @@ public:
     [[nodiscard]] std::map<Position, Wire> const& wires() const { return wires_; }
 
     std::optional<Component*> add_component(std::string const& component_name, intpos_t x, intpos_t y, Direction dir);
-    void       draw_wire(Wire::Width width, Wire::Layer layer, intpos_t x0, intpos_t y0, intpos_t x1, intpos_t y1, Orientation orientation);
-    void       merge_wires(std::map<Position, Wire> const& wires);
+    void draw_wire(Wire::Width width, Wire::Layer layer, intpos_t x0, intpos_t y0, intpos_t x1, intpos_t y1, Orientation orientation);
+    void merge_wires(std::map<Position, Wire> const& wires);
 
     void       clear_tile(intpos_t x, intpos_t y);
     void       clear();
@@ -56,6 +56,8 @@ private:
     std::map<Position, Component> components_;
     std::map<Position, Wire>      wires_;
     WireManagement                wire_management_;
+
+    void remove_wires_for_ic(Position const& r1, Position const& r2);
 
     static size_t board_counter_;
 };

@@ -43,10 +43,47 @@ std::optional<Component*> Board::add_component(std::string const& component_name
             return {};
     }
 
+    remove_wires_for_ic(r1, r2);
+
     auto it = components_.emplace(Position { this, x, y, Direction::Center }, component_db_.create_component(component_name));
     Component* component = &it.first->second;
     component->rotation = dir;
     return &it.first->second;
+}
+
+void Board::remove_wires_for_ic(Position const& r1, Position const& r2)
+{
+    // remove sides
+    for (intpos_t y = r1.y; y < r2.y; ++y) {  // left
+        wires_.erase({ id_, r1.x, y, Direction::N });
+        wires_.erase({ id_, r1.x, y, Direction::S });
+        wires_.erase({ id_, r1.x, y, Direction::E });
+    }
+    for (intpos_t y = r1.y; y < r2.y; ++y) {  // right
+        wires_.erase({ id_, r2.x, y, Direction::N });
+        wires_.erase({ id_, r2.x, y, Direction::S });
+        wires_.erase({ id_, r2.x, y, Direction::W });
+    }
+    for (intpos_t x = r1.x; x < r2.x; ++x) {  // top
+        wires_.erase({ id_, x, r1.y, Direction::S });
+        wires_.erase({ id_, x, r1.y, Direction::W });
+        wires_.erase({ id_, x, r1.y, Direction::E });
+    }
+    for (intpos_t x = r1.x; x < r2.x; ++x) {  // bottom
+        wires_.erase({ id_, x, r2.y, Direction::N });
+        wires_.erase({ id_, x, r2.y, Direction::W });
+        wires_.erase({ id_, x, r2.y, Direction::E });
+    }
+
+    // remove center
+    for (intpos_t x = r1.x + 1; x < r2.x - 1; ++x) {
+        for (intpos_t y = r1.y + 1; y < r2.y - 1; ++y) {
+            wires_.erase({ id_, x, y, Direction::N });
+            wires_.erase({ id_, x, y, Direction::S });
+            wires_.erase({ id_, x, y, Direction::W });
+            wires_.erase({ id_, x, y, Direction::E });
+        }
+    }
 }
 
 void Board::draw_wire(Wire::Width width, Wire::Layer layer, intpos_t x0, intpos_t y0, intpos_t x1, intpos_t y1, Orientation orientation)
