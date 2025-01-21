@@ -32,5 +32,11 @@ TEST_SUITE("ICs")
             i_board.add_component("or_2i", 1, 1, Direction::N);
             CHECK(i_board.add_component("button", 2, 2, Direction::N)  == std::optional<Component*>{});
         }
+
+        SUBCASE("Overwrite wires")
+        {
+            i_board.clear();
+            i_board.draw_wire(Wire::Width::W1, Wire::Layer::Top, 0, 1, 3, 1, Orientation::Horizontal);
+        }
     }
 }
