@@ -122,7 +122,7 @@ TEST_SUITE("ICs")
 
             CHECK(button_connection.pins.size() == 2);
             CHECK(r::find_if(button_connection.pins, [&](Pin const& pin) {
-                return pin.component == button && pin.pin_no == 1;
+                return pin.component == button && pin.pin_no == 3;
             }) != button_connection.pins.end());
             CHECK(r::find_if(button_connection.pins, [&](Pin const& pin) {
                 return pin.component == or_2i && pin.pin_no == 0;
@@ -130,8 +130,8 @@ TEST_SUITE("ICs")
 
             CHECK(button_connection.wires.size() == 2);
 
-            CHECK(r::contains(button_connection.wires, Position { i_board.id(), 0, 1, Direction::W }));
-            CHECK(r::contains(button_connection.wires, Position { i_board.id(), 1, 1, Direction::E }));
+            CHECK(r::contains(button_connection.wires, Position { i_board.id(), 0, 1, Direction::E }));
+            CHECK(r::contains(button_connection.wires, Position { i_board.id(), 1, 1, Direction::W }));
 
             Connection const& led_connection = *r::find_if(connections, [&](Connection const& c) {
                 auto it = r::find_if(c.pins, [&](Pin const& pin) { return pin.component == led; });
@@ -140,7 +140,7 @@ TEST_SUITE("ICs")
 
             CHECK(led_connection.pins.size() == 2);
             CHECK(r::find_if(led_connection.pins, [&](Pin const& pin) {
-                return pin.component == led && pin.pin_no == 2;
+                return pin.component == led && pin.pin_no == 1;
             }) != led_connection.pins.end());
             CHECK(r::find_if(led_connection.pins, [&](Pin const& pin) {
                 return pin.component == or_2i && pin.pin_no == 3;

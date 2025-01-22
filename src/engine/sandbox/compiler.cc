@@ -77,10 +77,14 @@ Connections compile_to_connections(std::vector<Layout> const& layouts)
         Connection conn;
         conn.wires = positions;
         for (auto const& [pos, pin]: layout.pins) {
-            if (conn.wires.contains(pos))
-                conn.pins.insert(pin);
-            if (conn.wires.contains({ pos.board_id, pos.x, pos.y, Direction::Center }))
-                conn.pins.insert(pin);
+            if (pin.component->def->type == ComponentDefinition::Type::SingleTile) {
+                if (conn.wires.contains(pos))
+                    conn.pins.insert(pin);
+            } else {
+                for (Direction dir: DIRECTIONS)
+                    if (conn.wires.contains({ pos.board_id, pos.x, pos.y, dir }))
+                        conn.pins.insert(pin);
+            }
         }
         return conn;
     };
