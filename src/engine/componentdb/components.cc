@@ -109,10 +109,11 @@ ComponentDefinition or_2i()
     return {
         .name = "or_2i",
         .type = ComponentDefinition::Type::IC_DIP,
-        .pins = { { "", Input }, { "", Input }, { "", Output }, { "", Output } },
+        .pins = { { "IN0", Input }, { "IN1", Input }, { "~Q", Output }, { "Q", Output } },
         .simulate =[](Component& c) {
-            c.pins[2] = c.pins[0] || c.pins[1];
-            c.pins[3] = !c.pins[2];
+            constexpr size_t IN0 = 0, IN1 = 0, _Q = 2, Q = 3;
+            c.pins[Q] = c.pins[IN0] || c.pins[IN1];
+            c.pins[_Q] = !c.pins[Q];
         },
         .render = [](std::optional<Component const*>, Scene& scene, int x, int y, Pen pen) {
             throw std::runtime_error("not implemented yet");  // TODO

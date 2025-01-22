@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "doctest.h"
 
 #include "engine/connections/connection.hh"
@@ -176,7 +178,7 @@ TEST_SUITE("ICs")
                 i_sandbox.simulate();
             CHECK(led->data[0] == 1);
 
-            CHECK(i_sandbox.wire_value({ i_board.id(), 2, 1, Direction::W }) == 1);
+            CHECK(i_sandbox.wire_value({ i_board.id(), 4, 1, Direction::W }) == 1);
         }
 
         SUBCASE("Button press and release")
@@ -205,6 +207,13 @@ TEST_SUITE("ICs")
             CHECK(i_sandbox.wire_value({ i_board.id(), 2, 1, Direction::W }) == 0);
         }
 
+        SUBCASE("Serialization and deserialization")
+        {
+            json content = i_sandbox.serialize();
+            std::cout << content.dump(2) << "\n";
+            Sandbox sandbox2(content);
+            CHECK(i_sandbox == sandbox2);
+        }
     }
 
 }
