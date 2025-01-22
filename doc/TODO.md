@@ -93,7 +93,7 @@
     - [x] remove wires underneath
     - [x] don't allow rotation
     - [x] clear tile
-    - [ ] simulate
+    - [x] simulate
       - [ ] rotate (before placement)
   - [ ] UI
     - [ ] select from the toolbox
