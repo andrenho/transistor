@@ -151,5 +151,60 @@ TEST_SUITE("ICs")
             CHECK(r::contains(led_connection.wires, Position { i_board.id(), 3, 1, Direction::E }));
             CHECK(r::contains(led_connection.wires, Position { i_board.id(), 4, 1, Direction::W }));
         }
+
+        SUBCASE("Simulate without button press")
+        {
+            button->data[0] = 0;
+            i_sandbox.recompile();
+
+            for (size_t i = 0; i < 10; ++i)
+                i_sandbox.simulate();
+            CHECK(led->data[0] == 0);
+
+            CHECK(i_sandbox.wire_value({ i_board.id(), 2, 1, Direction::W }) == 0);
+        }
+
+        SUBCASE("Simulate with button press")
+        {
+            button->data[0] = 0;
+            i_sandbox.recompile();
+
+            button->on_click();
+            CHECK(button->data[0] == 1);
+
+            for (size_t i = 0; i < 10; ++i)
+                i_sandbox.simulate();
+            CHECK(led->data[0] == 1);
+
+            CHECK(i_sandbox.wire_value({ i_board.id(), 2, 1, Direction::W }) == 1);
+        }
+
+        SUBCASE("Button press and release")
+        {
+            button->data[0] = 0;
+            i_sandbox.recompile();
+
+            // press
+
+            button->on_click();
+            CHECK(button->data[0] == 1);
+
+            for (size_t i = 0; i < 10; ++i)
+                i_sandbox.simulate();
+            CHECK(led->data[0] == 1);
+
+            // release
+
+            button->on_click();
+            CHECK(button->data[0] == 0);
+
+            for (size_t i = 0; i < 10; ++i)
+                i_sandbox.simulate();
+            CHECK(led->data[0] == 0);
+
+            CHECK(i_sandbox.wire_value({ i_board.id(), 2, 1, Direction::W }) == 0);
+        }
+
     }
+
 }
