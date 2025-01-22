@@ -84,5 +84,72 @@ TEST_SUITE("ICs")
             CHECK(i_board.wires().contains({ i_board.id(), 4, 1, Direction::W }));
         }
 
+        SUBCASE("Compile editor to layout")
+        {
+            CHECK(layout.pins.size() == 12);
+
+            CHECK(layout.pins.at({ i_board.id(), 0, 1, Direction::W }).component == button);
+            CHECK(layout.pins.at({ i_board.id(), 0, 1, Direction::W }).pin_no == 1);
+
+            CHECK(layout.pins.at({ i_board.id(), 4, 1, Direction::E }).component == led);
+            CHECK(layout.pins.at({ i_board.id(), 4, 1, Direction::E }).pin_no == 3);
+
+            CHECK(layout.pins.at({ i_board.id(), 1, 1 }).component == or_2i);
+            CHECK(layout.pins.at({ i_board.id(), 1, 1 }).pin_no == 0);
+            CHECK(layout.pins.at({ i_board.id(), 1, 2 }).component == or_2i);
+            CHECK(layout.pins.at({ i_board.id(), 1, 2 }).pin_no == 1);
+            CHECK(layout.pins.at({ i_board.id(), 3, 2 }).component == or_2i);
+            CHECK(layout.pins.at({ i_board.id(), 3, 2 }).pin_no == 2);
+            CHECK(layout.pins.at({ i_board.id(), 3, 1 }).component == or_2i);
+            CHECK(layout.pins.at({ i_board.id(), 3, 1 }).pin_no == 3);
+
+            CHECK(layout.wires.size() == 4);
+
+            CHECK(layout.wires.contains({ i_board.id(), 0, 1, Direction::E }));
+            CHECK(layout.wires.contains({ i_board.id(), 1, 1, Direction::W }));
+            CHECK(layout.wires.contains({ i_board.id(), 3, 1, Direction::E }));
+            CHECK(layout.wires.contains({ i_board.id(), 4, 1, Direction::W }));
+        }
+
+        SUBCASE("Compile layout to connections")
+        {
+            CHECK(connections.size() == 2);
+
+            Connection const& button_connection = *r::find_if(connections, [&](Connection const& c) {
+                auto it = r::find_if(c.pins, [&](Pin const& pin) { return pin.component == button; });
+                return it != c.pins.end();
+            });
+
+            CHECK(button_connection.pins.size() == 2);
+            CHECK(r::find_if(button_connection.pins, [&](Pin const& pin) {
+                return pin.component == button && pin.pin_no == 1;
+            }) != button_connection.pins.end());
+            CHECK(r::find_if(button_connection.pins, [&](Pin const& pin) {
+                return pin.component == or_2i && pin.pin_no == 0;
+            }) != button_connection.pins.end());
+
+            CHECK(button_connection.wires.size() == 2);
+
+            CHECK(r::contains(button_connection.wires, Position { i_board.id(), 0, 1, Direction::W }));
+            CHECK(r::contains(button_connection.wires, Position { i_board.id(), 1, 1, Direction::E }));
+
+            Connection const& led_connection = *r::find_if(connections, [&](Connection const& c) {
+                auto it = r::find_if(c.pins, [&](Pin const& pin) { return pin.component == led; });
+                return it != c.pins.end();
+            });
+
+            CHECK(led_connection.pins.size() == 2);
+            CHECK(r::find_if(led_connection.pins, [&](Pin const& pin) {
+                return pin.component == led && pin.pin_no == 2;
+            }) != led_connection.pins.end());
+            CHECK(r::find_if(led_connection.pins, [&](Pin const& pin) {
+                return pin.component == or_2i && pin.pin_no == 3;
+            }) != led_connection.pins.end());
+
+            CHECK(led_connection.wires.size() == 2);
+
+            CHECK(r::contains(led_connection.wires, Position { i_board.id(), 3, 1, Direction::E }));
+            CHECK(r::contains(led_connection.wires, Position { i_board.id(), 4, 1, Direction::W }));
+        }
     }
 }
