@@ -27,9 +27,9 @@ void Infobox::render() const
     ImGui::SetNextWindowBgAlpha(0.35f);
 
     if (ImGui::Begin("InfoBox", nullptr, window_flags)) {
-        auto const& tool = *r::find_if(tools().toplevel(), [](auto const& t) { return t->tool == ui().state().selected_tool; });
-        if (!tool->infobox.empty())
-            render_contents(tool->infobox);
+        auto const& it_tool = r::find_if(tools().toplevel(), [](auto const& t) { return t->tool == ui().state().selected_tool; });
+        if (it_tool != tools().toplevel().end() && !(*it_tool)->infobox.empty())
+            render_contents((*it_tool)->infobox);
     }
     ImGui::End();
 

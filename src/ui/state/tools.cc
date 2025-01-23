@@ -80,6 +80,17 @@ void Tools::init()
                 ${image: __infobox_diode_0}${image_sl: __infobox_diode_1}
                 Press `R` to rotate the component.)",
         },
+        Separator {},
+        Category {
+            .image = tb_logic_gates,
+            .subcategories = {
+                SubCategory {
+                    .name = "Logic OR",
+                    .children = {
+                    },
+                },
+            },
+        }
         /*
         { .tool = SelectedTool::Separator },
         {
@@ -90,15 +101,15 @@ void Tools::init()
         */
     };
 
-    std::function<void(std::vector<ToolboxItem> const&)> add_tools = [&](std::vector<ToolboxItem> const& items) {
-        for (auto const& item: items) {
-            if (auto category = std::get_if<Category>(&item); category)
-                add_tools(category->children);
-            else if (auto tool = std::get_if<Tool>(&item); tool)
-                tools_toplevel_.push_back(tool);
-        }
-    };
-    add_tools(tools_);
+    // create `tools_toplevel_`
+    for (auto const& item: tools_) {
+        if (auto category = std::get_if<Category>(&item); category)
+            for (auto const& child: category->subcategories)
+                for (auto const& tool: child.children)
+                    tools_toplevel_.push_back(&tool);
+        else if (auto tool = std::get_if<Tool>(&item); tool)
+            tools_toplevel_.push_back(tool);
+    }
 }
 
 Tools const& tools()

@@ -6,7 +6,7 @@
 class Tools {
 public:
     enum class Type {
-        Nothing, VCC, Button, LED, NPN, PNP, Separator, Series,
+        Nothing, VCC, Button, LED, NPN, PNP,
     };
 
     struct Tool {
@@ -18,10 +18,14 @@ public:
 
     struct Separator {};
 
+    struct SubCategory {
+        std::string       name;
+        std::vector<Tool> children {};
+    };
+
     struct Category {
-        std::string name;
-        std::optional<resource_idx_t> image;
-        std::vector<std::variant<Tool, Separator, Category>> children;
+        resource_idx_t           image;
+        std::vector<SubCategory> subcategories {};
     };
 
     using ToolboxItem = std::variant<Tool, Separator, Category>;
