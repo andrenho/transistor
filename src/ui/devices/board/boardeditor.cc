@@ -123,7 +123,7 @@ void BoardEditor::on_key_press(uint32_t key, int x, int y)
     switch (key) {
         case 'w':
             drawing_wire_ = true;
-            ui() << U::SelectTool { SelectedTool::Nothing };
+            ui() << U::SelectTool { Tools::Type::Nothing };
             game() << G::StartPlacingWire { Wire::Width::W1, Wire::Layer::Top, pos };
             break;
         case 'b':
@@ -142,7 +142,7 @@ void BoardEditor::on_key_press(uint32_t key, int x, int y)
             game() << G::AddComponent { "pnp", pos };
             break;
         case 'r':
-            if (ui().state().selected_tool == SelectedTool::Nothing)
+            if (ui().state().selected_tool == Tools::Type::Nothing)
                 game() << G::RotateComponent { pos };
             else if (selected_component_definition()->can_rotate)
                 ui() << U::SelectTool { ui().state().selected_tool, dir_rotate_component(ui().state().selected_tool_direction) };
@@ -151,7 +151,7 @@ void BoardEditor::on_key_press(uint32_t key, int x, int y)
             start_erasing(pos);
             break;
         case 27:  // ESC
-            ui() << U::SelectTool { SelectedTool::Nothing };
+            ui() << U::SelectTool { Tools::Type::Nothing };
             break;
         default: break;
     }
@@ -287,12 +287,12 @@ std::optional<ComponentDefinition> BoardEditor::selected_component_definition() 
 {
     ComponentDatabase const& db = game().sandbox().component_db();
     switch (ui().state().selected_tool) {
-        case SelectedTool::VCC:    return db.component_def("vcc");
-        case SelectedTool::Button: return db.component_def("button");
-        case SelectedTool::LED:    return db.component_def("led");
-        case SelectedTool::NPN:    return db.component_def("npn");
-        case SelectedTool::PNP:    return db.component_def("pnp");
-        case SelectedTool::Nothing:
+        case Tools::Type::VCC:    return db.component_def("vcc");
+        case Tools::Type::Button: return db.component_def("button");
+        case Tools::Type::LED:    return db.component_def("led");
+        case Tools::Type::NPN:    return db.component_def("npn");
+        case Tools::Type::PNP:    return db.component_def("pnp");
+        case Tools::Type::Nothing:
         default:                   return {};
     }
 }

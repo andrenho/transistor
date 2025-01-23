@@ -83,7 +83,7 @@
 # v0.0.6 - IC support
 
 - [ ] ic support
-  - [ ] logic (write unit tests)
+  - [x] logic (write unit tests)
     - [x] create OR ic
     - [x] pin placement
       - [x] IC DIP
@@ -97,6 +97,8 @@
       - [ ] rotate (before placement)
   - [ ] UI
     - [ ] select from the toolbox
+      - [ ] create submenus (categories: logic gates, series 7400, memory, cpu)
+    - [ ] draw IC
     - [ ] rotation/placement
     - [ ] show pin names
 - [ ] ic Lua support

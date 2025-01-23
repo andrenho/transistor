@@ -9,7 +9,7 @@
 struct UIState {
     std::optional<std::string> exception {};
     bool                       exception_recoverable = false;
-    SelectedTool               selected_tool = SelectedTool::Nothing;
+    Tools::Type        selected_tool = Tools::Type::Nothing;
     Direction                  selected_tool_direction = Direction::N;
 };
 

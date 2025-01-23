@@ -1,13 +1,11 @@
 #include "toolbox.hh"
 
-#include <functional>
-
 #include "SDL2/SDL.h"
 
-#include "backends/imgui_impl_sdl2.h"
 #include "backends/imgui_impl_sdlrenderer2.h"
 #include "ui/state/tools.hh"
 #include "ui/ui.hh"
+#include "util/visitor.hh"
 
 void Toolbox::init()
 {
@@ -39,21 +37,34 @@ void Toolbox::render() const
     size_t i = 0;
     if (ImGui::Begin("Toolbox", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoCollapse)) {
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2.f, 2.f));
-        for (auto const& tool: tools()) {
-            if (ui().state().selected_tool == tool.tool) {
-                ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4) ImColor(6, 50, 150, 102));
-                ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4) ImColor(6, 50, 150, 255));
-                ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4) ImColor(0, 105, 10, 255));
-            }
-            if (i % 2 == 1)
-                ImGui::SameLine(0, 5);
-            if (image_button(tool.image, i)) {
-                ui() << U::SelectTool { tool.tool };
-            }
-            ImGui::SetItemTooltip("%s", tool.tooltip.c_str());
-            if (ui().state().selected_tool == tool.tool)
-                ImGui::PopStyleColor(3);
-            ++i;
+        for (auto const& item: tools().all()) {
+            std::visit(overloaded {
+                [&](Tools::Tool const& tool) {
+                    if (ui().state().selected_tool == tool.tool) {
+                        ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4) ImColor(6, 50, 150, 102));
+                        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4) ImColor(6, 50, 150, 255));
+                        ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4) ImColor(0, 105, 10, 255));
+                    }
+                    if (i % 2 == 1)
+                        ImGui::SameLine(0, 5);
+                    if (image_button(tool.image, i)) {
+                        ui() << U::SelectTool { tool.tool };
+                    }
+                    if (!tool.tooltip.empty())
+                        ImGui::SetItemTooltip("%s", tool.tooltip.c_str());
+                    if (ui().state().selected_tool == tool.tool)
+                        ImGui::PopStyleColor(3);
+                    ++i;
+                },
+                [&](Tools::Separator const&) {
+                    ImGui::Spacing();
+                    ImGui::Spacing();
+                    i = 0;
+                },
+                [&](Tools::Category const&) {
+                    // TODO
+                },
+            }, item);
         }
         ImGui::PopStyleVar();
     }

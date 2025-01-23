@@ -1,18 +1,15 @@
 #include "tools.hh"
 
-static std::vector<Tool> tools_;
-static resource_idx_t
-        tb_arrow = -1, tb_vcc = -1, tb_button = -1, tb_led = -1, tb_npn = -1, tb_pnp = -1;
-
-void tools_init()
+void Tools::init()
 {
     res().add_tiles("__icons", {
-        { &tb_arrow,  0, 8 },
-        { &tb_vcc,    0, 9 },
-        { &tb_button, 0, 10 },
-        { &tb_led,    0, 11 },
-        { &tb_npn,    0, 12 },
-        { &tb_pnp,    0, 13 },
+        { &tb_arrow,       0, 8 },
+        { &tb_vcc,         0, 9 },
+        { &tb_button,      0, 10 },
+        { &tb_led,         0, 11 },
+        { &tb_npn,         0, 12 },
+        { &tb_pnp,         0, 13 },
+        { &tb_logic_gates, 1, 8 },
     }, 16);
 
     resource_idx_t infobox = res().add_texture<"resources/images/infobox.png">();
@@ -31,29 +28,29 @@ void tools_init()
     }, 16);
 
     tools_ = {
-        {
-            .tool    = SelectedTool::Nothing,
+        Tool {
+            .tool    = Type::Nothing,
             .image   = tb_arrow,
             .tooltip = "Unselect (ESC)",
         },
-        {
-            .tool    = SelectedTool::VCC,
+        Tool {
+            .tool    = Type::VCC,
             .image   = tb_vcc,
             .tooltip = "VCC [always `1`] (v)",
             .infobox = R"(
                 `VCC` is a component that generate an output of `1` in all pins.
                 ${image: __infobox_vcc})",
         },
-        {
-            .tool    = SelectedTool::Button,
+        Tool {
+            .tool    = Type::Button,
             .image   = tb_button,
             .tooltip = "Input button (b)",
             .infobox = R"(
                 `Buttons` accepts input from the user, and outputs `1` or `0` depending if the button is pressed or not.
                 ${image: __infobox_button_0}${image_sl: __infobox_button_1})",
         },
-        {
-            .tool    = SelectedTool::LED,
+        Tool {
+            .tool    = Type::LED,
             .image   = tb_led,
             .tooltip = "LED (l)",
             .infobox = R"(
@@ -61,8 +58,8 @@ void tools_init()
                 If there are multiple inputs, the LED is turned on if one of the inputs is `1`.
                 ${image: __infobox_led_0}${image_sl: __infobox_led_1})",
         },
-        {
-            .tool    = SelectedTool::NPN,
+        Tool {
+            .tool    = Type::NPN,
             .image   = tb_npn,
             .tooltip = "NPN transistor [activate to open] (n)",
             .infobox = R"(
@@ -71,8 +68,8 @@ void tools_init()
                 ${image: __infobox_npn_0}${image: __infobox_npn_1}
                 Press `R` to rotate the component.)",
         },
-        {
-            .tool    = SelectedTool::PNP,
+        Tool {
+            .tool    = Type::PNP,
             .image   = tb_pnp,
             .tooltip = "PNP transistor [activate to close] (p)",
             .infobox = R"(
@@ -83,10 +80,34 @@ void tools_init()
                 ${image: __infobox_diode_0}${image_sl: __infobox_diode_1}
                 Press `R` to rotate the component.)",
         },
+        /*
+        { .tool = SelectedTool::Separator },
+        {
+            .tool = SelectedTool::Series,
+            .image = tb_logic_gates,
+            .tooltip = "Logic gates",
+        }
+        */
     };
+
+    std::function<void(std::vector<ToolboxItem> const&)> add_tools = [&](std::vector<ToolboxItem> const& items) {
+        for (auto const& item: items) {
+            if (auto category = std::get_if<Category>(&item); category)
+                add_tools(category->children);
+            else if (auto tool = std::get_if<Tool>(&item); tool)
+                tools_toplevel_.push_back(tool);
+        }
+    };
+    add_tools(tools_);
 }
 
-std::vector<Tool> const& tools()
+Tools const& tools()
 {
-    return tools_;
+    static const Tools tools;
+    return tools;
+}
+
+void tools_init()
+{
+    const_cast<Tools*>(&tools())->init();
 }
