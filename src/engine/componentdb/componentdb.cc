@@ -1,5 +1,7 @@
 #include "componentdb.hh"
 
+#include <regex>
+
 #include "components.hh"
 #include "util/exceptions.hh"
 
@@ -30,7 +32,9 @@ Component ComponentDatabase::create_component(std::string const& name) const
 void ComponentDatabase::add(ComponentDefinition const& def)
 {
     validate_component(def);
-    components_[def.name] = std::make_unique<ComponentDefinition>(def);
+    auto pdef = std::make_unique<ComponentDefinition>(def);
+    pdef->infobox = reformat_infobox(pdef->infobox);
+    components_[def.name] = std::move(pdef);
 }
 
 void ComponentDatabase::remove(std::string const& name)
@@ -75,4 +79,19 @@ void ComponentDatabase::validate_component(ComponentDefinition const& def)
 json ComponentDatabase::serialize() const
 {
     return json::object();  // TODO
+}
+
+std::string ComponentDatabase::reformat_infobox(std::string const& text)
+{
+    static const std::regex leading_whitespace(R"(^\s+)");     // matches leading whitespace
+    static const std::regex trailing_whitespace(R"(\s+$)");    // matches trailing whitespace
+    static const std::regex multiple_spaces(R"([ \t]{2,})");      // matches 2 or more whitespace characters
+    static const std::regex enter_and_space(R"(\n[ \t])");
+
+    std::string result = text;
+    result = std::regex_replace(result, leading_whitespace, "");
+    result = std::regex_replace(result, multiple_spaces, " ");
+    result = std::regex_replace(result, enter_and_space, "\n");
+    result = std::regex_replace(result, trailing_whitespace, "");
+    return result;
 }

@@ -40,20 +40,9 @@ void Infobox::render() const
 
 void Infobox::render_contents(std::string const& contents) const
 {
-    // TODO - make those regex replacement in initialization
-    static const std::regex leading_whitespace(R"(^\s+)");     // matches leading whitespace
-    static const std::regex trailing_whitespace(R"(\s+$)");    // matches trailing whitespace
-    static const std::regex multiple_spaces(R"([ \t]{2,})");      // matches 2 or more whitespace characters
-    static const std::regex enter_and_space(R"(\n[ \t])");
     static const std::regex variable_pattern(R"(\$\{([^:]+):([^}]+)\})");  // Regex to match ${xxx:yyy} pattern
 
-    std::string result = contents;
-    result = std::regex_replace(result, leading_whitespace, "");
-    result = std::regex_replace(result, multiple_spaces, " ");
-    result = std::regex_replace(result, enter_and_space, "\n");
-    result = std::regex_replace(result, trailing_whitespace, "");
-
-    std::sregex_iterator begin(result.begin(), result.end(), variable_pattern);
+    std::sregex_iterator begin(contents.begin(), contents.end(), variable_pattern);
     std::sregex_iterator end;
 
     size_t lastPos = 0;
@@ -64,7 +53,7 @@ void Infobox::render_contents(std::string const& contents) const
 
         // Add any plain text before the tag
         if (match.position() > (long) lastPos) {
-            std::string text = result.substr(lastPos, match.position() - lastPos);
+            std::string text = contents.substr(lastPos, match.position() - lastPos);
             render_tag("text", text);
         }
 
@@ -80,8 +69,8 @@ void Infobox::render_contents(std::string const& contents) const
     }
 
     // Add any remaining plain text after the last variable
-    if (lastPos < result.length()) {
-        std::string text = result.substr(lastPos);
+    if (lastPos < contents.length()) {
+        std::string text = contents.substr(lastPos);
         render_tag("text", text);
     }
 }

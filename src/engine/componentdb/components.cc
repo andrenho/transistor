@@ -94,7 +94,7 @@ ComponentDefinition vcc()
         .pins = { { "O0", Output }, { "O1", Output }, { "O2", Output }, { "O3", Output } },
 
         .init = []() {
-            res().add_tile("__infobox_vcc", "__infobox", 0, 0, 3, 3, TILE_SIZE);
+            res().add_tile("__infobox", "__infobox_vcc", 0, 0, 3, 3, TILE_SIZE);
         },
 
         .simulate = [](Component& vcc) {

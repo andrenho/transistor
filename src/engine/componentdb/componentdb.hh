@@ -27,6 +27,7 @@ private:
     std::unordered_map<std::string, std::unique_ptr<ComponentDefinition>> components_;
 
     void validate_component(ComponentDefinition const& def);
+    static std::string reformat_infobox(std::string const& text);
 };
 
 #endif //COMPONENTDATABASE_HH
