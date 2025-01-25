@@ -96,7 +96,8 @@
     - [x] simulate
       - [ ] rotate (before placement)
   - [ ] Refactor toolbox
-    - [ ] Move tools to ComponentDatabase
+    - [x] Move tools to ComponentDatabase
+    - [ ] Make regex replacements in initialization (infobox.cc)
     - [ ] Move components.cc to a data directory (organize as `data`)
   - [ ] UI
     - [ ] select from the toolbox

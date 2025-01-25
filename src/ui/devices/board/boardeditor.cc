@@ -81,7 +81,7 @@ void BoardEditor::on_mouse_press(int x, int y, uint8_t button, bool dbl_click)
     if (button == 1) {
         auto def = selected_component_definition();
         if (def) {
-            game() << G::AddComponent { def->name, pos, ui().state().selected_tool_direction };
+            game() << G::AddComponent { (*def)->name, pos, ui().state().selected_tool_direction };
         } else {
             // check for component click
             auto it = board.components().find(pos);
@@ -123,7 +123,7 @@ void BoardEditor::on_key_press(uint32_t key, int x, int y)
     switch (key) {
         case 'w':
             drawing_wire_ = true;
-            ui() << U::SelectTool { Tools::Type::Nothing };
+            ui() << U::SelectComponent {};
             game() << G::StartPlacingWire { Wire::Width::W1, Wire::Layer::Top, pos };
             break;
         case 'b':
@@ -142,16 +142,16 @@ void BoardEditor::on_key_press(uint32_t key, int x, int y)
             game() << G::AddComponent { "pnp", pos };
             break;
         case 'r':
-            if (ui().state().selected_tool == Tools::Type::Nothing)
+            if (!ui().state().selected_component)
                 game() << G::RotateComponent { pos };
-            else if (selected_component_definition()->can_rotate)
-                ui() << U::SelectTool { ui().state().selected_tool, dir_rotate_component(ui().state().selected_tool_direction) };
+            else if (selected_component_definition() && (*selected_component_definition())->can_rotate)
+                ui() << U::SelectComponent { *ui().state().selected_component, dir_rotate_component(ui().state().selected_tool_direction) };
             break;
         case 'x':
             start_erasing(pos);
             break;
         case 27:  // ESC
-            ui() << U::SelectTool { Tools::Type::Nothing };
+            ui() << U::SelectComponent {};
             break;
         default: break;
     }
@@ -283,18 +283,16 @@ void BoardEditor::render_component(Scene& scene, Position const& pos, Component 
     component.def->render(&component, scene, (pos.x + 2) * TILE_SIZE, (pos.y + 2) * TILE_SIZE, pen);
 }
 
-std::optional<ComponentDefinition> BoardEditor::selected_component_definition() const
+std::optional<ComponentDefinition const*> BoardEditor::selected_component_definition() const
 {
     ComponentDatabase const& db = game().sandbox().component_db();
-    switch (ui().state().selected_tool) {
-        case Tools::Type::VCC:    return db.component_def("vcc");
-        case Tools::Type::Button: return db.component_def("button");
-        case Tools::Type::LED:    return db.component_def("led");
-        case Tools::Type::NPN:    return db.component_def("npn");
-        case Tools::Type::PNP:    return db.component_def("pnp");
-        case Tools::Type::Nothing:
-        default:                   return {};
+    auto sel = ui().state().selected_component;
+    if (sel) {
+        auto def = db.component_def(*sel);
+        if (def)
+            return *def;
     }
+    return {};
 }
 
 void BoardEditor::render_cursor(Scene& scene, int mx, int my) const
@@ -309,10 +307,10 @@ void BoardEditor::render_cursor(Scene& scene, int mx, int my) const
         return;
 
     Direction dir = Direction::N;
-    if (def->can_rotate)
+    if ((*def)->can_rotate)
         dir = ui().state().selected_tool_direction;
 
     Pen pen { .semitransparent = true, .rotation = dir };
-    def->render({}, scene, (pos.x + 2) * TILE_SIZE, (pos.y + 2) * TILE_SIZE, pen);
+    (*def)->render({}, scene, (pos.x + 2) * TILE_SIZE, (pos.y + 2) * TILE_SIZE, pen);
 }
 

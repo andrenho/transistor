@@ -3,13 +3,12 @@
 
 #include <optional>
 
-#include "tools.hh"
 #include "engine/geometry/direction.hh"
 
 struct UIState {
     std::optional<std::string> exception {};
     bool                       exception_recoverable = false;
-    Tools::Type        selected_tool = Tools::Type::Nothing;
+    std::optional<std::string> selected_component {};
     Direction                  selected_tool_direction = Direction::N;
 };
 

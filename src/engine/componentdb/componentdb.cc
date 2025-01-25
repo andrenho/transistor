@@ -38,6 +38,14 @@ void ComponentDatabase::remove(std::string const& name)
     components_.erase(name);
 }
 
+std::optional<ComponentDefinition const*> ComponentDatabase::component_def(std::string const& name) const
+{
+    auto it = components_.find(name);
+    if (it == components_.end())
+        return {};
+    return it->second.get();
+}
+
 void ComponentDatabase::validate_component(ComponentDefinition const& def)
 {
     if (def.name.empty())

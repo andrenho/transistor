@@ -3,14 +3,33 @@
 #include "SDL2/SDL.h"
 
 #include "backends/imgui_impl_sdlrenderer2.h"
-#include "ui/state/tools.hh"
 #include "ui/ui.hh"
-#include "util/visitor.hh"
 
 void Toolbox::init()
 {
     SDL_Texture* icons = res().texture("__icons");
     SDL_QueryTexture(icons, nullptr, nullptr, &icons_tx_w, &icons_tx_h);
+
+    res().add_tiles("__icons", {
+        { &tb_arrow,       0, 8 },
+        { &tb_vcc,         0, 9 },
+        { &tb_button,      0, 10 },
+        { &tb_led,         0, 11 },
+        { &tb_npn,         0, 12 },
+        { &tb_pnp,         0, 13 },
+        { &tb_logic_gates, 1, 8 },
+    }, 16);
+
+    buttons_ = {
+        { &tb_arrow,       "",           "Unselectd (ESC)" },
+        { &tb_vcc,         "vcc",        "VCC [always `1`] (v)" },
+        { &tb_button,      "button",     "Input button (b)" },
+        { &tb_led,         "led",        "LED (l)" },
+        { &tb_npn,         "npn",        "NPN transistor [activate to open] (n)" },
+        { &tb_pnp,         "pnp",        "PNP transistor [activate to close] (p)" },
+        { nullptr,         "",           "" },
+        { &tb_logic_gates, "menu_logic", "Logic gates" },
+    };
 }
 
 bool Toolbox::image_button(ResourceId const& resource, size_t i) const
@@ -37,34 +56,29 @@ void Toolbox::render() const
     size_t i = 0;
     if (ImGui::Begin("Toolbox", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoCollapse)) {
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2.f, 2.f));
-        for (auto const& item: tools().all()) {
-            std::visit(overloaded {
-                [&](Tools::Tool const& tool) {
-                    if (ui().state().selected_tool == tool.tool) {
-                        ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4) ImColor(6, 50, 150, 102));
-                        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4) ImColor(6, 50, 150, 255));
-                        ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4) ImColor(0, 105, 10, 255));
-                    }
-                    if (i % 2 == 1)
-                        ImGui::SameLine(0, 5);
-                    if (image_button(tool.image, i)) {
-                        ui() << U::SelectTool { tool.tool };
-                    }
-                    if (!tool.tooltip.empty())
-                        ImGui::SetItemTooltip("%s", tool.tooltip.c_str());
-                    if (ui().state().selected_tool == tool.tool)
-                        ImGui::PopStyleColor(3);
-                    ++i;
-                },
-                [&](Tools::Separator const&) {
-                    ImGui::Spacing();
-                    ImGui::Spacing();
-                    i = 0;
-                },
-                [&](Tools::Category const&) {
-                    // TODO
-                },
-            }, item);
+        for (auto const& button: buttons_) {
+            if (button.image == nullptr) {  // separator
+                ImGui::Spacing();
+                ImGui::Spacing();
+                i = 0;
+            } else {
+                bool selected = ui().state().selected_component == button.component_name;
+                if (selected) {
+                    ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4) ImColor(6, 50, 150, 102));
+                    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4) ImColor(6, 50, 150, 255));
+                    ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4) ImColor(0, 105, 10, 255));
+                }
+                if (i % 2 == 1)
+                    ImGui::SameLine(0, 5);
+                if (image_button(*button.image, i)) {
+                    ui() << U::SelectComponent { button.component_name };
+                }
+                if (!button.tooltip.empty())
+                    ImGui::SetItemTooltip("%s", button.tooltip.c_str());
+                if (selected)
+                    ImGui::PopStyleColor(3);
+                ++i;
+            }
         }
         ImGui::PopStyleVar();
     }

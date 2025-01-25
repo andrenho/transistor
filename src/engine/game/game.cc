@@ -116,6 +116,14 @@ void Game::unserialize(json const& content, bool validate_version)
     sandbox_ = std::make_unique<Sandbox>(content.at("sandbox"));
 }
 
+std::optional<std::string> Game::infobox_text(std::string const& component_name) const
+{
+    auto o_def = sandbox_->component_db().component_def(component_name);
+    if (o_def)
+        return (*o_def)->infobox;
+    return {};
+}
+
 Game const& game(gameid_t id)
 {
     static const Game game(id);

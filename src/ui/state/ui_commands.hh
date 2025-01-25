@@ -3,7 +3,6 @@
 
 #include <variant>
 
-#include "tools.hh"
 #include "uistate.hh"
 
 struct DeviceEditor;
@@ -24,16 +23,16 @@ struct SetMouseCursor {
     MouseCursor cursor;
 };
 
-struct SelectTool {
-    Tools::Type tool;
-    Direction           dir = Direction::N;
+struct SelectComponent {
+    std::string name;
+    Direction   dir = Direction::N;
 };
 
 struct Quit {};
 
 using Command = std::variant<
     StartDragginDevice, StopDraggingDevice,
-    ShowException, ClearException, SelectTool,
+    ShowException, ClearException, SelectComponent,
     SetMouseCursor, Quit
 >;
 

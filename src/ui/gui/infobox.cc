@@ -27,9 +27,11 @@ void Infobox::render() const
     ImGui::SetNextWindowBgAlpha(0.35f);
 
     if (ImGui::Begin("InfoBox", nullptr, window_flags)) {
-        auto const& it_tool = r::find_if(tools().toplevel(), [](auto const& t) { return t->tool == ui().state().selected_tool; });
-        if (it_tool != tools().toplevel().end() && !(*it_tool)->infobox.empty())
-            render_contents((*it_tool)->infobox);
+        if (ui().state().selected_component) {
+            auto o_infobox_text = game().infobox_text(*ui().state().selected_component);
+            if (o_infobox_text)
+                render_contents(*o_infobox_text);
+        }
     }
     ImGui::End();
 
@@ -38,6 +40,7 @@ void Infobox::render() const
 
 void Infobox::render_contents(std::string const& contents) const
 {
+    // TODO - make those regex replacement in initialization
     static const std::regex leading_whitespace(R"(^\s+)");     // matches leading whitespace
     static const std::regex trailing_whitespace(R"(\s+$)");    // matches trailing whitespace
     static const std::regex multiple_spaces(R"([ \t]{2,})");      // matches 2 or more whitespace characters

@@ -4,7 +4,6 @@
 #include <string>
 
 #include "shared_res.hh"
-#include "state/tools.hh"
 #include "res/resourcemanager.hh"
 #include "util/visitor.hh"
 using namespace std::string_literals;
@@ -46,7 +45,6 @@ void UI::init()
 
     BoardEditor::load_icons();
 
-    tools_init();
     gui_.init(window_, ren_);
 
     move_cursor_ = res().add_cursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZEALL));
@@ -117,8 +115,8 @@ void UI::execute_queue()
             [&](U::Quit const&) {
                 running_ = false;
             },
-            [&](U::SelectTool const& cmd) {
-                state_.selected_tool = cmd.tool;
+            [&](U::SelectComponent const& cmd) {
+                state_.selected_component = cmd.name;
                 state_.selected_tool_direction = cmd.dir;
             },
             [&](U::ShowException const& cmd) {

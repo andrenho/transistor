@@ -125,8 +125,6 @@ set(UI_SRC
         src/ui/gui/toolbox.hh
         src/ui/gui/infobox.cc
         src/ui/gui/infobox.hh
-        src/ui/state/tools.hh
-        src/ui/state/tools.cc
 )
 
 set(IMGUI_SRC

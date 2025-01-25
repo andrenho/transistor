@@ -34,8 +34,8 @@ Board::Board(json const& content, ComponentDatabase const& component_db)
 
 std::optional<Component*> Board::add_component(std::string const& component_name, intpos_t x, intpos_t y, Direction dir)
 {
-    ComponentDefinition const& def = component_db_.component_def(component_name);
-    auto [r1, r2] = def.rect({ id_, x, y }, dir);
+    ComponentDefinition const* def = component_db_.component_def(component_name).value();
+    auto [r1, r2] = def->rect({ id_, x, y }, dir);
 
     for (auto const& [pos, component]: components_) {
         auto [c1, c2] = component.rect(pos);
@@ -43,7 +43,7 @@ std::optional<Component*> Board::add_component(std::string const& component_name
             return {};
     }
 
-    if (def.type != ComponentDefinition::Type::SingleTile)
+    if (def->type != ComponentDefinition::Type::SingleTile)
         remove_wires_for_ic(r1, r2);
 
     auto it = components_.emplace(Position { this, x, y, Direction::Center }, component_db_.create_component(component_name));

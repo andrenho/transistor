@@ -16,7 +16,7 @@ public:
 
     Component create_component(std::string const& name) const;
 
-    ComponentDefinition const& component_def(std::string const& name) const { return *components_.at(name).get(); }
+    std::optional<ComponentDefinition const*> component_def(std::string const& name) const;
 
     void add(ComponentDefinition const& def);
     void remove(std::string const& name);

@@ -37,7 +37,7 @@ private:
     void start_erasing(Position const& pos);
     void stop_erasing();
 
-    std::optional<ComponentDefinition> selected_component_definition() const;
+    std::optional<ComponentDefinition const*> selected_component_definition() const;
 
     static resource_idx_t
         tile,

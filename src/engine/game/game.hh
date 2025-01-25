@@ -12,12 +12,6 @@ using json = nlohmann::json;
 
 class Game {
 public:
-    [[nodiscard]] Sandbox const& sandbox() const { return *sandbox_.get(); }
-    [[nodiscard]] Sandbox& sandbox() { return *sandbox_.get(); }
-
-    [[nodiscard]] Board const& board(size_t id) const { return sandbox_->board(id); }
-    [[nodiscard]] Board& board(size_t id) { return sandbox_->board(id); }
-
     void operator<<(G::Command&& command) const;
 
     void execute(G::Command&& command);
@@ -26,7 +20,15 @@ public:
     [[nodiscard]] json serialize() const;
     void unserialize(json const& content, bool validate_version);
 
+    [[nodiscard]] Sandbox const& sandbox() const { return *sandbox_.get(); }
+    [[nodiscard]] Sandbox& sandbox() { return *sandbox_.get(); }
+
+    [[nodiscard]] Board const& board(size_t id) const { return sandbox_->board(id); }
+    [[nodiscard]] Board& board(size_t id) { return sandbox_->board(id); }
+
     [[nodiscard]] gameid_t id() const { return id_; }
+
+    [[nodiscard]] std::optional<std::string> infobox_text(std::string const& component_name) const;
 
 private:
     explicit Game(gameid_t id);
