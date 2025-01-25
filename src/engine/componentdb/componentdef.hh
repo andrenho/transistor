@@ -33,13 +33,23 @@ struct ComponentDefinition {
         ComponentPin(std::string const& name_, InputPinType type_, Wire::Width wire_width_) : name(name_), type(type_), wire_width(wire_width_) {}
     };
 
+    enum class Category {
+        Basic, LogicGates, Digital, Memory, CPU,
+    };
+
     std::string               name;
+    Category                  category;
+    std::string               tool_path = "";
+    std::string               infobox {};
+
     Type                      type;
     bool                      can_rotate = true;
     std::vector<ComponentPin> pins;
 
     size_t                    data_size = 0;
     uint8_t                   width = 1;
+
+    std::function<void()>                                          init = [](){};
 
     std::function<void(Component& component)>                      on_click = [](Component&) {};
     std::function<void(Component& component)>                      simulate = [](Component&) {};
@@ -55,7 +65,8 @@ struct ComponentDefinition {
     [[nodiscard]] std::pair<Position, Position> rect(Position const& component_pos, Direction dir) const;
     [[nodiscard]] std::vector<std::pair<uintpin_t, Position>> pin_positions(Position const& component_pos, Direction dir) const;
 
-    // TODO - add IC fields (size, pins)
+    void initialize();
+    bool initialized = false;
 };
 
 #endif //COMPONENTDEFINITION_HH

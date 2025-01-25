@@ -28,9 +28,11 @@ resource_idx_t ResourceManager::add_texture(std::vector<uint8_t> const& data)
 
 void ResourceManager::add_texture(std::string const& name, std::vector<uint8_t> const& data)
 {
+    /*
     auto it = resources_str_.find(name);
     if (it != resources_str_.end())
         throw std::runtime_error("There's already a resource called `" + name + "`");
+    */
 
     resources_str_.emplace(name, create_texture(data));
 }
@@ -43,9 +45,11 @@ resource_idx_t ResourceManager::add_tile(ResourceId const& parent, int tile_size
 
 void ResourceManager::add_tile(std::string const& name, ResourceId const& parent, int tile_size, int x, int y, int w, int h)
 {
+    /*
     auto it = resources_str_.find(name);
     if (it != resources_str_.end())
         throw std::runtime_error("There's already a resource called `" + name + "`");
+    */
 
     if (h == 0)
         h = w;
@@ -76,9 +80,11 @@ resource_idx_t ResourceManager::add_cursor(SDL_Cursor* cursor)
 
 void ResourceManager::add_cursor(std::string const& name, SDL_Cursor* cursor)
 {
+    /*
     auto it = resources_str_.find(name);
     if (it != resources_str_.end())
         throw std::runtime_error("There's already a resource called `" + name + "`");
+    */
 
     resources_str_.emplace(name, cursor);
 }

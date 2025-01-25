@@ -41,6 +41,7 @@ void UI::init()
 
     bg_ = res().add_texture<"resources/images/bg.jpg">();
     res().add_texture<"resources/images/circuit.png">("__icons");
+    res().add_texture<"resources/images/infobox.png">("__infobox");
     load_shared_resources();
 
     BoardEditor::load_icons();

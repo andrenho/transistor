@@ -18,7 +18,9 @@ int main()
 
     while (ui().running()) {
 
+#ifdef NDEBUG
         try {
+#endif
             auto new_frame = hr::now();
 
             game_update();
@@ -28,15 +30,13 @@ int main()
 
             last_frame = new_frame;
 
+#ifdef NDEBUG
         } catch (RecoverableException& e) {
             ui() << U::ShowException { e.what(), true };
 
         } catch (std::exception& e) {
-#ifdef NDEBUG
             ui() << U::ShowException { e.what() };
-#else
-            throw e;
-#endif
         }
+#endif
     }
 }

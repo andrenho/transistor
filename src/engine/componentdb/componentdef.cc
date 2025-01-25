@@ -137,3 +137,10 @@ std::vector<std::pair<uintpin_t, Position>> ComponentDefinition::pin_positions(P
     return pin_positions;
 
 }
+
+void ComponentDefinition::initialize()
+{
+    if (!initialized)
+        init();
+    initialized = true;
+}
