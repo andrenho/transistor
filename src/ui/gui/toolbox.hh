@@ -20,9 +20,10 @@ private:
     void render_toolbox() const;
 
     struct Button {
-        resource_idx_t*  image;
-        std::string      component_name;
-        std::string      tooltip;
+        resource_idx_t*                              image;
+        std::string                                  component_name = "";
+        std::optional<ComponentDefinition::Category> category = {};
+        std::string                                  tooltip = "";
     };
     std::vector<Button> buttons_;
 };

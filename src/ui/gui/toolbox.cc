@@ -1,5 +1,7 @@
 #include "toolbox.hh"
 
+#include <iostream>
+
 #include "SDL2/SDL.h"
 
 #include "backends/imgui_impl_sdlrenderer2.h"
@@ -21,14 +23,14 @@ void Toolbox::init()
     }, 16);
 
     buttons_ = {
-        { &tb_arrow,       "",           "Unselectd (ESC)" },
-        { &tb_vcc,         "vcc",        "VCC [always `1`] (v)" },
-        { &tb_button,      "button",     "Input button (b)" },
-        { &tb_led,         "led",        "LED (l)" },
-        { &tb_npn,         "npn",        "NPN transistor [activate to open] (n)" },
-        { &tb_pnp,         "pnp",        "PNP transistor [activate to close] (p)" },
-        { nullptr,         "",           "" },
-        { &tb_logic_gates, "menu_logic", "Logic gates" },
+        { .image = &tb_arrow,  .component_name = " ",       .tooltip = "Unselectd (ESC)" },
+        { .image = &tb_vcc,    .component_name = "vcc",    .tooltip = "VCC [always `1`] (v)" },
+        { .image = &tb_button, .component_name = "button", .tooltip = "Input button (b)" },
+        { .image = &tb_led,    .component_name = "led",    .tooltip = "LED (l)" },
+        { .image = &tb_npn,    .component_name = "npn",    .tooltip = "NPN transistor [activate to open] (n)" },
+        { .image = &tb_pnp,    .component_name = "pnp",    .tooltip = "PNP transistor [activate to close] (p)" },
+        { .image = nullptr },
+        { .image = &tb_logic_gates, .category = ComponentDefinition::Category::LogicGates, .tooltip = "Logic gates" },
     };
 }
 
@@ -72,9 +74,16 @@ void Toolbox::render_popup_menus() const
     }
 
     for (auto const& [category, menu]: menus) {
-        for (auto const& [menu_name, submenu]: menu) {
-            for (auto const& [submenu_name, def]: submenu) {
+        if (ImGui::BeginPopup(std::to_string((int) category).c_str())) {
+            for (auto const& [menu_name, submenu]: menu) {
+                if (ImGui::BeginMenu(menu_name.c_str())) {
+                    for (auto const& [submenu_name, def]: submenu) {
+                        ImGui::MenuItem(submenu_name.c_str());
+                    }
+                    ImGui::EndMenu();
+                }
             }
+            ImGui::EndPopup();
         }
     }
 
@@ -89,7 +98,7 @@ void Toolbox::render_toolbox() const
             if (button.image == nullptr) {  // separator
                 ImGui::Spacing();
                 ImGui::Spacing();
-                i = 0;
+                i = (i / 2) * 2;
             } else {
                 bool selected = ui().state().selected_component == button.component_name;
                 if (selected) {
@@ -100,7 +109,10 @@ void Toolbox::render_toolbox() const
                 if (i % 2 == 1)
                     ImGui::SameLine(0, 5);
                 if (image_button(*button.image, i)) {
-                    ui() << U::SelectComponent { button.component_name };
+                    if (button.category) {
+                        ImGui::OpenPopup(std::to_string((int) *button.category).c_str());
+                    } else
+                        ui() << U::SelectComponent { button.component_name };
                 }
                 if (!button.tooltip.empty())
                     ImGui::SetItemTooltip("%s", button.tooltip.c_str());
