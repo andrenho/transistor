@@ -95,10 +95,10 @@
     - [x] clear tile
     - [x] simulate
       - [ ] rotate (before placement)
-  - [ ] Refactor toolbox
+  - [x] Refactor toolbox
     - [x] Move tools to ComponentDatabase
-    - [ ] Make regex replacements in initialization (infobox.cc)
-    - [ ] Move components.cc to a data directory (organize as `data`)
+    - [x] Make regex replacements in initialization (infobox.cc)
+    - [x] Move components.cc to a data directory (organize as `data`)
   - [ ] UI
     - [ ] select from the toolbox
       - [ ] create submenus (categories: logic gates, series 7400, memory, cpu)

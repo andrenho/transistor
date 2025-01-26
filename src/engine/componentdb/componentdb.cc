@@ -2,17 +2,12 @@
 
 #include <regex>
 
-#include "components.hh"
+#include "native.hh"
 #include "util/exceptions.hh"
 
 ComponentDatabase::ComponentDatabase()
 {
-    static const ComponentDefinition native_components[] = {
-        component::button(), component::led(), component::vcc(), component::npn(), component::pnp(),
-        component::or_2i(),
-    };
-
-    for (auto const& c: native_components)
+    for (auto const& c: native_components())
         add(c);
 }
 

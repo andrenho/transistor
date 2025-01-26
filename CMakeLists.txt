@@ -83,8 +83,8 @@ set(ENGINE_SRC
         src/engine/componentdb/componentdb.cc
         src/engine/componentdb/componentdef.hh
         src/engine/componentdb/componentdef.cc
-        src/engine/componentdb/components.hh
-        src/engine/componentdb/components.cc
+        src/engine/componentdb/native.hh
+        src/engine/componentdb/native.cc
         src/engine/board/board.hh
         src/engine/board/board.cc
         src/engine/board/component.hh
