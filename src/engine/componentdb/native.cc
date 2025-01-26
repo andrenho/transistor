@@ -92,8 +92,8 @@ std::vector<ComponentDefinition> native_components()
             .name = "vcc",
             .category = ComponentDefinition::Category::Basic,
             .infobox = R"(
-            `VCC` is a component that generate an output of `1` in all pins.
-            ${image: __infobox_vcc})",
+                `VCC` is a component that generate an output of `1` in all pins.
+                ${image: __infobox_vcc})",
 
             .type = ComponentDefinition::Type::SingleTile,
             .can_rotate = false,
@@ -119,10 +119,10 @@ std::vector<ComponentDefinition> native_components()
             .name = "npn",
             .category = ComponentDefinition::Category::Basic,
             .infobox = R"(
-            `NPN transistors` allow the passage of a signal if their input is `1`, and block it otherwise.
-            There are two inputs, the input is considered `1` if one of the inputs is `1`.
-            ${image: __infobox_npn_0}${image: __infobox_npn_1}
-            Press `R` to rotate the component.)",
+                `NPN transistors` allow the passage of a signal if their input is `1`, and block it otherwise.
+                There are two inputs, the input is considered `1` if one of the inputs is `1`.
+                ${image: __infobox_npn_0}${image: __infobox_npn_1}
+                Press `R` to rotate the component.)",
 
             .type = ComponentDefinition::Type::SingleTile,
             .pins = {
@@ -154,12 +154,12 @@ std::vector<ComponentDefinition> native_components()
             .name = "pnp",
             .category = ComponentDefinition::Category::Basic,
             .infobox = R"(
-            `PNP transistors` allow the passage of a signal if their input is `0`, and block it otherwise.
-            There are two inputs, the input is considered `1` if one of the inputs is `1`.
-            ${image: __infobox_pnp_0}${image: __infobox_pnp_1}
-            The PNP transistor also works as a diode, blocking the signal in one direction but not the other.
-            ${image: __infobox_diode_0}${image_sl: __infobox_diode_1}
-            Press `R` to rotate the component.)",
+                `PNP transistors` allow the passage of a signal if their input is `0`, and block it otherwise.
+                There are two inputs, the input is considered `1` if one of the inputs is `1`.
+                ${image: __infobox_pnp_0}${image: __infobox_pnp_1}
+                The PNP transistor also works as a diode, blocking the signal in one direction but not the other.
+                ${image: __infobox_diode_0}${image_sl: __infobox_diode_1}
+                Press `R` to rotate the component.)",
 
             .type = ComponentDefinition::Type::SingleTile,
             .pins = { { "SW0", Input }, { "IN", Input }, { "SW1", Input }, { "OUT", Output } },

@@ -21,6 +21,8 @@ public:
     void add(ComponentDefinition const& def);
     void remove(std::string const& name);
 
+    [[nodiscard]] std::unordered_map<std::string, std::unique_ptr<ComponentDefinition>> const& component_defs() const { return components_; }
+
     [[nodiscard]] json serialize() const;
 
 private:

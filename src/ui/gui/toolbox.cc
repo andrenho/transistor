@@ -53,6 +53,35 @@ bool Toolbox::image_button(ResourceId const& resource, size_t i) const
 
 void Toolbox::render() const
 {
+    render_popup_menus();
+    render_toolbox();
+}
+
+void Toolbox::render_popup_menus() const
+{
+    // create menu structure
+    std::map<ComponentDefinition::Category,
+        std::map<std::string,
+            std::map<std::string, ComponentDefinition const*>>> menus;
+    for (auto const& [name, def]: game().sandbox().component_db().component_defs()) {
+        if (def->category != ComponentDefinition::Category::Basic) {
+            auto pos = def->tool_path.find('/');
+            auto [menu, submenu] = std::pair(def->tool_path.substr(0, pos), pos == std::string::npos ? "" : def->tool_path.substr(pos + 1));
+            menus[def->category][menu][submenu] = def.get();
+        }
+    }
+
+    for (auto const& [category, menu]: menus) {
+        for (auto const& [menu_name, submenu]: menu) {
+            for (auto const& [submenu_name, def]: submenu) {
+            }
+        }
+    }
+
+}
+
+void Toolbox::render_toolbox() const
+{
     size_t i = 0;
     if (ImGui::Begin("Toolbox", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoCollapse)) {
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2.f, 2.f));
@@ -84,3 +113,4 @@ void Toolbox::render() const
     }
     ImGui::End();
 }
+
