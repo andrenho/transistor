@@ -32,6 +32,9 @@ private:
     void render_component(Scene& scene, Position const& pos, Component const& component) const;
     void render_cursor(Scene& scene, int mx, int my) const;
 
+    void render_single_tile_component(Scene& scene, Position const& pos, Component const& component) const;
+    void render_ic_component(Scene& scene, Position const& pos, Component const& component) const;
+
     void draw(Scene& scene, ResourceId const& resource, int x, int y, Pen const& pen={}) const;
 
     void start_erasing(Position const& pos);

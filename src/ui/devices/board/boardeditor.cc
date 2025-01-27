@@ -49,54 +49,55 @@ void BoardEditor::load_icons()
         { &wire_top_off_west_1,  2, 5 },
         { &wire_top_off_south_1, 3, 5 },
 
-        { &ic_dot_n, 0, 0 },
-        { &ic_dot_w, 0, 0 },
-        { &ic_dot_e, 0, 0 },
-        { &ic_dot_s, 0, 0 },
-        { &ic_pin_n, 0, 0 },
-        { &ic_pin_w, 0, 0 },
-        { &ic_pin_e, 0, 0 },
-        { &ic_pin_s, 0, 0 },
+        { &ic_dot_n, 10, 3 },
+        { &ic_dot_w, 11, 3 },
+        { &ic_dot_e, 10, 4 },
+        { &ic_dot_s, 11, 4 },
 
-        { &ic_logic_nw,     0, 0 },
-        { &ic_logic_n,      0, 0 },
-        { &ic_logic_ne,     0, 0 },
-        { &ic_logic_e,      0, 0 },
-        { &ic_logic_w,      0, 0 },
-        { &ic_logic_sw,     0, 0 },
-        { &ic_logic_s,      0, 0 },
-        { &ic_logic_se,     0, 0 },
-        { &ic_logic_center, 0, 0 },
+        { &ic_pin_n, 11, 5 },
+        { &ic_pin_w, 11, 4 },
+        { &ic_pin_e, 12, 5 },
+        { &ic_pin_s, 12, 4 },
 
-        { &ic_digital_nw,     0, 0 },
-        { &ic_digital_n,      0, 0 },
-        { &ic_digital_ne,     0, 0 },
-        { &ic_digital_e,      0, 0 },
-        { &ic_digital_w,      0, 0 },
-        { &ic_digital_sw,     0, 0 },
-        { &ic_digital_s,      0, 0 },
-        { &ic_digital_se,     0, 0 },
-        { &ic_digital_center, 0, 0 },
+        { &ic_logic_nw,     12, 3 },
+        { &ic_logic_n,      13, 3 },
+        { &ic_logic_ne,     14, 3 },
+        { &ic_logic_w,      12, 4 },
+        { &ic_logic_center, 13, 4 },
+        { &ic_logic_e,      14, 4 },
+        { &ic_logic_sw,     12, 5 },
+        { &ic_logic_s,      13, 5 },
+        { &ic_logic_se,     14, 5 },
 
-        { &ic_memory_nw,     0, 0 },
-        { &ic_memory_n,      0, 0 },
-        { &ic_memory_ne,     0, 0 },
-        { &ic_memory_e,      0, 0 },
-        { &ic_memory_w,      0, 0 },
-        { &ic_memory_sw,     0, 0 },
-        { &ic_memory_s,      0, 0 },
-        { &ic_memory_se,     0, 0 },
-        { &ic_memory_center, 0, 0 },
+        { &ic_digital_nw,     15, 3 },
+        { &ic_digital_n,      16, 3 },
+        { &ic_digital_ne,     17, 3 },
+        { &ic_digital_w,      15, 4 },
+        { &ic_digital_center, 16, 4 },
+        { &ic_digital_e,      17, 4 },
+        { &ic_digital_sw,     15, 5 },
+        { &ic_digital_s,      16, 5 },
+        { &ic_digital_se,     17, 5 },
 
-        { &ic_cpu_nw,     0, 0 },
-        { &ic_cpu_n,      0, 0 },
-        { &ic_cpu_ne,     0, 0 },
-        { &ic_cpu_e,      0, 0 },
-        { &ic_cpu_w,      0, 0 },
-        { &ic_cpu_sw,     0, 0 },
-        { &ic_cpu_s,      0, 0 },
-        { &ic_cpu_se,     0, 0 },
-        { &ic_cpu_center, 0, 0 },
+        { &ic_memory_nw,     12, 6 },
+        { &ic_memory_n,      13, 6 },
+        { &ic_memory_ne,     14, 6 },
+        { &ic_memory_w,      12, 7 },
+        { &ic_memory_center, 13, 7 },
+        { &ic_memory_e,      14, 7 },
+        { &ic_memory_sw,     12, 8 },
+        { &ic_memory_s,      13, 8 },
+        { &ic_memory_se,     14, 8 },
+
+        { &ic_cpu_nw,     15, 6 },
+        { &ic_cpu_n,      16, 6 },
+        { &ic_cpu_ne,     17, 6 },
+        { &ic_cpu_w,      15, 7 },
+        { &ic_cpu_center, 16, 7 },
+        { &ic_cpu_e,      17, 7 },
+        { &ic_cpu_sw,     15, 8 },
+        { &ic_cpu_s,      16, 8 },
+        { &ic_cpu_se,     17, 8 },
 
     }, TILE_SIZE);
 }
@@ -322,10 +323,23 @@ void BoardEditor::render_wire(Scene& scene, Position const& pos, Wire const& wir
 
 void BoardEditor::render_component(Scene& scene, Position const& pos, Component const& component) const
 {
+    if (component.def->type == ComponentDefinition::Type::SingleTile)
+        render_single_tile_component(scene, pos, component);
+    else
+        render_ic_component(scene, pos, component);
+}
+
+void BoardEditor::render_single_tile_component(Scene& scene, Position const& pos, Component const& component) const
+{
     Pen pen;
     if (component.def->can_rotate)
         pen.rotation = component.rotation;
     component.def->render(&component, scene, (pos.x + 2) * TILE_SIZE, (pos.y + 2) * TILE_SIZE, pen);
+}
+
+void BoardEditor::render_ic_component(Scene& scene, Position const& pos, Component const& component) const
+{
+
 }
 
 std::optional<ComponentDefinition const*> BoardEditor::selected_component_definition() const
