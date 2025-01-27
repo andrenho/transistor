@@ -100,8 +100,8 @@
     - [x] Make regex replacements in initialization (infobox.cc)
     - [x] Move components.cc to a data directory (organize as `data`)
   - [ ] UI
-    - [ ] select from the toolbox
-      - [ ] create submenus (categories: logic gates, series 7400, memory, cpu)
+    - [x] select from the toolbox
+      - [x] create submenus (categories: logic gates, series 7400, memory, cpu)
     - [ ] draw IC
     - [ ] rotation/placement
     - [ ] show pin names

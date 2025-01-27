@@ -15,13 +15,16 @@ void Toolbox::init()
     SDL_QueryTexture(icons, nullptr, nullptr, &icons_tx_w, &icons_tx_h);
 
     res().add_tiles("__icons", {
-        { &tb_arrow,       0, 8 },
-        { &tb_vcc,         0, 9 },
+        { &tb_arrow,       0,  8 },
+        { &tb_vcc,         0,  9 },
         { &tb_button,      0, 10 },
         { &tb_led,         0, 11 },
         { &tb_npn,         0, 12 },
         { &tb_pnp,         0, 13 },
-        { &tb_logic_gates, 1, 8 },
+        { &tb_logic_gates, 1,  8 },
+        { &tb_digital,     1,  9 },
+        { &tb_memory,      1, 10 },
+        { &tb_cpu,         1, 11 },
     }, 16);
 
     buttons_ = {
@@ -33,6 +36,9 @@ void Toolbox::init()
         { .image = &tb_pnp,    .component_name = "pnp",    .tooltip = "PNP transistor [activate to close] (p)" },
         { .image = nullptr },
         { .image = &tb_logic_gates, .category = ComponentDefinition::Category::LogicGates, .tooltip = "Logic gates" },
+        { .image = &tb_digital,     .category = ComponentDefinition::Category::Digital,    .tooltip = "Digital components" },
+        { .image = &tb_memory,      .category = ComponentDefinition::Category::Memory,     .tooltip = "Memories" },
+        { .image = &tb_cpu,         .category = ComponentDefinition::Category::CPU,        .tooltip = "CPUs and microcontrollers" },
     };
 }
 
