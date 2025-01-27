@@ -102,6 +102,7 @@
   - [ ] UI
     - [x] select from the toolbox
       - [x] create submenus (categories: logic gates, series 7400, memory, cpu)
+    - [ ] draw temporary IC
     - [ ] draw IC
     - [ ] rotation/placement
     - [ ] show pin names
