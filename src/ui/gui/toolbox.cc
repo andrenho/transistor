@@ -113,7 +113,9 @@ void Toolbox::render_popup_menus() const
             for (auto const& [menu_name, submenu]: menu) {
                 if (ImGui::BeginMenu(menu_name.c_str())) {
                     for (auto const& [submenu_name, def]: submenu) {
-                        ImGui::MenuItem(submenu_name.c_str());
+                        bool selected = ui().state().selected_component && *ui().state().selected_component == def->name;
+                        if (ImGui::MenuItem(submenu_name.c_str(), "", selected))
+                            ui() << U::SelectComponent { def->name };
                     }
                     ImGui::EndMenu();
                 }
