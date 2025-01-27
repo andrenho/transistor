@@ -22,9 +22,9 @@ void Toolbox::init()
         { &tb_npn,         0, 12 },
         { &tb_pnp,         0, 13 },
         { &tb_logic_gates, 1,  8 },
-        { &tb_digital,     1,  9 },
+        { &tb_digital,     1, 11 },
         { &tb_memory,      1, 10 },
-        { &tb_cpu,         1, 11 },
+        { &tb_cpu,         1,  9 },
     }, 16);
 
     buttons_ = {
