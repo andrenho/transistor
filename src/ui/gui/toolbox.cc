@@ -1,6 +1,8 @@
 #include "toolbox.hh"
 
 #include <iostream>
+#include <string>
+using namespace std::string_literals;
 
 #include "SDL2/SDL.h"
 
@@ -55,42 +57,6 @@ bool Toolbox::image_button(ResourceId const& resource, size_t i) const
 
 void Toolbox::render() const
 {
-    render_popup_menus();
-    render_toolbox();
-}
-
-void Toolbox::render_popup_menus() const
-{
-    // create menu structure
-    std::map<ComponentDefinition::Category,
-        std::map<std::string,
-            std::map<std::string, ComponentDefinition const*>>> menus;
-    for (auto const& [name, def]: game().sandbox().component_db().component_defs()) {
-        if (def->category != ComponentDefinition::Category::Basic) {
-            auto pos = def->tool_path.find('/');
-            auto [menu, submenu] = std::pair(def->tool_path.substr(0, pos), pos == std::string::npos ? "" : def->tool_path.substr(pos + 1));
-            menus[def->category][menu][submenu] = def.get();
-        }
-    }
-
-    for (auto const& [category, menu]: menus) {
-        if (ImGui::BeginPopup(std::to_string((int) category).c_str())) {
-            for (auto const& [menu_name, submenu]: menu) {
-                if (ImGui::BeginMenu(menu_name.c_str())) {
-                    for (auto const& [submenu_name, def]: submenu) {
-                        ImGui::MenuItem(submenu_name.c_str());
-                    }
-                    ImGui::EndMenu();
-                }
-            }
-            ImGui::EndPopup();
-        }
-    }
-
-}
-
-void Toolbox::render_toolbox() const
-{
     size_t i = 0;
     if (ImGui::Begin("Toolbox", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoCollapse)) {
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2.f, 2.f));
@@ -109,9 +75,9 @@ void Toolbox::render_toolbox() const
                 if (i % 2 == 1)
                     ImGui::SameLine(0, 5);
                 if (image_button(*button.image, i)) {
-                    if (button.category) {
-                        ImGui::OpenPopup(std::to_string((int) *button.category).c_str());
-                    } else
+                    if (button.category)
+                        ImGui::OpenPopup(popup_name(*button.category).c_str());
+                    else
                         ui() << U::SelectComponent { button.component_name };
                 }
                 if (!button.tooltip.empty())
@@ -122,7 +88,43 @@ void Toolbox::render_toolbox() const
             }
         }
         ImGui::PopStyleVar();
+
+        render_popup_menus();
     }
     ImGui::End();
 }
 
+void Toolbox::render_popup_menus() const
+{
+    // create menu structure
+    std::map<ComponentDefinition::Category,
+        std::map<std::string,
+            std::map<std::string, ComponentDefinition const*>>> menus;
+    for (auto const& [name, def]: game().sandbox().component_db().component_defs()) {
+        if (def->category != ComponentDefinition::Category::Basic) {
+            auto pos = def->tool_path.find('/');
+            auto [menu, submenu] = std::pair(def->tool_path.substr(0, pos), pos == std::string::npos ? "" : def->tool_path.substr(pos + 1));
+            menus[def->category][menu][submenu] = def.get();
+        }
+    }
+
+    for (auto const& [category, menu]: menus) {
+        if (ImGui::BeginPopup(popup_name(category).c_str())) {
+            for (auto const& [menu_name, submenu]: menu) {
+                if (ImGui::BeginMenu(menu_name.c_str())) {
+                    for (auto const& [submenu_name, def]: submenu) {
+                        ImGui::MenuItem(submenu_name.c_str());
+                    }
+                    ImGui::EndMenu();
+                }
+            }
+            ImGui::EndPopup();
+        }
+    }
+
+}
+
+std::string Toolbox::popup_name(ComponentDefinition::Category category) const
+{
+    return "category" + std::to_string((int) category);
+}

@@ -17,7 +17,8 @@ private:
     bool image_button(ResourceId const& resource, size_t i) const;
 
     void render_popup_menus() const;
-    void render_toolbox() const;
+
+    [[nodiscard]] std::string popup_name(ComponentDefinition::Category category) const;
 
     struct Button {
         resource_idx_t*                              image;
