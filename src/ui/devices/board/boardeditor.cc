@@ -57,9 +57,9 @@ void BoardEditor::load_icons()
         { &ic_dot_s, 11, 4 },
 
         { &ic_pin_n, 11, 5 },
-        { &ic_pin_w, 11, 4 },
-        { &ic_pin_e, 12, 5 },
-        { &ic_pin_s, 12, 4 },
+        { &ic_pin_e, 10, 5 },
+        { &ic_pin_w, 11, 6 },
+        { &ic_pin_s, 10, 6 },
 
         { &ic_res.at(ComponentDefinition::Category::LogicGates).nw,     12, 3 },
         { &ic_res.at(ComponentDefinition::Category::LogicGates).n,      13, 3 },
