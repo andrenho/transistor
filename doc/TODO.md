@@ -103,8 +103,9 @@
     - [x] select from the toolbox
       - [x] create submenus (categories: logic gates, series 7400, memory, cpu)
     - [x] unify cursor rendering and component rendering
-    - [ ] draw temporary IC
+    - [x] draw temporary IC
     - [ ] draw IC
+      - [ ] draw from image, or text
     - [ ] limit IC placement in board borders
     - [ ] rotation/placement
     - [ ] show pin names
