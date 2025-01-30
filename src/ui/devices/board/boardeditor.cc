@@ -327,7 +327,7 @@ void BoardEditor::render_wire(Scene& scene, Position const& pos, Wire const& wir
 void BoardEditor::render_component(Scene& scene, Position const& pos, Component const& component) const
 {
     if (component.def->type != ComponentDefinition::Type::SingleTile)
-        render_ic_shell(scene, pos, component.def, component.rotation);
+        render_ic_shell(scene, pos, *component.def, component.rotation);
 
     Pen pen;
     if (component.def->can_rotate)
@@ -335,19 +335,29 @@ void BoardEditor::render_component(Scene& scene, Position const& pos, Component 
     component.def->render(&component, scene, (pos.x + 2) * TILE_SIZE, (pos.y + 2) * TILE_SIZE, pen);
 }
 
-void BoardEditor::render_ic_shell(Scene const& scene, Position pos, ComponentDefinition const* def, Direction rotation,
+void BoardEditor::render_ic_shell(Scene& scene, Position const& pos, ComponentDefinition const& def, Direction rotation,
     bool semitransparent) const
 {
-    /*
-    auto const& ic = BoardEditor::ic_res.at(component.def->category);
-    auto [r1, r2] = component.rect(pos);
+    Pen pen { .semitransparent = semitransparent };
 
-    for (size_t x = r1.x; x < r2.x; ++x) {
-        for (size_t y = r1.y; y < r2.y; ++y) {
-            draw(scene, ic.center, pos.x + 2, pos.y + 2);
+    auto const& ic = ic_res.at(def.category);
+    auto [r1, r2] = def.rect(pos, rotation);
+
+    draw(scene, ic.nw, r1.x, r1.y, pen);
+    draw(scene, ic.ne, r2.x, r1.y, pen);
+    draw(scene, ic.sw, r1.x, r2.y, pen);
+    draw(scene, ic.se, r2.x, r2.y, pen);
+    for (intpos_t x = r1.x + 1; x < r2.x; ++x) {
+        draw(scene, ic.n, x, r1.y, pen);
+        draw(scene, ic.s, x, r2.y, pen);
+        for (intpos_t y = r1.y + 1; y < r2.y; ++y) {
+            draw(scene, ic.center, x, y, pen);
         }
     }
-    */
+    for (intpos_t y = r1.y + 1; y < r2.y; ++y) {
+        draw(scene, ic.w, r1.x, y, pen);
+        draw(scene, ic.e, r2.x, y, pen);
+    }
 }
 
 std::optional<ComponentDefinition const*> BoardEditor::selected_component_definition() const
@@ -378,7 +388,7 @@ void BoardEditor::render_cursor(Scene& scene, int mx, int my) const
         dir = ui().state().selected_tool_direction;
 
     if ((*def)->type != ComponentDefinition::Type::SingleTile)
-        render_ic_shell(scene, pos, *def, dir);
+        render_ic_shell(scene, pos, **def, dir, true);
 
     Pen pen { .semitransparent = true, .rotation = dir };
     (*def)->render({}, scene, (pos.x + 2) * TILE_SIZE, (pos.y + 2) * TILE_SIZE, pen);

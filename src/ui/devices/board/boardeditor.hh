@@ -32,7 +32,7 @@ private:
     void render_tile(Scene& scene, intpos_t x, intpos_t y) const;
     void render_wire(Scene& scene, Position const& pos, Wire const& wire, bool semitransparent) const;
     void render_component(Scene& scene, Position const& pos, Component const& component) const;
-    void render_ic_shell(Scene const& scene, Position pos, ComponentDefinition const* def, Direction rotation, bool semitransparent=false) const;
+    void render_ic_shell(Scene& scene, Position const& pos, ComponentDefinition const& def, Direction rotation, bool semitransparent=false) const;
     void render_cursor(Scene& scene, int mx, int my) const;
 
     void draw(Scene& scene, ResourceId const& resource, int x, int y, Pen const& pen={}) const;
