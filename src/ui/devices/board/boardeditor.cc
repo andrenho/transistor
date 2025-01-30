@@ -13,11 +13,8 @@ resource_idx_t
     BoardEditor::wire_top_on_north_1, BoardEditor::wire_top_on_east_1, BoardEditor::wire_top_on_west_1, BoardEditor::wire_top_on_south_1,
     BoardEditor::wire_top_off_north_1, BoardEditor::wire_top_off_east_1, BoardEditor::wire_top_off_west_1, BoardEditor::wire_top_off_south_1,
     BoardEditor::ic_dot_n, BoardEditor::ic_dot_w, BoardEditor::ic_dot_e, BoardEditor::ic_dot_s,
-    BoardEditor::ic_pin_n, BoardEditor::ic_pin_w, BoardEditor::ic_pin_e, BoardEditor::ic_pin_s,
-    BoardEditor::ic_logic_nw, BoardEditor::ic_logic_n, BoardEditor::ic_logic_ne, BoardEditor::ic_logic_e, BoardEditor::ic_logic_w, BoardEditor::ic_logic_sw, BoardEditor::ic_logic_s, BoardEditor::ic_logic_se, BoardEditor::ic_logic_center,
-    BoardEditor::ic_digital_nw, BoardEditor::ic_digital_n, BoardEditor::ic_digital_ne, BoardEditor::ic_digital_e, BoardEditor::ic_digital_w, BoardEditor::ic_digital_sw, BoardEditor::ic_digital_s, BoardEditor::ic_digital_se, BoardEditor::ic_digital_center,
-    BoardEditor::ic_memory_nw, BoardEditor::ic_memory_n, BoardEditor::ic_memory_ne, BoardEditor::ic_memory_e, BoardEditor::ic_memory_w, BoardEditor::ic_memory_sw, BoardEditor::ic_memory_s, BoardEditor::ic_memory_se, BoardEditor::ic_memory_center,
-    BoardEditor::ic_cpu_nw, BoardEditor::ic_cpu_n, BoardEditor::ic_cpu_ne, BoardEditor::ic_cpu_e, BoardEditor::ic_cpu_w, BoardEditor::ic_cpu_sw, BoardEditor::ic_cpu_s, BoardEditor::ic_cpu_se, BoardEditor::ic_cpu_center;
+    BoardEditor::ic_pin_n, BoardEditor::ic_pin_w, BoardEditor::ic_pin_e, BoardEditor::ic_pin_s;
+std::unordered_map<ComponentDefinition::Category, BoardEditor::IC_Resource> BoardEditor::ic_res;
 
 BoardEditor::BoardEditor(size_t board_id, int x, int y)
     : DeviceEditor(x, y, (game().board(board_id).w() + 4) * TILE_SIZE, (game().board(board_id).w() + 4) * TILE_SIZE),
@@ -28,6 +25,11 @@ BoardEditor::BoardEditor(size_t board_id, int x, int y)
 
 void BoardEditor::load_icons()
 {
+    ic_res[ComponentDefinition::Category::LogicGates];
+    ic_res[ComponentDefinition::Category::Digital];
+    ic_res[ComponentDefinition::Category::Memory];
+    ic_res[ComponentDefinition::Category::CPU];
+
     res().add_tiles("__icons", {
         { &tile, 2, 2 },
 
@@ -59,45 +61,45 @@ void BoardEditor::load_icons()
         { &ic_pin_e, 12, 5 },
         { &ic_pin_s, 12, 4 },
 
-        { &ic_logic_nw,     12, 3 },
-        { &ic_logic_n,      13, 3 },
-        { &ic_logic_ne,     14, 3 },
-        { &ic_logic_w,      12, 4 },
-        { &ic_logic_center, 13, 4 },
-        { &ic_logic_e,      14, 4 },
-        { &ic_logic_sw,     12, 5 },
-        { &ic_logic_s,      13, 5 },
-        { &ic_logic_se,     14, 5 },
+        { &ic_res.at(ComponentDefinition::Category::LogicGates).nw,     12, 3 },
+        { &ic_res.at(ComponentDefinition::Category::LogicGates).n,      13, 3 },
+        { &ic_res.at(ComponentDefinition::Category::LogicGates).ne,     14, 3 },
+        { &ic_res.at(ComponentDefinition::Category::LogicGates).w,      12, 4 },
+        { &ic_res.at(ComponentDefinition::Category::LogicGates).center, 13, 4 },
+        { &ic_res.at(ComponentDefinition::Category::LogicGates).e,      14, 4 },
+        { &ic_res.at(ComponentDefinition::Category::LogicGates).sw,     12, 5 },
+        { &ic_res.at(ComponentDefinition::Category::LogicGates).s,      13, 5 },
+        { &ic_res.at(ComponentDefinition::Category::LogicGates).se,     14, 5 },
 
-        { &ic_digital_nw,     15, 3 },
-        { &ic_digital_n,      16, 3 },
-        { &ic_digital_ne,     17, 3 },
-        { &ic_digital_w,      15, 4 },
-        { &ic_digital_center, 16, 4 },
-        { &ic_digital_e,      17, 4 },
-        { &ic_digital_sw,     15, 5 },
-        { &ic_digital_s,      16, 5 },
-        { &ic_digital_se,     17, 5 },
+        { &ic_res.at(ComponentDefinition::Category::Digital).nw,     15, 3 },
+        { &ic_res.at(ComponentDefinition::Category::Digital).n,      16, 3 },
+        { &ic_res.at(ComponentDefinition::Category::Digital).ne,     17, 3 },
+        { &ic_res.at(ComponentDefinition::Category::Digital).w,      15, 4 },
+        { &ic_res.at(ComponentDefinition::Category::Digital).center, 16, 4 },
+        { &ic_res.at(ComponentDefinition::Category::Digital).e,      17, 4 },
+        { &ic_res.at(ComponentDefinition::Category::Digital).sw,     15, 5 },
+        { &ic_res.at(ComponentDefinition::Category::Digital).s,      16, 5 },
+        { &ic_res.at(ComponentDefinition::Category::Digital).se,     17, 5 },
 
-        { &ic_memory_nw,     12, 6 },
-        { &ic_memory_n,      13, 6 },
-        { &ic_memory_ne,     14, 6 },
-        { &ic_memory_w,      12, 7 },
-        { &ic_memory_center, 13, 7 },
-        { &ic_memory_e,      14, 7 },
-        { &ic_memory_sw,     12, 8 },
-        { &ic_memory_s,      13, 8 },
-        { &ic_memory_se,     14, 8 },
+        { &ic_res.at(ComponentDefinition::Category::Memory).nw,     12, 6 },
+        { &ic_res.at(ComponentDefinition::Category::Memory).n,      13, 6 },
+        { &ic_res.at(ComponentDefinition::Category::Memory).ne,     14, 6 },
+        { &ic_res.at(ComponentDefinition::Category::Memory).w,      12, 7 },
+        { &ic_res.at(ComponentDefinition::Category::Memory).center, 13, 7 },
+        { &ic_res.at(ComponentDefinition::Category::Memory).e,      14, 7 },
+        { &ic_res.at(ComponentDefinition::Category::Memory).sw,     12, 8 },
+        { &ic_res.at(ComponentDefinition::Category::Memory).s,      13, 8 },
+        { &ic_res.at(ComponentDefinition::Category::Memory).se,     14, 8 },
 
-        { &ic_cpu_nw,     15, 6 },
-        { &ic_cpu_n,      16, 6 },
-        { &ic_cpu_ne,     17, 6 },
-        { &ic_cpu_w,      15, 7 },
-        { &ic_cpu_center, 16, 7 },
-        { &ic_cpu_e,      17, 7 },
-        { &ic_cpu_sw,     15, 8 },
-        { &ic_cpu_s,      16, 8 },
-        { &ic_cpu_se,     17, 8 },
+        { &ic_res.at(ComponentDefinition::Category::CPU).nw,     15, 6 },
+        { &ic_res.at(ComponentDefinition::Category::CPU).n,      16, 6 },
+        { &ic_res.at(ComponentDefinition::Category::CPU).ne,     17, 6 },
+        { &ic_res.at(ComponentDefinition::Category::CPU).w,      15, 7 },
+        { &ic_res.at(ComponentDefinition::Category::CPU).center, 16, 7 },
+        { &ic_res.at(ComponentDefinition::Category::CPU).e,      17, 7 },
+        { &ic_res.at(ComponentDefinition::Category::CPU).sw,     15, 8 },
+        { &ic_res.at(ComponentDefinition::Category::CPU).s,      16, 8 },
+        { &ic_res.at(ComponentDefinition::Category::CPU).se,     17, 8 },
 
     }, TILE_SIZE);
 }
@@ -288,6 +290,7 @@ void BoardEditor::render_tile(Scene& scene, intpos_t x, intpos_t y) const
         if (it != temp.end())
             render_wire(scene, it->first, it->second, true);
 
+        // render component
         auto itc = board.components().find({ board.id(), x, y });
         if (itc != board.components().end())
             render_component(scene, itc->first, itc->second);
@@ -323,23 +326,28 @@ void BoardEditor::render_wire(Scene& scene, Position const& pos, Wire const& wir
 
 void BoardEditor::render_component(Scene& scene, Position const& pos, Component const& component) const
 {
-    if (component.def->type == ComponentDefinition::Type::SingleTile)
-        render_single_tile_component(scene, pos, component);
-    else
-        render_ic_component(scene, pos, component);
-}
+    if (component.def->type != ComponentDefinition::Type::SingleTile)
+        render_ic_shell(scene, pos, component.def, component.rotation);
 
-void BoardEditor::render_single_tile_component(Scene& scene, Position const& pos, Component const& component) const
-{
     Pen pen;
     if (component.def->can_rotate)
         pen.rotation = component.rotation;
     component.def->render(&component, scene, (pos.x + 2) * TILE_SIZE, (pos.y + 2) * TILE_SIZE, pen);
 }
 
-void BoardEditor::render_ic_component(Scene& scene, Position const& pos, Component const& component) const
+void BoardEditor::render_ic_shell(Scene const& scene, Position pos, ComponentDefinition const* def, Direction rotation,
+    bool semitransparent) const
 {
+    /*
+    auto const& ic = BoardEditor::ic_res.at(component.def->category);
+    auto [r1, r2] = component.rect(pos);
 
+    for (size_t x = r1.x; x < r2.x; ++x) {
+        for (size_t y = r1.y; y < r2.y; ++y) {
+            draw(scene, ic.center, pos.x + 2, pos.y + 2);
+        }
+    }
+    */
 }
 
 std::optional<ComponentDefinition const*> BoardEditor::selected_component_definition() const
@@ -368,6 +376,9 @@ void BoardEditor::render_cursor(Scene& scene, int mx, int my) const
     Direction dir = Direction::N;
     if ((*def)->can_rotate)
         dir = ui().state().selected_tool_direction;
+
+    if ((*def)->type != ComponentDefinition::Type::SingleTile)
+        render_ic_shell(scene, pos, *def, dir);
 
     Pen pen { .semitransparent = true, .rotation = dir };
     (*def)->render({}, scene, (pos.x + 2) * TILE_SIZE, (pos.y + 2) * TILE_SIZE, pen);

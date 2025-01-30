@@ -199,7 +199,7 @@ std::vector<ComponentDefinition> native_components()
                 c.pins[_Q] = !c.pins[Q];
             },
             .render = [](std::optional<Component const *>, Scene& scene, int x, int y, Pen pen) {
-                throw std::runtime_error("not implemented yet"); // TODO
+                // throw std::runtime_error("not implemented yet"); // TODO
             },
         },
 
