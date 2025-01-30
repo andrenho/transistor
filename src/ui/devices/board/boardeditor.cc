@@ -363,17 +363,28 @@ void BoardEditor::render_ic_shell(Scene& scene, Position const& pos, ComponentDe
     }
 
     // dot
-    Position dot_pos { board_id_, 0, 0, };
     switch (rotation) {
         case Direction::N: draw(scene, ic_dot_n, r1.x + 1, r1.y + 1, pen); break;
         case Direction::E: draw(scene, ic_dot_e, r1.x + 1, r2.y - 1, pen); break;
         case Direction::S: draw(scene, ic_dot_s, r2.x - 1, r2.y - 1, pen); break;
         case Direction::W: draw(scene, ic_dot_w, r2.x - 1, r1.y + 1, pen); break;
-        default: throw;
+        case Direction::Center:
+        default:
+            throw;
     }
 
     // pins
-
+    auto pin_pos = def.pin_positions(pos, rotation);
+    for (auto [_, ppos]: pin_pos) {
+        if (ppos.y <= r1.y)
+            draw(scene, ic_pin_n, ppos.x, ppos.y, pen);
+        else if (ppos.y >= r2.y)
+            draw(scene, ic_pin_s, ppos.x, ppos.y, pen);
+        else if (ppos.x <= r1.x)
+            draw(scene, ic_pin_e, ppos.x, ppos.y, pen);
+        else if (ppos.x >= r2.x)
+            draw(scene, ic_pin_w, ppos.x, ppos.y, pen);
+    }
 }
 
 std::optional<ComponentDefinition const*> BoardEditor::selected_component_definition() const
