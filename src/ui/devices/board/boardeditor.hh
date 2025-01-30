@@ -28,7 +28,7 @@ private:
     bool         drawing_wire_ = false;
     bool         erasing_ = false;
 
-    void render_border(Scene& scene) const;
+    void render_board(Scene& scene) const;
     void render_tile(Scene& scene, intpos_t x, intpos_t y) const;
     void render_wire(Scene& scene, Position const& pos, Wire const& wire, bool semitransparent) const;
     void render_component(Scene& scene, Position const& pos, Component const& component) const;

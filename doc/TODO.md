@@ -118,6 +118,7 @@
 - [ ] selection
 - [ ] cut/copy/paste
 - [ ] add text to board
+- [ ] show pin names when hovering
 
 # v0.0.8 - advanced wiring
 

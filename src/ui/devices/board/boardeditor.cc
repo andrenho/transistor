@@ -245,14 +245,14 @@ void BoardEditor::render(Scene& scene, int mx, int my)
 {
     Board const& board = game().board(board_id_);
 
-    render_border(scene);
+    render_board(scene);
     for (intpos_t x = 0; x < board.w(); ++x)
         for (intpos_t y = 0; y < board.h(); ++y)
             render_tile(scene, x, y);
     render_cursor(scene, mx, my);
 }
 
-void BoardEditor::render_border(Scene& scene) const
+void BoardEditor::render_board(Scene& scene) const
 {
     Board const& board = game().board(board_id_);
 
@@ -270,13 +270,15 @@ void BoardEditor::render_border(Scene& scene) const
         draw(scene, board_left, -2, y);
         draw(scene, board_right, board.w(), y);
     }
+
+    for (ssize_t x = 0; x < board.w(); ++x)
+        for (ssize_t y = 0; y < board.h(); ++y)
+            draw(scene, tile, x, y);
 }
 
 void BoardEditor::render_tile(Scene& scene, intpos_t x, intpos_t y) const
 {
     Board const& board = game().board(board_id_);
-
-    draw(scene, tile, x, y);
 
     for (Direction const& dir: DIRECTIONS) {
         // draw wire
@@ -343,6 +345,7 @@ void BoardEditor::render_ic_shell(Scene& scene, Position const& pos, ComponentDe
     auto const& ic = ic_res.at(def.category);
     auto [r1, r2] = def.rect(pos, rotation);
 
+    // shell
     draw(scene, ic.nw, r1.x, r1.y, pen);
     draw(scene, ic.ne, r2.x, r1.y, pen);
     draw(scene, ic.sw, r1.x, r2.y, pen);
@@ -358,6 +361,19 @@ void BoardEditor::render_ic_shell(Scene& scene, Position const& pos, ComponentDe
         draw(scene, ic.w, r1.x, y, pen);
         draw(scene, ic.e, r2.x, y, pen);
     }
+
+    // dot
+    Position dot_pos { board_id_, 0, 0, };
+    switch (rotation) {
+        case Direction::N: draw(scene, ic_dot_n, r1.x + 1, r1.y + 1, pen); break;
+        case Direction::E: draw(scene, ic_dot_e, r1.x + 1, r2.y - 1, pen); break;
+        case Direction::S: draw(scene, ic_dot_s, r2.x - 1, r2.y - 1, pen); break;
+        case Direction::W: draw(scene, ic_dot_w, r2.x - 1, r1.y + 1, pen); break;
+        default: throw;
+    }
+
+    // pins
+
 }
 
 std::optional<ComponentDefinition const*> BoardEditor::selected_component_definition() const
