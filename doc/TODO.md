@@ -109,6 +109,7 @@
     - [ ] limit IC placement in board borders
     - [ ] rotation/placement
     - [ ] show pin names
+- [ ] use Lua for managing tilesets
 - [ ] ic Lua support
   - [ ] serialize/deserialize
 
