@@ -195,13 +195,13 @@ std::vector<ComponentDefinition> native_components()
             .pins = { { "IN0", Input }, { "IN1", Input }, { "~Q", Output }, { "Q", Output } },
 
             .init = []() {
-                res().add_tile("__icons", "__or_2i", 2, 12, 2, 1, 2);
+                res().add_tile("__icons", "__or_2i", 1, 12, 1, 2, TILE_SIZE);
             },
 
             .simulate = [](Component& c) {
-                constexpr size_t IN0 = 0, IN1 = 0, _Q = 2, Q = 3;
+                constexpr size_t IN0 = 0, IN1 = 0, Q_ = 2, Q = 3;
                 c.pins[Q] = c.pins[IN0] || c.pins[IN1];
-                c.pins[_Q] = !c.pins[Q];
+                c.pins[Q_] = !c.pins[Q];
             },
             .render = [](std::optional<Component const *>, Scene& scene, int x, int y, Pen pen) {
                 scene.add("__or_2i", x, y, pen);
