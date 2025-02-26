@@ -16,6 +16,7 @@ option(EMBED_SDL "Embed SDL into executable" ON)
 
 set(CMAKE_C_STANDARD 23)
 set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -s")
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # warnings / flags
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
