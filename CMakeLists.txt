@@ -58,9 +58,13 @@ add_subdirectory(contrib/pastel2d)
 add_subdirectory(contrib/transistor-sandbox)
 
 if (EMBED_SDL)
+    set(SDL_STATIC ON)
+    set(SDL_SHARED OFF)
+    set(SDL_TARGET SDL3::SDL3-static)
     add_subdirectory(contrib/SDL EXCLUDE_FROM_ALL)
 else()
     find_package(SDL3 REQUIRED CONFIG REQUIRED COMPONENTS SDL3-shared)
+    set(SDL_TARGET SDL3::SDL3-shared)
 endif()
 
 #
@@ -69,4 +73,4 @@ endif()
 
 add_executable(transistor src/main.c)
 
-target_link_libraries(transistor PRIVATE SDL3::SDL3 pastel2d transistor-sandbox)
+target_link_libraries(transistor PRIVATE ${SDL_TARGET} pastel2d transistor-sandbox)
