@@ -4,3 +4,9 @@
 [submodule "contrib/pastel2d"]
 	path = contrib/pastel2d
 	url = https://github.com/andrenho/pastel2d.git
+[submodule "contrib/SDL"]
+	path = contrib/SDL
+	url = https://github.com/libsdl-org/SDL.git
+[submodule "contrib/Nuklear"]
+	path = contrib/Nuklear
+	url = https://github.com/Immediate-Mode-UI/Nuklear.git
