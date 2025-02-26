@@ -15,8 +15,7 @@ project(transistor
 option(EMBED_SDL "Embed SDL into executable" ON)
 
 set(CMAKE_C_STANDARD 23)
-set_property(GLOBAL PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
-set_property(GLOBAL PROPERTY LINK_WHAT_YOU_USE TRUE)
+set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -s")
 
 # warnings / flags
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
@@ -45,7 +44,8 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
 endif()
 
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
-    set(DEF B_PRODUCTION_MODE=ON)
+    set_property(GLOBAL PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
+    set_property(GLOBAL PROPERTY LINK_WHAT_YOU_USE TRUE)
     add_compile_options(-Ofast -flto)
 endif()
 
