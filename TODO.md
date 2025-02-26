@@ -1,0 +1,14 @@
+- [ ] Base application
+  - [ ] Add libs submodules: sdl3, transistor, cimgui
+  - [ ] Create CMakeLists.txt
+  - [ ] Create application skeleton
+  - [ ] Show demo window
+- [ ] Base game
+  - [ ] Create menu, lateral bar
+  - [ ] Show lateral bar information (add to component def)
+  - [ ] Boards
+    - [ ] Render / interact
+- [ ] Additional
+  - [ ] Show FPS, steps p/ sec
+  - [ ] Switch multithreading
+  - [ ] About box
