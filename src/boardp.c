@@ -5,7 +5,7 @@ void boardp_update(ts_Transistor* T, ts_TransistorSnapshot const* snap, SDL_Even
 
 }
 
-void boardp_create_scene(ts_TransistorSnapshot const* snap, ps_Scene* scene)
+size_t boardp_create_scenes(ts_TransistorSnapshot const* snap, ps_Scene** scene)
 {
-
+    return 0;
 }

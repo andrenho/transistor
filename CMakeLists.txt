@@ -76,7 +76,9 @@ add_executable(transistor src/main.c
         src/boardp.c
         src/boardp.h
         src/resources.c
-        src/resources.h)
+        src/resources.h
+        src/gui.c
+        src/gui.h)
 
 target_link_libraries(transistor PRIVATE ${SDL_TARGET} pastel2d transistor-sandbox)
 
