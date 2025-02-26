@@ -1,7 +1,8 @@
 - [ ] Base application
-  - [ ] Add libs submodules: sdl3, transistor, cimgui
-  - [ ] Create CMakeLists.txt
-  - [ ] Create application skeleton
+  - [x] Add libs submodules: sdl3, transistor, cimgui
+  - [x] Create CMakeLists.txt
+  - [x] Create application skeleton
+  - [ ] Leaks target, package (?)
   - [ ] Show demo window
 - [ ] Base game
   - [ ] Create menu, lateral bar

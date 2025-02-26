@@ -74,3 +74,24 @@ endif()
 add_executable(transistor src/main.c)
 
 target_link_libraries(transistor PRIVATE ${SDL_TARGET} pastel2d transistor-sandbox)
+
+# check for leaks
+
+add_custom_target(transistor-leaks)
+if (APPLE)
+    add_custom_command(TARGET transistor-leaks
+            POST_BUILD
+            COMMENT "Check for leaks using leaks."
+            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+            DEPENDS ${PROJECT_NAME}-tests
+            COMMAND MallocStackLogging=1 leaks --atExit -- ./transistor
+    )
+else()
+    add_custom_command(TARGET transistor-leaks
+            POST_BUILD
+            COMMENT "Check for leaks using valgrind."
+            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+            DEPENDS transistor
+            COMMAND valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=${CMAKE_SOURCE_DIR}/valgrind.supp ./transistor
+    )
+endif()
