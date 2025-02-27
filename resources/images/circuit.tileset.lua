@@ -3,7 +3,7 @@ return {
    
    tiles = {
       
-      tile           = { 2, 2 },
+      tile            = { 2, 2 },
       
       shadow_rect     = { 5, 4 },
       shadow_square   = { 6, 4 },
@@ -16,13 +16,13 @@ return {
       npn             = { 5, 2 },
       pnp             = { 5, 3 },
       
-      tb_arrow        = { 0, 8 },
-      tb_vcc          = { 0, 9 },
-      tb_button       = { 0,10 },
+      tb_arrow        = { 0,  8 },
+      tb_vcc          = { 0,  9 },
+      tb_button       = { 0, 10 },
       tb_led          = { 0, 11 },
       tb_npn          = { 0, 12 },
       tb_pnp          = { 0, 13 },
-      tb_logic_gates  = { 1, 8 },
+      tb_logic_gates  = { 1,  8 },
       tb_digital      = { 1, 11 },
       tb_memory       = { 1, 10 },
       tb_cpu          = { 1,  9 },
