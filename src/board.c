@@ -50,6 +50,24 @@ static void bring_board_to_top(int i)
     // TODO
 }
 
+static void move_board(ts_TransistorSnapshot const* snap, int xrel, int yrel)
+{
+    int scr_w, scr_h;
+    SDL_GetWindowSize(ps_graphics_window(), &scr_w, &scr_h);
+
+    const double zoom = boards_def[board_moving].zoom;
+    const int w = snap->boards[board_moving].w * TILE_SIZE * zoom;
+    const int h = snap->boards[board_moving].h * TILE_SIZE * zoom;
+
+    const int min_x = -w + 56 * zoom;
+    const int min_y = -h + 56 * zoom;
+    const int max_x = scr_w - 56 * zoom;
+    const int max_y = scr_h - 56 * zoom;
+
+    boards_def[board_moving].x = fmin(fmax(boards_def[board_moving].x + xrel, min_x), max_x);
+    boards_def[board_moving].y = fmin(fmax(boards_def[board_moving].y + yrel, min_y), max_y);
+}
+
 //
 // events
 //
@@ -63,15 +81,16 @@ void board_update(ts_Transistor* T, ts_TransistorSnapshot const* snap, SDL_Event
             break;
 
         case SDL_EVENT_MOUSE_MOTION:
-            if (board_moving >= 0) {
-                boards_def[board_moving].x += e->motion.xrel;
-                boards_def[board_moving].y += e->motion.yrel;
-            }
+            if (board_moving >= 0)
+                move_board(snap, e->motion.xrel, e->motion.yrel);
             break;
 
         case SDL_EVENT_MOUSE_BUTTON_UP:
-            board_moving = -1;
+            if (e->button.button == SDL_BUTTON_RIGHT)
+                board_moving = -1;
             break;
+
+        default: break;
     }
 }
 
