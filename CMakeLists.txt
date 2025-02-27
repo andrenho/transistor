@@ -46,7 +46,7 @@ endif()
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
     set_property(GLOBAL PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
     set_property(GLOBAL PROPERTY LINK_WHAT_YOU_USE TRUE)
-    add_compile_options(-Ofast -flto)
+    add_compile_options(-Ofast -flto=auto)
 endif()
 
 
