@@ -6,6 +6,9 @@
 
 #include "resources.h"
 
+static const int BOARD_ON_TOP = 1;
+static const int TILE_SIZE = 16;
+
 typedef struct BoardDef {
     int x;
     int y;
@@ -14,8 +17,7 @@ typedef struct BoardDef {
 } BoardDef;
 
 static BoardDef* boards_def = NULL;
-static const int BOARD_ON_TOP = 1;
-static const int TILE_SIZE = 16;
+static int board_moving = -1;
 
 //
 // board ordering / positioning
@@ -29,13 +31,44 @@ static void check_for_new_board(size_t i)
     }
 }
 
+static int topmost_board()
+{
+    return 0;  // TODO
+}
+
+static int board_at_pos(ts_TransistorSnapshot const* snap, int x, int y)
+{
+    return 0;  // TODO
+}
+
+static void bring_board_to_top(int i)
+{
+    // TODO
+}
+
 //
 // events
 //
 
 void board_update(ts_Transistor* T, ts_TransistorSnapshot const* snap, SDL_Event* e)
 {
+    switch (e->type) {
+        case SDL_EVENT_MOUSE_BUTTON_DOWN:
+            if (e->button.button == SDL_BUTTON_RIGHT)
+                board_moving = topmost_board();
+            break;
 
+        case SDL_EVENT_MOUSE_MOTION:
+            if (board_moving >= 0) {
+                boards_def[board_moving].x += e->motion.xrel;
+                boards_def[board_moving].y += e->motion.yrel;
+            }
+            break;
+
+        case SDL_EVENT_MOUSE_BUTTON_UP:
+            board_moving = -1;
+            break;
+    }
 }
 
 //

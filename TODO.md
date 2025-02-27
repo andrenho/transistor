@@ -1,13 +1,14 @@
-- [ ] Base application
+- [x] Base application
   - [x] Add libs submodules: sdl3, transistor, cimgui
   - [x] Create CMakeLists.txt
   - [x] Create application skeleton
-  - [ ] Leaks target, package (?)
+  - [x] Leaks target, package (?)
   - [ ] Show demo window
 - [ ] Base game
   - [ ] Create menu, lateral bar
   - [ ] Show lateral bar information (add to component def)
-  - [ ] Boards
+  - [x] Boards
+    - [ ] Move around
     - [ ] Render / interact
 - [ ] Additional
   - [ ] Show FPS, steps p/ sec
