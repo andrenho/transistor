@@ -101,7 +101,11 @@ size_t background_scene(ps_Scene* scenes, size_t n_scenes)
     ps_Scene* scene = &scenes[n_scenes++];
     scene->z_order = 1000;
     ps_scene_init(scene);
-    ps_scene_add_image(scenes, rs_bg, (SDL_Rect) { 0, 0 }, NULL);
+
+    int ww, wh, rw, rh;
+    SDL_GetWindowSize(ps_graphics_window(), &ww, &wh);
+    ps_res_image_size(rs_bg, &rw, &rh);
+    ps_scene_add_image(scenes, rs_bg, (SDL_Rect) { ww/2 - rw/2, wh/2 - rh/2 }, NULL);
 
     return n_scenes;
 }
