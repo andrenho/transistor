@@ -2,7 +2,11 @@
 
 #include <stdlib.h>
 
-#include "stb_ds.h"
+#define STBI_ONLY_PNG
+#define STBI_ONLY_JPEG
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
+#include <stb_ds.h>
 
 #include "resources.h"
 
@@ -104,18 +108,16 @@ static void render_board(ts_BoardSnapshot const* board, BoardDef const* board_de
 
 #undef ADD_IMAGE
 
-size_t board_create_scenes(ts_TransistorSnapshot const* snap, ps_Scene** scenes)
+size_t board_create_scenes(ts_TransistorSnapshot const* snap, ps_Scene* scenes, size_t n_scenes)
 {
-    *scenes = calloc(snap->n_boards, sizeof(ps_Scene));
-
     for (size_t i = 0; i < snap->n_boards; ++i) {
         check_for_new_board(i);
 
-        ps_Scene* scene = &(*scenes)[i];
+        ps_Scene* scene = &scenes[n_scenes++];
         ps_scene_init(scene);
         scene->z_order = boards_def[i].z_order;
         render_board(&snap->boards[i], &boards_def[i], scene);
     }
 
-    return snap->n_boards;
+    return n_scenes;
 }

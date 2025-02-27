@@ -11,6 +11,10 @@
 #include "pastel2d.h"
 #include "resources.h"
 
+#define MAX_SCENES 64
+
+static size_t background_scene(ps_Scene* scenes, size_t n_scenes);
+
 int main(void)
 {
     SDL_Log("pastel2d version %s", ps_version(NULL, NULL, NULL));
@@ -65,11 +69,16 @@ int main(void)
 
         // create and render scenes
 
-        ps_Scene* scenes = NULL;
-        size_t n_scenes = board_create_scenes(&snap, &scenes);
+        size_t n_scenes = 0;
+        static ps_Scene scenes[MAX_SCENES];
+
+        n_scenes = background_scene(scenes, n_scenes);
+        n_scenes = board_create_scenes(&snap, scenes, n_scenes);
+
         ts_snapshot_finalize(&snap);
+        if (n_scenes >= MAX_SCENES)
+            abort();
         ps_graphics_render_scenes(scenes, n_scenes);
-        free(scenes);
 
         gui_render();
 
@@ -85,4 +94,14 @@ int main(void)
     ts_transistor_finalize(&T);
 
     return 0;
+}
+
+size_t background_scene(ps_Scene* scenes, size_t n_scenes)
+{
+    ps_Scene* scene = &scenes[n_scenes++];
+    scene->z_order = 1000;
+    ps_scene_init(scene);
+    ps_scene_add_image(scenes, rs_bg, (SDL_Rect) { 0, 0 }, NULL);
+
+    return n_scenes;
 }

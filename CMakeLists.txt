@@ -15,7 +15,6 @@ project(transistor
 option(EMBED_SDL "Embed SDL into executable" ON)
 
 set(CMAKE_C_STANDARD 23)
-set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -s")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # warnings / flags
@@ -80,11 +79,15 @@ add_executable(transistor src/main.c
         src/gui.c
         src/gui.h)
 
-embed(transistor resources/images/bg.png)
+embed(transistor resources/images/bg.jpg)
 embed(transistor resources/images/circuit.png)
 embed(transistor resources/images/circuit.tileset.lua lua-strip)
 
 target_link_libraries(transistor PRIVATE ${SDL_TARGET} pastel2d transistor-sandbox)
+
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+    set_target_properties(transistor PROPERTIES LINK_FLAGS_RELEASE -s)
+endif()
 
 # check for leaks
 
