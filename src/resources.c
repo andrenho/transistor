@@ -1,16 +1,20 @@
 #include "resources.h"
 
 // embedded files
+#include "bg.png.h"
 #include "circuit.png.h"
 #include "circuit.tileset.lua.h"
 
 ps_res_idx_t
+    rs_bg,
     rs_tile,
     rs_board_top_left, rs_board_top, rs_board_top_right, rs_board_left, rs_board_right, rs_board_bottom_left, rs_board_bottom, rs_board_bottom_right,
     rs_wire_top_1[TS_DIRS_N][2], rs_ic_dot[TS_DIRS_N], rs_ic_pin[TS_DIRS_N];
 
 void load_resources()
 {
+    rs_bg = PS_ASSERT_RES(ps_res_add_png(resources_images_bg_png, resources_images_bg_png_sz));
+
     // load circuit.png tileset
     ps_res_idx_t circuit = PS_ASSERT_RES(ps_res_add_png(resources_images_circuit_png, resources_images_circuit_png_sz));
     PS_ASSERT(ps_res_add_tiles_from_lua(circuit, resources_images_circuit_tileset_lua, resources_images_circuit_tileset_lua_sz));

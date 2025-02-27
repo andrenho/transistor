@@ -80,6 +80,7 @@ add_executable(transistor src/main.c
         src/gui.c
         src/gui.h)
 
+embed(transistor resources/images/bg.png)
 embed(transistor resources/images/circuit.png)
 embed(transistor resources/images/circuit.tileset.lua lua-strip)
 
