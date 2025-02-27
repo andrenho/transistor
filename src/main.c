@@ -6,7 +6,7 @@
 #include <stb_ds.h>
 #include "transistor-sandbox.h"
 
-#include "boardp.h"
+#include "board.h"
 #include "gui.h"
 #include "pastel2d.h"
 #include "resources.h"
@@ -59,14 +59,14 @@ int main(void)
             if (e.type == SDL_EVENT_QUIT || (e.type == SDL_EVENT_KEY_DOWN && e.key.key == SDLK_Q))
                 ps_graphics_quit();
 
-            boardp_update(&T, &snap, &e);
+            board_update(&T, &snap, &e);
             gui_events(&e);
         }
 
         // create and render scenes
 
-        ps_Scene* scenes;
-        size_t n_scenes = boardp_create_scenes(&snap, &scenes);
+        ps_Scene* scenes = NULL;
+        size_t n_scenes = board_create_scenes(&snap, &scenes);
         ts_snapshot_finalize(&snap);
         ps_graphics_render_scenes(scenes, n_scenes);
         free(scenes);

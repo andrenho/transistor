@@ -73,12 +73,15 @@ endif()
 #
 
 add_executable(transistor src/main.c
-        src/boardp.c
-        src/boardp.h
+        src/board.c
+        src/board.h
         src/resources.c
         src/resources.h
         src/gui.c
         src/gui.h)
+
+embed(transistor resources/images/circuit.png)
+embed(transistor resources/images/circuit.tileset.lua lua-strip)
 
 target_link_libraries(transistor PRIVATE ${SDL_TARGET} pastel2d transistor-sandbox)
 
