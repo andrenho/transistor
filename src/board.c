@@ -75,21 +75,31 @@ static void move_board(ts_TransistorSnapshot const* snap, int xrel, int yrel)
 void board_update(ts_Transistor* T, ts_TransistorSnapshot const* snap, SDL_Event* e)
 {
     int i = topmost_board();
+    check_for_new_board(i);
+
+    float mx, my;
+    SDL_GetMouseState(&mx, &my);
+    int tile_x = (mx - boards_def[i].x) / boards_def[i].zoom / TILE_SIZE;
+    int tile_y = (my - boards_def[i].y) / boards_def[i].zoom / TILE_SIZE;
+    // TODO - what is the direction?
 
     switch (e->type) {
         case SDL_EVENT_MOUSE_BUTTON_DOWN:
             if (e->button.button == SDL_BUTTON_RIGHT)
                 board_moving = topmost_board();
+            ts_transistor_cursor_click(T, i, e->button.button - 1);
             break;
 
         case SDL_EVENT_MOUSE_MOTION:
             if (board_moving >= 0)
                 move_board(snap, e->motion.xrel, e->motion.yrel);
+            ts_transistor_cursor_set_pointer(T, i, (ts_Position) { tile_x, tile_y });
             break;
 
         case SDL_EVENT_MOUSE_BUTTON_UP:
             if (e->button.button == SDL_BUTTON_RIGHT)
                 board_moving = -1;
+            ts_transistor_cursor_release(T, e->button.button - 1);
             break;
 
         case SDL_EVENT_KEY_DOWN:
