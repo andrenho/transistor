@@ -7,7 +7,8 @@
   - [ ] Cursors
   - [ ] Show steps in title
   - [ ] Bugfixes
-    - [ ] Improve serialization (only write to file, not to string)
+    - [x] Improve serialization (only write to file, not to string)
+    - [ ] Improve wire orientation (reset when coming back to original position)
   
 - [ ] UI
   - [ ] Demo window
