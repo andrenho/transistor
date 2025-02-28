@@ -74,6 +74,8 @@ static void move_board(ts_TransistorSnapshot const* snap, int xrel, int yrel)
 
 void board_update(ts_Transistor* T, ts_TransistorSnapshot const* snap, SDL_Event* e)
 {
+    int i = topmost_board();
+
     switch (e->type) {
         case SDL_EVENT_MOUSE_BUTTON_DOWN:
             if (e->button.button == SDL_BUTTON_RIGHT)
@@ -88,6 +90,18 @@ void board_update(ts_Transistor* T, ts_TransistorSnapshot const* snap, SDL_Event
         case SDL_EVENT_MOUSE_BUTTON_UP:
             if (e->button.button == SDL_BUTTON_RIGHT)
                 board_moving = -1;
+            break;
+
+        case SDL_EVENT_KEY_DOWN:
+            ts_transistor_cursor_key_press(T, i, e->key.key, 0);
+            if (e->key.key == SDLK_D) {
+                ts_transistor_serialize_to_file(T, stdout);
+                printf("-----------------------\n");
+            }
+            break;
+
+        case SDL_EVENT_KEY_UP:
+            ts_transistor_cursor_key_release(T, (char) e->key.key);
             break;
 
         default: break;

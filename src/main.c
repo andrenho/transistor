@@ -2,8 +2,12 @@
 
 #include <SDL3/SDL.h>
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wconstant-logical-operand"
 #define STB_DS_IMPLEMENTATION
 #include <stb_ds.h>
+#pragma clang diagnostic pop
+
 #include "transistor-sandbox.h"
 
 #include "board.h"
