@@ -115,7 +115,7 @@ static void render_board(ts_BoardSnapshot const* board, BoardDef const* board_de
         ADD_IMAGE(rs_board_bottom, x, board->h);
     }
 
-    for (size_t y = 0; y < board->w; ++y) {
+    for (size_t y = 0; y < board->h; ++y) {
         ADD_IMAGE(rs_board_left, -2, y);
         ADD_IMAGE(rs_board_right, board->w, y);
     }

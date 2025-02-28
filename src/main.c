@@ -35,7 +35,7 @@ int main(void)
         .window_h = 900,
         .flags = SDL_WINDOW_RESIZABLE,
     }));
-    ps_graphics_set_bg(93, 135, 161);
+    ps_graphics_set_bg(20, 40, 60);
 
     load_resources();
 
