@@ -153,10 +153,7 @@ static void render_board(ts_BoardSnapshot const* board, BoardDef const* board_de
 
 static void render_wires(ts_WireSnapshot const* wire, BoardDef* board_def, ps_Scene* scene)
 {
-    if (wire->cursor)
-        ADD_IMAGE(rs_wire_top_1[wire->pos.dir][wire->value ? 1 : 0], wire->pos.x, wire->pos.y, CTX_OPACITY, .5f);
-    else
-        ADD_IMAGE(rs_wire_top_1[wire->pos.dir][wire->value ? 1 : 0], wire->pos.x, wire->pos.y);
+    ADD_IMAGE(rs_wire_top_1[wire->pos.dir][wire->value ? 1 : 0], wire->pos.x, wire->pos.y, CTX_OPACITY, wire->cursor ? .5f : 1.f);
 }
 
 #undef ADD_IMAGE
