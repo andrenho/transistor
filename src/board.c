@@ -103,10 +103,12 @@ void board_update(ts_Transistor* T, ts_TransistorSnapshot const* snap, SDL_Event
             break;
 
         case SDL_EVENT_KEY_DOWN:
-            ts_transistor_cursor_key_press(T, i, e->key.key, 0);
-            if (e->key.key == SDLK_D) {
-                ts_transistor_serialize_to_file(T, stdout);
-                printf("-----------------------\n");
+            if (!e->key.repeat) {
+                ts_transistor_cursor_key_press(T, i, e->key.key, 0);
+                if (e->key.key == SDLK_D) {
+                    ts_transistor_serialize_to_file(T, stdout);
+                    printf("-----------------------\n");
+                }
             }
             break;
 
@@ -122,7 +124,7 @@ void board_update(ts_Transistor* T, ts_TransistorSnapshot const* snap, SDL_Event
 // rendering
 //
 
-#define ADD_IMAGE(img, x, y) ps_scene_add_image(scene, img, (SDL_Rect) { x * TILE_SIZE, y * TILE_SIZE }, NULL)
+#define ADD_IMAGE(img, x, y, ...) ps_scene_add_image_with(scene, img, (SDL_Rect) { x * TILE_SIZE, y * TILE_SIZE }, ##__VA_ARGS__, CTX_END)
 
 static void render_board(ts_BoardSnapshot const* board, BoardDef const* board_def, ps_Scene* scene)
 {
@@ -149,6 +151,14 @@ static void render_board(ts_BoardSnapshot const* board, BoardDef const* board_de
             ADD_IMAGE(rs_tile, x, y);
 }
 
+static void render_wires(ts_WireSnapshot const* wire, BoardDef* board_def, ps_Scene* scene)
+{
+    if (wire->cursor)
+        ADD_IMAGE(rs_wire_top_1[wire->pos.dir][wire->value ? 1 : 0], wire->pos.x, wire->pos.y, CTX_OPACITY, .5f);
+    else
+        ADD_IMAGE(rs_wire_top_1[wire->pos.dir][wire->value ? 1 : 0], wire->pos.x, wire->pos.y);
+}
+
 #undef ADD_IMAGE
 
 size_t board_create_scenes(ts_TransistorSnapshot const* snap, ps_Scene* scenes, size_t n_scenes)
@@ -159,7 +169,11 @@ size_t board_create_scenes(ts_TransistorSnapshot const* snap, ps_Scene* scenes, 
         ps_Scene* scene = &scenes[n_scenes++];
         ps_scene_init(scene);
         scene->z_order = boards_def[i].z_order;
+
         render_board(&snap->boards[i], &boards_def[i], scene);
+
+        for (size_t j = 0; j < snap->boards[i].n_wires; ++j)
+            render_wires(&snap->boards[i].wires[j], &boards_def[i], scene);
     }
 
     return n_scenes;
