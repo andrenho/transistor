@@ -14,6 +14,8 @@ static void load_component(ts_Transistor* t, const char* lua_code)
             ps_graphics_window());
         abort();
     }
+
+    // TODO - run init
 }
 
 void components_init(ts_Transistor* t)

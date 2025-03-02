@@ -41,11 +41,12 @@ int main(void)
         .flags = SDL_WINDOW_RESIZABLE,
     }));
     ps_graphics_set_bg(20, 40, 60);
-
-    components_init(&T);
-    load_resources();
-
     gui_init();
+
+    // initialize resources
+
+    load_resources();
+    components_init(&T);
 
     //
     // main loop
