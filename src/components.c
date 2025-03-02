@@ -41,7 +41,7 @@ static void create_graphics_object(lua_State* L)
 
 static void load_component(ts_Transistor* t, const char* lua_code)
 {
-    ts_Result r = ts_transistor_component_db_add_from_lua(t, lua_code);
+    ts_Result r = ts_transistor_component_db_add_from_lua(t, lua_code, G_luaref);
     if (r != TS_OK) {
         SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error loading default component", ts_last_error(&t->sandbox, NULL),
             ps_graphics_window());
