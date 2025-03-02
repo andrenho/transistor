@@ -156,6 +156,11 @@ static void render_wires(ts_WireSnapshot const* wire, BoardDef* board_def, ps_Sc
     ADD_IMAGE(rs_wire_top_1[wire->pos.dir][wire->value ? 1 : 0], wire->pos.x, wire->pos.y, CTX_OPACITY, wire->cursor ? .5f : 1.f);
 }
 
+static void render_component(ts_ComponentSnapshot const* component, BoardDef* board_def, ps_Scene* scene)
+{
+    // TODO
+}
+
 #undef ADD_IMAGE
 
 size_t board_create_scenes(ts_TransistorSnapshot const* snap, ps_Scene* scenes, size_t n_scenes)
@@ -171,6 +176,8 @@ size_t board_create_scenes(ts_TransistorSnapshot const* snap, ps_Scene* scenes, 
 
         for (size_t j = 0; j < snap->boards[i].n_wires; ++j)
             render_wires(&snap->boards[i].wires[j], &boards_def[i], scene);
+        for (size_t j = 0; j < snap->boards[i].n_components; ++j)
+            render_component(&snap->boards[i].components[j], &boards_def[i], scene);
     }
 
     return n_scenes;
