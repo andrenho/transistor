@@ -77,17 +77,23 @@ add_executable(transistor src/main.c
         src/resources.c
         src/resources.h
         src/gui.c
-        src/gui.h)
-
-embed(transistor resources/images/bg.jpg)
-embed(transistor resources/images/circuit.png)
-embed(transistor resources/images/circuit.tileset.lua lua-strip)
+        src/gui.h
+        src/components.c
+        src/components.h)
 
 target_link_libraries(transistor PRIVATE ${SDL_TARGET} pastel2d transistor-sandbox)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
     set_target_properties(transistor PROPERTIES LINK_FLAGS_RELEASE -s)
 endif()
+
+# embed images
+embed(transistor resources/images/bg.jpg)
+embed(transistor resources/images/circuit.png)
+embed(transistor resources/images/circuit.tileset.lua lua-strip)
+
+# embed components
+embed(transistor resources/components/button.lua)
 
 # check for leaks
 

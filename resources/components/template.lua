@@ -11,7 +11,8 @@ return {
    -- whether the component can be rotated (default: true)
    can_rotate = true,
    
-   -- width of the IC (used only for 'ic_dip')
+   -- width of the IC (used only for 'ic_dip', deafult 1)
+   ic_width = 1,
    
    -- number of bytes to store in 'data' (data can be accessed both in Lua and C)
    data_size = 256,

@@ -11,6 +11,7 @@
 #include "transistor-sandbox.h"
 
 #include "board.h"
+#include "components.h"
 #include "gui.h"
 #include "pastel2d.h"
 #include "resources.h"
@@ -41,6 +42,7 @@ int main(void)
     }));
     ps_graphics_set_bg(20, 40, 60);
 
+    components_init(&T);
     load_resources();
 
     gui_init();
