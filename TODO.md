@@ -7,13 +7,14 @@
       - [x] Render
       - [x] Context
       - [ ] Shadow
-  - [ ] Other buttons (rotate, delete)
-  - [ ] Cursors
   - [ ] Show steps in title
+  - [ ] Create components
+  - [ ] Other buttons (rotate, delete)
   - [ ] Bugfixes
     - [x] Improve serialization (only write to file, not to string)
     - [ ] Improve wire orientation (reset when coming back to original position)
     - [x] ps: regenerate header file when making changes
+    - [ ] Remove direct references to transistor
     - [ ] Improve assertions
   
 - [ ] UI
@@ -22,10 +23,10 @@
   - [ ] Swap to multithreaded
   - [ ] Save/load (serialize/unserialize)
   - [ ] Save on close
-  - [ ] Infobox (sidebar)
   - [ ] Toolbox
+  - [ ] Cursors
+  - [ ] Infobox (sidebar)
   - [ ] Exception management
-  - [ ] Create components
   
 - [ ] ICs
   - [ ] Toolbox for ICs

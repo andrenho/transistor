@@ -18,8 +18,10 @@ static void load_component(ts_Transistor* t, const char* lua_code)
 {
     ts_Result r = ts_transistor_component_db_add_from_lua(t, lua_code, G_luaref);
     if (r != TS_OK) {
-        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error loading default component", ts_last_error(&t->sandbox, NULL),
-            ps_graphics_window());
+        char buf[2048];
+        snprintf(buf, sizeof(buf), "Error loading one of the default components:\n\n%s", ts_last_error(&t->sandbox, NULL));
+        SDL_Log(buf);
+        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error loading default component", buf, ps_graphics_window());
         abort();
     }
 }
@@ -37,6 +39,8 @@ static int graphics_load_image_base64(lua_State* L)
 
 static void graphics_context_from_lua(ps_Context* context, lua_State* L, int idx)
 {
+    luaL_checktype(L, idx, LUA_TTABLE);
+
     lua_pushnil(L);
     while (lua_next(L, idx) != 0) {
         const char* property = luaL_checkstring(L, -2);
@@ -80,7 +84,7 @@ static int graphics_render_image(lua_State* L)
     ps_res_idx_t img = ps_res_idx(image);
 
     ps_Context context = ps_create_context();
-    if (!lua_isnil(L, 5))
+    if (lua_gettop(L) >= 5)
         graphics_context_from_lua(&context, L, 5);
     ps_scene_add_image(scene, img, (SDL_Rect) { x, y }, &context);
 
@@ -113,7 +117,13 @@ void component_renderer_setup(ts_Transistor const* T, ps_Scene* scene)
 
 void component_render(ts_Transistor const* T, ts_ComponentSnapshot const* component)
 {
-    ts_transistor_component_render(T, component, G_luaref, component->pos.x * TILE_SIZE, component->pos.y * TILE_SIZE);
+    if (ts_transistor_component_render(T, component, G_luaref, component->pos.x * TILE_SIZE, component->pos.y * TILE_SIZE) != TS_OK) {
+        char buf[2048];
+        snprintf(buf, sizeof buf, "Lua reported an error on the 'render' function:\n\n%s\n\nThe application will now abort.", ts_last_error(&T->sandbox, NULL));
+        SDL_Log(buf);
+        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error on function 'render'", buf, ps_graphics_window());
+        abort();
+    }
 }
 
 //

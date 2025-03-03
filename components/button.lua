@@ -23,6 +23,11 @@ return {
    
    -- render the component on the screen
    render = function(button, G, x, y)
-      G:render_image('button_off', x, y, { opacity = 0.5 })
+      G:render_image('shadow_square', x+1, y+1)
+      if button.data[1] == 0 then
+         G:render_image('button_off', x, y)
+      else
+         G:render_image('button_on', x, y)
+      end
    end,
 }
