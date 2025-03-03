@@ -4,7 +4,11 @@
 #include <transistor-sandbox.h>
 #include <pastel2d.h>
 
+// initialization
 void components_init(ts_Transistor* t);
-void component_render(ts_Transistor const* T, ts_ComponentSnapshot const* component, ps_Scene* scene);
+
+// rendering
+void component_renderer_setup(ts_Transistor const* T, ps_Scene* scene);
+void component_render(ts_Transistor const* T, ts_ComponentSnapshot const* component);
 
 #endif //COMPONENTS_H

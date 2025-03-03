@@ -156,11 +156,6 @@ static void render_wires(ts_WireSnapshot const* wire, BoardDef* board_def, ps_Sc
     ADD_IMAGE(rs_wire_top_1[wire->pos.dir][wire->value ? 1 : 0], wire->pos.x, wire->pos.y, CTX_OPACITY, wire->cursor ? .5f : 1.f);
 }
 
-static void render_component(ts_Transistor const* T, ts_ComponentSnapshot const* component, BoardDef* board_def, ps_Scene* scene)
-{
-    component_render(T, component, scene);
-}
-
 #undef ADD_IMAGE
 
 size_t board_create_scenes(ts_Transistor const* T, ts_TransistorSnapshot const* snap, ps_Scene* scenes, size_t n_scenes)
@@ -176,8 +171,11 @@ size_t board_create_scenes(ts_Transistor const* T, ts_TransistorSnapshot const* 
 
         for (size_t j = 0; j < snap->boards[i].n_wires; ++j)
             render_wires(&snap->boards[i].wires[j], &boards_def[i], scene);
+
+        // call Lua to render components
+        component_renderer_setup(T, scene);
         for (size_t j = 0; j < snap->boards[i].n_components; ++j)
-            render_component(T, &snap->boards[i].components[j], &boards_def[i], scene);
+            component_render(T, &snap->boards[i].components[j]);
     }
 
     return n_scenes;

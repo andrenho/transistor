@@ -8,21 +8,25 @@
 #include "button.lua.h"
 #include "graphics.h"
 
-//
-// CONTEXT OBJECT
-//
-
-// TODO
-
-//
-// GRAPHICS OBJECT
-//
-
-typedef struct GraphicsObject {
-    ps_Scene* scene;
-} GraphicsObject;
-
 static int G_luaref = -1;
+
+//
+// COMPONENT OPERATIONS
+//
+
+static void load_component(ts_Transistor* t, const char* lua_code)
+{
+    ts_Result r = ts_transistor_component_db_add_from_lua(t, lua_code, G_luaref);
+    if (r != TS_OK) {
+        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error loading default component", ts_last_error(&t->sandbox, NULL),
+            ps_graphics_window());
+        abort();
+    }
+}
+
+//
+// RENDERING
+//
 
 static int graphics_load_image_base64(lua_State* L)
 {
@@ -60,35 +64,24 @@ static void create_graphics_object(lua_State* L)
     G_luaref = luaL_ref(L, LUA_REGISTRYINDEX);
 }
 
-//
-// COMPONENT OPERATIONS
-//
-
-static void load_component(ts_Transistor* t, const char* lua_code)
-{
-    ts_Result r = ts_transistor_component_db_add_from_lua(t, lua_code, G_luaref);
-    if (r != TS_OK) {
-        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error loading default component", ts_last_error(&t->sandbox, NULL),
-            ps_graphics_window());
-        abort();
-    }
-}
-
-void component_render(ts_Transistor const* T, ts_ComponentSnapshot const* component, ps_Scene* scene)
+void component_renderer_setup(ts_Transistor const* T, ps_Scene* scene)
 {
     lua_State* L = T->sandbox.L;
 
-    // set scene pointer (TODO - move to do that before all components (?))
+    // set scene pointer
     lua_rawgeti(L, LUA_REGISTRYINDEX, G_luaref);
     lua_pushlightuserdata(L, scene);
     lua_setfield(L, -2, "__scene_ptr");
     lua_pop(L, 1);
+}
 
+void component_render(ts_Transistor const* T, ts_ComponentSnapshot const* component)
+{
     ts_transistor_component_render(T, component, G_luaref, component->pos.x * TILE_SIZE, component->pos.y * TILE_SIZE);
 }
 
 //
-// INIT
+// INITIALIZATION
 //
 
 void components_init(ts_Transistor* t)
