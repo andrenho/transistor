@@ -38,7 +38,7 @@ return {
    
    -- code that runs on the component type initialization (when the component type is loaded) - optional
    init = function(G)
-      G.load_image_base64('my_image_name', 'MY_BASE_64')
+      G:load_image_base64('my_image_name', 'MY_BASE_64')
    end,
    
    -- code the runs when each individual component is placed on the board - optional
@@ -61,6 +61,6 @@ return {
    -- render the component on the screen - mandatory
    render = function(component, G, x, y, context)
       context.transparency = 0.5
-      G.render_image('my_image_name', x, y, context)
+      G:render_image('my_image_name', x, y, context)
    end,
 }
