@@ -80,7 +80,7 @@ int main(void)
         static ps_Scene scenes[MAX_SCENES];
 
         n_scenes = background_scene(scenes, n_scenes);
-        n_scenes = board_create_scenes(&snap, scenes, n_scenes);
+        n_scenes = board_create_scenes(&T, &snap, scenes, n_scenes);
 
         ts_snapshot_finalize(&snap);
         if (n_scenes >= MAX_SCENES)

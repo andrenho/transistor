@@ -11,6 +11,8 @@ return {
       { name = "O4", direction = "output" },
    },
    
+   infobox = [[This is a long text]],  -- TODO
+   
    on_click = function(button)
       button.data[1] = bit.bnot(button.data[1])
    end,
@@ -21,6 +23,7 @@ return {
    
    -- render the component on the screen
    render = function(button, G, x, y, context)
+      print("render")
       G.render_image('button_off', x, y, context)
    end,
 }

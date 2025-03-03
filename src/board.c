@@ -8,6 +8,7 @@
 #include <stb_image.h>
 #include <stb_ds.h>
 
+#include "components.h"
 #include "resources.h"
 
 static const int BOARD_ON_TOP = 1;
@@ -156,14 +157,19 @@ static void render_wires(ts_WireSnapshot const* wire, BoardDef* board_def, ps_Sc
     ADD_IMAGE(rs_wire_top_1[wire->pos.dir][wire->value ? 1 : 0], wire->pos.x, wire->pos.y, CTX_OPACITY, wire->cursor ? .5f : 1.f);
 }
 
-static void render_component(ts_ComponentSnapshot const* component, BoardDef* board_def, ps_Scene* scene)
+static void render_component(ts_Transistor const* T, ts_ComponentSnapshot const* component, BoardDef* board_def, ps_Scene* scene)
 {
-    // TODO
+    ts_transistor_component_render(T, component, graphics_luaref(), component->pos.x * TILE_SIZE, component->pos.y * TILE_SIZE);
+    /*
+    if (ts_transistor_component_render(T, component, ?, component->pos.x * TILE_SIZE, component->pos.y * TILE_SIZE) != TS_OK) {
+        // TODO assert
+    }
+    */
 }
 
 #undef ADD_IMAGE
 
-size_t board_create_scenes(ts_TransistorSnapshot const* snap, ps_Scene* scenes, size_t n_scenes)
+size_t board_create_scenes(ts_Transistor const* T, ts_TransistorSnapshot const* snap, ps_Scene* scenes, size_t n_scenes)
 {
     for (size_t i = 0; i < snap->n_boards; ++i) {
         check_for_new_board(i);
@@ -177,7 +183,7 @@ size_t board_create_scenes(ts_TransistorSnapshot const* snap, ps_Scene* scenes, 
         for (size_t j = 0; j < snap->boards[i].n_wires; ++j)
             render_wires(&snap->boards[i].wires[j], &boards_def[i], scene);
         for (size_t j = 0; j < snap->boards[i].n_components; ++j)
-            render_component(&snap->boards[i].components[j], &boards_def[i], scene);
+            render_component(T, &snap->boards[i].components[j], &boards_def[i], scene);
     }
 
     return n_scenes;

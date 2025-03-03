@@ -1,14 +1,19 @@
 - [ ] Base game
   - [x] Base application
-  - [ ] Wires
+  - [x] Wires
   - [ ] Components
-    - [ ] Image drawing in transistor-sandbox
+    - [x] Image drawing in transistor-sandbox
+    - [ ] Render
+      - [ ] Assertions
+      - [ ] Context
   - [ ] Other buttons (rotate, delete)
   - [ ] Cursors
   - [ ] Show steps in title
   - [ ] Bugfixes
     - [x] Improve serialization (only write to file, not to string)
     - [ ] Improve wire orientation (reset when coming back to original position)
+    - [ ] ps: regenerate header file when making changes
+    - [ ] ps: common base project (?)
   
 - [ ] UI
   - [ ] Demo window

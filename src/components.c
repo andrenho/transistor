@@ -62,5 +62,13 @@ static void load_component(ts_Transistor* t, const char* lua_code)
 void components_init(ts_Transistor* t)
 {
     create_graphics_object(t->sandbox.L);
-    load_component(t, resources_components_button_lua);
+    load_component(t, components_button_lua);
+}
+
+//
+// INFORMATION
+//
+int graphics_luaref()
+{
+    return G_luaref;
 }
