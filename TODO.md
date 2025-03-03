@@ -4,8 +4,9 @@
   - [ ] Components
     - [x] Image drawing in transistor-sandbox
     - [ ] Render
-      - [ ] Assertions
-      - [ ] Context
+      - [x] Render
+      - [x] Context
+      - [ ] Shadow
   - [ ] Other buttons (rotate, delete)
   - [ ] Cursors
   - [ ] Show steps in title
@@ -13,6 +14,7 @@
     - [x] Improve serialization (only write to file, not to string)
     - [ ] Improve wire orientation (reset when coming back to original position)
     - [x] ps: regenerate header file when making changes
+    - [ ] Improve assertions
   
 - [ ] UI
   - [ ] Demo window
@@ -23,6 +25,7 @@
   - [ ] Infobox (sidebar)
   - [ ] Toolbox
   - [ ] Exception management
+  - [ ] Create components
   
 - [ ] ICs
   - [ ] Toolbox for ICs

@@ -22,7 +22,7 @@ return {
    end,
    
    -- render the component on the screen
-   render = function(button, G, x, y, context)
-      G:render_image('button_off', x, y, context)
+   render = function(button, G, x, y)
+      G:render_image('button_off', x, y, { opacity = 0.5 })
    end,
 }

@@ -34,6 +34,39 @@ static int graphics_load_image_base64(lua_State* L)
     return 0;
 }
 
+
+static void graphics_context_from_lua(ps_Context* context, lua_State* L, int idx)
+{
+    lua_pushnil(L);
+    while (lua_next(L, idx) != 0) {
+        const char* property = luaL_checkstring(L, -2);
+        if (strcmp(property, "position") == 0) {
+            luaL_checktype(L, -1, LUA_TTABLE);
+            if (lua_objlen(L, -1) != 2 && lua_objlen(L, -1) != 4)
+                luaL_error(L, "Wrong number of parameters.");
+            lua_rawgeti(L, -1, 1); context->position.x = luaL_checknumber(L, -1); lua_pop(L, 1);
+            lua_rawgeti(L, -1, 2); context->position.y = luaL_checknumber(L, -1); lua_pop(L, 1);
+            if (lua_objlen(L, -1) > 2) {
+                lua_rawgeti(L, -1, 3); context->position.w = luaL_checknumber(L, -1); lua_pop(L, 1);
+                lua_rawgeti(L, -1, 4); context->position.h = luaL_checknumber(L, -1); lua_pop(L, 1);
+            }
+        } else if (strcmp(property, "rotation") == 0) {
+            context->rotation = luaL_checknumber(L, -1);
+        } else if (strcmp(property, "zoom") == 0) {
+            context->zoom = luaL_checknumber(L, -1);
+        } else if (strcmp(property, "opacity") == 0) {
+            context->opacity = luaL_checknumber(L, -1);
+        } else if (strcmp(property, "rotation_center") == 0) {
+            luaL_checktype(L, -1, LUA_TTABLE);
+            if (lua_objlen(L, -1) != 2)
+                luaL_error(L, "Wrong number of parameters.");
+            lua_rawgeti(L, -1, 1); context->rotation_center.x = luaL_checknumber(L, -1); lua_pop(L, 1);
+            lua_rawgeti(L, -1, 2); context->rotation_center.y = luaL_checknumber(L, -1); lua_pop(L, 1);
+        }
+        lua_pop(L, 1);
+    }
+}
+
 static int graphics_render_image(lua_State* L)
 {
     lua_getfield(L, 1, "__scene_ptr");
@@ -46,7 +79,10 @@ static int graphics_render_image(lua_State* L)
 
     ps_res_idx_t img = ps_res_idx(image);
 
-    ps_scene_add_image_with(scene, img, (SDL_Rect) { x, y }, CTX_END);
+    ps_Context context = ps_create_context();
+    if (!lua_isnil(L, 5))
+        graphics_context_from_lua(&context, L, 5);
+    ps_scene_add_image(scene, img, (SDL_Rect) { x, y }, &context);
 
     return 0;
 }
