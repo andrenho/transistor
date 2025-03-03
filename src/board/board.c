@@ -9,7 +9,7 @@
 #include <stb_ds.h>
 
 #include "components.h"
-#include "resources.h"
+#include "../resources.h"
 
 static const int BOARD_ON_TOP = 1;
 static const int TILE_SIZE = 16;

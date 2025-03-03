@@ -72,15 +72,16 @@ endif()
 #
 
 add_executable(transistor src/main.c
-        src/board.c
-        src/board.h
+        src/board/board.c
+        src/board/board.h
         src/resources.c
         src/resources.h
-        src/gui.c
-        src/gui.h
-        src/components.c
-        src/components.h)
+        src/gui/gui.c
+        src/gui/gui.h
+        src/board/components.c
+        src/board/components.h)
 
+#target_include_directories(transistor PRIVATE src)
 target_link_libraries(transistor PRIVATE ${SDL_TARGET} pastel2d transistor-sandbox)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Release")

@@ -8,12 +8,12 @@
 #include <stb_ds.h>
 #pragma clang diagnostic pop
 
-#include "transistor-sandbox.h"
+#include <pastel2d.h>
+#include <transistor-sandbox.h>
 
-#include "board.h"
-#include "components.h"
-#include "gui.h"
-#include "pastel2d.h"
+#include "board/board.h"
+#include "board/components.h"
+#include "gui/gui.h"
 #include "resources.h"
 
 #define MAX_SCENES 64
