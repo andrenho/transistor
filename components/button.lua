@@ -23,7 +23,7 @@ return {
    
    -- render the component on the screen
    render = function(button, G, x, y, context)
-      -- print("render")
+      print("render")
       G.render_image('button_off', x, y, context)
    end,
 }

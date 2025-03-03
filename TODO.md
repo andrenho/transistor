@@ -12,8 +12,7 @@
   - [ ] Bugfixes
     - [x] Improve serialization (only write to file, not to string)
     - [ ] Improve wire orientation (reset when coming back to original position)
-    - [ ] ps: regenerate header file when making changes
-    - [ ] ps: common base project (?)
+    - [x] ps: regenerate header file when making changes
   
 - [ ] UI
   - [ ] Demo window

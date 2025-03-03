@@ -12,7 +12,6 @@
 #include "../resources.h"
 
 static const int BOARD_ON_TOP = 1;
-static const int TILE_SIZE = 16;
 
 typedef struct BoardDef {
     int x;
@@ -159,12 +158,7 @@ static void render_wires(ts_WireSnapshot const* wire, BoardDef* board_def, ps_Sc
 
 static void render_component(ts_Transistor const* T, ts_ComponentSnapshot const* component, BoardDef* board_def, ps_Scene* scene)
 {
-    ts_transistor_component_render(T, component, graphics_luaref(), component->pos.x * TILE_SIZE, component->pos.y * TILE_SIZE);
-    /*
-    if (ts_transistor_component_render(T, component, ?, component->pos.x * TILE_SIZE, component->pos.y * TILE_SIZE) != TS_OK) {
-        // TODO assert
-    }
-    */
+    component_render(T, component, scene);
 }
 
 #undef ADD_IMAGE
