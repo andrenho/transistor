@@ -7,7 +7,8 @@
       - [x] Render
       - [x] Context
       - [x] Shadow
-  - [ ] Show steps in title
+  - [x] Show steps in title
+    - [x] Improve performance
   - [ ] Rename ts_transitor to ts_ -> also remove executable from project
   - [ ] Create components
   - [ ] Other buttons (rotate, delete)
@@ -16,7 +17,7 @@
     - [ ] Improve wire orientation (reset when coming back to original position)
     - [x] ps: regenerate header file when making changes
     - [ ] Remove direct references to transistor
-    - [ ] Improve assertions
+    - [ ] Improve assertions & error handling
   
 - [ ] UI
   - [ ] Demo window
