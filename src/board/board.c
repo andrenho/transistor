@@ -87,24 +87,24 @@ void board_update(ts_Transistor* T, ts_TransistorSnapshot const* snap, SDL_Event
         case SDL_EVENT_MOUSE_BUTTON_DOWN:
             if (e->button.button == SDL_BUTTON_RIGHT)
                 board_moving = topmost_board();
-            ts_transistor_cursor_click(T, i, e->button.button - 1);
+            ts_on_cursor_click(T, i, e->button.button - 1);
             break;
 
         case SDL_EVENT_MOUSE_MOTION:
             if (board_moving >= 0)
                 move_board(snap, e->motion.xrel, e->motion.yrel);
-            ts_transistor_cursor_set_pointer(T, i, (ts_Position) { tile_x, tile_y });
+            ts_event_set_pointer(T, i, (ts_Position) { tile_x, tile_y });
             break;
 
         case SDL_EVENT_MOUSE_BUTTON_UP:
             if (e->button.button == SDL_BUTTON_RIGHT)
                 board_moving = -1;
-            ts_transistor_cursor_release(T, e->button.button - 1);
+            ts_on_cursor_release(T, e->button.button - 1);
             break;
 
         case SDL_EVENT_KEY_DOWN:
             if (!e->key.repeat) {
-                ts_transistor_cursor_key_press(T, i, e->key.key, 0);
+                ts_on_cursor_key_press(T, i, e->key.key, 0);
                 if (e->key.key == SDLK_D) {
                     ts_transistor_serialize_to_file(T, stdout);
                     printf("-----------------------\n");
@@ -113,7 +113,7 @@ void board_update(ts_Transistor* T, ts_TransistorSnapshot const* snap, SDL_Event
             break;
 
         case SDL_EVENT_KEY_UP:
-            ts_transistor_cursor_key_release(T, (char) e->key.key);
+            ts_on_key_release(T, (char) e->key.key);
             break;
 
         default: break;
