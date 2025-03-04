@@ -93,7 +93,7 @@ void board_update(ts_Transistor* T, ts_TransistorSnapshot const* snap, SDL_Event
         case SDL_EVENT_MOUSE_MOTION:
             if (board_moving >= 0)
                 move_board(snap, e->motion.xrel, e->motion.yrel);
-            ts_event_set_pointer(T, i, (ts_Position) { tile_x, tile_y });
+            ts_on_cursor_set_position(T, i, (ts_Position) { tile_x, tile_y });
             break;
 
         case SDL_EVENT_MOUSE_BUTTON_UP:
