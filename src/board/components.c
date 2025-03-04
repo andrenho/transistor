@@ -138,5 +138,5 @@ void components_init(ts_Transistor* t)
 {
     create_graphics_object(ts_transistor_lua_state(t));
     load_component(t, components_button_lua);
-    // ts_transistor_component_db_native_simulation(t, "__button", button);
+    ts_transistor_component_db_native_simulation(t, "__button", button);
 }
