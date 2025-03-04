@@ -18,8 +18,9 @@ static void load_component(ts_Transistor* t, const char* lua_code)
 {
     ts_Result r = ts_transistor_component_db_add_from_lua(t, lua_code, G_luaref);
     if (r != TS_OK) {
-        char buf[2048];
-        snprintf(buf, sizeof(buf), "Error loading one of the default components:\n\n%s", ts_last_error(&t->sandbox, NULL));
+        char buf[2048], buf2[2048];
+        ts_transistor_last_error(t, buf2, sizeof buf2);
+        snprintf(buf, sizeof(buf), "Error loading one of the default components:\n\n%s", buf2);
         SDL_Log(buf);
         SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error loading default component", buf, ps_graphics_window());
         abort();
@@ -106,7 +107,7 @@ static void create_graphics_object(lua_State* L)
 
 void component_renderer_setup(ts_Transistor const* T, ps_Scene* scene)
 {
-    lua_State* L = T->sandbox.L;
+    lua_State* L = ts_transistor_lua_state(T);
 
     // set scene pointer
     lua_rawgeti(L, LUA_REGISTRYINDEX, G_luaref);
@@ -118,8 +119,9 @@ void component_renderer_setup(ts_Transistor const* T, ps_Scene* scene)
 void component_render(ts_Transistor const* T, ts_ComponentSnapshot const* component)
 {
     if (ts_transistor_component_render(T, component, G_luaref, component->pos.x * TILE_SIZE, component->pos.y * TILE_SIZE) != TS_OK) {
-        char buf[2048];
-        snprintf(buf, sizeof buf, "Lua reported an error on the 'render' function:\n\n%s\n\nThe application will now abort.", ts_last_error(&T->sandbox, NULL));
+        char buf[2048], buf2[2048];
+        ts_transistor_last_error(T, buf2, sizeof buf2);
+        snprintf(buf, sizeof buf, "Lua reported an error on the 'render' function:\n\n%s\n\nThe application will now abort.", buf2);
         SDL_Log(buf);
         SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error on function 'render'", buf, ps_graphics_window());
         abort();
@@ -132,6 +134,6 @@ void component_render(ts_Transistor const* T, ts_ComponentSnapshot const* compon
 
 void components_init(ts_Transistor* t)
 {
-    create_graphics_object(t->sandbox.L);
+    create_graphics_object(ts_transistor_lua_state(t));
     load_component(t, components_button_lua);
 }

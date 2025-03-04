@@ -8,6 +8,7 @@
 #include <stb_ds.h>
 #pragma clang diagnostic pop
 
+#include <locale.h>
 #include <pastel2d.h>
 #include <transistor-sandbox.h>
 
@@ -91,6 +92,7 @@ int main(void)
 
         // present display
 
+        ps_graphics_set_window_title("transistor (%d FPS -- %d SPS)", ps_graphics_fps(), ts_transistor_steps_per_second(&T));
         ps_graphics_present();
     }
 

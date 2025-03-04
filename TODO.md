@@ -3,11 +3,12 @@
   - [x] Wires
   - [ ] Components
     - [x] Image drawing in transistor-sandbox
-    - [ ] Render
+    - [x] Render
       - [x] Render
       - [x] Context
-      - [ ] Shadow
+      - [x] Shadow
   - [ ] Show steps in title
+  - [ ] Rename ts_transitor to ts_ -> also remove executable from project
   - [ ] Create components
   - [ ] Other buttons (rotate, delete)
   - [ ] Bugfixes
