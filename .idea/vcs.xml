@@ -2,7 +2,6 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/contrib/Nuklear" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/contrib/SDL" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/contrib/pastel2d" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/contrib/pastel2d/contrib/LuaJIT" vcs="Git" />
