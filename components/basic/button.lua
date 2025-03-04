@@ -11,20 +11,25 @@ return {
       { name = "O4", direction = "output" },
    },
    
-   infobox = [[This is a long text]],  -- TODO
+   infobox = [[
+      Buttons` accepts input from the user, and outputs `1` or `0` depending if the button is pressed or not.
+      ${image: __infobox_button_0}${image_sl: __infobox_button_1}
+   ]],
    
    on_click = function(button)
-      button.data[1] = bit.bnot(button.data[1])
+      button.data[1] = bnot(button.data[1])
    end,
    
    simulate = function(button)
-      for i=1,#button.pin do button.pin[i] = button.data[1] end
+      button.pin[1] = button.data[1]
+      button.pin[2] = button.data[1]
+      button.pin[3] = button.data[1]
+      button.pin[4] = button.data[1]
    end,
    
-   -- render the component on the screen
    render = function(button, G, x, y)
       G:render_image('shadow_square', x+1, y+1)
-      if button.data[1] == 0 then
+      if not button or button.data[1] == 0 then
          G:render_image('button_off', x, y)
       else
          G:render_image('button_on', x, y)

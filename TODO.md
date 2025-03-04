@@ -9,11 +9,12 @@
       - [x] Shadow
   - [x] Show steps in title
     - [x] Improve performance
-  - [ ] Rename ts_transitor to ts_ -> also remove executable from project
+  - [x] Rename ts_transitor to ts_ -> also remove executable from project
   - [ ] Create components
   - [ ] Other buttons (rotate, delete)
   - [ ] Bugfixes
     - [x] Improve serialization (only write to file, not to string)
+    - [ ] Fix multithreaded simulation with Lua
     - [ ] Improve wire orientation (reset when coming back to original position)
     - [x] ps: regenerate header file when making changes
     - [ ] Remove direct references to transistor

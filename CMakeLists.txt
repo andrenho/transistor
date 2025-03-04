@@ -94,7 +94,12 @@ embed(transistor resources/images/circuit.png)
 embed(transistor resources/images/circuit.tileset.lua lua-strip)
 
 # embed components
-embed(transistor components/button.lua)
+embed(transistor components/basic/button.lua)
+embed(transistor components/basic/led.lua)
+embed(transistor components/basic/npn.lua)
+embed(transistor components/basic/pnp.lua)
+embed(transistor components/basic/vcc.lua)
+embed(transistor components/gates/or_2i.lua)
 
 # check for leaks
 

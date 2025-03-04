@@ -1,12 +1,21 @@
 #include "components.h"
 
+#define NATIVE_COMPONENTS 1
+
 #include <stdlib.h>
 #include <SDL3/SDL.h>
 #include <lauxlib.h>
 
 #include "board.h"
-#include "button.lua.h"
 #include "graphics.h"
+
+// embedded Lua files
+#include "button.lua.h"
+#include "led.lua.h"
+#include "npn.lua.h"
+#include "pnp.lua.h"
+#include "vcc.lua.h"
+#include "or_2i.lua.h"
 
 static int G_luaref = -1;
 
@@ -132,11 +141,57 @@ void component_render(ts_Transistor const* T, ts_ComponentSnapshot const* compon
 // INITIALIZATION
 //
 
-static void button(ts_Component*) {}
+static void button_sim(ts_Component* button)
+{
+    button->pins[0] = button->pins[1] = button->pins[2] = button->pins[3] = button->data[0];
+}
+
+static void led_sim(ts_Component* led)
+{
+    led->data[0] = led->pins[0] | led->pins[1] | led->pins[2] | led->pins[3];
+}
+
+static void vcc_sim(ts_Component* vcc)
+{
+    vcc->pins[0] = vcc->pins[1] = vcc->pins[2] = vcc->pins[3] = 1;
+}
+
+static void npn_sim(ts_Component* npn)
+{
+    static const size_t IN = 1, SWITCH_1 = 0, SWITCH_2 = 2, OUT = 3;
+    npn->pins[OUT] = npn->pins[IN] & (npn->pins[SWITCH_1] | npn->pins[SWITCH_2]);
+}
+
+static void pnp_sim(ts_Component* pnp)
+{
+    static const size_t IN = 1, SWITCH_1 = 0, SWITCH_2 = 2, OUT = 3;
+    pnp->pins[OUT] = pnp->pins[IN] & !(pnp->pins[SWITCH_1] | pnp->pins[SWITCH_2]);
+}
+
+static void or_2i_sim(ts_Component* c)
+{
+    static const size_t IN0 = 0, IN1 = 0, Q_ = 2, Q = 3;
+    c->pins[Q] = c->pins[IN0] | c->pins[IN1];
+    c->pins[Q_] = !c->pins[Q];
+}
 
 void components_init(ts_Transistor* t)
 {
     create_graphics_object(ts_transistor_lua_state(t));
-    load_component(t, components_button_lua);
-    ts_transistor_component_db_native_simulation(t, "__button", button);
+
+    load_component(t, components_basic_button_lua);
+    load_component(t, components_basic_led_lua);
+    load_component(t, components_basic_npn_lua);
+    load_component(t, components_basic_pnp_lua);
+    load_component(t, components_basic_vcc_lua);
+    load_component(t, components_gates_or_2i_lua);
+
+#if NATIVE_COMPONENTS
+    ts_transistor_component_db_native_simulation(t, "__button", button_sim);
+    ts_transistor_component_db_native_simulation(t, "__led", led_sim);
+    ts_transistor_component_db_native_simulation(t, "__npn", npn_sim);
+    ts_transistor_component_db_native_simulation(t, "__pnp", pnp_sim);
+    ts_transistor_component_db_native_simulation(t, "__vcc", vcc_sim);
+    ts_transistor_component_db_native_simulation(t, "__or_2i", or_2i_sim);
+#endif
 }
