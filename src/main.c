@@ -8,7 +8,6 @@
 #include <stb_ds.h>
 #pragma clang diagnostic pop
 
-#include <locale.h>
 #include <pastel2d.h>
 #include <transistor-sandbox.h>
 

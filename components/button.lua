@@ -18,7 +18,7 @@ return {
    end,
    
    simulate = function(button)
-      for i=1,#button.pin do button.pin[i] = button.data[1] end
+      -- for i=1,#button.pin do button.pin[i] = button.data[1] end
    end,
    
    -- render the component on the screen
