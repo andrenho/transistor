@@ -10,3 +10,11 @@
 [submodule "contrib/Nuklear"]
 	path = contrib/Nuklear
 	url = https://github.com/Immediate-Mode-UI/Nuklear.git
+[submodule "pastel2d/"]
+	branch = master
+[submodule "transistor-sandbox/"]
+	branch = master
+[submodule "contrib/pastel-log"]
+	path = contrib/pastel-log
+	url = https://github.com/andrenho/pastel-log.git
+	branch = master
