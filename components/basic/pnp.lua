@@ -8,8 +8,8 @@ return {
    pins = {
       { name = "SW0", direction = "input" },
       { name = "IN",  direction = "input" },
-      { name = "SW1", direction = "output" },
-      { name = "OUT", direction = "input" },
+      { name = "SW1", direction = "input" },
+      { name = "OUT", direction = "output" },
    },
    
    infobox = [[
