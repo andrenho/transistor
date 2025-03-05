@@ -27,12 +27,12 @@ return {
       button.pin[4] = button.data[1]
    end,
    
-   render = function(button, G, x, y)
+   render = function(button, G, x, y, context)
       G:render_image('shadow_square', x+1, y+1)
       if not button or button.data[1] == 0 then
-         G:render_image('button_off', x, y)
+         G:render_image('button_off', x, y, context)
       else
-         G:render_image('button_on', x, y)
+         G:render_image('button_on', x, y, context)
       end
    end,
 }

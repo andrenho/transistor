@@ -21,12 +21,12 @@ return {
       led.data[1] = bor(led.pin[1], led.pin[2], led.pin[3], led.pin[4])
    end,
    
-   render = function(led, G, x, y)
+   render = function(led, G, x, y, context)
       G:render_image('shadow_circle', x+1, y+1)
       if not led or led.data[1] == 0 then
-         G:render_image('led_off', x, y)
+         G:render_image('led_off', x, y, context)
       else
-         G:render_image('led_on', x, y)
+         G:render_image('led_on', x, y, context)
       end
    end,
 }

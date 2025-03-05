@@ -25,7 +25,7 @@ return {
       comp.pin[Q_] = bnot(comp.pin[Q])
    end,
    
-   render = function(comp, G, x, y)
+   render = function(comp, G, x, y, context)
       -- TODO
    end,
 }

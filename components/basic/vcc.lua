@@ -22,8 +22,8 @@ return {
       vcc.pin[4] = 1
    end,
    
-   render = function(vcc, G, x, y)
-      G:render_image('shadow_square', x+1, y+1)
-      G:render_image('vcc', x, y)
+   render = function(vcc, G, x, y, context)
+      G:render_image('shadow_square', x+1, y+1, context)
+      G:render_image('vcc', x, y, context)
    end,
 }

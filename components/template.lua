@@ -59,8 +59,8 @@ return {
    end,
    
    -- render the component on the screen - mandatory
-   render = function(component, G, x, y)
-      context.transparency = 0.5
-      G:render_image('my_image_name', x, y, { opacity = 0.5 })
+   render = function(component, G, x, y, context)
+      context.opacity = 0.5
+      G:render_image('my_image_name', x, y, context)
    end,
 }

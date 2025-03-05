@@ -25,8 +25,8 @@ return {
       pnp.pin[OUT] = band(pnp.pin[IN], bnot(bor(pnp.pin[SW0], pnp.pin[SW1])))
    end,
    
-   render = function(pnp, G, x, y)
-      G:render_image('shadow_rect', x+1, y+1)
-      G:render_image('pnp', x, y)
+   render = function(pnp, G, x, y, context)
+      G:render_image('shadow_rect', x+1, y+1, context)
+      G:render_image('pnp', x, y, context)
    end,
 }

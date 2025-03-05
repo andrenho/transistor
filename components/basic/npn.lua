@@ -23,8 +23,8 @@ return {
       npn.pin[OUT] = band(npn.pin[IN], bor(npn.pin[SW0], npn.pin[SW1]))
    end,
    
-   render = function(npn, G, x, y)
-      G:render_image('shadow_rect', x+1, y+1)
-      G:render_image('npn', x, y)
+   render = function(npn, G, x, y, context)
+      G:render_image('shadow_rect', x+1, y+1, context)
+      G:render_image('npn', x, y, context)
    end,
 }
