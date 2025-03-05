@@ -13,11 +13,11 @@ ps_res_idx_t
 
 void load_resources()
 {
-    rs_bg = PS_ASSERT_RES(ps_res_add_image(resources_images_bg_jpg, resources_images_bg_jpg_sz));
+    rs_bg = ps_res_add_image(resources_images_bg_jpg, resources_images_bg_jpg_sz);
 
     // load circuit.png tileset
-    ps_res_idx_t circuit = PS_ASSERT_RES(ps_res_add_image(resources_images_circuit_png, resources_images_circuit_png_sz));
-    PS_ASSERT(ps_res_add_tiles_from_lua(circuit, resources_images_circuit_tileset_lua, resources_images_circuit_tileset_lua_sz));
+    ps_res_idx_t circuit = ps_res_add_image(resources_images_circuit_png, resources_images_circuit_png_sz);
+    ps_res_add_tiles_from_lua(circuit, resources_images_circuit_tileset_lua, resources_images_circuit_tileset_lua_sz);
 
     // transform string indexes into numeric indexes for faster access
 

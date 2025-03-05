@@ -25,15 +25,7 @@ static int G_luaref = -1;
 
 static void load_component(ts_Transistor* t, const char* lua_code)
 {
-    ts_Result r = ts_transistor_component_db_add_from_lua(t, lua_code, G_luaref);
-    if (r != TS_OK) {
-        char buf[2048], buf2[2048];
-        ts_transistor_last_error(t, buf2, sizeof buf2);
-        snprintf(buf, sizeof(buf), "Error loading one of the default components:\n\n%s", buf2);
-        SDL_Log(buf);
-        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error loading default component", buf, ps_graphics_window());
-        abort();
-    }
+    ts_component_db_add_from_lua(t, lua_code, G_luaref);
 }
 
 //
@@ -116,7 +108,7 @@ static void create_graphics_object(lua_State* L)
 
 void component_renderer_setup(ts_Transistor const* T, ps_Scene* scene)
 {
-    lua_State* L = ts_transistor_lua_state(T);
+    lua_State* L = ts_lua_state(T);
 
     // set scene pointer
     lua_rawgeti(L, LUA_REGISTRYINDEX, G_luaref);
@@ -127,14 +119,7 @@ void component_renderer_setup(ts_Transistor const* T, ps_Scene* scene)
 
 void component_render(ts_Transistor const* T, ts_ComponentSnapshot const* component)
 {
-    if (ts_transistor_component_render(T, component, G_luaref, component->pos.x * TILE_SIZE, component->pos.y * TILE_SIZE) != TS_OK) {
-        char buf[2048], buf2[2048];
-        ts_transistor_last_error(T, buf2, sizeof buf2);
-        snprintf(buf, sizeof buf, "Lua reported an error on the 'render' function:\n\n%s\n\nThe application will now abort.", buf2);
-        SDL_Log(buf);
-        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error on function 'render'", buf, ps_graphics_window());
-        abort();
-    }
+    ts_component_render(T, component, G_luaref, component->pos.x * TILE_SIZE, component->pos.y * TILE_SIZE);
 }
 
 //
@@ -177,7 +162,7 @@ static void or_2i_sim(ts_Component* c)
 
 void components_init(ts_Transistor* t)
 {
-    create_graphics_object(ts_transistor_lua_state(t));
+    create_graphics_object(ts_lua_state(t));
 
     load_component(t, components_basic_button_lua);
     load_component(t, components_basic_led_lua);
@@ -187,11 +172,11 @@ void components_init(ts_Transistor* t)
     load_component(t, components_gates_or_2i_lua);
 
 #if NATIVE_COMPONENTS
-    ts_transistor_component_db_native_simulation(t, "__button", button_sim);
-    ts_transistor_component_db_native_simulation(t, "__led", led_sim);
-    ts_transistor_component_db_native_simulation(t, "__npn", npn_sim);
-    ts_transistor_component_db_native_simulation(t, "__pnp", pnp_sim);
-    ts_transistor_component_db_native_simulation(t, "__vcc", vcc_sim);
-    ts_transistor_component_db_native_simulation(t, "__or_2i", or_2i_sim);
+    ts_component_db_native_simulation(t, "__button", button_sim);
+    ts_component_db_native_simulation(t, "__led", led_sim);
+    ts_component_db_native_simulation(t, "__npn", npn_sim);
+    ts_component_db_native_simulation(t, "__pnp", pnp_sim);
+    ts_component_db_native_simulation(t, "__vcc", vcc_sim);
+    ts_component_db_native_simulation(t, "__or_2i", or_2i_sim);
 #endif
 }

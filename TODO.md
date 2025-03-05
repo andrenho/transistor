@@ -9,10 +9,9 @@
       - [x] Shadow
   - [x] Show steps in title
     - [x] Improve performance
-  - [x] Rename ts_transitor to ts_ -> also remove executable from project
   - [x] Create components
   - [x] Other buttons (rotate, delete)
-  - [ ] Bugfixes
+  - [x] Bugfixes
     - [x] NPN/PNP are not working
     - [x] Improve serialization (only write to file, not to string)
     - [x] ps: regenerate header file when making changes
@@ -24,7 +23,8 @@
         - [ ] Write additional tests
       - [ ] Improve wire orientation (reset when coming back to original position when drawing)
   - [ ] Overall code review
-    - [ ] Improve assertions & error handling
+    - [x] Improve assertions & error handling
+    - [ ] Rename ts_transitor to ts_ -> also remove executable from project
   - [ ] Architecture document(s)
   
 - [ ] UI

@@ -8,6 +8,9 @@
 #include <stb_ds.h>
 #pragma clang diagnostic pop
 
+#define PL_LOG_IMPLEMENTATION
+#include <pl_log.h>
+
 #include <pastel2d.h>
 #include <transistor-sandbox.h>
 
@@ -20,26 +23,39 @@
 
 static size_t background_scene(ps_Scene* scenes, size_t n_scenes);
 
+static void error_callback(void* _)
+{
+    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", pl_last_error(), ps_graphics_window());
+    abort();
+}
+
 int main(void)
 {
-    SDL_Log("pastel2d version %s", ps_version(NULL, NULL, NULL));
-    SDL_Log("transistor-sandbox version %s", ts_transistor_version(NULL, NULL, NULL));
+    pl_init();
+    pl_set_error_callback(error_callback, NULL);
+    pl_set_abort_callback(error_callback, NULL);
+    PL_INFO("pastel2d version %s", ps_version(NULL, NULL, NULL));
+    PL_INFO("transistor-sandbox version %s", ts_version(NULL, NULL, NULL));
 
     // initialize sandbox
 
     ts_Transistor T;
-    ts_transistor_init(&T, (ts_TransistorConfig) { false, false });
+    ts_init(&T, (ts_TransistorConfig) { false, false });
 
     // initialize graphics
 
-    PS_ASSERT(ps_init(&(ps_GraphicsInit) {
+    if (ps_init(&(ps_GraphicsInit) {
         .appname = "transistor",
         .appidentifier = "com.github.andrenho.transistor",
         .appversion = PROJECT_VERSION,
         .window_w = 1400,
         .window_h = 900,
         .flags = SDL_WINDOW_RESIZABLE,
-    }));
+    }) != 0) {
+        fprintf(stderr, "Error initializing graphics: %s", pl_last_error());
+        exit(EXIT_FAILURE);
+    }
+
     ps_graphics_set_bg(20, 40, 60);
     gui_init();
 
@@ -58,7 +74,7 @@ int main(void)
 
         // process sandbox
 
-        ts_transistor_run(&T, 6000);
+        ts_run(&T, 6000);
 
         // do events
 
@@ -79,19 +95,19 @@ int main(void)
         n_scenes = background_scene(scenes, n_scenes);
 
         ts_TransistorSnapshot snap;
-        ts_transistor_take_snapshot(&T, &snap);
+        ts_take_snapshot(&T, &snap);
         n_scenes = board_create_scenes(&T, &snap, scenes, n_scenes);
         ts_snapshot_finalize(&snap);
 
         if (n_scenes >= MAX_SCENES)
-            abort();
+            PL_ABORT();
         ps_graphics_render_scenes(scenes, n_scenes);
 
         gui_render();
 
         // present display
 
-        ps_graphics_set_window_title("transistor (%d FPS -- %d SPS)", ps_graphics_fps(), ts_transistor_steps_per_second(&T));
+        ps_graphics_set_window_title("transistor (%d FPS -- %d SPS)", ps_graphics_fps(), ts_steps_per_second(&T));
         ps_graphics_present();
     }
 
@@ -99,7 +115,8 @@ int main(void)
 
     gui_finalize();
     ps_finalize();
-    ts_transistor_finalize(&T);
+    ts_finalize(&T);
+    pl_close();
 
     return 0;
 }

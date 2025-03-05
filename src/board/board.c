@@ -118,7 +118,7 @@ void board_update(ts_Transistor* T, SDL_Event* e)
             if (!e->key.repeat) {
                 ts_on_cursor_key_press(T, i, e->key.key, 0);
                 if (e->key.key == SDLK_D) {
-                    ts_transistor_serialize_to_file(T, stdout);
+                    ts_serialize_to_file(T, stdout);
                     printf("-----------------------\n");
                 }
             }
