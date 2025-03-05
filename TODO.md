@@ -15,6 +15,7 @@
   - [ ] Bugfixes
     - [x] NPN/PNP are not working
     - [x] Improve serialization (only write to file, not to string)
+    - [ ] Delete seems to be deleting random wires
     - [ ] Fix multithreaded simulation with Lua
     - [ ] Improve wire orientation (reset when coming back to original position)
     - [x] ps: regenerate header file when making changes

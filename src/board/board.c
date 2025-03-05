@@ -16,28 +16,39 @@ static const int BOARD_ON_TOP = 1;
 typedef struct BoardDef {
     int x;
     int y;
+    int w;
+    int h;
     int z_order;
     double zoom;
 } BoardDef;
 
 static BoardDef* boards_def = NULL;
 static int board_moving = -1;
+static int topmost_board_ = -1;
 
 //
 // board ordering / positioning
 //
 
-static void check_for_new_board(size_t i)
+static void check_for_new_board(size_t i, ts_TransistorSnapshot const* snap)
 {
     while (i >= arrlen(boards_def)) {
-        BoardDef def = { .x = (i + 3) * 20, .y = (i + 3) * 20, .z_order = BOARD_ON_TOP, .zoom = 2.0 };
+        BoardDef def = {
+            .x = (i + 3) * 20,
+            .y = (i + 3) * 20,
+            .w = snap->boards[i].w,
+            .h = snap->boards[i].h,
+            .z_order = BOARD_ON_TOP,
+            .zoom = 2.0
+        };
         arrpush(boards_def, def);
+        topmost_board_ = i;
     }
 }
 
 static int topmost_board()
 {
-    return 0;  // TODO
+    return topmost_board_;  // TODO
 }
 
 static int board_at_pos(ts_TransistorSnapshot const* snap, int x, int y)
@@ -50,14 +61,14 @@ static void bring_board_to_top(int i)
     // TODO
 }
 
-static void move_board(ts_TransistorSnapshot const* snap, int xrel, int yrel)
+static void move_board(int xrel, int yrel)
 {
     int scr_w, scr_h;
     SDL_GetWindowSize(ps_graphics_window(), &scr_w, &scr_h);
 
     const double zoom = boards_def[board_moving].zoom;
-    const int w = snap->boards[board_moving].w * TILE_SIZE * zoom;
-    const int h = snap->boards[board_moving].h * TILE_SIZE * zoom;
+    const int w = boards_def[board_moving].w * TILE_SIZE * zoom;
+    const int h = boards_def[board_moving].h * TILE_SIZE * zoom;
 
     const int min_x = -w + 56 * zoom;
     const int min_y = -h + 56 * zoom;
@@ -72,10 +83,11 @@ static void move_board(ts_TransistorSnapshot const* snap, int xrel, int yrel)
 // events
 //
 
-void board_update(ts_Transistor* T, ts_TransistorSnapshot const* snap, SDL_Event* e)
+void board_update(ts_Transistor* T, SDL_Event* e)
 {
     int i = topmost_board();
-    check_for_new_board(i);
+    if (i < 0)
+        return;
 
     float mx, my;
     SDL_GetMouseState(&mx, &my);
@@ -92,7 +104,7 @@ void board_update(ts_Transistor* T, ts_TransistorSnapshot const* snap, SDL_Event
 
         case SDL_EVENT_MOUSE_MOTION:
             if (board_moving >= 0)
-                move_board(snap, e->motion.xrel, e->motion.yrel);
+                move_board(e->motion.xrel, e->motion.yrel);
             ts_on_cursor_set_position(T, i, (ts_Position) { tile_x, tile_y });
             break;
 
@@ -161,7 +173,7 @@ static void render_wires(ts_WireSnapshot const* wire, BoardDef* board_def, ps_Sc
 size_t board_create_scenes(ts_Transistor const* T, ts_TransistorSnapshot const* snap, ps_Scene* scenes, size_t n_scenes)
 {
     for (size_t i = 0; i < snap->n_boards; ++i) {
-        check_for_new_board(i);
+        check_for_new_board(i, snap);
 
         ps_Scene* scene = &scenes[n_scenes++];
         ps_scene_init(scene);

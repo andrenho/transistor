@@ -60,9 +60,6 @@ int main(void)
 
         ts_transistor_run(&T, 6000);
 
-        ts_TransistorSnapshot snap;
-        ts_transistor_take_snapshot(&T, &snap);
-
         // do events
 
         SDL_Event e;
@@ -70,7 +67,7 @@ int main(void)
             if (e.type == SDL_EVENT_QUIT || (e.type == SDL_EVENT_KEY_DOWN && e.key.key == SDLK_Q))
                 ps_graphics_quit();
 
-            board_update(&T, &snap, &e);
+            board_update(&T, &e);
             gui_events(&e);
         }
 
@@ -80,9 +77,12 @@ int main(void)
         static ps_Scene scenes[MAX_SCENES];
 
         n_scenes = background_scene(scenes, n_scenes);
-        n_scenes = board_create_scenes(&T, &snap, scenes, n_scenes);
 
+        ts_TransistorSnapshot snap;
+        ts_transistor_take_snapshot(&T, &snap);
+        n_scenes = board_create_scenes(&T, &snap, scenes, n_scenes);
         ts_snapshot_finalize(&snap);
+
         if (n_scenes >= MAX_SCENES)
             abort();
         ps_graphics_render_scenes(scenes, n_scenes);
