@@ -11,16 +11,21 @@
     - [x] Improve performance
   - [x] Rename ts_transitor to ts_ -> also remove executable from project
   - [x] Create components
-  - [ ] Other buttons (rotate, delete)
+  - [x] Other buttons (rotate, delete)
   - [ ] Bugfixes
     - [x] NPN/PNP are not working
     - [x] Improve serialization (only write to file, not to string)
-    - [ ] Delete seems to be deleting random wires
-    - [ ] Fix multithreaded simulation with Lua
-    - [ ] Improve wire orientation (reset when coming back to original position)
     - [x] ps: regenerate header file when making changes
-    - [ ] Remove direct references to transistor
+    - [x] Remove direct references to transistor
+    - [ ] Simulation issues
+      - [ ] Simulation is not considering rotation
+      - [ ] Delete seems to be deleting random wires
+      - [ ] Fix multithreaded simulation with Lua
+        - [ ] Write additional tests
+      - [ ] Improve wire orientation (reset when coming back to original position when drawing)
+  - [ ] Overall code review
     - [ ] Improve assertions & error handling
+  - [ ] Architecture document(s)
   
 - [ ] UI
   - [ ] Demo window
