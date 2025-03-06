@@ -5,8 +5,10 @@
     <mapping directory="$PROJECT_DIR$/contrib/SDL" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/contrib/pastel2d" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/contrib/pastel2d/contrib/LuaJIT" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/contrib/pastel2d/contrib/pastel-log" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/contrib/pastel2d/contrib/pocketmod" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/contrib/pastel2d/contrib/stb" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/contrib/transistor-sandbox" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/contrib/transistor-sandbox/contrib/pastel-log" vcs="Git" />
   </component>
 </project>

@@ -170,7 +170,7 @@ static void render_wires(ts_WireSnapshot const* wire, BoardDef* board_def, ps_Sc
 
 #undef ADD_IMAGE
 
-size_t board_create_scenes(ts_Transistor const* T, ts_TransistorSnapshot const* snap, ps_Scene* scenes, size_t n_scenes)
+size_t board_create_scenes(ts_Transistor* T, ts_TransistorSnapshot const* snap, ps_Scene* scenes, size_t n_scenes)
 {
     for (size_t i = 0; i < snap->n_boards; ++i) {
         check_for_new_board(i, snap);

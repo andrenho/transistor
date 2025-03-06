@@ -117,7 +117,7 @@ void component_renderer_setup(ts_Transistor const* T, ps_Scene* scene)
     lua_pop(L, 1);
 }
 
-void component_render(ts_Transistor const* T, ts_ComponentSnapshot const* component)
+void component_render(ts_Transistor* T, ts_ComponentSnapshot const* component)
 {
     ts_component_render(T, component, G_luaref, component->pos.x * TILE_SIZE, component->pos.y * TILE_SIZE);
 }
