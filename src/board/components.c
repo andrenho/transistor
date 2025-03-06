@@ -93,7 +93,7 @@ static int graphics_render_image(lua_State* L)
     return 0;
 }
 
-static void create_graphics_object(lua_State* L)
+static void create_graphics_object(lua_State* L, void* data)
 {
     static const struct luaL_Reg graph_obj[] = {
         { "load_image_base64", graphics_load_image_base64 },
@@ -106,15 +106,17 @@ static void create_graphics_object(lua_State* L)
     G_luaref = luaL_ref(L, LUA_REGISTRYINDEX);
 }
 
-void component_renderer_setup(ts_Transistor const* T, ps_Scene* scene)
+static void component_renderer_setup_borrow(lua_State* L, void* p_scene)
 {
-    lua_State* L = ts_lua_state(T);
-
-    // set scene pointer
     lua_rawgeti(L, LUA_REGISTRYINDEX, G_luaref);
-    lua_pushlightuserdata(L, scene);
+    lua_pushlightuserdata(L, p_scene);
     lua_setfield(L, -2, "__scene_ptr");
     lua_pop(L, 1);
+}
+
+void component_renderer_setup(ts_Transistor* T, ps_Scene* scene)
+{
+    ts_borrow_lua(T, component_renderer_setup_borrow, scene);
 }
 
 void component_render(ts_Transistor* T, ts_ComponentSnapshot const* component)
@@ -162,7 +164,7 @@ static void or_2i_sim(ts_Component* c)
 
 void components_init(ts_Transistor* t)
 {
-    create_graphics_object(ts_lua_state(t));
+    ts_borrow_lua(t, create_graphics_object, NULL);
 
     load_component(t, components_basic_button_lua);
     load_component(t, components_basic_led_lua);
@@ -179,4 +181,5 @@ void components_init(ts_Transistor* t)
     ts_component_db_native_simulation(t, "__vcc", vcc_sim);
     ts_component_db_native_simulation(t, "__or_2i", or_2i_sim);
 #endif
+
 }

@@ -1,7 +1,7 @@
 - [ ] Base game
   - [x] Base application
   - [x] Wires
-  - [ ] Components
+  - [x] Components
     - [x] Image drawing in transistor-sandbox
     - [x] Render
       - [x] Render
@@ -22,8 +22,8 @@
     - [ ] Simulation issues
       - [x] Simulation is not considering rotation
       - [x] Delete seems to be deleting random wires
-      - [ ] Fix multithreaded simulation with Lua
-        - [ ] Write additional tests
+      - [x] Fix multithreaded simulation with Lua
+        - [x] Write additional tests
       - [ ] Improve wire orientation (reset when coming back to original position when drawing)
       - [ ] Move LuaJIT out of pastel2d
   - [ ] Architecture document(s)

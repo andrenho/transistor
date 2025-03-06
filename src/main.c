@@ -40,8 +40,8 @@ int main(void)
     // initialize sandbox
 
     ts_Transistor T;
-    ts_init(&T, (ts_TransistorConfig) { false, false });
-    // ts_init(&T, (ts_TransistorConfig) { true, false });
+    // ts_init(&T, (ts_TransistorConfig) { false, false });
+    ts_init(&T, (ts_TransistorConfig) { true, false });
 
     // initialize graphics
 
