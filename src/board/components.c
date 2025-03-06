@@ -10,12 +10,12 @@
 #include "graphics.h"
 
 // embedded Lua files
-#include "button.lua.h"
-#include "led.lua.h"
-#include "npn.lua.h"
-#include "pnp.lua.h"
-#include "vcc.lua.h"
-#include "or_2i.lua.h"
+#include "components/basic/button.lua.h"
+#include "components/basic/led.lua.h"
+#include "components/basic/npn.lua.h"
+#include "components/basic/pnp.lua.h"
+#include "components/basic/vcc.lua.h"
+#include "components/gates/or_2i.lua.h"
 
 static int G_luaref = -1;
 

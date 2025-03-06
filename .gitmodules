@@ -12,3 +12,6 @@
 [submodule "contrib/Nuklear"]
 	path = contrib/Nuklear
 	url = https://github.com/Immediate-Mode-UI/Nuklear.git
+[submodule "contrib/pastel-base"]
+	path = contrib/pastel-base
+	url = https://github.com/andrenho/pastel-base

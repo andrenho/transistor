@@ -34,8 +34,8 @@ int main(void)
     pl_init();
     pl_set_error_callback(error_callback, NULL);
     pl_set_abort_callback(error_callback, NULL);
-    PL_INFO("pastel2d version %s", ps_version(NULL, NULL, NULL));
-    PL_INFO("transistor-sandbox version %s", ts_version(NULL, NULL, NULL));
+    PL_INFO("pastel2d version %s", ps_version());
+    PL_INFO("transistor-sandbox version %s", ts_version());
 
     // initialize sandbox
 
