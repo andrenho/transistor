@@ -7,7 +7,7 @@ include contrib/pastel-base/mk/config.mk
 
 CPPFLAGS += -I. -Icontrib/pastel2d/src -Icontrib/pastel-base/pl_log -Icontrib/SDL/include -Icontrib/transistor-sandbox/src \
             -Iresources/fonts -Iresources/images -Icontrib/pastel2d/contrib/pocketmod -Icontrib/pastel2d/contrib/stb \
-            -Icontrib/pastel-base/mk/LuaJIT/src
+            -Icontrib/pastel-base/mk/LuaJIT/src -Icontrib/imgui
 
 ifdef APPLE  # SDL requirements for mac
 	LDFLAGS += -framework AVFoundation -framework CoreMedia -framework CoreVideo \
@@ -23,6 +23,15 @@ OBJ = \
 	src/gui/gui.o \
 	src/board/board.o \
 	src/board/components.o
+
+IMGUI_OBJ = \
+	contrib/imgui/imgui.o \
+	contrib/imgui/imgui_demo.o \
+	contrib/imgui/imgui_draw.o \
+	contrib/imgui/imgui_tables.o \
+	contrib/imgui/imgui_widgets.o \
+	contrib/imgui/backends/imgui_impl_sdl3.o \
+	contrib/imgui/backends/imgui_impl_sdlrenderer3.o
 
 EMBED = \
 	$(filter-out %.h, $(wildcard resources/fonts/*)) \
@@ -45,10 +54,16 @@ libSDL3.a:
 	$(MAKE) -C build-sdl3
 	cp build-sdl3/libSDL3.a .
 
-$(PROJECT_NAME): $(OBJ) libpastel2d.a libtransistor.a libSDL3.a libluajit.a 
-	$(CC) -o $@ $^ $(LDFLAGS)
+$(PROJECT_NAME): $(OBJ) $(IMGUI_OBJ) libpastel2d.a libtransistor.a libSDL3.a libluajit.a
+	$(CXX) -o $@ $^ $(LDFLAGS)
+ifdef RELEASE
+	strip $@
+endif
+
+.PHONY: softclean
+soft:
+	rm -f $(PROJECT_NAME) $(OBJ) $(IMGUI_OBJ) $(CLEANFILES) $(EMBED:=.h) libpastel2d.a libtransistor.a
 
 .PHONY: clean
-clean:
-	rm -rf build-sdl3
-	rm -f $(PROJECT_NAME) $(OBJ) $(CLEANFILES) $(EMBED:=.h) libpastel2d.a libtransistor.a libSDL3.a
+clean: softclean
+	rm -rf build-sdl3 libSDL3.a libluajit.a

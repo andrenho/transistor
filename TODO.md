@@ -1,4 +1,4 @@
-- [ ] Base game
+- [x] Base game
   - [x] Base application
   - [x] Wires
   - [x] Components
@@ -25,7 +25,7 @@
       - [x] Fix multithreaded simulation with Lua
         - [x] Write additional tests
       - [x] Improve wire orientation (reset when coming back to original position when drawing)
-      - [ ] Move LuaJIT out of pastel2d
+      - [x] Move LuaJIT out of pastel2d
   - [ ] Architecture document(s)
   
 - [ ] UI
