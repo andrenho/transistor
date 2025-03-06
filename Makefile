@@ -61,7 +61,7 @@ ifdef RELEASE
 endif
 
 .PHONY: softclean
-soft:
+softclean:
 	rm -f $(PROJECT_NAME) $(OBJ) $(IMGUI_OBJ) $(CLEANFILES) $(EMBED:=.h) libpastel2d.a libtransistor.a
 
 .PHONY: clean

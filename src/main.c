@@ -16,14 +16,14 @@
 
 #include "board/board.h"
 #include "board/components.h"
-#include "gui/gui.h"
+#include "gui/gui.hh"
 #include "resources.h"
 
 #define MAX_SCENES 64
 
 static size_t background_scene(ps_Scene* scenes, size_t n_scenes);
 
-static void error_callback(void* _)
+[[noreturn]] static void error_callback(void* _)
 {
     SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", pl_last_error(), ps_graphics_window());
     abort();
@@ -131,7 +131,7 @@ size_t background_scene(ps_Scene* scenes, size_t n_scenes)
     int ww, wh, rw, rh;
     SDL_GetWindowSize(ps_graphics_window(), &ww, &wh);
     ps_res_image_size(rs_bg, &rw, &rh);
-    ps_scene_add_image(scenes, rs_bg, (SDL_Rect) { ww/2 - rw/2, wh/2 - rh/2 }, NULL);
+    ps_scene_add_image(scenes, rs_bg, (SDL_Rect) { ww/2 - rw/2, wh/2 - rh/2, 0, 0 }, NULL);
 
     return n_scenes;
 }

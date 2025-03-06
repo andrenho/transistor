@@ -76,8 +76,8 @@ add_executable(transistor src/main.c
         src/board/board.h
         src/resources.c
         src/resources.h
-        src/gui/gui.c
-        src/gui/gui.h
+        src/gui/gui.cc
+        src/gui/gui.hh
         src/board/components.c
         src/board/components.h)
 
