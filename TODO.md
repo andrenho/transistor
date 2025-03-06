@@ -24,7 +24,7 @@
       - [x] Delete seems to be deleting random wires
       - [x] Fix multithreaded simulation with Lua
         - [x] Write additional tests
-      - [ ] Improve wire orientation (reset when coming back to original position when drawing)
+      - [x] Improve wire orientation (reset when coming back to original position when drawing)
       - [ ] Move LuaJIT out of pastel2d
   - [ ] Architecture document(s)
   
