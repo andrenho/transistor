@@ -45,7 +45,7 @@ libSDL3.a:
 	$(MAKE) -C build-sdl3
 	cp build-sdl3/libSDL3.a .
 
-$(PROJECT_NAME): $(OBJ) libluajit.a libpastel2d.a libtransistor.a libSDL3.a
+$(PROJECT_NAME): $(OBJ) libpastel2d.a libtransistor.a libSDL3.a libluajit.a 
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 .PHONY: clean
