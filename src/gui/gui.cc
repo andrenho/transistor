@@ -43,6 +43,7 @@ void gui_render()
         ImGui::ShowDemoWindow(&show_demo_window_);
 
     ImGui::Render();
+    ImGui_ImplSDLRenderer3_RenderDrawData(ImGui::GetDrawData(), ps_graphics_renderer());
 }
 
 void gui_finalize()

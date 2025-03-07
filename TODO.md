@@ -28,12 +28,14 @@
       - [x] Move LuaJIT out of pastel2d
   - [x] Use Makefile instead of CMake
   - [x] Optionally link instead of embedding (preferred for DEBUG)
-  - [ ] Download lua, SDL, STB instead of submodule
+  - [x] Download lua, SDL, STB instead of submodule
   - [ ] Architecture document(s)
   
 - [ ] UI
-  - [ ] Demo window
-  - [ ] Main menu, about
+  - [x] Demo window
+  - [ ] Main menu
+    - [ ] About
+    - [ ] Thread policy
   - [ ] Swap to multithreaded
   - [ ] Save/load (serialize/unserialize)
   - [ ] Save on close
