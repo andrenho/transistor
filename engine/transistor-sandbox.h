@@ -10,9 +10,11 @@
 
 typedef struct ts_Sandbox ts_Sandbox;
 
+typedef enum ts_CpuUsage { TS_CPU_LIGHT, TS_CPU_NORMAL, TS_CPU_AGGRESSIVE } ts_CpuUsage;
+
 typedef struct ts_TransistorConfig {
-    bool multithreaded;
-    bool heavy;
+    bool        multithreaded;
+    ts_CpuUsage cpu_usage;
 } ts_TransistorConfig;
 
 typedef struct ts_Transistor {
@@ -57,6 +59,7 @@ ts_Result ts_component_db_native_simulation(ts_Transistor* t, const char* name, 
 
 // execution
 ts_Result ts_run(ts_Transistor* t, size_t run_for_us);
+ts_Result ts_update_cpu_usage(ts_Transistor* t, ts_CpuUsage usage);
 
 // cursor
 ts_Result ts_on_cursor_set_position(ts_Transistor* t, ts_BoardIdx board_idx, ts_Position pos);
@@ -67,7 +70,8 @@ ts_Result ts_on_key_release(ts_Transistor* t, char key);
 ts_Result ts_on_select_component_def(ts_Transistor* t, const char* name);
 
 // other information
-int       ts_steps_per_second(ts_Transistor* t);
+int                 ts_steps_per_second(ts_Transistor* t);
+ts_TransistorConfig ts_config(ts_Transistor* t);
 
 //
 // take snapshot

@@ -33,10 +33,9 @@
   
 - [ ] UI
   - [x] Demo window
-  - [ ] Main menu
-    - [ ] About
-    - [ ] Thread policy
-  - [ ] Swap to multithreaded
+  - [x] Main menu
+    - [x] Thread policy
+    - [x] About
   - [ ] Save/load (serialize/unserialize)
   - [ ] Save on close
   - [ ] Toolbox

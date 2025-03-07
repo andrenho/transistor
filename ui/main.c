@@ -41,7 +41,7 @@ int main(void)
 
     ts_Transistor T;
     // ts_init(&T, (ts_TransistorConfig) { false, false });
-    ts_init(&T, (ts_TransistorConfig) { true, false });
+    ts_init(&T, (ts_TransistorConfig) { true, TS_CPU_NORMAL });
 
     // initialize graphics
 

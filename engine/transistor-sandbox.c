@@ -41,8 +41,11 @@ static void* thread_run(void* ptr_t)
         pthread_mutex_unlock(&t->lock);
 
         // give the CPU a break
-        if (!t->config.heavy)
-            sched_yield();
+        switch (t->config.cpu_usage) {
+            case TS_CPU_LIGHT:      nanosleep(&(struct timespec) { .tv_sec = 0, .tv_nsec = 50 }, NULL); break;
+            case TS_CPU_NORMAL:     sched_yield(); break;
+            case TS_CPU_AGGRESSIVE: break;
+        }
     }
 
     return NULL;
@@ -186,6 +189,12 @@ ts_Result ts_run(ts_Transistor* t, size_t run_for_us)
 {
     if (!t->config.multithreaded)
         return ts_simulation_run(&t->sandbox.simulation, run_for_us);
+    return TS_OK;
+}
+
+ts_Result ts_update_cpu_usage(ts_Transistor* t, ts_CpuUsage usage)
+{
+    t->config.cpu_usage = usage;
     return TS_OK;
 }
 
@@ -459,6 +468,11 @@ ts_Result ts_component_render(ts_Transistor* t, ts_ComponentSnapshot const* comp
     ts_unlock(t);
 
     return TS_OK;
+}
+
+ts_TransistorConfig ts_config(ts_Transistor* t)
+{
+    return t->config;
 }
 
 int ts_steps_per_second(ts_Transistor* t)

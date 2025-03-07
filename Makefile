@@ -3,7 +3,7 @@
 #
 
 PROJECT_NAME = transistor
-PROJECT_VERSION = 1.0.0
+PROJECT_VERSION = 0.1.1
 
 all: $(PROJECT_NAME)
 
