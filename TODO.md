@@ -19,13 +19,16 @@
     - [x] Improve serialization (only write to file, not to string)
     - [x] ps: regenerate header file when making changes
     - [x] Remove direct references to transistor
-    - [ ] Simulation issues
+    - [x] Simulation issues
       - [x] Simulation is not considering rotation
       - [x] Delete seems to be deleting random wires
       - [x] Fix multithreaded simulation with Lua
         - [x] Write additional tests
       - [x] Improve wire orientation (reset when coming back to original position when drawing)
       - [x] Move LuaJIT out of pastel2d
+  - [x] Use Makefile instead of CMake
+  - [x] Optionally link instead of embedding (preferred for DEBUG)
+  - [ ] Download lua, SDL, STB instead of submodule
   - [ ] Architecture document(s)
   
 - [ ] UI

@@ -1,13 +1,32 @@
+#
+# setup
+#
+
 PROJECT_NAME = transistor
 PROJECT_VERSION = 1.0.0
 
 all: $(PROJECT_NAME)
+
+#
+# configuration
+#
 
 include contrib/pastel-base/mk/config.mk
 
 CPPFLAGS += -I. -Icontrib/pastel2d/src -Icontrib/pastel-base/pl_log -Icontrib/SDL/include -Icontrib/transistor-sandbox/src \
             -Iresources/fonts -Iresources/images -Icontrib/pastel2d/contrib/pocketmod -Icontrib/pastel2d/contrib/stb \
             -Icontrib/pastel-base/mk/LuaJIT/src -Icontrib/imgui
+
+ifdef RELEASE
+	EMBED_LIBS ?= 1    # determine if libraries are embedded of linked
+endif
+
+ifdef EMBED_LIBS
+	LIB_DEPS = libSDL3.a libluajit.a
+else
+	CPPFLAGS += $(shell pkg-config --cflags sdl3 luajit)
+	LDFLAGS += $(shell pkg-config --libs sdl3 luajit)
+endif
 
 ifdef APPLE  # SDL requirements for mac
 	LDFLAGS += -framework AVFoundation -framework CoreMedia -framework CoreVideo \
@@ -16,6 +35,10 @@ ifdef APPLE  # SDL requirements for mac
 			   -framework ForceFeedback -framework Metal -framework MetalKit -framework OpenGL \
 			   -framework QuartzCore -framework UniformTypeIdentifiers -liconv
 endif
+
+#
+# object files
+#
 
 OBJ = \
 	src/main.o \
@@ -41,6 +64,10 @@ EMBED = \
 
 $(OBJ): $(EMBED:=.h)
 
+#
+# rules
+#
+
 libpastel2d.a:
 	$(MAKE) -C contrib/pastel2d
 	cp contrib/pastel2d/libpastel2d.a .
@@ -54,7 +81,7 @@ libSDL3.a:
 	$(MAKE) -C build-sdl3
 	cp build-sdl3/libSDL3.a .
 
-$(PROJECT_NAME): $(OBJ) $(IMGUI_OBJ) libpastel2d.a libtransistor.a libSDL3.a libluajit.a
+$(PROJECT_NAME): $(OBJ) $(IMGUI_OBJ) libpastel2d.a libtransistor.a $(LIB_DEPS)
 	$(CXX) -o $@ $^ $(LDFLAGS)
 ifdef RELEASE
 	strip $@
