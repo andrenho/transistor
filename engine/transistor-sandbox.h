@@ -42,7 +42,7 @@ ts_Result ts_unserialize_from_file(ts_Transistor* t, ts_TransistorConfig config,
 ts_Result ts_finalize(ts_Transistor* t);
 
 // serialization
-ts_Result ts_serialize_to_file(ts_Transistor const* t, FILE* f);
+ts_Result ts_serialize_to_file(ts_Transistor* t, FILE* f);
 
 // locks (generally not needed)
 ts_Result ts_lock(ts_Transistor* t);

@@ -28,69 +28,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="21c7ec71-c9ee-4ebd-950c-c84342844b28" name="Changes" comment=".">
-      <change afterPath="$PROJECT_DIR$/contrib/doctest/doctest.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/basic/direction.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/basic/direction.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/basic/orientation.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/basic/pos_ds.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/basic/pos_ds.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/basic/position.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/basic/position.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/basic/rect.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/basic/rect.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/board/board.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/board/board.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/board/wire.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/board/wire.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/compiler/compiler.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/compiler/compiler.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/compiler/connectedwires.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/compiler/connectedwires.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/component/component.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/component/component.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/component/component_mt.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/component/component_mt.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/component/componentdb.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/component/componentdb.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/component/componentdef.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/component/componentdef.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/component/pinpos.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/cursor/cursor.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/cursor/cursor.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/sandbox/sandbox.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/sandbox/sandbox.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/simulation/componentsim.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/simulation/componentsim.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/simulation/simulation.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/simulation/simulation.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/transistor-sandbox.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/transistor-sandbox.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/util/minmax.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/util/result.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/util/serialize.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/util/set.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/_implementation.cc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/compilation.cc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/components.hh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/connected_wires.cc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/custom_ic.cc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/pinpositions.cc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/placement.cc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/position.cc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/serialization.cc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/simulation.cc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/wrapper.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitmodules" beforeDir="false" afterPath="$PROJECT_DIR$/.gitmodules" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contrib/pastel-base" beforeDir="false" afterPath="$PROJECT_DIR$/contrib/pastel-base" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contrib/pastel-base/mk/test/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/contrib/pastel-base/mk/test/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contrib/pastel2d" beforeDir="false" afterPath="$PROJECT_DIR$/contrib/pastel2d" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contrib/pastel2d/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/contrib/pastel2d/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contrib/pastel2d/contrib/pastel-base" beforeDir="false" afterPath="$PROJECT_DIR$/contrib/pastel2d/contrib/pastel-base" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contrib/pastel2d/contrib/pastel-base/mk/test/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/contrib/pastel2d/contrib/pastel-base/mk/test/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contrib/transistor-sandbox" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/transistor-sandbox.c" beforeDir="false" afterPath="$PROJECT_DIR$/engine/transistor-sandbox.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/transistor-sandbox.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/transistor-sandbox.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -277,7 +217,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1741361380317</updated>
-      <workItem from="1741361381314" duration="6419000" />
+      <workItem from="1741361381314" duration="6606000" />
     </task>
     <task id="LOCAL-00001" summary=".">
       <option name="closed" value="true" />
@@ -295,7 +235,15 @@
       <option name="project" value="LOCAL" />
       <updated>1741368734640</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary=".">
+      <option name="closed" value="true" />
+      <created>1741369329122</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1741369329122</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

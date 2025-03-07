@@ -116,9 +116,12 @@ ts_Result ts_finalize(ts_Transistor* t)
 // serialization
 //
 
-ts_Result ts_serialize_to_file(ts_Transistor const* t, FILE* f)
+ts_Result ts_serialize_to_file(ts_Transistor* t, FILE* f)
 {
-    return ts_sandbox_serialize(&t->sandbox, 0, f);
+    ts_lock(t);
+    ts_Result r = ts_sandbox_serialize(&t->sandbox, 0, f);
+    ts_unlock(t);
+    return r;
 }
 
 //
