@@ -55,5 +55,6 @@ cmake-build-*
 compile-commands.json
 build-sdl3/
 transistor
+transistor-tests
 .DS_Store
 imgui.ini

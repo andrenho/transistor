@@ -1,7 +1,3 @@
-[submodule "contrib/transistor-sandbox"]
-	path = contrib/transistor-sandbox
-	url = https://github.com/andrenho/transistor-sandbox.git
-	branch = master
 [submodule "contrib/pastel2d"]
 	path = contrib/pastel2d
 	url = https://github.com/andrenho/pastel2d.git
