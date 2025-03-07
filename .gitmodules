@@ -8,10 +8,6 @@
 [submodule "contrib/SDL"]
 	path = contrib/SDL
 	url = https://github.com/libsdl-org/SDL.git
-[submodule "contrib/Nuklear"]
-	path = contrib/Nuklear
-	url = https://github.com/Immediate-Mode-UI/Nuklear.git
-	branch = master
 [submodule "contrib/imgui"]
 	path = contrib/imgui
 	url = https://github.com/ocornut/imgui.git
