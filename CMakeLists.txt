@@ -71,15 +71,15 @@ endif()
 # executable
 #
 
-add_executable(transistor src/main.c
-        src/board/board.c
-        src/board/board.h
-        src/resources.c
-        src/resources.h
-        src/gui/gui.cc
-        src/gui/gui.hh
-        src/board/components.c
-        src/board/components.h)
+add_executable(transistor ui/main.c
+        ui/board/board.c
+        ui/board/board.h
+        ui/resources.c
+        ui/resources.h
+        ui/gui/gui.cc
+        ui/gui/gui.hh
+        ui/board/components.c
+        ui/board/components.h)
 
 #target_include_directories(transistor PRIVATE src)
 target_link_libraries(transistor PRIVATE ${SDL_TARGET} pastel2d transistor-sandbox)

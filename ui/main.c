@@ -104,7 +104,7 @@ int main(void)
             PL_ABORT();
         ps_graphics_render_scenes(scenes, n_scenes);
 
-        gui_render();
+        gui_render(&T);
 
         // present display
 

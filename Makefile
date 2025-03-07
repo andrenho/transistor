@@ -41,11 +41,12 @@ endif
 #
 
 OBJ = \
-	src/main.o \
-	src/resources.o \
-	src/gui/gui.o \
-	src/board/board.o \
-	src/board/components.o
+	ui/main.o \
+	ui/resources.o \
+	ui/gui/gui.o \
+	ui/gui/mainmenu.o \
+	ui/board/board.o \
+	ui/board/components.o
 
 IMGUI_OBJ = \
 	contrib/imgui/imgui.o \
