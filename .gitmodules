@@ -6,15 +6,16 @@
 	path = contrib/pastel2d
 	url = https://github.com/andrenho/pastel2d.git
 	branch = master
+[submodule "contrib/pastel-base"]
+	path = contrib/pastel-base
+	url = https://github.com/andrenho/pastel-base
 [submodule "contrib/SDL"]
 	path = contrib/SDL
 	url = https://github.com/libsdl-org/SDL.git
 [submodule "contrib/Nuklear"]
 	path = contrib/Nuklear
 	url = https://github.com/Immediate-Mode-UI/Nuklear.git
-[submodule "contrib/pastel-base"]
-	path = contrib/pastel-base
-	url = https://github.com/andrenho/pastel-base
+	branch = master
 [submodule "contrib/imgui"]
 	path = contrib/imgui
 	url = https://github.com/ocornut/imgui.git

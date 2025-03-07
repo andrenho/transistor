@@ -76,11 +76,6 @@ libtransistor.a:
 	$(MAKE) -C contrib/transistor-sandbox
 	cp contrib/transistor-sandbox/libtransistor.a .
 
-libSDL3.a:
-	cmake -B build-sdl3 -S contrib/SDL -DCMAKE_OSX_DEPLOYMENT_TARGET=${MACOS_VERSION} -DCMAKE_BUILD_TYPE=Release -DSDL_SHARED=OFF -DSDL_STATIC=ON && cd ..
-	$(MAKE) -C build-sdl3
-	cp build-sdl3/libSDL3.a .
-
 $(PROJECT_NAME): $(OBJ) $(IMGUI_OBJ) libpastel2d.a libtransistor.a $(LIB_DEPS)
 	$(CXX) -o $@ $^ $(LDFLAGS)
 ifdef RELEASE
