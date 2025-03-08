@@ -22,6 +22,7 @@ ts_Result ts_component_def_init_from_lua(ts_ComponentDef* def, const char* lua_c
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wsuggest-attribute=format"
 
+    // load lua code
     PL_DEBUG("Creating component definition from lua code.");
 
     lua_State* L = sb->L;

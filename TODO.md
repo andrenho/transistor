@@ -40,6 +40,9 @@
     - [x] Treat errors
   - [x] Save on close, periodic saving
   - [ ] Check for leaks
+    - [ ] Why do I have to reload the components? Should work without.
+    - [ ] Deal with loading of native components
+    - [ ] Don't add components if already exist
   - [ ] Toolbox
     - [ ] Create toolbox (basic components)
     - [ ] Organize database per category/subcategory
