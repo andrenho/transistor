@@ -38,7 +38,7 @@
     - [x] About
   - [x] Save/load (serialize/unserialize)
     - [x] Treat errors
-  - [ ] Save on close, periodic saving
+  - [x] Save on close, periodic saving
   - [ ] Toolbox
   - [ ] Cursors
   - [ ] Infobox (sidebar)
