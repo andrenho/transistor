@@ -21,12 +21,19 @@
 #include "resources.h"
 
 #define MAX_SCENES 64
+#define SAVE_FREQUENCY 5000
 
 static size_t background_scene(ps_Scene* scenes, size_t n_scenes);
 
 [[noreturn]] static void error_callback(void* _)
 {
     SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", pl_last_error(), ps_graphics_window());
+}
+
+static Uint32 timer_save(void* T, SDL_TimerID timer_id, Uint32 interval)
+{
+    common_stash_work(T);
+    return SAVE_FREQUENCY;
 }
 
 int main(void)
@@ -63,7 +70,10 @@ int main(void)
     // initialize resources
 
     load_resources();
+    common_unstash_work(&T);
     components_init(&T);
+
+    SDL_AddTimer(SAVE_FREQUENCY, timer_save, &T);
 
     //
     // main loop

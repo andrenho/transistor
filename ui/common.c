@@ -12,7 +12,15 @@
 char common_savename[1024] = "";
 char common_savename_file[1024] = "";
 
-const char* stash_name = "˜/.transistor/stash";
+static const char* stash_name()
+{
+    static char filename[1024] = "";
+    if (filename[0] == '\0') {
+        const char* home = getenv("HOME");
+        snprintf(filename, sizeof filename, "%s/.transistor/stash.trn", home);
+    }
+    return filename;
+}
 
 static void common_set_savename(const char* filename)
 {
@@ -28,27 +36,36 @@ static void common_set_savename(const char* filename)
 }
 
 
-static void common_stash_work(ts_Transistor* T)
+void common_stash_work(ts_Transistor* T)
 {
-    mkdir("˜/.transistor", 0700);
-    FILE* f = fopen(stash_name, "w");
+    char* bpath = strdup(stash_name());
+    char* path = dirname(bpath);
+    mkdir(path, 0700);
+    free(bpath);
+
+    FILE* f = fopen(stash_name(), "w");
     if (f) {
         ts_serialize_to_file(T, f);
         fclose(f);
+        PL_DEBUG("Stash saved to '%s'.", stash_name());
     } else {
-        PL_ERROR("Cloud not open stash file '%s'.", stash_name);
+        PL_ERROR("Cloud not open stash file '%s'.", stash_name());
     }
 }
 
 void common_unstash_work(ts_Transistor* T)
 {
-    FILE* f = fopen(stash_name, "r");
+    PL_DEBUG("Loading stash from %s.", stash_name());
+    FILE* f = fopen(stash_name(), "r");
     if (f) {
         ts_TransistorConfig config = ts_config(T);
         ts_finalize(T);
         ts_unserialize_from_file(T, config, f);
         components_init(T);
         fclose(f);
+        PL_DEBUG("Stash loaded.");
+    } else {
+        PL_INFO("Stash file not present.");
     }
 }
 
@@ -75,6 +92,7 @@ void common_save(ts_Transistor* T)
     if (f) {
         ts_serialize_to_file(T, f);
         fclose(f);
+        PL_INFO("Circuit saved as '%s'.", common_savename);
     } else {
         PL_ERROR("Cloud not open file '%s'.", common_savename);
     }
@@ -96,6 +114,7 @@ void common_load(ts_Transistor* T, const char* filename)
         components_init(T);
         fclose(f);
         common_set_savename(filename);
+        PL_INFO("Circuit loaded from '%s'.", filename);
     } else {
         PL_ERROR("Cloud not open file '%s'.", common_savename);
     }

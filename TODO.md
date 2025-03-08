@@ -36,9 +36,9 @@
   - [x] Main menu
     - [x] Thread policy
     - [x] About
-  - [ ] Save/load (serialize/unserialize)
-    - [ ] Treat errors
-  - [ ] Save on close
+  - [x] Save/load (serialize/unserialize)
+    - [x] Treat errors
+  - [ ] Save on close, periodic saving
   - [ ] Toolbox
   - [ ] Cursors
   - [ ] Infobox (sidebar)
