@@ -1,15 +1,32 @@
 #include "common.h"
 
+#include <libgen.h>
 #include <sys/stat.h>
 
 #include <pastel2d.h>
 #include <pl_log.h>
+#include <stdlib.h>
 
 #include "board/components.h"
 
 char common_savename[1024] = "";
+char common_savename_file[1024] = "";
 
 const char* stash_name = "˜/.transistor/stash";
+
+static void common_set_savename(const char* filename)
+{
+    strcpy(common_savename, filename);
+    if (common_savename[0] != '\0') {
+        char* bname = strdup(common_savename);
+        char* fname = basename(bname);
+        snprintf(common_savename_file, sizeof common_savename_file, "%s", fname);
+        free(bname);
+    } else {
+        common_savename_file[0] = '\0';
+    }
+}
+
 
 static void common_stash_work(ts_Transistor* T)
 {
@@ -43,7 +60,7 @@ void common_quit(ts_Transistor* T)
 
 void common_clear(ts_Transistor* T)
 {
-    common_savename[0] = '\0';
+    common_set_savename("");
     ts_TransistorConfig config = ts_config(T);
     ts_finalize(T);
     ts_init(T, config);
@@ -65,7 +82,7 @@ void common_save(ts_Transistor* T)
 
 void common_save_as(ts_Transistor* T, const char* filename)
 {
-    strcpy(common_savename, filename);
+    common_set_savename(filename);
     common_save(T);
 }
 
@@ -78,6 +95,7 @@ void common_load(ts_Transistor* T, const char* filename)
         ts_unserialize_from_file(T, config, f);
         components_init(T);
         fclose(f);
+        common_set_savename(filename);
     } else {
         PL_ERROR("Cloud not open file '%s'.", common_savename);
     }

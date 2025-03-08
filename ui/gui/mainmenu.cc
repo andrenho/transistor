@@ -2,6 +2,7 @@
 
 #include <string>
 #include <imgui.h>
+#include <pl_log.h>
 
 #include "dialog.hh"
 
@@ -30,6 +31,18 @@ static YesNoDialog clear_dialog("Clear?", {
 
 std::vector<Dialog*> dialogs = { &about, &quit_dialog, &clear_dialog };
 
+std::vector<SDL_DialogFileFilter> file_filters = {
+    { "Transistor files", "trn" },
+    { "All files", "*" },
+};
+
+static std::string adjust_filename(std::string const& filename)
+{
+    if (!filename.ends_with(".trn"))
+        return filename + ".trn";
+    return filename;
+}
+
 void main_menu_render(ts_Transistor* T)
 {
     for (Dialog* dialog: dialogs)
@@ -41,12 +54,20 @@ void main_menu_render(ts_Transistor* T)
 
             if (ImGui::MenuItem("Clear circuit"))
                 clear_dialog.show();
-            if (ImGui::MenuItem("Load circuit..."))
-                ;
+            if (ImGui::MenuItem("Load circuit...")) {
+                SDL_ShowOpenFileDialog([](void* T, const char* const *filelist, int filter) {
+                    if (!filelist) PL_ERROR("%s", SDL_GetError());
+                    if (*filelist) common_load((ts_Transistor *) T, *filelist);
+                }, T, ps_graphics_window(), file_filters.data(), (int) file_filters.size(), nullptr, false);
+            }
             if (ImGui::MenuItem("Save circuit", "", false, common_savename[0] != '\0'))
                 common_save(T);
-            if (ImGui::MenuItem("Save circuit as..."))
-                ;
+            if (ImGui::MenuItem("Save circuit as...")) {
+                SDL_ShowSaveFileDialog([](void* T, const char* const *filelist, int filter) {
+                    if (!filelist) PL_ERROR("%s", SDL_GetError());
+                    if (*filelist) common_save_as((ts_Transistor *) T, adjust_filename(*filelist).c_str());
+                }, T, ps_graphics_window(), file_filters.data(), (int) file_filters.size(), nullptr);
+            }
 
 #ifndef NDEBUG
             ImGui::Separator();

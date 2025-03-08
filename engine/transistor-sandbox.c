@@ -94,8 +94,9 @@ ts_Result ts_unserialize(ts_Transistor* t, ts_TransistorConfig config, const cha
 
 ts_Result ts_unserialize_from_file(ts_Transistor* t, ts_TransistorConfig config, FILE* f)
 {
-    char* buffer;
-    ssize_t bytes_read = getdelim(&buffer, NULL, '\0', f);
+    char* buffer = NULL;
+    size_t len;
+    ssize_t bytes_read = getdelim(&buffer, &len, '\0', f);
     if (bytes_read < 0)
         PL_ERROR_RET(TS_SYSTEM_ERROR, "Error reading file: %s", strerror(errno));
     PL_DEBUG("File read with %zi bytes", bytes_read);
@@ -122,6 +123,7 @@ ts_Result ts_finalize(ts_Transistor* t)
 ts_Result ts_serialize_to_file(ts_Transistor* t, FILE* f)
 {
     ts_lock(t);
+    fprintf(f, "return ");
     ts_Result r = ts_sandbox_serialize(&t->sandbox, 0, f);
     ts_unlock(t);
     return r;

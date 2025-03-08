@@ -4,6 +4,7 @@
 #include <transistor-sandbox.h>
 
 extern char common_savename[];
+extern char common_savename_file[];
 
 void common_quit(ts_Transistor* T);
 void common_unstash_work(ts_Transistor* T);

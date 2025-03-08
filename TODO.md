@@ -43,6 +43,7 @@
   - [ ] Cursors
   - [ ] Infobox (sidebar)
   - [ ] Exception management
+  - [ ] Resolve warnings
   
 - [ ] ICs
   - [ ] Toolbox for ICs

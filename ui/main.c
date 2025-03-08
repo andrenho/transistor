@@ -109,7 +109,7 @@ int main(void)
 
         // present display
 
-        ps_graphics_set_window_title("transistor (%d FPS -- %dK steps/sec)", ps_graphics_fps(), ts_steps_per_second(&T) / 1000);
+        ps_graphics_set_window_title("transistor (%d FPS -- %dK steps/sec) %s", ps_graphics_fps(), ts_steps_per_second(&T) / 1000, common_savename_file);
         ps_graphics_present();
     }
 
