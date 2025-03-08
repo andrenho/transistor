@@ -49,6 +49,11 @@
   - [ ] OR IC 
   - [ ] Show pin names when hovering
 
+- [ ] Prepare for distribution
+ - [ ] Rebrand
+ - [ ] Github README
+ - [ ] Emscripten version
+
 - [ ] Future implementation 1
   - [ ] Resize board
   - [ ] Selection, cut/copy/paste

@@ -1,6 +1,9 @@
 #include "mainmenu.hh"
 
+#include <string>
 #include <imgui.h>
+
+#include "dialog.hh"
 
 extern "C" {
 #include <pastel2d.h>
@@ -9,47 +12,23 @@ extern "C" {
 
 extern bool show_demo_window_;
 
-bool open_about_box_ = false;
-bool open_quit_box_ = false;
+static MessageBox about("About Transistor", {
+    "Transistor " PROJECT_VERSION,
+    "Created by Andre Wagner.",
+    "Distributed as free software under the GPLv3 license."
+});
 
-static void about_box()
-{
-    if (open_about_box_)
-        ImGui::OpenPopup("About Transistor");
+static YesNoDialog quit_dialog("Quit?", {
+    "Are you sure you want to quit?",
+    "(your work will be stashed until you return)"
+}, [](ts_Transistor* T) { common_quit(T); });
 
-    if (ImGui::BeginPopupModal("About Transistor", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
-        ImGui::Text("Transistor " PROJECT_VERSION);
-        ImGui::Text("Created by Andre Wagner.");
-        ImGui::Text("Distributed as free software under the GPLv3 license.");
-        ImGui::Separator();
-        if (ImGui::Button("Ok"))
-            ImGui::CloseCurrentPopup();
-        ImGui::EndPopup();
-    }
-}
-
-static void quit_box(ts_Transistor* T)
-{
-    if (open_quit_box_)
-        ImGui::OpenPopup("Quit?");
-
-    if (ImGui::BeginPopupModal("Quit?", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
-        ImGui::Text("Are you sure you want to quit?");
-        ImGui::Text("(your work will be stashed until you return)");
-        ImGui::Separator();
-        if (ImGui::Button("Yes"))
-            common_quit(T);
-        ImGui::SameLine();
-        if (ImGui::Button("No"))
-            ImGui::CloseCurrentPopup();
-        ImGui::EndPopup();
-    }
-}
+std::vector<Dialog*> dialogs = { &about, &quit_dialog };
 
 void main_menu_render(ts_Transistor* T)
 {
-    open_about_box_ = false;
-    open_quit_box_ = false;
+    for (Dialog* dialog: dialogs)
+        dialog->reset();
 
     if (ImGui::BeginMainMenuBar()) {
 
@@ -78,7 +57,7 @@ void main_menu_render(ts_Transistor* T)
             ImGui::Separator();
 
             if (ImGui::MenuItem("Exit"))
-                open_quit_box_ = true;
+                quit_dialog.show();
 
             ImGui::EndMenu();
         }
@@ -102,7 +81,7 @@ void main_menu_render(ts_Transistor* T)
         if (ImGui::BeginMenu("Help")) {
 
             if (ImGui::MenuItem("About"))
-                open_about_box_ = true;
+                about.show();
 
             ImGui::EndMenu();
         }
@@ -110,6 +89,6 @@ void main_menu_render(ts_Transistor* T)
         ImGui::EndMainMenuBar();
     }
 
-    about_box();
-    quit_box(T);
+    for (Dialog* dialog: dialogs)
+        dialog->render(T);
 }
