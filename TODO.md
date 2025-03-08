@@ -39,8 +39,14 @@
   - [x] Save/load (serialize/unserialize)
     - [x] Treat errors
   - [x] Save on close, periodic saving
+  - [ ] Check for leaks
   - [ ] Toolbox
+    - [ ] Create toolbox (basic components)
+    - [ ] Organize database per category/subcategory
+    - [ ] Add additional components to toolbox
   - [ ] Cursors
+    - [ ] Custom?
+    - [ ] Deleting
   - [ ] Infobox (sidebar)
   - [ ] Exception management
   - [ ] Resolve warnings

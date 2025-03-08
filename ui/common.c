@@ -9,6 +9,8 @@
 
 #include "board/components.h"
 
+#define AUTOSAVE_ENABLED 1
+
 char common_savename[1024] = "";
 char common_savename_file[1024] = "";
 
@@ -38,6 +40,7 @@ static void common_set_savename(const char* filename)
 
 void common_stash_work(ts_Transistor* T)
 {
+#if AUTOSAVE_ENABLED
     char* bpath = strdup(stash_name());
     char* path = dirname(bpath);
     mkdir(path, 0700);
@@ -51,10 +54,12 @@ void common_stash_work(ts_Transistor* T)
     } else {
         PL_ERROR("Cloud not open stash file '%s'.", stash_name());
     }
+#endif
 }
 
 void common_unstash_work(ts_Transistor* T)
 {
+#if AUTOSAVE_ENABLED
     PL_DEBUG("Loading stash from %s.", stash_name());
     FILE* f = fopen(stash_name(), "r");
     if (f) {
@@ -67,6 +72,7 @@ void common_unstash_work(ts_Transistor* T)
     } else {
         PL_INFO("Stash file not present.");
     }
+#endif
 }
 
 void common_quit(ts_Transistor* T)

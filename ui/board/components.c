@@ -181,5 +181,4 @@ void components_init(ts_Transistor* t)
     ts_component_db_native_simulation(t, "__vcc", vcc_sim);
     ts_component_db_native_simulation(t, "__or_2i", or_2i_sim);
 #endif
-
 }

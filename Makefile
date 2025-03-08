@@ -79,6 +79,18 @@ IMGUI_OBJ = \
 	contrib/imgui/backends/imgui_impl_sdl3.o \
 	contrib/imgui/backends/imgui_impl_sdlrenderer3.o
 
+TEST_OBJ = \
+	tests/position.o \
+	tests/pinpositions.o \
+	tests/connected_wires.o \
+	tests/placement.o \
+	tests/compilation.o \
+	tests/serialization.o \
+	tests/simulation.o \
+	tests/wrapper.o \
+	tests/custom_ic.o \
+	tests/_implementation.o
+
 EMBED = \
 	$(filter-out %.h, $(wildcard resources/fonts/*)) \
 	$(filter-out %.h, $(wildcard resources/images/*)) \
@@ -105,23 +117,21 @@ endif
 # tests
 #
 
-TEST_OBJ = \
-	tests/position.o \
-	tests/pinpositions.o \
-	tests/connected_wires.o \
-	tests/placement.o \
-	tests/compilation.o \
-	tests/serialization.o \
-	tests/simulation.o \
-	tests/wrapper.o \
-	tests/custom_ic.o \
-	tests/_implementation.o
-
-transistor-tests: $(ENGINE_OBJ) $(TEST_OBJ) $(LIB)
+$(PROJECT_NAME)-tests: $(ENGINE_OBJ) $(TEST_OBJ) $(LIB)
 	$(CXX) -o $@ $^ $(LDFLAGS)
 
-check: transistor-tests
+check: $(PROJECT_NAME)-tests
 	./$^
+
+#
+# leaks
+#
+
+leaks: $(PROJECT_NAME)
+	$(LEAKS_CMD) $(LEAKS_SUPP) ./$^
+
+leaks-tests: $(PROJECT_NAME)-tests
+	$(LEAKS_CMD) ./$^
 
 #
 # cleanup

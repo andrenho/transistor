@@ -5,11 +5,13 @@
   </component>
   <component name="CMakeRunConfigurationManager">
     <generated>
+      <config projectName="transistor" targetName="leaks" />
       <config projectName="transistor" targetName="libSDL3.a" />
       <config projectName="transistor" targetName="transistor" />
       <config projectName="transistor" targetName="softclean" />
       <config projectName="transistor" targetName="libluajit.a" />
       <config projectName="transistor" targetName="compile_commands" />
+      <config projectName="transistor" targetName="leaks-tests" />
       <config projectName="transistor" targetName="deepclean" />
       <config projectName="transistor" targetName="update" />
       <config projectName="transistor" targetName="check" />
@@ -28,7 +30,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="21c7ec71-c9ee-4ebd-950c-c84342844b28" name="Changes" comment=".">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TODO.md" beforeDir="false" afterPath="$PROJECT_DIR$/TODO.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contrib/pastel-base/mk/config.mk" beforeDir="false" afterPath="$PROJECT_DIR$/contrib/pastel-base/mk/config.mk" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/board/components.c" beforeDir="false" afterPath="$PROJECT_DIR$/ui/board/components.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/common.c" beforeDir="false" afterPath="$PROJECT_DIR$/ui/common.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -121,7 +128,7 @@
       <recent name="$PROJECT_DIR$/contrib" />
     </key>
   </component>
-  <component name="RunManager" selected="Native Application.transistor">
+  <component name="RunManager" selected="Native Application.leaks">
     <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="CLION.EXTERNAL.BUILD" enabled="true" />
@@ -158,6 +165,16 @@
       </method>
     </configuration>
     <configuration name="deepclean" type="CLionNativeAppRunConfigurationType" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="transistor" TARGET_NAME="deepclean" CONFIG_NAME="deepclean" version="1">
+      <method v="2">
+        <option name="CLION.COMPOUND.BUILD" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="leaks-tests" type="CLionNativeAppRunConfigurationType" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="transistor" TARGET_NAME="leaks-tests" CONFIG_NAME="leaks-tests" version="1">
+      <method v="2">
+        <option name="CLION.COMPOUND.BUILD" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="leaks" type="CLionNativeAppRunConfigurationType" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="transistor" TARGET_NAME="leaks" CONFIG_NAME="leaks" version="1">
       <method v="2">
         <option name="CLION.COMPOUND.BUILD" enabled="true" />
       </method>
@@ -208,6 +225,8 @@
       <item itemvalue="Native Application.clean-lua" />
       <item itemvalue="Native Application.compile_commands" />
       <item itemvalue="Native Application.deepclean" />
+      <item itemvalue="Native Application.leaks" />
+      <item itemvalue="Native Application.leaks-tests" />
       <item itemvalue="Native Application.libluajit.a" />
       <item itemvalue="Native Application.libpastel2d.a" />
       <item itemvalue="Native Application.libSDL3.a" />
@@ -225,7 +244,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1741361380317</updated>
-      <workItem from="1741361381314" duration="27718000" />
+      <workItem from="1741361381314" duration="32589000" />
     </task>
     <task id="LOCAL-00001" summary=".">
       <option name="closed" value="true" />
@@ -315,7 +334,15 @@
       <option name="project" value="LOCAL" />
       <updated>1741445661113</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary=".">
+      <option name="closed" value="true" />
+      <created>1741445673917</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1741445673917</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
