@@ -31,7 +31,18 @@
   <component name="ChangeListManager">
     <list default="true" id="21c7ec71-c9ee-4ebd-950c-c84342844b28" name="Changes" comment=".">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/sandbox/sandbox.c" beforeDir="false" afterPath="$PROJECT_DIR$/engine/sandbox/sandbox.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/sandbox/sandbox.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/sandbox/sandbox.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/transistor-sandbox.c" beforeDir="false" afterPath="$PROJECT_DIR$/engine/transistor-sandbox.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/transistor-sandbox.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/transistor-sandbox.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/compilation.cc" beforeDir="false" afterPath="$PROJECT_DIR$/tests/compilation.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/placement.cc" beforeDir="false" afterPath="$PROJECT_DIR$/tests/placement.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/position.cc" beforeDir="false" afterPath="$PROJECT_DIR$/tests/position.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/serialization.cc" beforeDir="false" afterPath="$PROJECT_DIR$/tests/serialization.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/simulation.cc" beforeDir="false" afterPath="$PROJECT_DIR$/tests/simulation.cc" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/wrapper.cc" beforeDir="false" afterPath="$PROJECT_DIR$/tests/wrapper.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/common.c" beforeDir="false" afterPath="$PROJECT_DIR$/ui/common.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/ui/main.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,7 +110,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Native Application.transistor-tests.executor": "Run",
-    "Native Application.transistor.executor": "Debug",
+    "Native Application.transistor.executor": "Run",
     "RunOnceActivity.RadMigrateCodeStyle": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.cidr.known.project.marker": "true",
@@ -124,7 +135,7 @@
       <recent name="$PROJECT_DIR$/contrib" />
     </key>
   </component>
-  <component name="RunManager" selected="Native Application.leaks">
+  <component name="RunManager" selected="Native Application.transistor">
     <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="CLION.EXTERNAL.BUILD" enabled="true" />
@@ -240,7 +251,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1741361380317</updated>
-      <workItem from="1741361381314" duration="37978000" />
+      <workItem from="1741361381314" duration="38775000" />
     </task>
     <task id="LOCAL-00001" summary=".">
       <option name="closed" value="true" />
@@ -378,7 +389,15 @@
       <option name="project" value="LOCAL" />
       <updated>1741466764389</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary=".">
+      <option name="closed" value="true" />
+      <created>1741467666558</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1741467666558</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -389,15 +408,6 @@
     <option name="LAST_COMMIT_MESSAGE" value="." />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/engine/component/included.c</url>
-          <line>55</line>
-          <option name="timeStamp" value="22" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <watches-manager>
       <configuration name="CLionNativeAppRunConfigurationType">
         <watch expression="def-&gt;key" language="C++" />

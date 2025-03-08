@@ -18,6 +18,7 @@ TEST_SUITE("Serialization") {
     {
         ts_Sandbox sb;
         ts_sandbox_init(&sb);
+        ts_sandbox_add_board(&sb, 20, 10);
         ts_add_lua_components(&sb);
 
         ts_board_add_wire(&sb.boards[0], { 1, 1, TS_S }, { TS_WIRE_1, TS_LAYER_TOP });

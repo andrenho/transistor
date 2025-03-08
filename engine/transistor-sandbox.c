@@ -84,9 +84,8 @@ ts_Result ts_unserialize(ts_Transistor* t, ts_TransistorConfig config, const cha
 {
     PL_DEBUG("Staring deserialization");
 
-    memset(t, 0, sizeof(ts_Transistor));
-    t->G_luaref = G_init ? G_init(t->sandbox.L) : -1;
-    ts_included_components_init(t);
+    ts_finalize(t);
+    ts_init(t, config, G_init);
     ts_Result r = ts_sandbox_unserialize_from_string(&t->sandbox, str);
     if (r != 0)
         return r;
@@ -163,9 +162,12 @@ ts_Result ts_unlock(ts_Transistor* t)
 // boards
 //
 
-ts_BoardIdx ts_add_board(ts_Transistor* t, int w, int h)
+int ts_add_board(ts_Transistor* t, int w, int h)
 {
-    abort();  // TODO - not implemented yet
+    ts_lock(t);
+    int n = ts_sandbox_add_board(&t->sandbox, w, h);
+    ts_unlock(t);
+    return n;
 }
 
 //

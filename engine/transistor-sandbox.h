@@ -53,7 +53,7 @@ ts_Result ts_lock(ts_Transistor* t);
 ts_Result ts_unlock(ts_Transistor* t);
 
 // boards
-ts_BoardIdx ts_add_board(ts_Transistor* t, int w, int h);
+int ts_add_board(ts_Transistor* t, int w, int h);
 
 // component db
 ts_Result ts_component_db_add_from_lua(ts_Transistor* t, const char* lua_code, bool included);

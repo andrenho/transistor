@@ -36,6 +36,7 @@ TEST_SUITE("Compilation")
 
             CompFixture() {
                 ts_sandbox_init(&sb);
+                ts_sandbox_add_board(&sb, 20, 10);
                 ts_add_lua_components(&sb);
                 ts_board_add_component(&sb.boards[0], "__button", { 1, 1 }, TS_N);
                 ts_board_add_component(&sb.boards[0], "__led", { 3, 1 }, TS_N);
@@ -151,6 +152,7 @@ TEST_SUITE("Compilation")
 
             CompFixture(ts_Direction ic_dir) {
                 ts_sandbox_init(&sb);
+                ts_sandbox_add_board(&sb, 20, 10);
                 ts_add_lua_components(&sb);
                 ts_board_add_component(&sb.boards[0], "__button", { 1, 1 }, TS_N);
                 ts_board_add_component(&sb.boards[0], "__or_2i", { 3, 1 }, ic_dir);

@@ -19,6 +19,7 @@ struct Fixture {
     {
         pl_init();
         ts_init(&t, { multithreaded, TS_CPU_NORMAL }, nullptr);
+        ts_add_board(&t, 20, 10);
 
         // add wire
         ts_on_cursor_set_position(&t, 0, { 1, 1 });

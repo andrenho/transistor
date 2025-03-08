@@ -61,8 +61,8 @@ int main(void)
     // initialize sandbox
 
     ts_Transistor T;
-    // ts_init(&T, (ts_TransistorConfig) { false, false });
     ts_init(&T, (ts_TransistorConfig) { true, TS_CPU_NORMAL }, G_init);
+    ts_add_board(&T, 20, 10);
 
     ps_graphics_set_bg(20, 40, 60);
     gui_init();

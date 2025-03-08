@@ -38,11 +38,6 @@ ts_Result ts_sandbox_init(ts_Sandbox* sb)
 {
     ts_sandbox_init_common(sb);
 
-    arrpush(sb->boards, (ts_Board) {});
-    ts_board_init(&sb->boards[0], sb, 20, 10);
-
-    // ts_add_default_components(&sb->component_db);
-
     ts_sandbox_start_simulation(sb);
     return TS_OK;
 }
@@ -62,6 +57,17 @@ ts_Result ts_sandbox_finalize(ts_Sandbox* sb)
 
     PL_DEBUG("Sandbox finalized");
     return TS_OK;
+}
+
+//
+// board management
+//
+
+int ts_sandbox_add_board(ts_Sandbox* sb, int w, int h)
+{
+    arrpush(sb->boards, (ts_Board) {});
+    ts_board_init(&sb->boards[0], sb, w, h);
+    return arrlen(sb->boards) - 1;
 }
 
 //

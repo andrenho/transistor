@@ -22,6 +22,9 @@ typedef struct ts_Sandbox {
 ts_Result ts_sandbox_init(ts_Sandbox* sb);
 ts_Result ts_sandbox_finalize(ts_Sandbox* sb);
 
+// board management
+int ts_sandbox_add_board(ts_Sandbox* db, int w, int h);
+
 // simulation
 ts_Result ts_sandbox_end_simulation(ts_Sandbox* sb);
 ts_Result ts_sandbox_start_simulation(ts_Sandbox* sb);
