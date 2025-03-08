@@ -27,7 +27,6 @@ static size_t background_scene(ps_Scene* scenes, size_t n_scenes);
 [[noreturn]] static void error_callback(void* _)
 {
     SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", pl_last_error(), ps_graphics_window());
-    abort();
 }
 
 int main(void)
@@ -84,7 +83,7 @@ int main(void)
         while (SDL_PollEvent(&e)) {
 #ifndef NDEBUG
             if (e.type == SDL_EVENT_QUIT || (e.type == SDL_EVENT_KEY_DOWN && e.key.key == SDLK_Q))
-                common_quit();
+                common_quit(&T);
 #endif
             board_update(&T, &e);
             gui_events(&e);

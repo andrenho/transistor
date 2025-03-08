@@ -37,6 +37,7 @@
     - [x] Thread policy
     - [x] About
   - [ ] Save/load (serialize/unserialize)
+    - [ ] Treat errors
   - [ ] Save on close
   - [ ] Toolbox
   - [ ] Cursors

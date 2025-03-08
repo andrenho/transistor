@@ -28,7 +28,7 @@ static void about_box()
     }
 }
 
-static void quit_box()
+static void quit_box(ts_Transistor* T)
 {
     if (open_quit_box_)
         ImGui::OpenPopup("Quit?");
@@ -38,7 +38,7 @@ static void quit_box()
         ImGui::Text("(your work will be stashed until you return)");
         ImGui::Separator();
         if (ImGui::Button("Yes"))
-            common_quit();
+            common_quit(T);
         ImGui::SameLine();
         if (ImGui::Button("No"))
             ImGui::CloseCurrentPopup();
@@ -55,10 +55,14 @@ void main_menu_render(ts_Transistor* T)
 
         if (ImGui::BeginMenu("Circuit")) {
 
-            ImGui::MenuItem("Clear circuit");
-            ImGui::MenuItem("Load circuit...");
-            ImGui::MenuItem("Save circuit");
-            ImGui::MenuItem("Save circuit as...");
+            if (ImGui::MenuItem("Clear circuit"))
+                ;
+            if (ImGui::MenuItem("Load circuit..."))
+                ;
+            if (ImGui::MenuItem("Save circuit", "", false, common_savename[0] != '\0'))
+                common_save(T);
+            if (ImGui::MenuItem("Save circuit as..."))
+                ;
 
 #ifndef NDEBUG
             ImGui::Separator();
@@ -107,5 +111,5 @@ void main_menu_render(ts_Transistor* T)
     }
 
     about_box();
-    quit_box();
+    quit_box(T);
 }
