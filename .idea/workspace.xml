@@ -30,20 +30,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="21c7ec71-c9ee-4ebd-950c-c84342844b28" name="Changes" comment=".">
-      <change afterPath="$PROJECT_DIR$/engine/component/included.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/component/included.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/component/componentdb.c" beforeDir="false" afterPath="$PROJECT_DIR$/engine/component/componentdb.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/component/componentdb.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/component/componentdb.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/component/componentdef.c" beforeDir="false" afterPath="$PROJECT_DIR$/engine/component/componentdef.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/component/componentdef.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/component/componentdef.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/transistor-sandbox.c" beforeDir="false" afterPath="$PROJECT_DIR$/engine/transistor-sandbox.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/transistor-sandbox.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/transistor-sandbox.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/board/components.c" beforeDir="false" afterPath="$PROJECT_DIR$/ui/board/components.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/board/components.h" beforeDir="false" afterPath="$PROJECT_DIR$/ui/board/components.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/common.c" beforeDir="false" afterPath="$PROJECT_DIR$/ui/common.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/ui/main.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/components.hh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/components.hh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/custom_ic.cc" beforeDir="false" afterPath="$PROJECT_DIR$/tests/custom_ic.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/pinpositions.cc" beforeDir="false" afterPath="$PROJECT_DIR$/tests/pinpositions.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/wrapper.cc" beforeDir="false" afterPath="$PROJECT_DIR$/tests/wrapper.cc" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -118,7 +109,7 @@
     "RunOnceActivity.readMode.enableVisualFormatting": "true",
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "native",
     "last_opened_file_path": "/Users/aw98156/prj/transistor",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -136,7 +127,7 @@
       <recent name="$PROJECT_DIR$/contrib" />
     </key>
   </component>
-  <component name="RunManager" selected="Native Application.transistor">
+  <component name="RunManager" selected="Native Application.transistor-tests">
     <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="CLION.EXTERNAL.BUILD" enabled="true" />
@@ -252,7 +243,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1741361380317</updated>
-      <workItem from="1741361381314" duration="36926000" />
+      <workItem from="1741361381314" duration="37129000" />
     </task>
     <task id="LOCAL-00001" summary=".">
       <option name="closed" value="true" />
@@ -374,7 +365,15 @@
       <option name="project" value="LOCAL" />
       <updated>1741454865364</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary=".">
+      <option name="closed" value="true" />
+      <created>1741466592807</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1741466592807</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

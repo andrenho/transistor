@@ -16,7 +16,7 @@ extern "C" {
 struct Fixture {
     Fixture(bool multithreaded)
     {
-        ts_init(&t, { multithreaded, TS_CPU_NORMAL });
+        ts_init(&t, { multithreaded, TS_CPU_NORMAL }, nullptr);
         ts_component_db_add_from_lua(&t, button, -1);
         ts_component_db_add_from_lua(&t, led, -1);
         ts_component_db_add_from_lua(&t, or_2i, -1);
