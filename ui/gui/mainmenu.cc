@@ -23,7 +23,12 @@ static YesNoDialog quit_dialog("Quit?", {
     "(your work will be stashed until you return)"
 }, [](ts_Transistor* T) { common_quit(T); });
 
-std::vector<Dialog*> dialogs = { &about, &quit_dialog };
+static YesNoDialog clear_dialog("Clear?", {
+    "Are you sure you want to clear the circuit?",
+    "(you'll lose any unsaved work!)"
+}, [](ts_Transistor* T) { common_clear(T); });
+
+std::vector<Dialog*> dialogs = { &about, &quit_dialog, &clear_dialog };
 
 void main_menu_render(ts_Transistor* T)
 {
@@ -35,7 +40,7 @@ void main_menu_render(ts_Transistor* T)
         if (ImGui::BeginMenu("Circuit")) {
 
             if (ImGui::MenuItem("Clear circuit"))
-                ;
+                clear_dialog.show();
             if (ImGui::MenuItem("Load circuit..."))
                 ;
             if (ImGui::MenuItem("Save circuit", "", false, common_savename[0] != '\0'))

@@ -21,8 +21,7 @@ public:
 
     void reset() { show_ = false; }
     void show() { show_ = true; }
-    void render(ts_Transistor* T);
-    void close();
+    void render(ts_Transistor* T) const;
 
 private:
     std::string               title_;
@@ -34,13 +33,13 @@ private:
 class YesNoDialog : public Dialog {
 public:
     YesNoDialog(std::string const& title, std::vector<std::string> const& text, std::function<void(ts_Transistor* t)> on_yes)
-        : Dialog(title, text, { { "Yes", on_yes }, { "No", [this](ts_Transistor*){ close(); } } }) {}
+        : Dialog(title, text, { { "Yes", on_yes }, { "No", [this](ts_Transistor*){} } }) {}
 };
 
 class MessageBox : public Dialog {
 public:
     MessageBox(std::string const& title, std::vector<std::string> const& text)
-        : Dialog(title, text, { { "Ok", [this](ts_Transistor*) { close(); } } }) {}
+        : Dialog(title, text, { { "Ok", [this](ts_Transistor*) {} } }) {}
 };
 
 #endif //DIALOG_HH

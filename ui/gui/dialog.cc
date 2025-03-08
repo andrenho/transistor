@@ -2,7 +2,7 @@
 
 #include <imgui.h>
 
-void Dialog::render(ts_Transistor* T)
+void Dialog::render(ts_Transistor* T) const
 {
     if (show_)
         ImGui::OpenPopup(title_.c_str());
@@ -12,15 +12,12 @@ void Dialog::render(ts_Transistor* T)
             ImGui::Text("%s", text.c_str());
         ImGui::Separator();
         for (auto const& button: buttons_) {
-            if (ImGui::Button(button.text.c_str()))
+            if (ImGui::Button(button.text.c_str())) {
                 button.function(T);
+                ImGui::CloseCurrentPopup();
+            }
             ImGui::SameLine();
         }
         ImGui::EndPopup();
     }
-}
-
-void Dialog::close()
-{
-    ImGui::CloseCurrentPopup();
 }

@@ -5,6 +5,8 @@
 #include <pastel2d.h>
 #include <pl_log.h>
 
+#include "board/components.h"
+
 char common_savename[1024] = "";
 
 const char* stash_name = "˜/.transistor/stash";
@@ -28,6 +30,7 @@ void common_unstash_work(ts_Transistor* T)
         ts_TransistorConfig config = ts_config(T);
         ts_finalize(T);
         ts_unserialize_from_file(T, config, f);
+        components_init(T);
         fclose(f);
     }
 }
@@ -44,6 +47,7 @@ void common_clear(ts_Transistor* T)
     ts_TransistorConfig config = ts_config(T);
     ts_finalize(T);
     ts_init(T, config);
+    components_init(T);
 }
 
 void common_save(ts_Transistor* T)
@@ -72,6 +76,7 @@ void common_load(ts_Transistor* T, const char* filename)
         ts_TransistorConfig config = ts_config(T);
         ts_finalize(T);
         ts_unserialize_from_file(T, config, f);
+        components_init(T);
         fclose(f);
     } else {
         PL_ERROR("Cloud not open file '%s'.", common_savename);
