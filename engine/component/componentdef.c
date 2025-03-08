@@ -12,7 +12,7 @@
 #define TYPE_ERR_MSG "Expected a field 'type' with either: 'single_tile', 'ic_dip' or 'ic_quad'"
 #define WIRE_WIDTH_ERR_MSG "Expected a field 'wire_width' with either 1 or 8."
 
-ts_Result ts_component_def_init_from_lua(ts_ComponentDef* def, const char* lua_code, ts_Sandbox* sb, int graphics_luaref)
+ts_Result ts_component_def_init_from_lua(ts_ComponentDef* def, const char* lua_code, ts_Sandbox* sb, int graphics_luaref, bool native)
 {
 #define ERROR(msg)               { PL_ERROR_RET(TS_COMPONENT_DEF_ERROR, msg); goto end; }
 #define EXPECT(type, msg)        { if (!lua_is ## type(L, -1)) ERROR(msg) }
@@ -39,6 +39,7 @@ ts_Result ts_component_def_init_from_lua(ts_ComponentDef* def, const char* lua_c
     EXPECT(table, "Component definition should be a Lua table");
 
     def->sandbox = sb;
+    def->native = native;
 
     // key
     assert(lua_gettop(L) == 1);

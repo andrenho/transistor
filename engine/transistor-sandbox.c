@@ -9,6 +9,7 @@
 #include <lua.h>
 #include <lauxlib.h>
 #include <pl_log.h>
+#include <component/included.h>
 
 #include "stb_ds.h"
 #include "sandbox/sandbox.h"
@@ -66,22 +67,26 @@ static void thread_init(ts_Transistor* t)
 //
 
 
-ts_Result ts_init(ts_Transistor* t, ts_TransistorConfig config)
+ts_Result ts_init(ts_Transistor* t, ts_TransistorConfig config, G_INITIALIZER G_init)
 {
     PL_INFO("Initializing transistor library in %s mode", config.multithreaded ? "multithreaded" : "single-threaded");
 
     memset(t, 0, sizeof(ts_Transistor));
     ts_sandbox_init(&t->sandbox);
     t->config = config;
+    t->G_luaref = G_init ? G_init(t->sandbox.L) : -1;
+    ts_included_components_init(t);
     thread_init(t);
     return TS_OK;
 }
 
-ts_Result ts_unserialize(ts_Transistor* t, ts_TransistorConfig config, const char* str)
+ts_Result ts_unserialize(ts_Transistor* t, ts_TransistorConfig config, const char* str, G_INITIALIZER G_init)
 {
     PL_DEBUG("Staring deserialization");
 
     memset(t, 0, sizeof(ts_Transistor));
+    t->G_luaref = G_init ? G_init(t->sandbox.L) : -1;
+    ts_included_components_init(t);
     ts_Result r = ts_sandbox_unserialize_from_string(&t->sandbox, str);
     if (r != 0)
         return r;
@@ -92,7 +97,7 @@ ts_Result ts_unserialize(ts_Transistor* t, ts_TransistorConfig config, const cha
     return TS_OK;
 }
 
-ts_Result ts_unserialize_from_file(ts_Transistor* t, ts_TransistorConfig config, FILE* f)
+ts_Result ts_unserialize_from_file(ts_Transistor* t, ts_TransistorConfig config, FILE* f, G_INITIALIZER G_init)
 {
     char* buffer = NULL;
     size_t len;
@@ -100,7 +105,7 @@ ts_Result ts_unserialize_from_file(ts_Transistor* t, ts_TransistorConfig config,
     if (bytes_read < 0)
         PL_ERROR_RET(TS_SYSTEM_ERROR, "Error reading file: %s", strerror(errno));
     PL_DEBUG("File read with %zi bytes", bytes_read);
-    ts_Result r = ts_unserialize(t, config, buffer);
+    ts_Result r = ts_unserialize(t, config, buffer, G_init);
     free(buffer);
     return r;
 }
@@ -167,10 +172,10 @@ ts_BoardIdx ts_add_board(ts_Transistor* t, int w, int h)
 // component db
 //
 
-ts_Result ts_component_db_add_from_lua(ts_Transistor* t, const char* lua_code, int graphics_luaref)
+ts_Result ts_component_db_add_from_lua(ts_Transistor* t, const char* lua_code, bool included)
 {
     ts_lock(t);
-    ts_Result r = ts_component_db_add_def_from_lua(&t->sandbox.component_db, lua_code, graphics_luaref);
+    ts_Result r = ts_component_db_add_def_from_lua(&t->sandbox.component_db, lua_code, t->G_luaref, included);
     ts_unlock(t);
     return r;
 }
@@ -433,7 +438,7 @@ static int direction_angle(ts_Direction dir)
     return 0;
 }
 
-ts_Result ts_component_render(ts_Transistor* t, ts_ComponentSnapshot const* component, int graphics_luaref, int x, int y)
+ts_Result ts_component_render(ts_Transistor* t, ts_ComponentSnapshot const* component, int x, int y)
 {
     ts_lock(t);
 
@@ -447,7 +452,7 @@ ts_Result ts_component_render(ts_Transistor* t, ts_ComponentSnapshot const* comp
 
     // parameters (component, G, x, y)
     lua_rawgeti(L, LUA_REGISTRYINDEX, component->luaref);
-    lua_rawgeti(L, LUA_REGISTRYINDEX, graphics_luaref);
+    lua_rawgeti(L, LUA_REGISTRYINDEX, t->G_luaref);
     lua_pushinteger(L, x);
     lua_pushinteger(L, y);
 

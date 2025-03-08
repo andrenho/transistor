@@ -8,8 +8,6 @@
 
 #include "sandbox/sandbox.h"
 
-typedef struct ts_Sandbox ts_Sandbox;
-
 typedef enum ts_CpuUsage { TS_CPU_LIGHT, TS_CPU_NORMAL, TS_CPU_AGGRESSIVE } ts_CpuUsage;
 
 typedef struct ts_TransistorConfig {
@@ -30,17 +28,21 @@ typedef struct ts_Transistor {
     int                 steps_per_second;
     int                 last_step_count;
     struct timeval      next_step_calculation;
+
+    int                 G_luaref;
 } ts_Transistor;
 
 typedef unsigned int ts_BoardIdx;
+
+typedef int(*G_INITIALIZER)(lua_State* L);
 
 // version
 const char* ts_version();
 
 // initialization
-ts_Result ts_init(ts_Transistor* t, ts_TransistorConfig config);
-ts_Result ts_unserialize(ts_Transistor* t, ts_TransistorConfig config, const char* str);
-ts_Result ts_unserialize_from_file(ts_Transistor* t, ts_TransistorConfig config, FILE* f);
+ts_Result ts_init(ts_Transistor* t, ts_TransistorConfig config, G_INITIALIZER G_init);
+ts_Result ts_unserialize(ts_Transistor* t, ts_TransistorConfig config, const char* str, G_INITIALIZER G_init);
+ts_Result ts_unserialize_from_file(ts_Transistor* t, ts_TransistorConfig config, FILE* f, G_INITIALIZER G_init);
 ts_Result ts_finalize(ts_Transistor* t);
 
 // serialization
@@ -54,7 +56,7 @@ ts_Result ts_unlock(ts_Transistor* t);
 ts_BoardIdx ts_add_board(ts_Transistor* t, int w, int h);
 
 // component db
-ts_Result ts_component_db_add_from_lua(ts_Transistor* t, const char* lua_code, int graphics_luaref);
+ts_Result ts_component_db_add_from_lua(ts_Transistor* t, const char* lua_code, bool included);
 ts_Result ts_component_db_native_simulation(ts_Transistor* t, const char* name, SimulateFn sim_fn);
 
 // execution
@@ -123,7 +125,7 @@ ts_Result ts_snapshot_finalize(ts_TransistorSnapshot* snap);
 // execute Lua functions
 
 ts_Result ts_component_onclick(ts_Transistor* t, ts_ComponentSnapshot const* component);
-ts_Result ts_component_render(ts_Transistor* t, ts_ComponentSnapshot const* component, int graphics_luaref, int x, int y); // TODO - add context
+ts_Result ts_component_render(ts_Transistor* t, ts_ComponentSnapshot const* component, int x, int y); // TODO - add context
 
 // lock multithreaded execution, and borrow the Lua state
 void ts_borrow_lua(ts_Transistor* t, void(*f)(lua_State* L, void* data), void* data);

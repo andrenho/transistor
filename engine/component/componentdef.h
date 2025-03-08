@@ -37,10 +37,12 @@ typedef struct ts_ComponentDef {
     ts_Sandbox*      sandbox;
     int              luaref;            // store global reference in Lua
 
+    bool             native;            // native components are provided by the application and not serialized/deserialized
+
 } ts_ComponentDef;
 
 // initialization
-ts_Result ts_component_def_init_from_lua(ts_ComponentDef* def, const char* lua_code, ts_Sandbox* sb, int graphics_luaref);
+ts_Result ts_component_def_init_from_lua(ts_ComponentDef* def, const char* lua_code, ts_Sandbox* sb, int graphics_luaref, bool native);
 ts_Result ts_component_def_finalize(ts_ComponentDef* def);
 
 // positioning

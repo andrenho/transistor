@@ -7,9 +7,11 @@
 #include <pl_log.h>
 #include <stdlib.h>
 
+#include <transistor-sandbox.h>
+
 #include "board/components.h"
 
-#define AUTOSAVE_ENABLED 1
+#define AUTOSAVE_ENABLED 0
 
 char common_savename[1024] = "";
 char common_savename_file[1024] = "";
@@ -65,8 +67,7 @@ void common_unstash_work(ts_Transistor* T)
     if (f) {
         ts_TransistorConfig config = ts_config(T);
         ts_finalize(T);
-        ts_unserialize_from_file(T, config, f);
-        components_init(T);
+        ts_unserialize_from_file(T, config, f, G_init);
         fclose(f);
         PL_DEBUG("Stash loaded.");
     } else {
@@ -86,8 +87,7 @@ void common_clear(ts_Transistor* T)
     common_set_savename("");
     ts_TransistorConfig config = ts_config(T);
     ts_finalize(T);
-    ts_init(T, config);
-    components_init(T);
+    ts_init(T, config, G_init);
 }
 
 void common_save(ts_Transistor* T)
@@ -116,8 +116,7 @@ void common_load(ts_Transistor* T, const char* filename)
     if (f) {
         ts_TransistorConfig config = ts_config(T);
         ts_finalize(T);
-        ts_unserialize_from_file(T, config, f);
-        components_init(T);
+        ts_unserialize_from_file(T, config, f, G_init);
         fclose(f);
         common_set_savename(filename);
         PL_INFO("Circuit loaded from '%s'.", filename);

@@ -30,7 +30,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="21c7ec71-c9ee-4ebd-950c-c84342844b28" name="Changes" comment=".">
+      <change afterPath="$PROJECT_DIR$/engine/component/included.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/engine/component/included.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/component/componentdb.c" beforeDir="false" afterPath="$PROJECT_DIR$/engine/component/componentdb.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/component/componentdb.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/component/componentdb.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/component/componentdef.c" beforeDir="false" afterPath="$PROJECT_DIR$/engine/component/componentdef.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/component/componentdef.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/component/componentdef.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/transistor-sandbox.c" beforeDir="false" afterPath="$PROJECT_DIR$/engine/transistor-sandbox.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/transistor-sandbox.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/transistor-sandbox.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/board/components.c" beforeDir="false" afterPath="$PROJECT_DIR$/ui/board/components.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/board/components.h" beforeDir="false" afterPath="$PROJECT_DIR$/ui/board/components.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ui/common.c" beforeDir="false" afterPath="$PROJECT_DIR$/ui/common.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/ui/main.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -112,7 +125,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "CppGeneralOptionsId",
+    "settings.editor.selected.configurable": "editor.preferences.fonts.default",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -239,7 +252,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1741361380317</updated>
-      <workItem from="1741361381314" duration="33234000" />
+      <workItem from="1741361381314" duration="36926000" />
     </task>
     <task id="LOCAL-00001" summary=".">
       <option name="closed" value="true" />
@@ -353,7 +366,15 @@
       <option name="project" value="LOCAL" />
       <updated>1741454854625</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary=".">
+      <option name="closed" value="true" />
+      <created>1741454865364</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1741454865364</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -364,19 +385,14 @@
     <option name="LAST_COMMIT_MESSAGE" value="." />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/engine/component/componentdef.c</url>
-          <line>180</line>
-          <option name="timeStamp" value="19" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <watches-manager>
       <configuration name="CLionNativeAppRunConfigurationType">
         <watch expression="def-&gt;key" language="C++" />
       </configuration>
     </watches-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

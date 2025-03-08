@@ -44,12 +44,6 @@ int main(void)
     PL_INFO("pastel2d version %s", ps_version());
     PL_INFO("transistor-sandbox version %s", ts_version());
 
-    // initialize sandbox
-
-    ts_Transistor T;
-    // ts_init(&T, (ts_TransistorConfig) { false, false });
-    ts_init(&T, (ts_TransistorConfig) { true, TS_CPU_NORMAL });
-
     // initialize graphics
 
     if (ps_init(&(ps_GraphicsInit) {
@@ -64,6 +58,12 @@ int main(void)
         exit(EXIT_FAILURE);
     }
 
+    // initialize sandbox
+
+    ts_Transistor T;
+    // ts_init(&T, (ts_TransistorConfig) { false, false });
+    ts_init(&T, (ts_TransistorConfig) { true, TS_CPU_NORMAL }, G_init);
+
     ps_graphics_set_bg(20, 40, 60);
     gui_init();
 
@@ -71,7 +71,6 @@ int main(void)
 
     load_resources();
     common_unstash_work(&T);
-    components_init(&T);
 
     SDL_AddTimer(SAVE_FREQUENCY, timer_save, &T);
 

@@ -5,7 +5,7 @@
 PROJECT_NAME = transistor
 PROJECT_VERSION = 0.1.1
 
-all: $(PROJECT_NAME)
+all: $(PROJECT_NAME) $(PROJECT_NAME)-tests
 
 #
 # configuration
@@ -42,6 +42,7 @@ endif
 #
 
 ENGINE_OBJ = \
+	engine/transistor-sandbox.o \
 	engine/basic/pos_ds.o \
 	engine/basic/rect.o \
 	engine/basic/position.o \
@@ -53,11 +54,12 @@ ENGINE_OBJ = \
 	engine/component/componentdb.o \
 	engine/component/component.o \
 	engine/component/componentdef.o \
+	engine/component/component_mt.o \
+	engine/component/component.o \
+	engine/component/included.o \
 	engine/cursor/cursor.o \
 	engine/sandbox/sandbox.o \
 	engine/simulation/simulation.o \
-	engine/transistor-sandbox.o \
-	engine/component/component_mt.o \
 	engine/simulation/componentsim.o
 
 UI_OBJ = \
@@ -91,11 +93,15 @@ TEST_OBJ = \
 	tests/custom_ic.o \
 	tests/_implementation.o
 
-EMBED = \
-	$(filter-out %.h, $(wildcard resources/fonts/*)) \
-	$(filter-out %.h, $(wildcard resources/images/*)) \
+CIRCUITS = \
 	$(filter-out %.h, $(wildcard components/basic/*)) \
 	$(filter-out %.h, $(wildcard components/gates/*))
+
+EMBED = \
+	$(filter-out %.h, $(wildcard resources/fonts/*)) \
+	$(filter-out %.h, $(wildcard resources/images/*))
+
+$(ENGINE_OBJ): $(CIRCUITS:=.h)
 
 $(UI_OBJ): $(EMBED:=.h)
 
@@ -139,7 +145,7 @@ leaks-tests: $(PROJECT_NAME)-tests
 
 .PHONY: softclean
 softclean:
-	rm -f $(PROJECT_NAME) $(UI_OBJ) $(ENGINE_OBJ) $(TEST_OBJ) $(IMGUI_OBJ) $(CLEANFILES) $(EMBED:=.h) libpastel2d.a
+	rm -f $(PROJECT_NAME) $(UI_OBJ) $(ENGINE_OBJ) $(TEST_OBJ) $(IMGUI_OBJ) $(CLEANFILES) $(EMBED:=.h) $(CIRCUITS:=.h) libpastel2d.a
 
 .PHONY: clean
 clean: softclean

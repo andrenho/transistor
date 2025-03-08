@@ -5,7 +5,7 @@
 #include <pastel2d.h>
 
 // initialization
-void components_init(ts_Transistor* t);
+int G_init(lua_State* L);
 
 // rendering
 void component_renderer_setup(ts_Transistor* T, ps_Scene* scene);
