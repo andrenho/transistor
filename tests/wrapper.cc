@@ -1,3 +1,4 @@
+#include <pl_log.h>
 #include <string>
 
 #include "doctest.h"
@@ -16,10 +17,8 @@ extern "C" {
 struct Fixture {
     Fixture(bool multithreaded)
     {
+        pl_init();
         ts_init(&t, { multithreaded, TS_CPU_NORMAL }, nullptr);
-        ts_component_db_add_from_lua(&t, button, -1);
-        ts_component_db_add_from_lua(&t, led, -1);
-        ts_component_db_add_from_lua(&t, or_2i, -1);
 
         // add wire
         ts_on_cursor_set_position(&t, 0, { 1, 1 });
@@ -49,7 +48,6 @@ TEST_SUITE("Wrapper")
     TEST_CASE("Build circuit")
     {
         Fixture f(false);
-
         ts_TransistorSnapshot snap;
         ts_take_snapshot(&f.t, &snap);
 
@@ -115,5 +113,4 @@ TEST_SUITE("Wrapper")
 
         usleep(10000);
     }
-
 }

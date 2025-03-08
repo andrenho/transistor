@@ -31,9 +31,6 @@
   <component name="ChangeListManager">
     <list default="true" id="21c7ec71-c9ee-4ebd-950c-c84342844b28" name="Changes" comment=".">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/components.hh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/components.hh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/custom_ic.cc" beforeDir="false" afterPath="$PROJECT_DIR$/tests/custom_ic.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/pinpositions.cc" beforeDir="false" afterPath="$PROJECT_DIR$/tests/pinpositions.cc" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/wrapper.cc" beforeDir="false" afterPath="$PROJECT_DIR$/tests/wrapper.cc" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -127,7 +124,7 @@
       <recent name="$PROJECT_DIR$/contrib" />
     </key>
   </component>
-  <component name="RunManager" selected="Native Application.transistor-tests">
+  <component name="RunManager" selected="Native Application.leaks">
     <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="CLION.EXTERNAL.BUILD" enabled="true" />
@@ -243,7 +240,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1741361380317</updated>
-      <workItem from="1741361381314" duration="37129000" />
+      <workItem from="1741361381314" duration="37978000" />
     </task>
     <task id="LOCAL-00001" summary=".">
       <option name="closed" value="true" />
@@ -373,7 +370,15 @@
       <option name="project" value="LOCAL" />
       <updated>1741466592807</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary=".">
+      <option name="closed" value="true" />
+      <created>1741466764389</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1741466764389</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -384,6 +389,15 @@
     <option name="LAST_COMMIT_MESSAGE" value="." />
   </component>
   <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/engine/component/included.c</url>
+          <line>55</line>
+          <option name="timeStamp" value="22" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
     <watches-manager>
       <configuration name="CLionNativeAppRunConfigurationType">
         <watch expression="def-&gt;key" language="C++" />
