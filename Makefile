@@ -62,6 +62,7 @@ ENGINE_OBJ = \
 
 UI_OBJ = \
 	ui/main.o \
+	ui/common.o \
 	ui/resources.o \
 	ui/gui/gui.o \
 	ui/gui/mainmenu.o \

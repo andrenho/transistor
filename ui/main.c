@@ -14,6 +14,7 @@
 #include <pastel2d.h>
 #include <transistor-sandbox.h>
 
+#include "common.h"
 #include "board/board.h"
 #include "board/components.h"
 #include "gui/gui.hh"
@@ -81,9 +82,10 @@ int main(void)
 
         SDL_Event e;
         while (SDL_PollEvent(&e)) {
+#ifndef NDEBUG
             if (e.type == SDL_EVENT_QUIT || (e.type == SDL_EVENT_KEY_DOWN && e.key.key == SDLK_Q))
-                ps_graphics_quit();
-
+                common_quit();
+#endif
             board_update(&T, &e);
             gui_events(&e);
         }

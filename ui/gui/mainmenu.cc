@@ -4,23 +4,66 @@
 
 extern "C" {
 #include <pastel2d.h>
+#include "ui/common.h"
 }
 
 extern bool show_demo_window_;
-bool about_box_ = false;
+
+bool open_about_box_ = false;
+bool open_quit_box_ = false;
+
+static void about_box()
+{
+    if (open_about_box_)
+        ImGui::OpenPopup("About Transistor");
+
+    if (ImGui::BeginPopupModal("About Transistor", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
+        ImGui::Text("Transistor " PROJECT_VERSION);
+        ImGui::Text("Created by Andre Wagner.");
+        ImGui::Text("Distributed as free software under the GPLv3 license.");
+        ImGui::Separator();
+        if (ImGui::Button("Ok"))
+            ImGui::CloseCurrentPopup();
+        ImGui::EndPopup();
+    }
+}
+
+static void quit_box()
+{
+    if (open_quit_box_)
+        ImGui::OpenPopup("Quit?");
+
+    if (ImGui::BeginPopupModal("Quit?", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
+        ImGui::Text("Are you sure you want to quit?");
+        ImGui::Text("(your work will be stashed until you return)");
+        ImGui::Separator();
+        if (ImGui::Button("Yes"))
+            common_quit();
+        ImGui::SameLine();
+        if (ImGui::Button("No"))
+            ImGui::CloseCurrentPopup();
+        ImGui::EndPopup();
+    }
+}
 
 void main_menu_render(ts_Transistor* T)
 {
-    bool open_about_box = false;
+    open_about_box_ = false;
+    open_quit_box_ = false;
 
     if (ImGui::BeginMainMenuBar()) {
 
-        if (ImGui::BeginMenu("File")) {
+        if (ImGui::BeginMenu("Circuit")) {
+
+            ImGui::MenuItem("Clear circuit");
+            ImGui::MenuItem("Load circuit...");
+            ImGui::MenuItem("Save circuit");
+            ImGui::MenuItem("Save circuit as...");
 
 #ifndef NDEBUG
             ImGui::Separator();
 
-            if (ImGui::MenuItem("Serialize sandbox")) {
+            if (ImGui::MenuItem("Serialize to stdout")) {
                 ts_serialize_to_file(T, stdout);
                 printf("-----------------------\n");
             }
@@ -31,7 +74,7 @@ void main_menu_render(ts_Transistor* T)
             ImGui::Separator();
 
             if (ImGui::MenuItem("Exit"))
-                ps_graphics_quit();
+                open_quit_box_ = true;
 
             ImGui::EndMenu();
         }
@@ -55,7 +98,7 @@ void main_menu_render(ts_Transistor* T)
         if (ImGui::BeginMenu("Help")) {
 
             if (ImGui::MenuItem("About"))
-                open_about_box = true;
+                open_about_box_ = true;
 
             ImGui::EndMenu();
         }
@@ -63,16 +106,6 @@ void main_menu_render(ts_Transistor* T)
         ImGui::EndMainMenuBar();
     }
 
-    if (open_about_box)
-        ImGui::OpenPopup("AboutTransistor");
-
-    if (ImGui::BeginPopupModal("AboutTransistor", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
-        ImGui::Text("Transistor " PROJECT_VERSION);
-        ImGui::Text("Created by Andre Wagner.");
-        ImGui::Text("Distributed as free software under the GPLv3 license.");
-        ImGui::Separator();
-        if (ImGui::Button("Ok"))
-            ImGui::CloseCurrentPopup();
-        ImGui::EndPopup();
-    }
+    about_box();
+    quit_box();
 }
