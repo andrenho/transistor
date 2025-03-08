@@ -31,18 +31,15 @@
   <component name="ChangeListManager">
     <list default="true" id="21c7ec71-c9ee-4ebd-950c-c84342844b28" name="Changes" comment=".">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/component/componentdb.c" beforeDir="false" afterPath="$PROJECT_DIR$/engine/component/componentdb.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/component/componentdb.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/component/componentdb.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/component/componentdef.c" beforeDir="false" afterPath="$PROJECT_DIR$/engine/component/componentdef.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/component/componentdef.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/component/componentdef.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/sandbox/sandbox.c" beforeDir="false" afterPath="$PROJECT_DIR$/engine/sandbox/sandbox.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/sandbox/sandbox.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/sandbox/sandbox.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/transistor-sandbox.c" beforeDir="false" afterPath="$PROJECT_DIR$/engine/transistor-sandbox.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/transistor-sandbox.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/transistor-sandbox.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/compilation.cc" beforeDir="false" afterPath="$PROJECT_DIR$/tests/compilation.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/placement.cc" beforeDir="false" afterPath="$PROJECT_DIR$/tests/placement.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/position.cc" beforeDir="false" afterPath="$PROJECT_DIR$/tests/position.cc" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/serialization.cc" beforeDir="false" afterPath="$PROJECT_DIR$/tests/serialization.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/simulation.cc" beforeDir="false" afterPath="$PROJECT_DIR$/tests/simulation.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/wrapper.cc" beforeDir="false" afterPath="$PROJECT_DIR$/tests/wrapper.cc" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ui/common.c" beforeDir="false" afterPath="$PROJECT_DIR$/ui/common.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/ui/main.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,9 +96,9 @@
     <option name="minorVersion" value="1" />
     <option name="productBranch" value="Classic" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 4
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
   <component name="ProjectId" id="2tzicAzrizTAJEZ564Rjkav1K4L" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -110,7 +107,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Native Application.transistor-tests.executor": "Run",
-    "Native Application.transistor.executor": "Run",
+    "Native Application.transistor.executor": "Debug",
     "RunOnceActivity.RadMigrateCodeStyle": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.cidr.known.project.marker": "true",
@@ -135,7 +132,7 @@
       <recent name="$PROJECT_DIR$/contrib" />
     </key>
   </component>
-  <component name="RunManager" selected="Native Application.transistor">
+  <component name="RunManager" selected="Native Application.leaks">
     <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="CLION.EXTERNAL.BUILD" enabled="true" />
@@ -223,6 +220,16 @@
       <method v="2">
         <option name="CLION.COMPOUND.BUILD" enabled="true" />
       </method>
+    </configuration>
+    <configuration default="true" type="lua.app" factoryName="Lua Application">
+      <option name="program" value="/opt/homebrew/bin/lua" />
+      <option name="file" value="" />
+      <option name="workingDir" value="$PROJECT_DIR$/engine/basic/position.c" />
+      <option name="debuggerType" value="2" />
+      <option name="params" value="" />
+      <option name="charset" value="UTF-8" />
+      <option name="showConsole" value="true" />
+      <method v="2" />
     </configuration>
     <list>
       <item itemvalue="Native Application.config" />
@@ -408,11 +415,20 @@
     <option name="LAST_COMMIT_MESSAGE" value="." />
   </component>
   <component name="XDebuggerManager">
-    <watches-manager>
-      <configuration name="CLionNativeAppRunConfigurationType">
-        <watch expression="def-&gt;key" language="C++" />
-      </configuration>
-    </watches-manager>
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/engine/component/componentdb.c</url>
+          <line>55</line>
+          <option name="timeStamp" value="27" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/engine/component/componentdb.c</url>
+          <line>59</line>
+          <option name="timeStamp" value="28" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

@@ -50,6 +50,23 @@ ts_Result ts_component_db_update_simulation(ts_ComponentDB* db, const char* name
     return TS_OK;
 }
 
+ts_Result ts_component_db_clear_not_included(ts_ComponentDB* db)
+{
+    char** to_remove = NULL;
+    for (int i = 0; i < shlen(db->items); ++i)
+        if (!db->items[i].included)
+            arrpush(to_remove, db->items[i].key);
+
+    for (int i = 0; i < arrlen(to_remove); ++i) {
+        int j = shgeti(db->items, to_remove[i]);
+        ts_component_def_finalize(&db->items[j]);
+        shdel(db->items, to_remove[i]);
+    }
+    arrfree(to_remove);
+
+    return TS_OK;
+}
+
 ts_ComponentDef const* ts_component_db_def(ts_ComponentDB const* db, const char* name)
 {
     return shgetp_null(((ts_ComponentDB *) db)->items, name);
@@ -66,7 +83,7 @@ ts_Result ts_component_db_init_component(ts_ComponentDB const* db, const char* n
 int ts_component_db_serialize(ts_ComponentDB const* db, int vspace, FILE* f)
 {
     for (int i = 0; i < shlen(db->items); ++i) {
-        if (!db->items[i].native) {
+        if (!db->items[i].included) {
             fprintf(f, "%*s", vspace, "");
             ts_component_def_serialize(&db->items[i], f);
             fprintf(f, ",\n");
@@ -77,7 +94,7 @@ int ts_component_db_serialize(ts_ComponentDB const* db, int vspace, FILE* f)
 
 ts_Result ts_component_db_unserialize(ts_ComponentDB* db, lua_State* LL, ts_Sandbox* sb)
 {
-    ts_component_db_init(db, sb);
+    ts_component_db_clear_not_included(db);
     size_t len = lua_objlen(LL, -1);
     for (size_t i = 0; i < len; ++i) {
         ts_ComponentDef def;

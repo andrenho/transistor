@@ -10,6 +10,7 @@
 #include <pl_log.h>
 
 #include <stb_ds.h>
+#include <transistor-sandbox.h>
 
 #include "board/board.h"
 #include "util/serialize.h"
@@ -18,7 +19,7 @@
 // initialization
 //
 
-static ts_Result ts_sandbox_init_common(ts_Sandbox* sb)
+ts_Result ts_sandbox_init(ts_Sandbox* sb)
 {
     memset(sb, 0, sizeof(ts_Sandbox));
     ts_component_db_init(&sb->component_db, sb);
@@ -31,15 +32,18 @@ static ts_Result ts_sandbox_init_common(ts_Sandbox* sb)
     ts_simulation_init(&sb->simulation, sb);
 
     PL_DEBUG("Sandbox initialized");
-    return TS_OK;
-}
-
-ts_Result ts_sandbox_init(ts_Sandbox* sb)
-{
-    ts_sandbox_init_common(sb);
 
     ts_sandbox_start_simulation(sb);
     return TS_OK;
+}
+
+static void ts_sandbox_reset(ts_Sandbox* sb)
+{
+    for (int i = 0; i < arrlen(sb->boards); ++i)
+        ts_board_finalize(&sb->boards[i]);
+    arrfree(sb->boards);
+
+    ts_component_db_clear_not_included(&sb->component_db);
 }
 
 ts_Result ts_sandbox_finalize(ts_Sandbox* sb)
@@ -51,7 +55,6 @@ ts_Result ts_sandbox_finalize(ts_Sandbox* sb)
     arrfree(sb->boards);
 
     ts_component_db_finalize(&sb->component_db);
-
     assert(lua_gettop(sb->L) == 0);
     lua_close(sb->L);
 
@@ -108,6 +111,9 @@ static ts_Result ts_sandbox_unserialize(ts_Sandbox* sb, lua_State* LL)
     if (!lua_istable(LL, -1))
         PL_ERROR_RET(TS_DESERIALIZATION_ERROR, "The returned element is not a table");
 
+    // reset
+    ts_sandbox_reset(sb);
+
     // component db
 
     lua_getfield(LL, -1, "component_db");
@@ -140,9 +146,6 @@ static ts_Result ts_sandbox_unserialize(ts_Sandbox* sb, lua_State* LL)
 
 ts_Result ts_sandbox_unserialize_from_string(ts_Sandbox* sb, const char* str)
 {
-    ts_Result response = TS_OK;
-
-    ts_sandbox_init_common(sb);
     lua_State* LL = luaL_newstate();
     luaL_openlibs(LL);
 
@@ -152,7 +155,7 @@ ts_Result ts_sandbox_unserialize_from_string(ts_Sandbox* sb, const char* str)
     if (lua_gettop(LL) != 1)
         PL_ERROR_RET(TS_DESERIALIZATION_ERROR, "A element was not added to the stack.");
 
-    response = ts_sandbox_unserialize(sb, LL);
+    ts_Result response = ts_sandbox_unserialize(sb, LL);
     lua_pop(LL, 1);
 
 end:

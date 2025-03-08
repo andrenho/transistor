@@ -39,7 +39,7 @@ ts_Result ts_component_def_init_from_lua(ts_ComponentDef* def, const char* lua_c
     EXPECT(table, "Component definition should be a Lua table");
 
     def->sandbox = sb;
-    def->native = native;
+    def->included = native;
 
     // key
     assert(lua_gettop(L) == 1);

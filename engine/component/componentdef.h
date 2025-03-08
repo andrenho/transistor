@@ -37,7 +37,7 @@ typedef struct ts_ComponentDef {
     ts_Sandbox*      sandbox;
     int              luaref;            // store global reference in Lua
 
-    bool             native;            // native components are provided by the application and not serialized/deserialized
+    bool             included;          // included components are provided by the application and not serialized/deserialized
 
 } ts_ComponentDef;
 

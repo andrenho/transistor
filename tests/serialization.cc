@@ -32,6 +32,7 @@ TEST_SUITE("Serialization") {
         printf("%s\n", serialized);
 
         ts_Sandbox sb2;
+        ts_sandbox_init(&sb2);
         ts_Result response = ts_sandbox_unserialize_from_string(&sb2, serialized);
         if (response != TS_OK)
             printf("%s\n", pl_last_error());

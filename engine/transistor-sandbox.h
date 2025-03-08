@@ -41,8 +41,8 @@ const char* ts_version();
 
 // initialization
 ts_Result ts_init(ts_Transistor* t, ts_TransistorConfig config, G_INITIALIZER G_init);
-ts_Result ts_unserialize(ts_Transistor* t, ts_TransistorConfig config, const char* str, G_INITIALIZER G_init);
-ts_Result ts_unserialize_from_file(ts_Transistor* t, ts_TransistorConfig config, FILE* f, G_INITIALIZER G_init);
+ts_Result ts_unserialize(ts_Transistor* t, const char* str, G_INITIALIZER G_init);
+ts_Result ts_unserialize_from_file(ts_Transistor* t, FILE* f, G_INITIALIZER G_init);
 ts_Result ts_finalize(ts_Transistor* t);
 
 // serialization

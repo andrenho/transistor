@@ -20,6 +20,7 @@ ts_Result ts_component_db_finalize(ts_ComponentDB* db);
 ts_Result              ts_component_db_add_def_from_lua(ts_ComponentDB* db, const char* lua_code, int graphics_luaref, bool included);
 ts_Result              ts_component_db_update_simulation(ts_ComponentDB* db, const char* name, SimulateFn sim_fn);
 ts_ComponentDef const* ts_component_db_def(ts_ComponentDB const* db, const char* name);
+ts_Result              ts_component_db_clear_not_included(ts_ComponentDB* db);
 
 // serialization
 int       ts_component_db_serialize(ts_ComponentDB const* db, int vspace, FILE* f);
