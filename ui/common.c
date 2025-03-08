@@ -9,7 +9,7 @@
 
 #include "board/components.h"
 
-#define AUTOSAVE_ENABLED 0
+#define AUTOSAVE_ENABLED 1
 
 char common_savename[1024] = "";
 char common_savename_file[1024] = "";
