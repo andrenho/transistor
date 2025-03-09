@@ -58,3 +58,5 @@ transistor
 transistor-tests
 .DS_Store
 imgui.ini
+compile_commands.json
+.cache/
