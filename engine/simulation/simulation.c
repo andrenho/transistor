@@ -111,6 +111,8 @@ ts_Result ts_simulation_run(ts_Simulation* sim, size_t run_for_us)
 ts_Result ts_simulation_start(ts_Simulation* sim)
 {
     PL_DEBUG("New simulation started.");
+    if (arrlen(sim->connections) > 0)
+        ts_simulation_end(sim);
     sim->connections = ts_compiler_compile(sim->sandbox);
     return TS_OK;
 }

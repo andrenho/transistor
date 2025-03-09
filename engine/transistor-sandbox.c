@@ -89,7 +89,6 @@ ts_Result ts_unserialize(ts_Transistor* t, const char* str)
     ts_Result r = ts_sandbox_unserialize_from_string(&t->sandbox, str);
     if (r != 0)
         return r;
-    thread_init(t);
 
     PL_DEBUG("Deserialization complete");
     ts_unlock(t);
@@ -125,9 +124,11 @@ ts_Result ts_finalize(ts_Transistor* t)
 ts_Result ts_clear(ts_Transistor* t)
 {
     ts_lock(t);
+    ts_sandbox_end_simulation(&t->sandbox);
     ts_sandbox_clear(&t->sandbox);
-    ts_unlock(t);
     PL_DEBUG("*** Sandbox cleared.");
+    ts_sandbox_start_simulation(&t->sandbox);
+    ts_unlock(t);
     return TS_OK;
 }
 

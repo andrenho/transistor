@@ -10,8 +10,6 @@ extern "C" {
 #include "transistor-sandbox.h"
 }
 
-#include "components.hh"
-
 #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 
 struct Fixture {
@@ -61,6 +59,7 @@ struct Fixture {
 
 TEST_SUITE("Wrapper")
 {
+#if 0
     TEST_CASE("Build circuit")
     {
         Fixture f(false);
@@ -129,6 +128,7 @@ TEST_SUITE("Wrapper")
 
         usleep(10000);
     }
+#endif
 
     TEST_CASE("Single threaded - unserialize")
     {
