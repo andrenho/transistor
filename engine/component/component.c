@@ -133,7 +133,7 @@ int ts_component_serialize(ts_Component const* component, int vspace, FILE* f)
     return TS_OK;
 }
 
-ts_Result ts_component_unserialize(ts_Component* component, lua_State* L, ts_Sandbox* sb)
+ts_Result ts_component_unserialize(ts_Component* component, ts_Position pos, lua_State* L, ts_Sandbox* sb)
 {
     // direction
     ts_Direction dir;
@@ -158,6 +158,8 @@ ts_Result ts_component_unserialize(ts_Component* component, lua_State* L, ts_San
         }
     }
     lua_pop(L, 1);
+
+    component->position = pos;
 
     return TS_OK;
 }

@@ -80,7 +80,7 @@ ts_Result ts_init(ts_Transistor* t, ts_TransistorConfig config, G_INITIALIZER G_
     return TS_OK;
 }
 
-ts_Result ts_unserialize(ts_Transistor* t, const char* str, G_INITIALIZER G_init)
+ts_Result ts_unserialize(ts_Transistor* t, const char* str)
 {
     ts_lock(t);
 
@@ -97,7 +97,7 @@ ts_Result ts_unserialize(ts_Transistor* t, const char* str, G_INITIALIZER G_init
     return TS_OK;
 }
 
-ts_Result ts_unserialize_from_file(ts_Transistor* t, FILE* f, G_INITIALIZER G_init)
+ts_Result ts_unserialize_from_file(ts_Transistor* t, FILE* f)
 {
     char* buffer = NULL;
     size_t len;
@@ -105,8 +105,9 @@ ts_Result ts_unserialize_from_file(ts_Transistor* t, FILE* f, G_INITIALIZER G_in
     if (bytes_read < 0)
         PL_ERROR_RET(TS_SYSTEM_ERROR, "Error reading file: %s", strerror(errno));
     PL_DEBUG("File read with %zi bytes", bytes_read);
-    ts_Result r = ts_unserialize(t, buffer, G_init);
+    ts_Result r = ts_unserialize(t, buffer);
     free(buffer);
+    PL_DEBUG("Sandbox deseralized from file.");
     return r;
 }
 
@@ -121,6 +122,15 @@ ts_Result ts_finalize(ts_Transistor* t)
     return TS_OK;
 }
 
+ts_Result ts_clear(ts_Transistor* t)
+{
+    ts_lock(t);
+    ts_sandbox_clear(&t->sandbox);
+    ts_unlock(t);
+    PL_DEBUG("*** Sandbox cleared.");
+    return TS_OK;
+}
+
 //
 // serialization
 //
@@ -131,6 +141,7 @@ ts_Result ts_serialize_to_file(ts_Transistor* t, FILE* f)
     fprintf(f, "return ");
     ts_Result r = ts_sandbox_serialize(&t->sandbox, 0, f);
     ts_unlock(t);
+    PL_DEBUG("Sandbox seralized to file.");
     return r;
 }
 

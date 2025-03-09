@@ -369,7 +369,7 @@ static ts_Result ts_board_unserialize_components(ts_Board* board, lua_State* L, 
         if ((r = ts_pos_unserialize(&pos, L)) != TS_OK)
             return r;
         lua_pop(L, 1);
-        if ((r = ts_component_unserialize(component, L, sb) != TS_OK))
+        if ((r = ts_component_unserialize(component, pos, L, sb) != TS_OK))
             return r;
         phput(board->components, pos, component);
         lua_pop(L, 1);

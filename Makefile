@@ -82,6 +82,8 @@ IMGUI_OBJ = \
 	contrib/imgui/backends/imgui_impl_sdlrenderer3.o
 
 TEST_OBJ = \
+	tests/_implementation.o \
+	tests/wrapper.o \
 	tests/position.o \
 	tests/pinpositions.o \
 	tests/connected_wires.o \
@@ -89,9 +91,7 @@ TEST_OBJ = \
 	tests/compilation.o \
 	tests/serialization.o \
 	tests/simulation.o \
-	tests/wrapper.o \
-	tests/custom_ic.o \
-	tests/_implementation.o
+	tests/custom_ic.o
 
 CIRCUITS = \
 	$(filter-out %.h, $(wildcard components/basic/*)) \

@@ -113,6 +113,8 @@ ts_Connection* ts_compiler_compile(ts_Sandbox const* sb)
         for (int i = 0; i < arrlen(connections); ++i) {
             PL_DEBUG("- Connection #%d", i);
             ts_Connection* c = &connections[i];
+            if (arrlen(c->pins) == 0)
+                PL_DEBUG("    No pins found.");
             for (int j = 0; j < arrlen(c->pins); ++j)
                 PL_DEBUG("    Pin %d of component '%s' at %d,%d",
                     c->pins[j].pin_no, c->pins[j].component->def->key, c->pins[j].component->position.x, c->pins[j].component->position.y);

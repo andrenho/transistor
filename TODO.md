@@ -39,10 +39,11 @@
   - [x] Save/load (serialize/unserialize)
     - [x] Treat errors
   - [x] Save on close, periodic saving
-  - [ ] Check for leaks
-    - [ ] Why do I have to reload the components? Should work without.
-    - [ ] Deal with loading of native components
-    - [ ] Don't add components if already exist
+  - [x] Check for leaks
+    - [x] Why do I have to reload the components? Should work without.
+    - [x] Deal with loading of native components
+    - [x] Don't add components if already exist
+    - [ ] Simulation not starting after load
   - [ ] Toolbox
     - [ ] Create toolbox (basic components)
     - [ ] Organize database per category/subcategory
@@ -63,6 +64,7 @@
  - [ ] Rebrand
  - [ ] Github README
  - [ ] Emscripten version
+ 
 
 - [ ] Future implementation 1
   - [ ] Resize board
@@ -70,6 +72,9 @@
   - [ ] Add text to board
   - [ ] Lua ICs
     - [ ] UI library
+  - [ ] Miniatures
+    - [ ] Saved circuits
+    - [ ] ICs
 
 - [ ] Future implementation 2
   - [ ] Lower layer wiring

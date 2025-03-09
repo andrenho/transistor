@@ -36,6 +36,21 @@ struct Fixture {
         ts_run(&t, 10000);
     }
 
+    void serialize_and_deserialize()
+    {
+        FILE* f = fopen("/tmp/transistor.trn", "w");
+        ts_serialize_to_file(&t, f);
+        fclose(f);
+
+        ts_clear(&t);
+
+        f = fopen("/tmp/transistor.trn", "r");
+        ts_unserialize_from_file(&t, f);
+        fclose(f);
+
+        unlink("/tmp/transistor.trn");
+    }
+
     ~Fixture()
     {
         ts_finalize(&t);
@@ -89,6 +104,75 @@ TEST_SUITE("Wrapper")
 
         ts_lock(&f.t);
         ts_Component* button = f.t.sandbox.boards[0].components[0].value;
+        CHECK(std::string(button->def->key) == "__button");
+        CHECK(button->data[0] == 0);
+        ts_unlock(&f.t);
+
+        ts_on_cursor_set_position(&f.t, 0, { 1, 1 });
+        ts_on_cursor_click(&f.t, 0, TS_BUTTON_LEFT);
+        usleep(10000);
+        ts_lock(&f.t);
+        CHECK(button->data[0] != 0);
+        ts_unlock(&f.t);
+
+        ts_TransistorSnapshot snap;
+        ts_take_snapshot(&f.t, &snap);
+        CHECK(snap.boards[0].wires[0].value != 0);
+        ts_snapshot_finalize(&snap);
+
+        ts_on_cursor_set_position(&f.t, 0, { 1, 1 });
+        ts_on_cursor_click(&f.t, 0, TS_BUTTON_LEFT);
+        usleep(10000);
+        ts_lock(&f.t);
+        CHECK(button->data[0] == 0);
+        ts_unlock(&f.t);
+
+        usleep(10000);
+    }
+
+    TEST_CASE("Single threaded - unserialize")
+    {
+        pl_init();
+        Fixture f(false);
+
+        ts_Component* button = ts_board_component(&f.t.sandbox.boards[0], { 1, 1 });
+        CHECK(std::string(button->def->key) == "__button");
+
+        f.serialize_and_deserialize();
+
+        button = ts_board_component(&f.t.sandbox.boards[0], { 1, 1 });
+        CHECK(std::string(button->def->key) == "__button");
+        CHECK(button->data[0] == 0);
+
+        ts_on_cursor_set_position(&f.t, 0, { 1, 1 });
+        ts_on_cursor_click(&f.t, 0, TS_BUTTON_LEFT);
+        ts_run(&f.t, 10000);
+        CHECK(button->data[0] != 0);
+
+        ts_TransistorSnapshot snap;
+        ts_take_snapshot(&f.t, &snap);
+        CHECK(snap.boards[0].wires[0].value != 0);
+        ts_snapshot_finalize(&snap);
+
+        ts_on_cursor_set_position(&f.t, 0, { 1, 1 });
+        ts_on_cursor_click(&f.t, 0, TS_BUTTON_LEFT);
+        ts_run(&f.t, 10000);
+        CHECK(button->data[0] == 0);
+    }
+
+    TEST_CASE("Multithreaded - unserialize")
+    {
+        Fixture f(true);
+
+        ts_lock(&f.t);
+        ts_Component* button = ts_board_component(&f.t.sandbox.boards[0], { 1, 1 });
+        CHECK(std::string(button->def->key) == "__button");
+        ts_unlock(&f.t);
+
+        f.serialize_and_deserialize();
+
+        ts_lock(&f.t);
+        button = ts_board_component(&f.t.sandbox.boards[0], { 1, 1 });
         CHECK(std::string(button->def->key) == "__button");
         CHECK(button->data[0] == 0);
         ts_unlock(&f.t);

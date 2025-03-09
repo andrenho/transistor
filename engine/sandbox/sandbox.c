@@ -37,13 +37,19 @@ ts_Result ts_sandbox_init(ts_Sandbox* sb)
     return TS_OK;
 }
 
-static void ts_sandbox_reset(ts_Sandbox* sb)
+ts_Result ts_sandbox_clear(ts_Sandbox* sb)
 {
+    ts_sandbox_end_simulation(sb);
+
     for (int i = 0; i < arrlen(sb->boards); ++i)
         ts_board_finalize(&sb->boards[i]);
     arrfree(sb->boards);
 
     ts_component_db_clear_not_included(&sb->component_db);
+
+    ts_sandbox_start_simulation(sb);
+
+    return TS_OK;
 }
 
 ts_Result ts_sandbox_finalize(ts_Sandbox* sb)
@@ -112,7 +118,7 @@ static ts_Result ts_sandbox_unserialize(ts_Sandbox* sb, lua_State* LL)
         PL_ERROR_RET(TS_DESERIALIZATION_ERROR, "The returned element is not a table");
 
     // reset
-    ts_sandbox_reset(sb);
+    ts_sandbox_clear(sb);
 
     // component db
 
@@ -146,6 +152,8 @@ static ts_Result ts_sandbox_unserialize(ts_Sandbox* sb, lua_State* LL)
 
 ts_Result ts_sandbox_unserialize_from_string(ts_Sandbox* sb, const char* str)
 {
+    ts_simulation_end(&sb->simulation);
+
     lua_State* LL = luaL_newstate();
     luaL_openlibs(LL);
 
@@ -157,6 +165,8 @@ ts_Result ts_sandbox_unserialize_from_string(ts_Sandbox* sb, const char* str)
 
     ts_Result response = ts_sandbox_unserialize(sb, LL);
     lua_pop(LL, 1);
+
+    ts_simulation_start(&sb->simulation);
 
 end:
     assert(lua_gettop(LL) == 0);

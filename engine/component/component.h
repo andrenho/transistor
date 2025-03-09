@@ -40,6 +40,6 @@ size_t  ts_component_pin_positions(ts_Component const* component, ts_PinPos* pin
 
 // serialization
 int       ts_component_serialize(ts_Component const* component, int vspace, FILE* f);
-ts_Result ts_component_unserialize(ts_Component* component, lua_State* L, ts_Sandbox* sb);
+ts_Result ts_component_unserialize(ts_Component* component, ts_Position pos, lua_State* L, ts_Sandbox* sb);
 
 #endif //COMPONENT_H
