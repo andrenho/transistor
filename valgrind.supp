@@ -124,3 +124,15 @@
    ...
    fun:_dl_open
 }
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   ...
+   fun:XSetLocaleModifiers
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   ...
+   fun:XSetLocaleModifiers
+}
