@@ -149,5 +149,6 @@ softclean:
 
 .PHONY: clean
 clean: softclean
+	$(MAKE) -C contrib/pastel2d clean
 	rm -rf build-sdl3 libSDL3.a libluajit.a
 

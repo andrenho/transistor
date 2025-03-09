@@ -31,15 +31,10 @@
   <component name="ChangeListManager">
     <list default="true" id="21c7ec71-c9ee-4ebd-950c-c84342844b28" name="Changes" comment=".">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/component/componentdb.c" beforeDir="false" afterPath="$PROJECT_DIR$/engine/component/componentdb.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/component/componentdb.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/component/componentdb.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/component/componentdef.c" beforeDir="false" afterPath="$PROJECT_DIR$/engine/component/componentdef.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/component/componentdef.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/component/componentdef.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/sandbox/sandbox.c" beforeDir="false" afterPath="$PROJECT_DIR$/engine/sandbox/sandbox.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/transistor-sandbox.c" beforeDir="false" afterPath="$PROJECT_DIR$/engine/transistor-sandbox.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/transistor-sandbox.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/transistor-sandbox.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/serialization.cc" beforeDir="false" afterPath="$PROJECT_DIR$/tests/serialization.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/common.c" beforeDir="false" afterPath="$PROJECT_DIR$/ui/common.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contrib/SDL" beforeDir="false" afterPath="$PROJECT_DIR$/contrib/SDL" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contrib/pastel2d" beforeDir="false" afterPath="$PROJECT_DIR$/contrib/pastel2d" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contrib/pastel2d/src/graphics.c" beforeDir="false" afterPath="$PROJECT_DIR$/contrib/pastel2d/src/graphics.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,7 +50,7 @@
     </projectState>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/contrib/pastel2d" />
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file:///opt/homebrew/Cellar/llvm@17/17.0.6/include/c++/v1/__functional/function.h" root0="FORCE_HIGHLIGHTING" />
@@ -114,7 +109,7 @@
     "RunOnceActivity.readMode.enableVisualFormatting": "true",
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
-    "git-widget-placeholder": "native",
+    "git-widget-placeholder": "master",
     "last_opened_file_path": "/Users/aw98156/prj/transistor",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -413,22 +408,6 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="." />
     <option name="LAST_COMMIT_MESSAGE" value="." />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/engine/component/componentdb.c</url>
-          <line>55</line>
-          <option name="timeStamp" value="27" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/engine/component/componentdb.c</url>
-          <line>59</line>
-          <option name="timeStamp" value="28" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
