@@ -5,9 +5,7 @@
 [submodule "contrib/pastel-base"]
 	path = contrib/pastel-base
 	url = https://github.com/andrenho/pastel-base
-[submodule "contrib/SDL"]
-	path = contrib/SDL
-	url = https://github.com/libsdl-org/SDL.git
+	branch = master
 [submodule "contrib/imgui"]
 	path = contrib/imgui
 	url = https://github.com/ocornut/imgui.git
