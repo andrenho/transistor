@@ -114,7 +114,7 @@ void common_load(ts_Transistor* T, const char* filename)
 {
     FILE* f = fopen(filename, "r");
     if (f) {
-        ts_unserialize_from_file(T, f, G_init);
+        ts_unserialize_from_file(T, f);
         fclose(f);
         common_set_savename(filename);
         PL_INFO("Circuit loaded from '%s'.", filename);
