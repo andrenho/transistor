@@ -2,24 +2,34 @@
 -- directions
 --
 
+CENTER = "CENTER"
 N = "N"
 E = "E"
 S = "S"
 W = "W"
-CENTER = "CENTER"
+
+function dir_hash(dir)
+   if dir == CENTER then return 0 end
+   if dir == N then return 1 end
+   if dir == E then return 2 end
+   if dir == S then return 3 end
+   if dir == W then return 4 end
+   assert(false)
+end
 
 --
 -- orientation
 --
 
 HORIZONTAL = "horizontal"
-VERTICAL = "vertical"
+VERTICAL   = "vertical"
 
 --
 -- Position
 --
 
 Position = {}
+Position.__index = Position
 
 function Position.new(x, y, dir)
    local self = setmetatable({}, Position)
@@ -31,6 +41,10 @@ end
 
 function Position.__eq(a, b)
    return a.x == b.x and a.y == b.y and a.dir == b.dir
+end
+
+function Position:hash()
+   return (self.x * 10000) + self.y + dir_hash(self.dir)
 end
 
 function Position.a_to_b(a, b, orientation)
