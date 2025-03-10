@@ -34,6 +34,10 @@ ts_Result ts_component_db_add_def_from_lua(ts_ComponentDB* db, const char* lua_c
     ts_Result r = ts_component_def_init_from_lua(&def, lua_code, db->sandbox, graphics_luaref, included);
     if (r != TS_OK)
         return r;
+
+    if (shgeti(db->items, def.key) >= 0)
+        PL_ERROR_RET(TS_COMPONENT_ALREADY_IN_DB, "Component '%s' already exist in database.", def.key);
+
     shputs(db->items, def);
     PL_DEBUG("Component def'%s' added", def.key);
     return TS_OK;
@@ -69,7 +73,10 @@ ts_Result ts_component_db_clear_not_included(ts_ComponentDB* db)
 
 ts_ComponentDef const* ts_component_db_def(ts_ComponentDB const* db, const char* name)
 {
-    return shgetp_null(((ts_ComponentDB *) db)->items, name);
+    ts_ComponentDef const* def = shgetp_null(((ts_ComponentDB *) db)->items, name);
+    if (def == NULL)
+        PL_ERROR_RET(NULL, "Component '%s' not found in database.", name);
+    return def;
 }
 
 ts_Result ts_component_db_init_component(ts_ComponentDB const* db, const char* name, ts_Component* component)

@@ -19,6 +19,10 @@ static const std::string custom_ic = R"(return
         type = "<<type>>",
         ic_width = <<width>>,
         pins = {<<pins>>},
+
+        name = "yyy",
+        category = "digital",
+        subcategory = "xxx",
     }
 )";
 

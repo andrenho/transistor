@@ -126,7 +126,6 @@ static ts_Result ts_sandbox_unserialize(ts_Sandbox* sb, lua_State* LL)
     if (!lua_istable(LL, -1))
         PL_ERROR_RET(TS_DESERIALIZATION_ERROR, "Expected a table 'component_db'");
     ts_Result r = ts_component_db_unserialize(&sb->component_db, LL, sb);
-    // ts_add_default_components(&sb->component_db);
     if (r != TS_OK)
         return r;
     lua_pop(LL, 1);
@@ -184,3 +183,32 @@ ts_Result ts_sandbox_unserialize_from_file(ts_Sandbox* sb, FILE* f)
     free(buffer);
     return r;
 }
+
+#ifndef NDEBUG
+void ts_sandbox_inspect(ts_Sandbox const* sb)
+{
+    printf("Component db: ");
+    for (int i = 0; i < arrlen(sb->component_db.items); ++i)
+        printf("%s, ", sb->component_db.items[i].key);
+    printf("\n");
+
+    for (int i = 0; i < arrlen(sb->boards); ++i) {
+        printf("Board #%d: (%ld wires)\n", i, hmlen(sb->boards[i].wires));
+        for (int j = 0; j < hmlen(sb->boards[i].components); ++j) {
+            ts_Component* c = sb->boards[i].components[j].value;
+            printf("  - [%15s]: %d, %d\n", c->def->key, c->position.x, c->position.y);
+        }
+    }
+
+    printf("Simulation:\n");
+    for (int i = 0; i < arrlen(sb->simulation.connections); ++i) {
+        ts_Connection* c = &sb->simulation.connections[i];
+        printf("  - (val: %d) ", c->value);
+        for (int j = 0; j < arrlen(c->pins); ++j)
+            printf("%s[%d], ", c->pins[j].component->def->key, c->pins[j].pin_no);
+        printf("\n");
+    }
+
+    printf("=================================================================\n");
+}
+#endif

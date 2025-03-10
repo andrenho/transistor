@@ -5,6 +5,10 @@ return {
    type = "ic_dip",
    can_rotate = true,
    
+   name = "OR (2 inputs)",
+   category = "logic_gates",
+   subcategory = "OR gates",
+   
    pins = {
       { name = "IN0", direction = "input" },
       { name = "IN1", direction = "input" },

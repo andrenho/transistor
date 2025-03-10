@@ -41,12 +41,12 @@ void toolbox_init()
     tb_cpu         = PS_IDX("tb_cpu");
 
     buttons = {
-        { .image = tb_arrow,  .component_name = " ",      .tooltip = "Unselectd (ESC)" },
-        { .image = tb_vcc,    .component_name = "vcc",    .tooltip = "VCC [always `1`] (v)" },
-        { .image = tb_button, .component_name = "button", .tooltip = "Input button (b)" },
-        { .image = tb_led,    .component_name = "led",    .tooltip = "LED (l)" },
-        { .image = tb_npn,    .component_name = "npn",    .tooltip = "NPN transistor [activate to open] (n)" },
-        { .image = tb_pnp,    .component_name = "pnp",    .tooltip = "PNP transistor [activate to close] (p)" },
+        { .image = tb_arrow,  .component_name = " ",        .tooltip = "Unselectd (ESC)" },
+        { .image = tb_vcc,    .component_name = "__vcc",    .tooltip = "VCC [always `1`] (v)" },
+        { .image = tb_button, .component_name = "__button", .tooltip = "Input button (b)" },
+        { .image = tb_led,    .component_name = "__led",    .tooltip = "LED (l)" },
+        { .image = tb_npn,    .component_name = "__npn",    .tooltip = "NPN transistor [activate to open] (n)" },
+        { .image = tb_pnp,    .component_name = "__pnp",    .tooltip = "PNP transistor [activate to close] (p)" },
         { .separator = true },
         { .image = tb_logic_gates, .category = TS_CAT_LOGIC_GATES, .tooltip = "Logic gates" },
         { .image = tb_digital,     .category = TS_CAT_DIGITAL,     .tooltip = "Digital components" },
@@ -98,6 +98,7 @@ void toolbox_render(ts_Transistor* T)
                 if (i % 2 == 1)
                     ImGui::SameLine(0, 5);
                 if (button.image != 0 && image_button(button.image, i)) {
+                    selected_component = button.component_name;
                     /*
                     if (button.category)
                         ImGui::OpenPopup(popup_name(*button.category).c_str());

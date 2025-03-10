@@ -24,27 +24,31 @@ typedef struct ts_PinDef {
 typedef void (*SimulateFn)(ts_Component* component);
 
 typedef struct ts_ComponentDef {
-    char*            key;               // component name (used as index in database)
-    ts_ComponentType type;              // single tile, ic_dup (PDIP) or ic_quad
-    bool             can_rotate;
-    uint8_t          ic_width;          // in PDIP, distance between the two rows
+    char*                key;               // component index in the database
+    ts_ComponentType     type;              // single tile, ic_dup (PDIP) or ic_quad
+    bool                 can_rotate;
+    uint8_t              ic_width;          // in PDIP, distance between the two rows
 
-    uint8_t          n_pins;
-    ts_PinDef*       pins;
+    char*                name;              // component name, as it'll show up for the user
+    ts_ComponentCategory category;          // define where it'll show up in the tool bar
+    char*                subcategory;
 
-    size_t           data_size;         // number of bytes used as data
+    uint8_t              n_pins;
+    ts_PinDef*           pins;
 
-    SimulateFn       c_simulate;        // call this instead of 'simulate' on Lua, if present
+    size_t               data_size;         // number of bytes used as data
 
-    ts_Sandbox*      sandbox;
-    int              luaref;            // store global reference in Lua
+    SimulateFn           c_simulate;        // call this instead of 'simulate' on Lua, if present
 
-    bool             included;          // included components are provided by the application and not serialized/deserialized
+    ts_Sandbox*         sandbox;
+    int                 luaref;            // store global reference in Lua
+
+    bool                included;          // included components are provided by the application and not serialized/deserialized
 
 } ts_ComponentDef;
 
 // initialization
-ts_Result ts_component_def_init_from_lua(ts_ComponentDef* def, const char* lua_code, ts_Sandbox* sb, int graphics_luaref, bool native);
+ts_Result ts_component_def_init_from_lua(ts_ComponentDef* def, const char* lua_code, ts_Sandbox* sb, int graphics_luaref, bool included);
 ts_Result ts_component_def_finalize(ts_ComponentDef* def);
 
 // positioning

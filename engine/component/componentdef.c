@@ -9,10 +9,11 @@
 
 #include "sandbox/sandbox.h"
 
-#define TYPE_ERR_MSG "Expected a field 'type' with either: 'single_tile', 'ic_dip' or 'ic_quad'"
+#define TYPE_ERR_MSG       "Expected a field 'type' with either: 'single_tile', 'ic_dip' or 'ic_quad'"
 #define WIRE_WIDTH_ERR_MSG "Expected a field 'wire_width' with either 1 or 8."
+#define CATEGORY_ERR_MSG   "Expected a field 'category' either: 'logic_gates', 'digital', 'memory' or 'cpu'"
 
-ts_Result ts_component_def_init_from_lua(ts_ComponentDef* def, const char* lua_code, ts_Sandbox* sb, int graphics_luaref, bool native)
+ts_Result ts_component_def_init_from_lua(ts_ComponentDef* def, const char* lua_code, ts_Sandbox* sb, int graphics_luaref, bool included)
 {
 #define ERROR(msg)               { PL_ERROR_RET(TS_COMPONENT_DEF_ERROR, msg); goto end; }
 #define EXPECT(type, msg)        { if (!lua_is ## type(L, -1)) ERROR(msg) }
@@ -39,12 +40,12 @@ ts_Result ts_component_def_init_from_lua(ts_ComponentDef* def, const char* lua_c
     EXPECT(table, "Component definition should be a Lua table");
 
     def->sandbox = sb;
-    def->included = native;
+    def->included = included;
 
     // key
     assert(lua_gettop(L) == 1);
     lua_getfield(L, -1, "key");
-    EXPECT(string, "Expected a field 'key' with the component name.");
+    EXPECT(string, "Expected a field 'key' with the component index.");
     def->key = strdup(lua_tostring(L, -1));
     lua_pop(L, 1);
     PL_DEBUG("  Component def name: %s", def->key);
@@ -84,6 +85,39 @@ ts_Result ts_component_def_init_from_lua(ts_ComponentDef* def, const char* lua_c
     EXPECT_OR_NIL(number, "Expected a numeric field 'ic_width' (optional)");
     def->ic_width = lua_isnil(L, -1) ? 1 : lua_tonumber(L, -1);
     lua_pop(L, 1);
+
+    // name
+    if (!included) {
+        assert(lua_gettop(L) == 1);
+        lua_getfield(L, -1, "name");
+        EXPECT(string, "Expected a string field 'name'");
+        def->name = strdup(lua_tostring(L, -1));
+        lua_pop(L, 1);
+
+        // category
+        assert(lua_gettop(L) == 1);
+        lua_getfield(L, -1, "category");
+        EXPECT(string, CATEGORY_ERR_MSG);
+        const char* category = lua_tostring(L, -1);
+        if (strcmp(category, "logic_gates") == 0)
+            def->category = TS_CAT_LOGIC_GATES;
+        else if (strcmp(category, "digital") == 0)
+            def->category = TS_CAT_DIGITAL;
+        else if (strcmp(category, "memory") == 0)
+            def->category = TS_CAT_MEMORY;
+        else if (strcmp(category, "cpu") == 0)
+            def->category = TS_CAT_CPU;
+        else
+            ERROR(CATEGORY_ERR_MSG);
+        lua_pop(L, 1);
+
+        // subcategory
+        assert(lua_gettop(L) == 1);
+        lua_getfield(L, -1, "subcategory");
+        EXPECT(string, "Expected a string field 'subcategory'");
+        def->subcategory = strdup(lua_tostring(L, -1));
+        lua_pop(L, 1);
+    }
 
     // pins
     assert(lua_gettop(L) == 1);
@@ -180,6 +214,10 @@ ts_Result ts_component_def_finalize(ts_ComponentDef* def)
     PL_DEBUG("Component def '%s' finalized.", def->key);
     luaL_unref(def->sandbox->L, LUA_REGISTRYINDEX, def->luaref);
     free(def->key);
+    if (!def->included) {
+        free(def->name);
+        free(def->subcategory);
+    }
     for (size_t i = 0; i < def->n_pins; ++i)
         free(def->pins[i].name);
     free(def->pins);

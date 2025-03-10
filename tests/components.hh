@@ -72,9 +72,9 @@ return {
 
 inline void ts_add_lua_components(ts_Sandbox* sb)
 {
-    ts_component_db_add_def_from_lua(&sb->component_db, button, -1, false);
-    ts_component_db_add_def_from_lua(&sb->component_db, led, -1, false);
-    ts_component_db_add_def_from_lua(&sb->component_db, or_2i, -1, false);
+    ts_component_db_add_def_from_lua(&sb->component_db, button, -1, true);
+    ts_component_db_add_def_from_lua(&sb->component_db, led, -1, true);
+    ts_component_db_add_def_from_lua(&sb->component_db, or_2i, -1, true);
 }
 
 #endif //COMPONENTS_HH

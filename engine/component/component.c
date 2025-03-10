@@ -142,7 +142,10 @@ ts_Result ts_component_unserialize(ts_Component* component, ts_Position pos, lua
     // setup component
     lua_getfield(L, -1, "name");
     const char* name = luaL_checkstring(L, -1);
-    ts_Result r = ts_component_init(component, ts_component_db_def(&sb->component_db, name), dir);
+    ts_ComponentDef const* def = ts_component_db_def(&sb->component_db, name);
+    if (def == NULL)
+        PL_ERROR_RET(TS_COMPONENT_NOT_FOUND, "%s", pl_last_error());
+    ts_Result r = ts_component_init(component, def, dir);
     lua_pop(L, 1);
     if (r != TS_OK)
         return r;

@@ -18,6 +18,10 @@ constexpr const char* components = R"(return
         can_rotate = false,
         data_size = 1,
 
+        name = "Button",
+        category = "digital",
+        subcategory = "xxx",
+
         pins = {
             { name = "O1", direction = "output" },
             { name = "O2", direction = "output" },

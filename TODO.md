@@ -54,6 +54,7 @@
     - [ ] Deleting
   - [ ] Infobox (sidebar)
   - [ ] Exception management
+  - [ ] Deal with extern "C"
   
 - [ ] ICs
   - [ ] Toolbox for ICs
