@@ -203,6 +203,22 @@ ts_Result ts_component_db_native_simulation(ts_Transistor* t, const char* name, 
     return TS_OK;
 }
 
+size_t ts_subcategories(ts_Transistor* t, ts_ComponentCategory category, char const* subcategories[], int max_subcategories)
+{
+    ts_lock(t);
+    size_t r = ts_component_db_subcategories(&t->sandbox.component_db, category, subcategories, max_subcategories);
+    ts_unlock(t);
+    return r;
+}
+
+size_t ts_subcategory_defs(ts_Transistor* t, ts_ComponentCategory category, const char* subcategory, ts_ComponentDef const* defs[], int max_defs)
+{
+    ts_lock(t);
+    size_t r = ts_component_db_subcategory_defs(&t->sandbox.component_db, category, subcategory, defs, max_defs);
+    ts_unlock(t);
+    return r;
+}
+
 //
 // execution
 //

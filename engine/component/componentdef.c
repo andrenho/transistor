@@ -87,17 +87,21 @@ ts_Result ts_component_def_init_from_lua(ts_ComponentDef* def, const char* lua_c
     lua_pop(L, 1);
 
     // name
-    if (!included) {
-        assert(lua_gettop(L) == 1);
-        lua_getfield(L, -1, "name");
+    assert(lua_gettop(L) == 1);
+    lua_getfield(L, -1, "name");
+    if (!included)
         EXPECT(string, "Expected a string field 'name'");
+    if (!lua_isnil(L, -1))
         def->name = strdup(lua_tostring(L, -1));
-        lua_pop(L, 1);
+    lua_pop(L, 1);
 
-        // category
-        assert(lua_gettop(L) == 1);
-        lua_getfield(L, -1, "category");
+
+    // category
+    assert(lua_gettop(L) == 1);
+    lua_getfield(L, -1, "category");
+    if (!included)
         EXPECT(string, CATEGORY_ERR_MSG);
+    if (!lua_isnil(L, -1)) {
         const char* category = lua_tostring(L, -1);
         if (strcmp(category, "logic_gates") == 0)
             def->category = TS_CAT_LOGIC_GATES;
@@ -109,15 +113,17 @@ ts_Result ts_component_def_init_from_lua(ts_ComponentDef* def, const char* lua_c
             def->category = TS_CAT_CPU;
         else
             ERROR(CATEGORY_ERR_MSG);
-        lua_pop(L, 1);
-
-        // subcategory
-        assert(lua_gettop(L) == 1);
-        lua_getfield(L, -1, "subcategory");
-        EXPECT(string, "Expected a string field 'subcategory'");
-        def->subcategory = strdup(lua_tostring(L, -1));
-        lua_pop(L, 1);
     }
+    lua_pop(L, 1);
+
+    // subcategory
+    assert(lua_gettop(L) == 1);
+    lua_getfield(L, -1, "subcategory");
+    if (!included)
+        EXPECT(string, "Expected a string field 'subcategory'");
+    if (!lua_isnil(L, -1))
+        def->subcategory = strdup(lua_tostring(L, -1));
+    lua_pop(L, 1);
 
     // pins
     assert(lua_gettop(L) == 1);
@@ -214,10 +220,8 @@ ts_Result ts_component_def_finalize(ts_ComponentDef* def)
     PL_DEBUG("Component def '%s' finalized.", def->key);
     luaL_unref(def->sandbox->L, LUA_REGISTRYINDEX, def->luaref);
     free(def->key);
-    if (!def->included) {
-        free(def->name);
-        free(def->subcategory);
-    }
+    free(def->name);
+    free(def->subcategory);
     for (size_t i = 0; i < def->n_pins; ++i)
         free(def->pins[i].name);
     free(def->pins);

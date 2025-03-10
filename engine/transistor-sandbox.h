@@ -59,6 +59,8 @@ int ts_add_board(ts_Transistor* t, int w, int h);
 // component db
 ts_Result ts_component_db_add_from_lua(ts_Transistor* t, const char* lua_code, bool included);
 ts_Result ts_component_db_native_simulation(ts_Transistor* t, const char* name, SimulateFn sim_fn);
+size_t    ts_subcategories(ts_Transistor* t, ts_ComponentCategory category, char const* subcategories[], int max_subcategories);
+size_t    ts_subcategory_defs(ts_Transistor* t, ts_ComponentCategory category, const char* subcategory, ts_ComponentDef const* defs[], int max_defs);
 
 // execution
 ts_Result ts_run(ts_Transistor* t, size_t run_for_us);

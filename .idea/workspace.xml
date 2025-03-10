@@ -32,19 +32,11 @@
     <list default="true" id="21c7ec71-c9ee-4ebd-950c-c84342844b28" name="Changes" comment=".">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TODO.md" beforeDir="false" afterPath="$PROJECT_DIR$/TODO.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/gates/or_2i.lua" beforeDir="false" afterPath="$PROJECT_DIR$/components/gates/or_2i.lua" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/component/component.c" beforeDir="false" afterPath="$PROJECT_DIR$/engine/component/component.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/component/componentdb.c" beforeDir="false" afterPath="$PROJECT_DIR$/engine/component/componentdb.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/component/componentdb.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/component/componentdb.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/component/componentdef.c" beforeDir="false" afterPath="$PROJECT_DIR$/engine/component/componentdef.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/component/componentdef.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/component/componentdef.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/sandbox/sandbox.c" beforeDir="false" afterPath="$PROJECT_DIR$/engine/sandbox/sandbox.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/sandbox/sandbox.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/sandbox/sandbox.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/util/result.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/util/result.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/components.hh" beforeDir="false" afterPath="$PROJECT_DIR$/tests/components.hh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/custom_ic.cc" beforeDir="false" afterPath="$PROJECT_DIR$/tests/custom_ic.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/pinpositions.cc" beforeDir="false" afterPath="$PROJECT_DIR$/tests/pinpositions.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/serialization.cc" beforeDir="false" afterPath="$PROJECT_DIR$/tests/serialization.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/gui/toolbox.cc" beforeDir="false" afterPath="$PROJECT_DIR$/ui/gui/toolbox.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/transistor-sandbox.c" beforeDir="false" afterPath="$PROJECT_DIR$/engine/transistor-sandbox.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/transistor-sandbox.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/transistor-sandbox.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -143,7 +135,7 @@
       <recent name="$PROJECT_DIR$/contrib" />
     </key>
   </component>
-  <component name="RunManager" selected="Native Application.transistor-tests">
+  <component name="RunManager" selected="Native Application.leaks-tests">
     <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="CLION.EXTERNAL.BUILD" enabled="true" />
@@ -462,7 +454,15 @@
       <option name="project" value="LOCAL" />
       <updated>1741604815105</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary=".">
+      <option name="closed" value="true" />
+      <created>1741609349725</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1741609349725</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -489,11 +489,6 @@
           <url>file://$PROJECT_DIR$/engine/sandbox/sandbox.c</url>
           <line>153</line>
           <option name="timeStamp" value="43" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/engine/component/componentdb.c</url>
-          <line>38</line>
-          <option name="timeStamp" value="45" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

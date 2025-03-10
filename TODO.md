@@ -55,6 +55,7 @@
   - [ ] Infobox (sidebar)
   - [ ] Exception management
   - [ ] Deal with extern "C"
+  - [ ] Nomenclature: deserialize vs unserialize
   
 - [ ] ICs
   - [ ] Toolbox for ICs
