@@ -43,7 +43,7 @@
     - [x] Why do I have to reload the components? Should work without.
     - [x] Deal with loading of native components
     - [x] Don't add components if already exist
-    - [ ] Simulation not starting after load
+    - [x] Simulation not starting after load
   - [ ] Toolbox
     - [ ] Create toolbox (basic components)
     - [ ] Organize database per category/subcategory

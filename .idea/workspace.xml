@@ -33,16 +33,14 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TODO.md" beforeDir="false" afterPath="$PROJECT_DIR$/TODO.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contrib/pastel2d/contrib/pastel-base" beforeDir="false" afterPath="$PROJECT_DIR$/contrib/pastel2d/contrib/pastel-base" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/board/board.c" beforeDir="false" afterPath="$PROJECT_DIR$/engine/board/board.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/compiler/compiler.c" beforeDir="false" afterPath="$PROJECT_DIR$/engine/compiler/compiler.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/component/component.c" beforeDir="false" afterPath="$PROJECT_DIR$/engine/component/component.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/component/component.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/component/component.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/sandbox/sandbox.c" beforeDir="false" afterPath="$PROJECT_DIR$/engine/sandbox/sandbox.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/sandbox/sandbox.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/sandbox/sandbox.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/transistor-sandbox.c" beforeDir="false" afterPath="$PROJECT_DIR$/engine/transistor-sandbox.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/transistor-sandbox.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/transistor-sandbox.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/wrapper.cc" beforeDir="false" afterPath="$PROJECT_DIR$/tests/wrapper.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contrib/imgui" beforeDir="false" afterPath="$PROJECT_DIR$/contrib/imgui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contrib/pastel-base/mk/config.mk" beforeDir="false" afterPath="$PROJECT_DIR$/contrib/pastel-base/mk/config.mk" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contrib/pastel-base/mk/genheader.lua" beforeDir="false" afterPath="$PROJECT_DIR$/contrib/pastel-base/mk/genheader.lua" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contrib/pastel2d/src/res.c" beforeDir="false" afterPath="$PROJECT_DIR$/contrib/pastel2d/src/res.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/component/included.c" beforeDir="false" afterPath="$PROJECT_DIR$/engine/component/included.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/board/board.c" beforeDir="false" afterPath="$PROJECT_DIR$/ui/board/board.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/board/components.c" beforeDir="false" afterPath="$PROJECT_DIR$/ui/board/components.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/ui/main.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,7 +56,8 @@
     </projectState>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/contrib/pastel2d" />
+    <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file:///opt/homebrew/Cellar/llvm@17/17.0.6/include/c++/v1/__functional/function.h" root0="FORCE_HIGHLIGHTING" />
@@ -109,7 +108,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Native Application.transistor-tests.executor": "Debug",
+    "Native Application.transistor-tests.executor": "Run",
     "Native Application.transistor.executor": "Run",
     "RunOnceActivity.RadMigrateCodeStyle": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -135,7 +134,7 @@
       <recent name="$PROJECT_DIR$/contrib" />
     </key>
   </component>
-  <component name="RunManager" selected="Native Application.transistor-tests">
+  <component name="RunManager" selected="Native Application.transistor">
     <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="CLION.EXTERNAL.BUILD" enabled="true" />
@@ -430,7 +429,15 @@
       <option name="project" value="LOCAL" />
       <updated>1741525970410</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary=".">
+      <option name="closed" value="true" />
+      <created>1741528953947</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1741528953947</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -439,27 +446,6 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="." />
     <option name="LAST_COMMIT_MESSAGE" value="." />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/tests/wrapper.cc</url>
-          <line>144</line>
-          <option name="timeStamp" value="33" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/engine/sandbox/sandbox.c</url>
-          <line>168</line>
-          <option name="timeStamp" value="36" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/engine/compiler/compiler.c</url>
-          <line>51</line>
-          <option name="timeStamp" value="37" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

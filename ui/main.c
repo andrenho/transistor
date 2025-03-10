@@ -25,7 +25,7 @@
 
 static size_t background_scene(ps_Scene* scenes, size_t n_scenes);
 
-[[noreturn]] static void error_callback(void* _)
+static void error_callback(void* _)
 {
     SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", pl_last_error(), ps_graphics_window());
 }

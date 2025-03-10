@@ -14,9 +14,9 @@ all: $(PROJECT_NAME) $(PROJECT_NAME)-tests
 include contrib/pastel-base/mk/config.mk
 
 CPPFLAGS += -I. -Iengine -Iresources/fonts -Iresources/images \
-			-Icontrib/imgui -Icontrib/doctest \
 			-Icontrib/pastel2d/src -Icontrib/pastel-base/pl_log -Icontrib/pastel2d/contrib/pocketmod \
-            -Icontrib/pastel2d/contrib/stb
+			-isystem contrib/imgui -isystem contrib/doctest \
+            -isystem contrib/pastel2d/contrib/stb
 
 ifdef RELEASE
 	EMBED_LIBS ?= 1    # determine if libraries are embedded of linked
@@ -109,9 +109,18 @@ $(UI_OBJ): $(EMBED:=.h)
 # executable
 #
 
+# special rule to avoid warnings in contributed files
+
+contrib/imgui/%.cc: contrib/imgui/%.o
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(WARNINGS) -c
+
+# pastel2d library
+
 libpastel2d.a:
 	$(MAKE) -C contrib/pastel2d
 	cp contrib/pastel2d/libpastel2d.a .
+
+# transistor executable
 
 $(PROJECT_NAME): $(UI_OBJ) $(ENGINE_OBJ) $(IMGUI_OBJ) libpastel2d.a $(LIB_DEPS)
 	$(CXX) -o $@ $^ $(LDFLAGS)

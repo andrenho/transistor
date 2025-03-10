@@ -71,7 +71,7 @@ static int graphics_render_image(lua_State* L)
     ps_Context context = ps_create_context();
     if (lua_gettop(L) >= 5)
         graphics_context_from_lua(&context, L, 5);
-    ps_scene_add_image(scene, img, (SDL_Rect) { x, y }, &context);
+    ps_scene_add_image(scene, img, (SDL_Rect) { .x=x, .y=y }, &context);
 
     return 0;
 }

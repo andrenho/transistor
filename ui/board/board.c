@@ -105,7 +105,7 @@ void board_update(ts_Transistor* T, SDL_Event* e)
         case SDL_EVENT_MOUSE_MOTION:
             if (board_moving >= 0)
                 move_board(e->motion.xrel, e->motion.yrel);
-            ts_on_cursor_set_position(T, i, (ts_Position) { tile_x, tile_y });
+            ts_on_cursor_set_position(T, i, (ts_Position) { .x = tile_x, .y = tile_y });
             break;
 
         case SDL_EVENT_MOUSE_BUTTON_UP:
@@ -136,12 +136,12 @@ void board_update(ts_Transistor* T, SDL_Event* e)
 // rendering
 //
 
-#define ADD_IMAGE(img, x, y, ...) ps_scene_add_image_with(scene, img, (SDL_Rect) { x * TILE_SIZE, y * TILE_SIZE }, ##__VA_ARGS__, CTX_END)
+#define ADD_IMAGE(img, x, y, ...) ps_scene_add_image_with(scene, img, (SDL_Rect) { (x) * TILE_SIZE, (y) * TILE_SIZE, 0, 0 }, ##__VA_ARGS__, CTX_END)
 
 static void render_board(ts_BoardSnapshot const* board, BoardDef const* board_def, ps_Scene* scene)
 {
     ps_scene_push_context(scene, ps_create_context_with(CTX_ZOOM, boards_def->zoom,
-        CTX_POSITION, (SDL_Rect) { boards_def->x / boards_def->zoom, boards_def->y / boards_def->zoom }, CTX_END));
+        CTX_POSITION, (SDL_Rect) { .x = boards_def->x / boards_def->zoom, .y = boards_def->y / boards_def->zoom }, CTX_END));
 
     ADD_IMAGE(rs_board_top_left, -2, -2);
     ADD_IMAGE(rs_board_top_right, board->w, -2);

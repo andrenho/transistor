@@ -53,12 +53,12 @@ static void load_component(ts_Transistor* t, const char* lua_code)
 
 void ts_included_components_init(ts_Transistor* t)
 {
-    load_component(t, components_basic_button_lua);
-    load_component(t, components_basic_led_lua);
-    load_component(t, components_basic_npn_lua);
-    load_component(t, components_basic_pnp_lua);
-    load_component(t, components_basic_vcc_lua);
-    load_component(t, components_gates_or_2i_lua);
+    load_component(t, components_basic_button_lua_str);
+    load_component(t, components_basic_led_lua_str);
+    load_component(t, components_basic_npn_lua_str);
+    load_component(t, components_basic_pnp_lua_str);
+    load_component(t, components_basic_vcc_lua_str);
+    load_component(t, components_gates_or_2i_lua_str);
 
 #if NATIVE_COMPONENTS
     ts_component_db_native_simulation(t, "__button", button_sim);
