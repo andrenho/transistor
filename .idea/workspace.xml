@@ -30,17 +30,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="21c7ec71-c9ee-4ebd-950c-c84342844b28" name="Changes" comment=".">
+      <change afterPath="$PROJECT_DIR$/ui/gui/toolbox.cc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ui/gui/toolbox.hh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TODO.md" beforeDir="false" afterPath="$PROJECT_DIR$/TODO.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contrib/imgui" beforeDir="false" afterPath="$PROJECT_DIR$/contrib/imgui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contrib/pastel-base/mk/config.mk" beforeDir="false" afterPath="$PROJECT_DIR$/contrib/pastel-base/mk/config.mk" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contrib/pastel-base/mk/genheader.lua" beforeDir="false" afterPath="$PROJECT_DIR$/contrib/pastel-base/mk/genheader.lua" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contrib/pastel-base" beforeDir="false" afterPath="$PROJECT_DIR$/contrib/pastel-base" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contrib/pastel2d" beforeDir="false" afterPath="$PROJECT_DIR$/contrib/pastel2d" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/contrib/pastel2d/src/res.c" beforeDir="false" afterPath="$PROJECT_DIR$/contrib/pastel2d/src/res.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/component/included.c" beforeDir="false" afterPath="$PROJECT_DIR$/engine/component/included.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/board/board.c" beforeDir="false" afterPath="$PROJECT_DIR$/ui/board/board.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/board/components.c" beforeDir="false" afterPath="$PROJECT_DIR$/ui/board/components.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contrib/pastel2d/src/res.h" beforeDir="false" afterPath="$PROJECT_DIR$/contrib/pastel2d/src/res.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/component/componentdef.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/component/componentdef.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/gui/gui.cc" beforeDir="false" afterPath="$PROJECT_DIR$/ui/gui/gui.cc" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ui/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/ui/main.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/resources.c" beforeDir="false" afterPath="$PROJECT_DIR$/ui/resources.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,10 +58,11 @@
     </projectState>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/contrib/pastel2d" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="mock:///Users/aw98156/prj/transistor/ui/gui/gui.cc" root0="SKIP_HIGHLIGHTING" />
     <setting file="file:///opt/homebrew/Cellar/llvm@17/17.0.6/include/c++/v1/__functional/function.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file:///opt/homebrew/Cellar/llvm@17/17.0.6/include/c++/v1/__type_traits/invoke.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file:///opt/homebrew/Cellar/llvm@17/17.0.6/include/c++/v1/string" root0="FORCE_HIGHLIGHTING" />
@@ -437,7 +440,15 @@
       <option name="project" value="LOCAL" />
       <updated>1741528953947</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary=".">
+      <option name="closed" value="true" />
+      <created>1741602280729</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1741602280729</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -446,6 +457,22 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="." />
     <option name="LAST_COMMIT_MESSAGE" value="." />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/ui/resources.c</url>
+          <line>18</line>
+          <option name="timeStamp" value="38" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/ui/gui/toolbox.cc</url>
+          <line>31</line>
+          <option name="timeStamp" value="39" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

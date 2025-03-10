@@ -44,8 +44,9 @@
     - [x] Deal with loading of native components
     - [x] Don't add components if already exist
     - [x] Simulation not starting after load
+  - [x] Resolve warnings
   - [ ] Toolbox
-    - [ ] Create toolbox (basic components)
+    - [x] Create toolbox (basic components)
     - [ ] Organize database per category/subcategory
     - [ ] Add additional components to toolbox
   - [ ] Cursors
@@ -53,7 +54,6 @@
     - [ ] Deleting
   - [ ] Infobox (sidebar)
   - [ ] Exception management
-  - [ ] Resolve warnings
   
 - [ ] ICs
   - [ ] Toolbox for ICs

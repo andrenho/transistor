@@ -1,7 +1,3 @@
-
-#include "mainmenu.hh"
-
-
 extern "C" {
 #include "gui.hh"
 #include <pastel2d.h>
@@ -10,6 +6,9 @@ extern "C" {
 #include "imgui.h"
 #include "backends/imgui_impl_sdl3.h"
 #include "backends/imgui_impl_sdlrenderer3.h"
+
+#include "mainmenu.hh"
+#include "toolbox.hh"
 
 #include "resources/fonts/Pixellari.ttf.h"
 
@@ -63,6 +62,7 @@ void gui_init()
     ImGui_ImplSDLRenderer3_Init(ps_graphics_renderer());
 
     setup_font();
+    toolbox_init();
 }
 
 void gui_events(SDL_Event* e)
@@ -80,6 +80,7 @@ void gui_render(ts_Transistor* T)
         ImGui::ShowDemoWindow(&show_demo_window_);
 
     main_menu_render(T);
+    toolbox_render(T);
 
     ImGui::Render();
     ImGui_ImplSDLRenderer3_RenderDrawData(ImGui::GetDrawData(), ps_graphics_renderer());

@@ -69,6 +69,7 @@ UI_OBJ = \
 	ui/gui/gui.o \
 	ui/gui/dialog.o \
 	ui/gui/mainmenu.o \
+	ui/gui/toolbox.o \
 	ui/board/board.o \
 	ui/board/components.o
 

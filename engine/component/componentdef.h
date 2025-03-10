@@ -13,6 +13,8 @@ typedef enum { TS_SINGLE_TILE, TS_IC_DIP, TS_IC_QUAD } ts_ComponentType;
 
 typedef enum { TS_INPUT, TS_OUTPUT } ts_PinDirection;
 
+typedef enum { TS_CAT_LOGIC_GATES, TS_CAT_DIGITAL, TS_CAT_MEMORY, TS_CAT_CPU } ts_ComponentCategory;
+
 typedef struct ts_PinDef {
     char*           name;
     ts_PinDirection direction;

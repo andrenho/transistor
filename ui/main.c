@@ -28,6 +28,7 @@ static size_t background_scene(ps_Scene* scenes, size_t n_scenes);
 static void error_callback(void* _)
 {
     SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", pl_last_error(), ps_graphics_window());
+    abort();
 }
 
 static Uint32 timer_save(void* T, SDL_TimerID timer_id, Uint32 interval)
@@ -65,7 +66,6 @@ int main(void)
     ts_add_board(&T, 20, 10);
 
     ps_graphics_set_bg(20, 40, 60);
-    gui_init();
 
     // initialize resources
 
@@ -77,6 +77,8 @@ int main(void)
     //
     // main loop
     //
+
+    gui_init();
 
     while (ps_graphics_running()) {
 
