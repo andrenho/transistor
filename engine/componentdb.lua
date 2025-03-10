@@ -10,7 +10,8 @@ end
 
 function ComponentDB:add_from_str(lua_code)
    local c = load(lua_code, "component_loader")()
-   self.validate_component_def(c)
+   ComponentDef.validate(c)
+   setmetatable(c, ComponentDef)
    self.items[c.key] = c
 end
 
@@ -27,8 +28,4 @@ function ComponentDB:load_all_native_components()  -- this function is just for 
    load_component("components/basic/pnp.lua")
    load_component("components/basic/vcc.lua")
    load_component("components/gates/or_2i.lua")
-end
-
-function ComponentDB.validate_component_def(c)
-   -- TODO
 end
