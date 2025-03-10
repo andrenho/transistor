@@ -30,13 +30,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="21c7ec71-c9ee-4ebd-950c-c84342844b28" name="Changes" comment=".">
-      <change afterPath="$PROJECT_DIR$/tests/componentdb.cc" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/component/componentdb.c" beforeDir="false" afterPath="$PROJECT_DIR$/engine/component/componentdb.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/component/componentdb.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/component/componentdb.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/transistor-sandbox.c" beforeDir="false" afterPath="$PROJECT_DIR$/engine/transistor-sandbox.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/transistor-sandbox.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/transistor-sandbox.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/componentdb.cc" beforeDir="false" afterPath="$PROJECT_DIR$/tests/componentdb.cc" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -207,9 +203,6 @@
       </method>
     </configuration>
     <configuration name="transistor-tests" type="CLionNativeAppRunConfigurationType" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="transistor" TARGET_NAME="transistor-tests" CONFIG_NAME="transistor-tests" version="1" RUN_PATH="$PROJECT_DIR$/transistor-tests">
-      <envs>
-        <env name="PL_LEVEL" value="debug" />
-      </envs>
       <method v="2">
         <option name="CLION.COMPOUND.BUILD" enabled="true" />
       </method>
@@ -470,7 +463,15 @@
       <option name="project" value="LOCAL" />
       <updated>1741619473763</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary=".">
+      <option name="closed" value="true" />
+      <created>1741621165176</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1741621165176</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -498,8 +499,18 @@
           <line>153</line>
           <option name="timeStamp" value="43" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/tests/componentdb.cc</url>
+          <line>76</line>
+          <option name="timeStamp" value="46" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="CLionNativeAppRunConfigurationType">
+        <watch expression="def" language="C++" />
+      </configuration>
+    </watches-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

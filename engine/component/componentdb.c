@@ -156,7 +156,7 @@ size_t ts_component_db_subcategories(ts_ComponentDB const* db, ts_ComponentCateg
 
 static int r_strcmp(const void* a, const void* b)
 {
-    return strcmp(a, b);
+    return -strcmp(a, b);
 }
 
 size_t ts_component_db_subcategory_defs(ts_ComponentDB const* db, ts_ComponentCategory category, const char* subcategory, const char* defs[], int max_defs)
