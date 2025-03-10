@@ -98,6 +98,13 @@ ifdef RELEASE
 endif
 
 #
+#
+#
+
+check:
+	./run_tests.sh
+
+#
 # leaks
 #
 
