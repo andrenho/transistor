@@ -27,90 +27,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="21c7ec71-c9ee-4ebd-950c-c84342844b28" name="Changes" comment=".">
-      <change afterPath="$PROJECT_DIR$/engine/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/engine.lua" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/simulation.lua" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main.cc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/util/engine.cc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/util/engine.hh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/simulation/simulation.cc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/simulation/simulation.hh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contrib/doctest/doctest.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/contrib/pastel-base" beforeDir="false" afterPath="$PROJECT_DIR$/contrib/pastel-base" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contrib/pastel-base/mk/config.mk" beforeDir="false" afterPath="$PROJECT_DIR$/contrib/pastel-base/mk/config.mk" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/basic/direction.c" beforeDir="false" afterPath="$PROJECT_DIR$/.old/engine/basic/direction.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/basic/direction.h" beforeDir="false" afterPath="$PROJECT_DIR$/.old/engine/basic/direction.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/basic/orientation.h" beforeDir="false" afterPath="$PROJECT_DIR$/.old/engine/basic/orientation.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/basic/pos_ds.c" beforeDir="false" afterPath="$PROJECT_DIR$/.old/engine/basic/pos_ds.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/basic/pos_ds.h" beforeDir="false" afterPath="$PROJECT_DIR$/.old/engine/basic/pos_ds.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/basic/position.c" beforeDir="false" afterPath="$PROJECT_DIR$/.old/engine/basic/position.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/basic/position.h" beforeDir="false" afterPath="$PROJECT_DIR$/.old/engine/basic/position.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/basic/rect.c" beforeDir="false" afterPath="$PROJECT_DIR$/.old/engine/basic/rect.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/basic/rect.h" beforeDir="false" afterPath="$PROJECT_DIR$/.old/engine/basic/rect.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/board/board.c" beforeDir="false" afterPath="$PROJECT_DIR$/.old/engine/board/board.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/board/board.h" beforeDir="false" afterPath="$PROJECT_DIR$/.old/engine/board/board.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/board/wire.c" beforeDir="false" afterPath="$PROJECT_DIR$/.old/engine/board/wire.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/board/wire.h" beforeDir="false" afterPath="$PROJECT_DIR$/.old/engine/board/wire.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/compiler/compiler.c" beforeDir="false" afterPath="$PROJECT_DIR$/.old/engine/compiler/compiler.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/compiler/compiler.h" beforeDir="false" afterPath="$PROJECT_DIR$/.old/engine/compiler/compiler.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/compiler/connectedwires.c" beforeDir="false" afterPath="$PROJECT_DIR$/.old/engine/compiler/connectedwires.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/compiler/connectedwires.h" beforeDir="false" afterPath="$PROJECT_DIR$/.old/engine/compiler/connectedwires.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/component/component.c" beforeDir="false" afterPath="$PROJECT_DIR$/.old/engine/component/component.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/component/component.h" beforeDir="false" afterPath="$PROJECT_DIR$/.old/engine/component/component.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/component/component_mt.c" beforeDir="false" afterPath="$PROJECT_DIR$/.old/engine/component/component_mt.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/component/component_mt.h" beforeDir="false" afterPath="$PROJECT_DIR$/.old/engine/component/component_mt.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/component/componentdb.c" beforeDir="false" afterPath="$PROJECT_DIR$/.old/engine/component/componentdb.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/component/componentdb.h" beforeDir="false" afterPath="$PROJECT_DIR$/.old/engine/component/componentdb.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/component/componentdef.c" beforeDir="false" afterPath="$PROJECT_DIR$/.old/engine/component/componentdef.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/component/componentdef.h" beforeDir="false" afterPath="$PROJECT_DIR$/.old/engine/component/componentdef.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/component/included.c" beforeDir="false" afterPath="$PROJECT_DIR$/.old/engine/component/included.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/component/included.h" beforeDir="false" afterPath="$PROJECT_DIR$/.old/engine/component/included.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/component/pinpos.h" beforeDir="false" afterPath="$PROJECT_DIR$/.old/engine/component/pinpos.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/cursor/cursor.c" beforeDir="false" afterPath="$PROJECT_DIR$/.old/engine/cursor/cursor.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/cursor/cursor.h" beforeDir="false" afterPath="$PROJECT_DIR$/.old/engine/cursor/cursor.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/sandbox/sandbox.c" beforeDir="false" afterPath="$PROJECT_DIR$/.old/engine/sandbox/sandbox.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/sandbox/sandbox.h" beforeDir="false" afterPath="$PROJECT_DIR$/.old/engine/sandbox/sandbox.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/simulation/componentsim.c" beforeDir="false" afterPath="$PROJECT_DIR$/.old/engine/simulation/componentsim.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/simulation/componentsim.h" beforeDir="false" afterPath="$PROJECT_DIR$/.old/engine/simulation/componentsim.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/simulation/simulation.c" beforeDir="false" afterPath="$PROJECT_DIR$/.old/engine/simulation/simulation.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/simulation/simulation.h" beforeDir="false" afterPath="$PROJECT_DIR$/.old/engine/simulation/simulation.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/transistor-sandbox.c" beforeDir="false" afterPath="$PROJECT_DIR$/.old/engine/transistor-sandbox.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/transistor-sandbox.h" beforeDir="false" afterPath="$PROJECT_DIR$/.old/engine/transistor-sandbox.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/util/minmax.h" beforeDir="false" afterPath="$PROJECT_DIR$/.old/engine/util/minmax.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/util/result.h" beforeDir="false" afterPath="$PROJECT_DIR$/.old/engine/util/result.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/util/serialize.h" beforeDir="false" afterPath="$PROJECT_DIR$/.old/engine/util/serialize.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/util/set.h" beforeDir="false" afterPath="$PROJECT_DIR$/.old/engine/util/set.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/_implementation.cc" beforeDir="false" afterPath="$PROJECT_DIR$/.old/tests/_implementation.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/compilation.cc" beforeDir="false" afterPath="$PROJECT_DIR$/.old/tests/compilation.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/componentdb.cc" beforeDir="false" afterPath="$PROJECT_DIR$/.old/tests/componentdb.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/components.hh" beforeDir="false" afterPath="$PROJECT_DIR$/.old/tests/components.hh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/connected_wires.cc" beforeDir="false" afterPath="$PROJECT_DIR$/.old/tests/connected_wires.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/custom_ic.cc" beforeDir="false" afterPath="$PROJECT_DIR$/.old/tests/custom_ic.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/pinpositions.cc" beforeDir="false" afterPath="$PROJECT_DIR$/.old/tests/pinpositions.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/placement.cc" beforeDir="false" afterPath="$PROJECT_DIR$/.old/tests/placement.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/position.cc" beforeDir="false" afterPath="$PROJECT_DIR$/.old/tests/position.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/serialization.cc" beforeDir="false" afterPath="$PROJECT_DIR$/.old/tests/serialization.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/simulation.cc" beforeDir="false" afterPath="$PROJECT_DIR$/.old/tests/simulation.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/wrapper.cc" beforeDir="false" afterPath="$PROJECT_DIR$/.old/tests/wrapper.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/board/board.c" beforeDir="false" afterPath="$PROJECT_DIR$/.old/ui/board/board.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/board/board.h" beforeDir="false" afterPath="$PROJECT_DIR$/.old/ui/board/board.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/board/components.c" beforeDir="false" afterPath="$PROJECT_DIR$/.old/ui/board/components.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/board/components.h" beforeDir="false" afterPath="$PROJECT_DIR$/.old/ui/board/components.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/common.c" beforeDir="false" afterPath="$PROJECT_DIR$/.old/ui/common.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/common.h" beforeDir="false" afterPath="$PROJECT_DIR$/.old/ui/common.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/gui/dialog.cc" beforeDir="false" afterPath="$PROJECT_DIR$/.old/ui/gui/dialog.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/gui/dialog.hh" beforeDir="false" afterPath="$PROJECT_DIR$/.old/ui/gui/dialog.hh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/gui/gui.cc" beforeDir="false" afterPath="$PROJECT_DIR$/.old/ui/gui/gui.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/gui/gui.hh" beforeDir="false" afterPath="$PROJECT_DIR$/.old/ui/gui/gui.hh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/gui/mainmenu.cc" beforeDir="false" afterPath="$PROJECT_DIR$/.old/ui/gui/mainmenu.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/gui/mainmenu.hh" beforeDir="false" afterPath="$PROJECT_DIR$/.old/ui/gui/mainmenu.hh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/gui/toolbox.cc" beforeDir="false" afterPath="$PROJECT_DIR$/.old/ui/gui/toolbox.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/gui/toolbox.hh" beforeDir="false" afterPath="$PROJECT_DIR$/.old/ui/gui/toolbox.hh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/.old/ui/main.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/resources.c" beforeDir="false" afterPath="$PROJECT_DIR$/.old/ui/resources.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/resources.h" beforeDir="false" afterPath="$PROJECT_DIR$/.old/ui/resources.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.cc" beforeDir="false" afterPath="$PROJECT_DIR$/main.cc" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -200,7 +121,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "editor.preferences.fonts.default",
+    "settings.editor.selected.configurable": "preferences.fileTypes",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -337,7 +258,7 @@
       <option name="presentableId" value="Default" />
       <updated>1741361380317</updated>
       <workItem from="1741361381314" duration="38775000" />
-      <workItem from="1741634187399" duration="595000" />
+      <workItem from="1741634187399" duration="1249000" />
     </task>
     <task id="LOCAL-00001" summary=".">
       <option name="closed" value="true" />
@@ -555,7 +476,15 @@
       <option name="project" value="LOCAL" />
       <updated>1741630565044</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary=".">
+      <option name="closed" value="true" />
+      <created>1741634802405</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1741634802405</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

@@ -42,7 +42,8 @@ endif
 
 OBJ = \
 	main.o \
-	util/engine.o #\
+	util/engine.o \
+	simulation/simulation.o #\
 	ui/common.o \
 	ui/resources.o \
 	ui/gui/gui.o \

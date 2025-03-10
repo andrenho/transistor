@@ -1,14 +1,10 @@
 #include "util/engine.hh"
+#include "simulation/simulation.hh"
 
 Engine engine;
+Simulation simulation;
 
 int main()
 {
-    // load Lua sources
-
-    // run tests
-
-    // start simulation
-
-    // initialize UI
+    simulation.run();
 }
