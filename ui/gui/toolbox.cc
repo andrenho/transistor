@@ -9,6 +9,7 @@
 
 extern "C" {
 #include "pastel2d.h"
+#include <transistor-sandbox.h>
 }
 
 static ps_res_idx_t tb_arrow, tb_vcc, tb_button, tb_led, tb_npn, tb_pnp,
@@ -78,6 +79,27 @@ static bool image_button(ps_res_idx_t resource, size_t i)
     return ImGui::ImageButton(label, (ImTextureID) tile.texture, { 32, 32 }, uv0, uv1);
 }
 
+static std::string popup_name(ts_ComponentCategory category)
+{
+    return "category" + std::to_string(category);
+}
+
+static void render_popup_menus(ts_Transistor* T)
+{
+    /*
+    const size_t MAX_CATS = 64;
+    ts_ComponentCategory cats[] = { TS_CAT_LOGIC_GATES, TS_CAT_DIGITAL, TS_CAT_MEMORY, TS_CAT_CPU };
+    for (int i = 0; i < sizeof(cats) / sizeof(cats[0]); ++i) {
+        if (ImGui::BeginPopup(popup_name(cats[i]).c_str())) {
+            const char* categories[MAX_CATS];
+            int sz = ts_subcategories(T, cats[i], categories, MAX_CATS);
+
+            ImGui::EndPopup();
+        }
+    }
+    */
+}
+
 void toolbox_render(ts_Transistor* T)
 {
     size_t i = 0;
@@ -99,12 +121,10 @@ void toolbox_render(ts_Transistor* T)
                     ImGui::SameLine(0, 5);
                 if (button.image != 0 && image_button(button.image, i)) {
                     selected_component = button.component_name;
-                    /*
                     if (button.category)
                         ImGui::OpenPopup(popup_name(*button.category).c_str());
                     else
-                        ui() << U::SelectComponent { button.component_name };
-                    */
+                        selected_component = button.component_name;  // TODO
                 }
                 if (!button.tooltip.empty())
                     ImGui::SetItemTooltip("%s", button.tooltip.c_str());
@@ -115,7 +135,7 @@ void toolbox_render(ts_Transistor* T)
         }
         ImGui::PopStyleVar();
 
-        // render_popup_menus();
+        render_popup_menus(T);
     }
     ImGui::End();
 

@@ -36,7 +36,11 @@ static void update_subcategory_db(ts_ComponentDB* db)
                 .category = def->category,
                 .subcategory = def->subcategory,
             };
+            for (int j = 0; j < arrlen(db->subcategories_cache); ++j)  // check for uniqueness
+                if (subcategory_compare(&cache_item, &db->subcategories_cache[j]) == 0)
+                    goto skip;
             arrpush(db->subcategories_cache, cache_item);
+skip:
         }
     }
 
@@ -156,21 +160,23 @@ size_t ts_component_db_subcategories(ts_ComponentDB const* db, ts_ComponentCateg
 
 static int r_strcmp(const void* a, const void* b)
 {
-    return -strcmp(a, b);
+    const char* str1 = *(const char**)a;
+    const char* str2 = *(const char**)b;
+    return strcmp(str1, str2);
 }
 
-size_t ts_component_db_subcategory_defs(ts_ComponentDB const* db, ts_ComponentCategory category, const char* subcategory, const char* defs[], int max_defs)
+size_t ts_component_db_subcategory_defs(ts_ComponentDB const* db, ts_ComponentCategory category, const char* subcategory, const char* names[], int max_defs)
 {
     size_t j = 0;
     for (int i = 0; i < shlen(db->items); ++i) {
         ts_ComponentDef const* def = &db->items[i];
         if (def->category == category && strcmp(def->subcategory, subcategory) == 0 && def->name) {
-            defs[j++] = def->name;
+            names[j++] = def->name;
             if (j == max_defs)
                 break;
         }
     }
-    qsort(defs, j, sizeof(const char*), r_strcmp);
+    qsort(names, j, sizeof names[0], r_strcmp);
     return j;
 }
 
