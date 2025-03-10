@@ -92,7 +92,8 @@ TEST_OBJ = \
 	tests/compilation.o \
 	tests/serialization.o \
 	tests/simulation.o \
-	tests/custom_ic.o
+	tests/custom_ic.o \
+	tests/componentdb.o
 
 CIRCUITS = \
 	$(filter-out %.h, $(wildcard components/basic/*)) \

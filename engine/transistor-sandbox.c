@@ -211,7 +211,7 @@ size_t ts_subcategories(ts_Transistor* t, ts_ComponentCategory category, char co
     return r;
 }
 
-size_t ts_subcategory_defs(ts_Transistor* t, ts_ComponentCategory category, const char* subcategory, ts_ComponentDef const* defs[], int max_defs)
+size_t ts_subcategory_defs(ts_Transistor* t, ts_ComponentCategory category, const char* subcategory, const char* defs[], int max_defs)
 {
     ts_lock(t);
     size_t r = ts_component_db_subcategory_defs(&t->sandbox.component_db, category, subcategory, defs, max_defs);

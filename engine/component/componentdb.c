@@ -16,8 +16,9 @@
 static int subcategory_compare(const void* a, const void* b)
 {
     ts_SubCatCache const *sa = a, *sb = b;
-    if (sa->category == sb->category)
+    if (sa->category == sb->category) {
         return strcmp(sa->subcategory, sb->subcategory);
+    }
     return sa->category - sb->category;
 }
 
@@ -153,17 +154,23 @@ size_t ts_component_db_subcategories(ts_ComponentDB const* db, ts_ComponentCateg
     return j;
 }
 
-size_t ts_component_db_subcategory_defs(ts_ComponentDB const* db, ts_ComponentCategory category, const char* subcategory, ts_ComponentDef const* defs[], int max_defs)
+static int r_strcmp(const void* a, const void* b)
+{
+    return strcmp(a, b);
+}
+
+size_t ts_component_db_subcategory_defs(ts_ComponentDB const* db, ts_ComponentCategory category, const char* subcategory, const char* defs[], int max_defs)
 {
     size_t j = 0;
     for (int i = 0; i < shlen(db->items); ++i) {
         ts_ComponentDef const* def = &db->items[i];
-        if (def->category == category && strcmp(def->subcategory, subcategory) == 0) {
-            defs[j++] = def;
+        if (def->category == category && strcmp(def->subcategory, subcategory) == 0 && def->name) {
+            defs[j++] = def->name;
             if (j == max_defs)
                 break;
         }
     }
+    qsort(defs, j, sizeof(const char*), r_strcmp);
     return j;
 }
 
@@ -188,7 +195,6 @@ ts_Result ts_component_db_unserialize(ts_ComponentDB* db, lua_State* LL, ts_Sand
     ts_component_db_clear_not_included(db);
     size_t len = lua_objlen(LL, -1);
     for (size_t i = 0; i < len; ++i) {
-        ts_ComponentDef def;
         lua_rawgeti(LL, -1, i + 1);
         ts_component_db_add_def_from_lua(db, lua_tostring(LL, -1), -1, false);
         lua_pop(LL, 1);

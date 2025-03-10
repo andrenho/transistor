@@ -30,7 +30,7 @@ ts_Result              ts_component_db_clear_not_included(ts_ComponentDB* db);
 // queries
 ts_ComponentDef const* ts_component_db_def(ts_ComponentDB const* db, const char* name);
 size_t                 ts_component_db_subcategories(ts_ComponentDB const* db, ts_ComponentCategory category, const char* subcategories[], int max_subcategories);
-size_t                 ts_component_db_subcategory_defs(ts_ComponentDB const* db, ts_ComponentCategory category, const char* subcategory, ts_ComponentDef const* defs[], int max_defs);
+size_t                 ts_component_db_subcategory_defs(ts_ComponentDB const* db, ts_ComponentCategory category, const char* subcategory, const char* defs[], int max_defs);
 
 // serialization
 int       ts_component_db_serialize(ts_ComponentDB const* db, int vspace, FILE* f);

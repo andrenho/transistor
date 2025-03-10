@@ -30,11 +30,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="21c7ec71-c9ee-4ebd-950c-c84342844b28" name="Changes" comment=".">
+      <change afterPath="$PROJECT_DIR$/tests/componentdb.cc" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TODO.md" beforeDir="false" afterPath="$PROJECT_DIR$/TODO.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/component/componentdb.c" beforeDir="false" afterPath="$PROJECT_DIR$/engine/component/componentdb.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/component/componentdb.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/component/componentdb.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/component/componentdef.c" beforeDir="false" afterPath="$PROJECT_DIR$/engine/component/componentdef.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/transistor-sandbox.c" beforeDir="false" afterPath="$PROJECT_DIR$/engine/transistor-sandbox.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/transistor-sandbox.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/transistor-sandbox.h" afterDir="false" />
     </list>
@@ -135,7 +135,7 @@
       <recent name="$PROJECT_DIR$/contrib" />
     </key>
   </component>
-  <component name="RunManager" selected="Native Application.leaks-tests">
+  <component name="RunManager" selected="Native Application.transistor-tests">
     <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="CLION.EXTERNAL.BUILD" enabled="true" />
@@ -462,7 +462,15 @@
       <option name="project" value="LOCAL" />
       <updated>1741609349725</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary=".">
+      <option name="closed" value="true" />
+      <created>1741619473763</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1741619473763</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
