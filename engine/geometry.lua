@@ -93,3 +93,22 @@ function Position.a_to_b(a, b, orientation)
 end
 
 P = Position.new
+
+--
+-- Rect
+--
+
+Rect = {}
+Rect.__index = {}
+
+function Rect.new(p1, p2, p3, p4)
+   local rect = setmetatable({}, Rect)
+   if p3 ~= nil and p4 ~= nil then
+      rect.top_left = P(p1, p2)
+      rect.bottom_right = P(p3, p4)
+   else
+      rect.top_left = p1
+      rect.bottom_right = p2
+   end
+   return rect
+end

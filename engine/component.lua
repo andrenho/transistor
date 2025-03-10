@@ -12,3 +12,7 @@ end
 function Component:pin_positions()
    return self.def:pin_positions(self.position, self.direction)
 end
+
+function Component:rect()
+   return self.def:rect(self.position, self.direction)
+end

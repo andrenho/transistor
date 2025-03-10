@@ -104,3 +104,94 @@ do
    assert(pins[4].pos == P(1, 1, S))
 end
 
+
+print(" - DIP component - 6 pins")
+
+do
+   print("   - Direction N")
+   local c = component("ic_dip", 6)
+   c.position = P(1, 1)
+   c.direction = N
+   
+   local rect = c:rect()
+   assert(rect.top_left == P(0, 0))
+   assert(rect.bottom_right == P(2, 4))
+   
+   local pins = c:pin_positions()
+   
+   assert(#pins == 6)
+   for i=1,6 do assert(pins[i].pin_no == i) end
+   assert(pins[1].pos == P(0, 1))
+   assert(pins[2].pos == P(0, 2))
+   assert(pins[3].pos == P(0, 3))
+   assert(pins[4].pos == P(2, 3))
+   assert(pins[5].pos == P(2, 2))
+   assert(pins[6].pos == P(2, 1))
+end
+
+do
+   print("   - Direction E")
+   local c = component("ic_dip", 6)
+   c.position = P(1, 1)
+   c.direction = E
+   
+   local rect = c:rect()
+   assert(rect.top_left == P(0, 0))
+   assert(rect.bottom_right == P(4, 2))
+   
+   local pins = c:pin_positions()
+   
+   assert(#pins == 6)
+   for i=1,6 do assert(pins[i].pin_no == i) end
+   assert(pins[1].pos == P(1, 2))
+   assert(pins[2].pos == P(2, 2))
+   assert(pins[3].pos == P(3, 2))
+   assert(pins[4].pos == P(3, 0))
+   assert(pins[5].pos == P(2, 0))
+   assert(pins[6].pos == P(1, 0))
+end
+
+do
+   print("   - Direction S")
+   local c = component("ic_dip", 6)
+   c.position = P(1, 1)
+   c.direction = S
+   
+   local rect = c:rect()
+   assert(rect.top_left == P(0, 0))
+   assert(rect.bottom_right == P(2, 4))
+   
+   local pins = c:pin_positions()
+   
+   assert(#pins == 6)
+   for i=1,6 do assert(pins[i].pin_no == i) end
+   assert(pins[1].pos == P(2, 3))
+   assert(pins[2].pos == P(2, 2))
+   assert(pins[3].pos == P(2, 1))
+   assert(pins[4].pos == P(0, 1))
+   assert(pins[5].pos == P(0, 2))
+   assert(pins[6].pos == P(0, 3))
+end
+
+do
+   print("   - Direction W")
+   local c = component("ic_dip", 6)
+   c.position = P(1, 1)
+   c.direction = W
+   
+   local rect = c:rect()
+   assert(rect.top_left == P(0, 0))
+   assert(rect.bottom_right == P(4, 2))
+   
+   local pins = c:pin_positions()
+   
+   assert(#pins == 6)
+   for i=1,6 do assert(pins[i].pin_no == i) end
+   assert(pins[1].pos == P(3, 0))
+   assert(pins[2].pos == P(2, 0))
+   assert(pins[3].pos == P(1, 0))
+   assert(pins[4].pos == P(1, 2))
+   assert(pins[5].pos == P(2, 2))
+   assert(pins[6].pos == P(3, 2))
+end
+

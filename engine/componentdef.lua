@@ -5,6 +5,24 @@ function ComponentDef.validate(def)
    -- TODO
 end
 
+function ComponentDef:rect(pos, dir)
+   if self.type == "single_tile" then
+      return R(pos, pos)
+   elseif self.type == "ic_dip" then
+      local h = math.floor(#self.pins / 2)
+      if dir == N or dir == S then
+         return Rect.new(pos.x - 1, pos.y - 1, pos.x + self.ic_width, pos.y + h)
+      else
+         return Rect.new(pos.x - 1, pos.y - 1, pos.x + h, pos.y + self.ic_width)
+      end
+   elseif self.type == "ic_quad" then
+      local h = math.floor(#self.pins / 2)
+      return Rect.new(pos.x - 1, pos.y - 1, pos.x + h, pos.y + h)
+   else
+      assert(false)
+   end
+end
+
 function ComponentDef:pin_positions_single_tile(pos, dir)
    local function next_dir(d)
       if d == N then return W end
@@ -32,6 +50,25 @@ function ComponentDef:pin_positions_single_tile(pos, dir)
 end
 
 function ComponentDef:pin_positions_ic_dip(pos, dir)
+   local h = math.floor(#self.pins / 2)
+   local pin_pos = {}
+   if dir == N then
+      for i=0,(h-1) do pin_pos[#pin_pos+1] = { pos = P(pos.x - 1, pos.y + i) } end
+      for i=(h-1),0,-1 do pin_pos[#pin_pos+1] = { pos = P(pos.x + self.ic_width, pos.y + i) } end
+   elseif dir == E then
+      for i=0,(h-1) do pin_pos[#pin_pos+1] = { pos = P(pos.x + i, pos.y + self.ic_width) } end
+      for i=(h-1),0,-1 do pin_pos[#pin_pos+1] = { pos = P(pos.x + i, pos.y - 1) } end
+   elseif dir == S then
+      for i=(h-1),0,-1 do pin_pos[#pin_pos+1] = { pos = P(pos.x + self.ic_width, pos.y + i) } end
+      for i=0,(h-1) do pin_pos[#pin_pos+1] = { pos = P(pos.x - 1, pos.y + i) } end
+   elseif dir == W then
+      for i=(h-1),0,-1 do pin_pos[#pin_pos+1] = { pos = P(pos.x + i, pos.y - 1) } end
+      for i=0,(h-1) do pin_pos[#pin_pos+1] = { pos = P(pos.x + i, pos.y + self.ic_width) } end
+   else
+      assert(false)
+   end
+   for i,p in ipairs(pin_pos) do p.pin_no = i end
+   return pin_pos
 end
 
 function ComponentDef:pin_positions_ic_quad(pos, dir)
