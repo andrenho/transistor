@@ -60,3 +60,6 @@ transistor-tests
 imgui.ini
 compile_commands.json
 .cache/
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/*.iws
