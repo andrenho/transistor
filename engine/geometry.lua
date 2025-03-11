@@ -44,7 +44,7 @@ function Position.__eq(a, b)
 end
 
 function Position:hash()
-   return (self.x * 10000) + self.y + dir_hash(self.dir)
+   return (self.x * 10000) + (self.y * 10) + dir_hash(self.dir)
 end
 
 function Position.a_to_b(a, b, orientation)

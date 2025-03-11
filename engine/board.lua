@@ -96,5 +96,35 @@ function Board:remove_wires_under_ics()
 end
 
 function Board:remove_wires_for_ic(rect)
-   -- TODO
+   -- remove sides
+   for y = rect.top_left.y, rect.bottom_right.y do  -- left
+      self.wires[P(rect.top_left.x, y, N):hash()] = nil
+      self.wires[P(rect.top_left.x, y, S):hash()] = nil
+      self.wires[P(rect.top_left.x, y, E):hash()] = nil
+   end
+   for y = rect.top_left.y, rect.bottom_right.y do  -- right
+      self.wires[P(rect.bottom_right.x, y, N):hash()] = nil
+      self.wires[P(rect.bottom_right.x, y, S):hash()] = nil
+      self.wires[P(rect.bottom_right.x, y, W):hash()] = nil
+   end
+   for x = rect.top_left.x, rect.bottom_right.x do  -- top
+      self.wires[P(x, rect.top_left.y, S):hash()] = nil
+      self.wires[P(x, rect.top_left.y, W):hash()] = nil
+      self.wires[P(x, rect.top_left.y, E):hash()] = nil
+   end
+   for x = rect.top_left.x, rect.bottom_right.x do  -- bottom
+      self.wires[P(x, rect.bottom_right.y, N):hash()] = nil
+      self.wires[P(x, rect.bottom_right.y, W):hash()] = nil
+      self.wires[P(x, rect.bottom_right.y, E):hash()] = nil
+   end
+   
+   -- remove center
+   for x = rect.top_left.x + 1, rect.bottom_right.x - 1 do
+      for y = rect.top_left.y + 1, rect.bottom_right.y - 1 do
+         self.wires[P(x, y, N):hash()] = nil
+         self.wires[P(x, y, S):hash()] = nil
+         self.wires[P(x, y, W):hash()] = nil
+         self.wires[P(x, y, E):hash()] = nil
+      end
+   end
 end

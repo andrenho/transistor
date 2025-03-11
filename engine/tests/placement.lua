@@ -87,3 +87,41 @@ do
    board:add_component("__or_2i", P(1, 9), N)
    assert(board:component(P(1, 9)) == nil)
 end
+
+do
+   print(" - Don't place IC over single-tile component")
+   local board = Sandbox.new():add_board(20, 10)
+   board:add_component("__button", P(2, 2), N)
+   board:add_component("__or_2i", P(1, 1), N)
+   assert(board:component(P(1, 1)) == nil)
+end
+
+do
+   print(" - Remove IC")
+   local board = Sandbox.new():add_board(20, 10)
+   board:add_component("__or_2i", P(1, 1), N)
+   board:clear_tile(P(2, 2))
+   assert(board:component(P(1, 1)) == nil)
+   assert(board:component(P(2, 2)) == nil)
+end
+
+do
+   print(" - Don't place IC over another IC")
+   local board = Sandbox.new():add_board(20, 10)
+   board:add_component("__or_2i", P(2, 2), N)
+   board:add_component("__or_2i", P(1, 1), N)
+   assert(board:component(P(0, 0)) == nil)
+end
+
+do
+   print(" - Overwrite wire on placement")
+   local board = Sandbox.new():add_board(20, 10)
+   board:add_wires(P(0, 1), P(4, 1), HORIZONTAL, { WIDTH_1, LAYER_TOP })
+   board:add_component("__or_2i", P(2, 1), N)
+   
+   local i = 0; for _,_ in pairs(board.wires) do i = i + 1 end; print(i); assert(i == 4)
+   assert(board:wire(P(0, 1, E)) ~= nil)
+   assert(board:wire(P(1, 1, W)) ~= nil)
+   assert(board:wire(P(3, 1, E)) ~= nil)
+   assert(board:wire(P(4, 1, W)) ~= nil)
+end
