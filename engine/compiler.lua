@@ -154,7 +154,7 @@ compiler = {
          end
          
          -- add pins (IC)
-         for _,central_pin in ipairs(central_pins.items) do
+         for _,central_pin in pairs(central_pins.items) do
             for _,pin in ipairs(pins) do
                if central_pin == pin.pos then
                   connection.pins[#connection.pins+1] = pin
