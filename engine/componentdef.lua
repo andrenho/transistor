@@ -16,7 +16,7 @@ function ComponentDef:rect(pos, dir)
          return Rect.new(pos.x - 1, pos.y - 1, pos.x + h, pos.y + self.ic_width)
       end
    elseif self.type == "ic_quad" then
-      local h = math.floor(#self.pins / 2)
+      local h = math.floor(#self.pins / 4)
       return Rect.new(pos.x - 1, pos.y - 1, pos.x + h, pos.y + h)
    else
       assert(false)
@@ -72,6 +72,28 @@ function ComponentDef:pin_positions_ic_dip(pos, dir)
 end
 
 function ComponentDef:pin_positions_ic_quad(pos, dir)
+   local d
+   if dir == N then d = { W, S, E, N } end
+   if dir == E then d = { N, W, S, E } end
+   if dir == S then d = { E, N, W, S } end
+   if dir == W then d = { S, E, N, W } end
+   
+   local h = math.floor(#self.pins / 4)
+   local pin_pos = {}
+   for k=1,4 do
+      if d[k] == W then
+         for i=0,(h-1) do pin_pos[#pin_pos+1] = { pos = P(pos.x - 1, pos.y + i) } end
+      elseif d[k] == S then
+         for i=0,(h-1) do pin_pos[#pin_pos+1] = { pos = P(pos.x + i, pos.y + h) } end
+      elseif d[k] == E then
+         for i=(h-1),0,-1 do pin_pos[#pin_pos+1] = { pos = P(pos.x + h, pos.y + i) } end
+      elseif d[k] == N then
+         for i=(h-1),0,-1 do pin_pos[#pin_pos+1] = { pos = P(pos.x + i, pos.y - 1) } end
+      end
+   end
+   
+   for i,p in ipairs(pin_pos) do p.pin_no = i end
+   return pin_pos
 end
 
 function ComponentDef:pin_positions(pos, dir)

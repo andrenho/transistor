@@ -29,9 +29,7 @@
   <component name="ChangeListManager">
     <list default="true" id="21c7ec71-c9ee-4ebd-950c-c84342844b28" name="Changes" comment=".">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/component.lua" beforeDir="false" afterPath="$PROJECT_DIR$/engine/component.lua" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/componentdef.lua" beforeDir="false" afterPath="$PROJECT_DIR$/engine/componentdef.lua" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/geometry.lua" beforeDir="false" afterPath="$PROJECT_DIR$/engine/geometry.lua" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/tests/pinpositions.lua" beforeDir="false" afterPath="$PROJECT_DIR$/engine/tests/pinpositions.lua" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -283,7 +281,7 @@
       <option name="presentableId" value="Default" />
       <updated>1741361380317</updated>
       <workItem from="1741361381314" duration="38775000" />
-      <workItem from="1741634187399" duration="14252000" />
+      <workItem from="1741634187399" duration="15189000" />
     </task>
     <task id="LOCAL-00001" summary=".">
       <option name="closed" value="true" />
@@ -541,7 +539,15 @@
       <option name="project" value="LOCAL" />
       <updated>1741648332306</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary=".">
+      <option name="closed" value="true" />
+      <created>1741650299540</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1741650299540</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
