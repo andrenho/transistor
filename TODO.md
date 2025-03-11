@@ -1,9 +1,10 @@
 - [ ] Major refactoring
   - [x] Rewrite lua engine
-  - [ ] Serialization
-  - [ ] Component def assertions
-  - [ ] Cursor
-  - [ ] Simulation
+  - [x] Serialization
+  - [x] Cursor
+  - [x] Run tests from C
+  - [x] Component def assertions
+  - [ ] Test simulation
 
 
 - [x] Base game

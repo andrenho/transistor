@@ -1,10 +1,6 @@
-#include "util/engine.hh"
-#include "simulation/simulation.hh"
-
-Engine engine;
-Simulation simulation;
+#include "backend/tests.hh"
 
 int main()
 {
-    simulation.run();
+    run_tests();
 }

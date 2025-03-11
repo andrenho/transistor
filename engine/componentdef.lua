@@ -2,8 +2,23 @@ ComponentDef = {}
 ComponentDef.__index = ComponentDef
 
 function ComponentDef.validate(def)
-   -- TODO
+   assert(type(def.key) == 'string')
+   assert(def.type == "single_tile" or def.type == "ic_dip" or def.type == "ic_quad")
+   if def.can_rotate == nil then def.can_rotate = false end
+   assert(type(def.can_rotate) == "boolean")
+   if def.data_size == nil then def.data_size = 0 end
+   assert(type(def.data_size) == "number")
    if def.ic_width == nil then def.ic_width = 1 end
+   assert(type(def.ic_width) == "number")
+   assert(type(def.pins) == "table")
+   for _,p in ipairs(def.pins) do
+      assert(type(p.name) == "string")
+      assert(p.direction == "input" or p.direction == "output")
+   end
+   assert(def.infobox == nil or type(def.infobox) == "string")
+   assert(def.on_click == nil or type(def.on_click) == "function")
+   assert(def.simulate == nil or type(def.simulate) == "function")
+   assert(type(def.render) == "function")
 end
 
 function ComponentDef:rect(pos, dir)

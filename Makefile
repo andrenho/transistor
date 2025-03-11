@@ -42,7 +42,8 @@ endif
 
 OBJ = \
 	main.o \
-	util/engine.o \
+	backend/engine.o \
+	backend/tests.o \
 	simulation/simulation.o #\
 	ui/common.o \
 	ui/resources.o \
@@ -64,6 +65,8 @@ IMGUI_OBJ = \
 
 ENGINE = \
 	$(wildcard engine/*.lua) \
+	$(wildcard engine/tests/*.lua) \
+	$(wildcard engine/util/*.lua) \
 	$(wildcard components/basic/*.lua) \
 	$(wildcard components/gates/*.lua)
 

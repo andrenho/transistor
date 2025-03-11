@@ -1,21 +1,45 @@
-#include "util/engine.hh"
+#include "engine.hh"
 
 #include <string>
 #include <stdexcept>
 using namespace std::string_literals;
 
-#include "engine/engine.lua.h"
-#include "engine/simulation.lua.h"
+#include "engine/util/strict.lua.h"
+#include "engine/util/serialize.lua.h"
+#include "engine/util/util.lua.h"
+#include "engine/board.lua.h"
+#include "engine/compiler.lua.h"
+#include "engine/component.lua.h"
+#include "engine/componentdb.lua.h"
+#include "engine/componentdef.lua.h"
+#include "engine/cursor.lua.h"
+#include "engine/geometry.lua.h"
+#include "engine/sandbox.lua.h"
+#include "engine/wire.lua.h"
+
 
 Engine::Engine()
-    : L(luaL_newstate())
+    : L(luaL_newstate()), simulation_(L)
 {
-    luaL_openlibs(L);
+    luaL_openlibs(L);  // TODO - sandbox
 
     // load engine
-    load("engine", engine_engine_lua, engine_engine_lua_sz);
-    load("simulation", engine_simulation_lua, engine_simulation_lua_sz);
+#define LOAD(name) load(#name, engine_##name##_lua, engine_##name##_lua_sz);
+    LOAD(util_strict)
+    LOAD(util_serialize)
+    LOAD(util_util)
+    LOAD(board)
+    LOAD(compiler)
+    LOAD(component)
+    LOAD(componentdb)
+    LOAD(componentdef)
+    LOAD(cursor)
+    LOAD(geometry)
+    LOAD(sandbox)
+    LOAD(wire)
+#undef LOAD
 
+    /*
     // run tests
     execute("run_tests()");
 
@@ -23,11 +47,19 @@ Engine::Engine()
     execute("create_sandbox()");
     lua_assert(lua_gettop() == 1);
     sandbox_ref_ = luaL_ref(L, LUA_REGISTRYINDEX);
+    */
 }
 
 Engine::~Engine()
 {
     lua_close(L);
+}
+
+void Engine::start()
+{
+    simulation_.start();
+    execute("__sandbox = Sandbox.new()");
+    execute("__sandbox:add_board(20, 10)");
 }
 
 void Engine::execute(const char* fmt, ...)
