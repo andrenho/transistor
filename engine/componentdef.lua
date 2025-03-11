@@ -7,7 +7,7 @@ end
 
 function ComponentDef:rect(pos, dir)
    if self.type == "single_tile" then
-      return R(pos, pos)
+      return Rect.new(pos, pos)
    elseif self.type == "ic_dip" then
       local h = math.floor(#self.pins / 2)
       if dir == N or dir == S then

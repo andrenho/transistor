@@ -30,9 +30,8 @@
     <list default="true" id="21c7ec71-c9ee-4ebd-950c-c84342844b28" name="Changes" comment=".">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/board.lua" beforeDir="false" afterPath="$PROJECT_DIR$/engine/board.lua" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/component.lua" beforeDir="false" afterPath="$PROJECT_DIR$/engine/component.lua" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/componentdb.lua" beforeDir="false" afterPath="$PROJECT_DIR$/engine/componentdb.lua" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/sandbox.lua" beforeDir="false" afterPath="$PROJECT_DIR$/engine/sandbox.lua" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/componentdef.lua" beforeDir="false" afterPath="$PROJECT_DIR$/engine/componentdef.lua" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/geometry.lua" beforeDir="false" afterPath="$PROJECT_DIR$/engine/geometry.lua" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/tests/placement.lua" beforeDir="false" afterPath="$PROJECT_DIR$/engine/tests/placement.lua" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -284,7 +283,7 @@
       <option name="presentableId" value="Default" />
       <updated>1741361380317</updated>
       <workItem from="1741361381314" duration="38775000" />
-      <workItem from="1741634187399" duration="16569000" />
+      <workItem from="1741634187399" duration="18404000" />
     </task>
     <task id="LOCAL-00001" summary=".">
       <option name="closed" value="true" />
@@ -566,7 +565,15 @@
       <option name="project" value="LOCAL" />
       <updated>1741651335034</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary=".">
+      <option name="closed" value="true" />
+      <created>1741653495831</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1741653495831</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

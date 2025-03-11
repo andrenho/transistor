@@ -34,4 +34,10 @@ do
    assert(board:component(P(5, 5)).def.key == "__button")
 end
 
+do
+   print(" - Don't place outside of circuit bounds")
+   local board = Sandbox.new():add_board(20, 10)
+   board:add_component("__button", P(20, 5), N)
+   assert(board:component(P(20, 5)) == nil)
+end
 -- TODO

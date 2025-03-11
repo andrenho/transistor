@@ -99,7 +99,7 @@ P = Position.new
 --
 
 Rect = {}
-Rect.__index = {}
+Rect.__index = Rect
 
 function Rect.new(p1, p2, p3, p4)
    local rect = setmetatable({}, Rect)
@@ -111,4 +111,29 @@ function Rect.new(p1, p2, p3, p4)
       rect.bottom_right = p2
    end
    return rect
+end
+
+function Rect:contains(pos)
+   return pos.x >= self.top_left.x and pos.x <= self.bottom_right.x and
+          pos.y >= self.top_left.y and pos.y <= self.bottom_right.y
+end
+
+function Rect:fully_inside_of(rect)
+   if self.top_left.x < rect.top_left.x or self.top_left.y < rect.top_left.y then
+      return false
+   end
+   if self.bottom_right.x > rect.bottom_right.x or self.bottom_right.y > rect.bottom_right.y then
+      return false
+   end
+   return true
+end
+
+function Rect:intersects_with(rect)
+   if self.bottom_right.x < rect.top_left.x or rect.bottom_right.x < self.top_left.x then
+      return false
+   end
+   if self.bottom_right.y < rect.top_left.y or rect.bottom_right.y < self.top_left.y then
+      return false
+   end
+   return true
 end

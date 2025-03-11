@@ -15,6 +15,15 @@ function Board:wire(pos)
    return self.wires[pos:hash()]
 end
 
+function Board:component(pos)
+   for _,component in ipairs(self.components) do
+      if component:rect():contains(pos) then
+         return component
+      end
+   end
+   return nil
+end
+
 function Board:add_wire(pos, wire)
    if pos.x < 0 or pos.y < 0 or pos.x >= self.w or pos.y >= self.h then return end
    self.wires[pos:hash()] = wire
@@ -36,16 +45,27 @@ function Board:add_component(key, pos, dir)
    local def = self.sandbox.component_db:def(key)
    assert(def ~= nil, "Component '" .. key .. "' not found in database.")
    
-   -- TODO is it inside the board
+   local rect = def:rect(pos, dir)
    
-   -- TODO is there another component there
+   -- inside the board?
+   if not rect:fully_inside_of(Rect.new(0, 0, self.w-1, self.h-1)) then
+      return
+   end
+   
+   -- is there another component there?
+   for _,comp in ipairs(self.components) do
+      if comp:rect():intersects_with(rect) then
+         return
+      end
+   end
    
    -- initialize component
    local component = Component.new(def, pos, dir)
    self.components[#self.components+1] = component
    
+   -- remove wires underneath
    if component.def.type ~= "single_tile" then
-      self:remove_wires_for_ic(component:rect())
+      self:remove_wires_for_ic(rect)
    end
 end
 
