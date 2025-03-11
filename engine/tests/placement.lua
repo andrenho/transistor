@@ -40,4 +40,27 @@ do
    board:add_component("__button", P(20, 5), N)
    assert(board:component(P(20, 5)) == nil)
 end
--- TODO
+
+do
+   print(" - Don't place single-tile component on top of another single-tile component")
+   local board = Sandbox.new():add_board(20, 10)
+   board:add_component("__button", P(1, 1), N)
+   board:add_component("__led", P(1, 1), N)
+   assert(board:component(P(1, 1)).def.key == "__button")
+end
+
+do
+   print(" - Don't place single-tile component on top of IC component")
+   local board = Sandbox.new():add_board(20, 10)
+   board:add_component("__or_2i", P(1, 1), N)
+   board:add_component("__led", P(2, 2), N)
+   assert(board:component(P(1, 1)).def.key == "__or_2i")
+end
+
+do
+   print(" - Remove component")
+   local board = Sandbox.new():add_board(20, 10)
+   board:add_component("__button", P(1, 1), N)
+   board:clear_tile(P(1, 1))
+   assert(board:component(P(1, 1)) == nil)
+end

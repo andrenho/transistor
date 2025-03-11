@@ -72,7 +72,13 @@ end
 function Board:clear_tile(pos)
    assert(pos.dir == CENTER)
    
-   -- TODO clear component
+   -- clear component
+   for i,component in ipairs(self.components) do
+      if component:rect():contains(pos) then
+         table.remove(self.components, i)
+         break
+      end
+   end
    
    -- clear wires
    self.wires[P(pos.x, pos.y, N):hash()] = nil

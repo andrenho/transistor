@@ -3,6 +3,7 @@ ComponentDef.__index = ComponentDef
 
 function ComponentDef.validate(def)
    -- TODO
+   if def.ic_width == nil then def.ic_width = 1 end
 end
 
 function ComponentDef:rect(pos, dir)
