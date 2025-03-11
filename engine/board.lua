@@ -8,6 +8,7 @@ function Board.new(w, h, sandbox)
    self.wires = {}
    self.components = {}
    self.sandbox = sandbox
+   self.cursor = Cursor.new(self)
    return self
 end
 
