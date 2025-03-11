@@ -79,8 +79,9 @@ function Position.a_to_b(a, b, orientation)
       return pos
    end
    
-   local pos = {}
    if a == b then return { a } end
+   
+   local pos, pos2
    if orientation == HORIZONTAL then
       pos = a_to_b_horizontal(math.min(a.x, b.x), math.max(a.x, b.x), a.y)
       pos2 = a_to_b_vertical(b.x, math.min(a.y, b.y), math.max(a.y, b.y), a.y)

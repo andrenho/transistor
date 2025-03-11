@@ -3,6 +3,9 @@
 set -e
 
 LIB=''
+for f in engine/util/*.lua; do
+  LIB="$LIB -l ${f%%.*}"
+done
 for f in engine/*.lua; do
   LIB="$LIB -l ${f%%.*}"
 done

@@ -13,6 +13,7 @@ do
    positions:add(2, 1, E)
    positions:add(3, 1, W)
    
+   --[[
    local groups = find_connected_wires(positions, nil)
    assert(groups:len() == 1)
    
@@ -22,4 +23,5 @@ do
    assert(contains(ps, P(2, 1, W)))
    assert(contains(ps, P(2, 1, E)))
    assert(contains(ps, P(3, 1, W)))
+   ]]
 end

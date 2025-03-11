@@ -1,7 +1,7 @@
 function find_connected_wires(wires, single_tile_component_pos)
    
    local function find_connected_group(start, wires, single_tile_component_pos)
-      -- TODO
+      local result = nil
    end
    
    assert(getmetatable(wires) == PositionSet)

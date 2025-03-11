@@ -3,7 +3,7 @@ print("Wire placement")
 do
    print(" - Place wire in circuit")
    local board = Sandbox.new():add_board(20, 10)
-   board:add_wire(P(10, 1, E), { width = 1, layer = TOP })
+   board:add_wire(P(10, 1, E), { width = 1, layer = LAYER_TOP })
    assert(board:wire(P(10, 1, E)) ~= nil)
 end
 

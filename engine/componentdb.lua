@@ -16,7 +16,7 @@ function ComponentDB:add_from_str(lua_code)
 end
 
 function ComponentDB:load_all_native_components()  -- this function is just for testing and is overwritten by C engine
-   function load_component(filename)
+   local function load_component(filename)
       local f = io.open(filename, "r")
       local content = f:read("*a")
       f:close()
