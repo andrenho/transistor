@@ -110,17 +110,28 @@ function PositionSet.new()
 end
 
 function PositionSet:add(pos, y, dir)
-   if y ~= nil then
-      pos = P(pos, y, dir)
-   end
+   if y ~= nil then pos = P(pos, y, dir) end
    if not self.items[pos:hash()] then
       self.size = self.size + 1
       self.items[pos:hash()] = pos
    end
 end
 
+function PositionSet:contains(pos, y, dir)
+   if y ~= nil then pos = P(pos, y, dir) end
+   return self.items[pos:hash()] ~= nil
+end
+
+function PositionSet:remove(pos, y, dir)
+   if y ~= nil then pos = P(pos, y, dir) end
+   if self.items[pos:hash()] then
+      self.size = self.size -1
+      self.items[pos:hash()] = nil
+   end
+end
+
 function PositionSet:first()
-   return self.items[1]
+   for _,v in pairs(self.items) do return v end
 end
 
 function PositionSet:len()
