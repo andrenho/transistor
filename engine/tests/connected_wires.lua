@@ -8,7 +8,7 @@ do
    positions:add(2, 1, E)
    positions:add(3, 1, W)
    
-   local groups = find_connected_wires(positions, {})
+   local groups = compiler.find_connected_wires(positions, {})
    assert(#groups == 1)
    
    local ps = groups[1]
@@ -33,7 +33,7 @@ do
    positions:add(2, 2, E)
    positions:add(3, 2, W)
    
-   local groups = find_connected_wires(positions, {})
+   local groups = compiler.find_connected_wires(positions, {})
    assert(#groups == 2)
    
    local ps = groups[1]
@@ -69,7 +69,7 @@ do
    positions:add(2, 2, E)
    positions:add(3, 2, W)
    
-   local groups = find_connected_wires(positions, {})
+   local groups = compiler.find_connected_wires(positions, {})
    assert(#groups == 1)
    
    local ps = groups[1]
@@ -87,7 +87,7 @@ do
    positions:add(1, 1, S)
    
    local single_tile_pins = { P(1, 1) }
-   local groups = find_connected_wires(positions, single_tile_pins)
+   local groups = compiler.find_connected_wires(positions, single_tile_pins)
    assert(#groups == 2)
    
    assert(#groups[1] == 1)
