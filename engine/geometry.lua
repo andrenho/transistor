@@ -1,3 +1,5 @@
+local bit = require('bit')
+
 --
 -- directions
 --
@@ -17,6 +19,14 @@ function dir_hash(dir)
    assert(false)
 end
 
+function dir_unhash(n)
+   if n == 0 then return CENTER end
+   if n == 1 then return N end
+   if n == 2 then return E end
+   if n == 3 then return S end
+   if n == 4 then return W end
+   assert(false)
+end
 --
 -- orientation
 --
@@ -44,7 +54,14 @@ function Position.__eq(a, b)
 end
 
 function Position:hash()
-   return (self.x * 10000) + (self.y * 10) + dir_hash(self.dir)
+   return bit.bor(bit.lshift(self.x, 20), bit.lshift(self.y, 8), dir_hash(self.dir))
+end
+
+function Position.unhash(h)
+   local dir = dir_unhash(bit.band(h, 0xf))
+   local y = bit.band(bit.rshift(h, 8), 0xfff)
+   local x = bit.rshift(h, 20)
+   return P(x, y, dir)
 end
 
 function Position.a_to_b(a, b, orientation)

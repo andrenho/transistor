@@ -36,6 +36,11 @@ end
 
 do
    print("   - Compile")
+   local sandbox = circuit()
+   local connections = compiler.compile(sandbox)
+   assert(#connections == 1)
+   assert(#connections[1].pins == 2)
+   assert(#connections[1].wires == 4)
 end
 
 do

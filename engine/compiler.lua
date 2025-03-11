@@ -74,7 +74,7 @@ compiler = {
       end
       
       if wires:len() == 0 then
-         return nil
+         return {}
       end
       
       local groups = {}
@@ -105,4 +105,66 @@ compiler = {
       return pins
    end,
    
+   compile = function(sandbox)
+      local connections = {}
+      
+      local pins = compiler.find_all_pins(sandbox)
+      
+      -- find single-tile component pins
+      local single_tile_component_pins = {}
+      for _,pin in ipairs(pins) do
+         if pin.component.def.type == "single_tile" then
+            single_tile_component_pins[#single_tile_component_pins+1] = P(pin.pos.x, pin.pos.y, CENTER)
+         end
+      end
+      
+      -- create set of wires
+      local wire_set = PositionSet.new()
+      for _,board in ipairs(sandbox.boards) do
+         for pos_hash,_ in pairs(board.wires) do
+            wire_set:add(Position.unhash(pos_hash))
+         end
+      end
+      
+      -- find groups, and create connections
+      for _,group in ipairs(compiler.find_connected_wires(wire_set, single_tile_component_pins)) do
+         
+         local connection = {
+            wires = {},
+            pins = {},
+         }
+         
+         -- add wires to connection, and add to the list of central pins
+         local central_pins = PositionSet.new()
+         for _,pos in ipairs(group) do
+            
+            -- add to central pins
+            central_pins:add(pos.x, pos.y, CENTER)
+            
+            -- add wire to connection
+            connection.wires[#connection.wires+1] = pos
+            
+            -- add pin (single-tile components) to connection
+            for _,pin in ipairs(pins) do
+               if pos == pin.pos then
+                  connection.pins[#connection.pins+1] = pin
+               end
+            end
+            
+         end
+         
+         -- add pins (IC)
+         for _,central_pin in ipairs(central_pins.items) do
+            for _,pin in ipairs(pins) do
+               if central_pin == pin.pos then
+                  connection.pins[#connection.pins+1] = pin
+               end
+            end
+         end
+         
+         connections[#connections+1] = connection
+      end
+      
+      return connections
+   end
 }

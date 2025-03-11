@@ -8,6 +8,12 @@ local function list_contains(haystack, needle)
 end
 
 do
+   print(" - Hash and unhash")
+   local p = P(194, 237, W)
+   assert(Position.unhash(p:hash()) == p)
+end
+
+do
    print(" - Position equality")
    assert(P(1, 1) == P(1, 1))
    assert(P(1, 1) ~= P(1, 1, N))
