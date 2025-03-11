@@ -64,3 +64,26 @@ do
    board:clear_tile(P(1, 1))
    assert(board:component(P(1, 1)) == nil)
 end
+
+print("IC placement")
+
+do
+   print(" - Query IC in a different tile")
+   local board = Sandbox.new():add_board(20, 10)
+   board:add_component("__or_2i", P(2, 2), N)
+   assert(board:component(P(1, 1)).def.key == "__or_2i")
+end
+
+do
+   print(" - Don't place outside of circuit bounds")
+   local board = Sandbox.new():add_board(10, 10)
+   board:add_component("__or_2i", P(11, 1), N)
+   assert(board:component(P(11, 1)) == nil)
+end
+
+do
+   print(" - Don't place any part of IC outside of circuit bounds")
+   local board = Sandbox.new():add_board(20, 10)
+   board:add_component("__or_2i", P(1, 9), N)
+   assert(board:component(P(1, 9)) == nil)
+end
