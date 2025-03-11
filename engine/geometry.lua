@@ -27,6 +27,16 @@ function dir_unhash(n)
    if n == 4 then return W end
    assert(false)
 end
+
+function dir_rotate_component(dir)
+   if dir == CENTER then return CENTER end
+   if dir == N then return E end
+   if dir == E then return S end
+   if dir == S then return W end
+   if dir == W then return N end
+   assert(false)
+end
+
 --
 -- orientation
 --

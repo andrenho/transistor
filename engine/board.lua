@@ -69,6 +69,13 @@ function Board:add_component(key, pos, dir)
    end
 end
 
+function Board:rotate_tile(pos)
+   local component = self:component(pos)
+   if component and component.def.can_rotate then
+      component.direction = dir_rotate_component(component.direction)
+   end
+end
+
 function Board:clear_tile(pos)
    assert(pos.dir == CENTER)
    
@@ -89,7 +96,7 @@ end
 
 function Board:remove_wires_under_ics()
    for _,c in ipairs(self.components) do
-      if c.def.type == "single_tile" then
+      if c.def.type ~= "single_tile" then
          self:remove_wires_for_ic(c:rect())
       end
    end
