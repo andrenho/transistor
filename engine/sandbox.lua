@@ -9,7 +9,7 @@ function Sandbox.new()
 end
 
 function Sandbox:add_board(w, h)
-   local board = Board.new(w, h)
+   local board = Board.new(w, h, self)
    self.boards[#self.boards+1] = board
    return board
 end

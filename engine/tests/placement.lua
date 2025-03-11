@@ -25,4 +25,13 @@ do
    assert(board:wire(P(3, 1, W)) ~= nil)
 end
 
+print("Single tile placement")
+
+do
+   print(" - Place component in circuit")
+   local board = Sandbox.new():add_board(20, 10)
+   board:add_component("__button", P(5, 5), N)
+   assert(board:component(P(5, 5)).def.key == "__button")
+end
+
 -- TODO

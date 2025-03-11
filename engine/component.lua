@@ -1,9 +1,10 @@
 Component = {}
 Component.__index = Component
 
-function Component.new(def, dir)
+function Component.new(def, pos, dir)
    local self = setmetatable({}, Component)
    self.def = def
+   self.position = pos
    self.direction = dir or N
    -- TODO - data & pins
    return self

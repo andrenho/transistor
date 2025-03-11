@@ -29,3 +29,7 @@ function ComponentDB:load_all_native_components()  -- this function is just for 
    load_component("components/basic/vcc.lua")
    load_component("components/gates/or_2i.lua")
 end
+
+function ComponentDB:def(key)
+   return self.items[key]
+end
