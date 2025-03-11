@@ -18,7 +18,9 @@ private:
     int sandbox_ref_ = -1;
 
     void load(const char* name, uint8_t const* bytecode, size_t sz);
-    void execute(const char* fmt, ...);
+    void execute(bool recompile, const char* fmt, ...);
+
+    void recompile_sandbox();
 
     friend void run_tests();
 };
