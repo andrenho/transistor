@@ -10,10 +10,10 @@ do
    board:add_wires(P(1, 1), P(3, 1), HORIZONTAL, WR(LAYER_TOP, WIDTH_1))
    
    local snap = sandbox:take_snapshot(true)
-   print(serpent.block(snap))
+   -- print(serpent.block(snap))
    sb2 = Sandbox.from_snapshot(snap)
    
-   assert(board:wire(P(2, 1, E)) ~= nil)
+   assert(board:wire(P(2, 1, W)) ~= nil)
    assert(board:component(P(1, 1)).def.key == "__npn")
    assert(board:component(P(3, 1)).def.key == "__or_2i")
 end
