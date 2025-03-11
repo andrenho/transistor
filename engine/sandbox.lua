@@ -8,6 +8,17 @@ function Sandbox.new()
    return self
 end
 
+function Sandbox.from_snapshot(snap)
+   local new_sandbox = Sandbox.new()
+   if snap.component_db then
+      new_sandbox.component_db:import_snapshot(snap.component_db)
+   end
+   for _,b in ipairs(snap.boards) do
+      new_sandbox.boards[#new_sandbox.boards+1] = Board.from_snapshot(b, new_sandbox)
+   end
+   return new_sandbox
+end
+
 function Sandbox:add_board(w, h)
    local board = Board.new(w, h, self)
    self.boards[#self.boards+1] = board

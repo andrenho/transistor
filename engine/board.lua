@@ -145,7 +145,18 @@ function Board:take_snapshot()
       snap.wires[#snap.wires+1] = { pos.x, pos.y, pos.dir, wire.layer .. wire.width }
    end
    for i, component in ipairs(self.components) do
-      snap.components[i] = { component.position.x, component.position.y, component.position.dir, component.def.key }
+      snap.components[i] = { component.position.x, component.position.y, component.dir, component.def.key }
    end
    return snap
+end
+
+function Board.from_snapshot(snap, sandbox)
+   local board = Board.new(snap.w, snap.h, sandbox)
+   for _,w in ipairs(snap.wires) do
+      board:add_wire(P(w[1], w[2], w[3]), WR(w[4]:sub(1, 1), w[4]:sub(2, 2)))
+   end
+   for _,c in ipairs(snap.components) do
+      board:add_component(c[4], P(c[1], c[2]), c[3])
+   end
+   return board
 end

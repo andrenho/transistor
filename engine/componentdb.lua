@@ -45,3 +45,9 @@ function ComponentDB:take_snapshot()
    end
    return defs
 end
+
+function ComponentDB:import_snapshot(snap)
+   for _,code in ipairs(snap) do
+      self:add_from_str(code, false)
+   end
+end
