@@ -3,14 +3,14 @@ print("Wire placement")
 do
    print(" - Place wire in circuit")
    local board = Sandbox.new():add_board(20, 10)
-   board:add_wire(P(10, 1, E), { width = 1, layer = LAYER_TOP })
+   board:add_wire(P(10, 1, E), WR(LAYER_TOP, WIDTH_1))
    assert(board:wire(P(10, 1, E)) ~= nil)
 end
 
 do
    print(" - Place wires in circuit")
    local board = Sandbox.new():add_board(20, 10)
-   board:add_wires(P(1, 1), P(3, 1), HORIZONTAL, { WIDTH_1, LAYER_TOP })
+   board:add_wires(P(1, 1), P(3, 1), HORIZONTAL, WR(LAYER_TOP, WIDTH_1))
    assert(board:wire(P(1, 1, E)) ~= nil)
    assert(board:wire(P(2, 1, W)) ~= nil)
    assert(board:wire(P(2, 1, E)) ~= nil)
@@ -20,14 +20,14 @@ end
 do
    print(" - Don't place wire outside of circuit bounds")
    local board = Sandbox.new():add_board(20, 10)
-   board:add_wire(P(20, 1, E), { WIDTH_1, LAYER_TOP })
+   board:add_wire(P(20, 1, E), WR(LAYER_TOP, WIDTH_1))
    assert(board:wire(P(20, 1, E)) == nil)
 end
 
 do
    print(" - Remove wire")
    local board = Sandbox.new():add_board(20, 10)
-   board:add_wires(P(1, 1), P(3, 1), HORIZONTAL, { WIDTH_1, LAYER_TOP })
+   board:add_wires(P(1, 1), P(3, 1), HORIZONTAL, WR(LAYER_TOP, WIDTH_1))
    board:clear_tile(P(2, 1))
    assert(board:wire(P(1, 1, E)) ~= nil)
    assert(board:wire(P(2, 1, W)) == nil)
@@ -126,7 +126,7 @@ end
 do
    print(" - Overwrite wire on placement")
    local board = Sandbox.new():add_board(20, 10)
-   board:add_wires(P(0, 1), P(4, 1), HORIZONTAL, { WIDTH_1, LAYER_TOP })
+   board:add_wires(P(0, 1), P(4, 1), HORIZONTAL, WR(LAYER_TOP, WIDTH_1))
    board:add_component("__or_2i", P(2, 1), N)
    
    local i = 0; for _,_ in pairs(board.wires) do i = i + 1 end; assert(i == 4)

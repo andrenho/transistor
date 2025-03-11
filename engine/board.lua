@@ -25,12 +25,14 @@ function Board:component(pos)
 end
 
 function Board:add_wire(pos, wire)
+   assert(getmetatable(wire) == Wire)
    if pos.x < 0 or pos.y < 0 or pos.x >= self.w or pos.y >= self.h then return end
    self.wires[pos:hash()] = wire
    self:remove_wires_under_ics()
 end
 
 function Board:add_wires(pos1, pos2, orientation, wire)
+   assert(getmetatable(wire) == Wire)
    for _,pos in ipairs(Position.a_to_b(pos1, pos2, orientation)) do
       if pos.x >= 0 or pos.y >= 0 or pos.x < self.w or pos.y < self.h then
          self.wires[pos:hash()] = wire
@@ -134,4 +136,16 @@ function Board:remove_wires_for_ic(rect)
          self.wires[P(x, y, E):hash()] = nil
       end
    end
+end
+
+function Board:take_snapshot()
+   local snap = { w = self.w, h = self.w, wires = {}, components = {} }
+   for pos_hash, wire in pairs(self.wires) do
+      local pos = Position.unhash(pos_hash)
+      snap.wires[#snap.wires+1] = { pos.x, pos.y, pos.dir, wire.layer .. wire.width }
+   end
+   for i, component in ipairs(self.components) do
+      snap.components[i] = { component.position.x, component.position.y, component.position.dir, component.def.key }
+   end
+   return snap
 end

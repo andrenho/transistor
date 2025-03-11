@@ -13,3 +13,14 @@ function Sandbox:add_board(w, h)
    self.boards[#self.boards+1] = board
    return board
 end
+
+function Sandbox:take_snapshot(include_db)
+   local snap = { boards = {} }
+   for i,board in ipairs(self.boards) do
+      snap.boards[i] = board:take_snapshot()
+   end
+   if include_db then
+      snap.component_db = self.component_db:take_snapshot()
+   end
+   return snap
+end

@@ -5,7 +5,7 @@ local function circuit_single_tile()
    local board = sandbox:add_board(20, 10)
    board:add_component("__npn", P(1, 1), N)
    board:add_component("__led", P(3, 1), N)
-   board:add_wires(P(1, 1), P(3, 1), HORIZONTAL, { WIDTH_1, LAYER_TOP })
+   board:add_wires(P(1, 1), P(3, 1), HORIZONTAL, WR(LAYER_TOP, WIDTH_1))
    return sandbox
 end
 
@@ -14,7 +14,7 @@ local function circuit_ic(dir)
    local board = sandbox:add_board(20, 10)
    board:add_component("__npn", P(1, 1), N)
    board:add_component("__or_2i", P(3, 1), dir)
-   board:add_wires(P(1, 1), P(3, 1), HORIZONTAL, { WIDTH_1, LAYER_TOP })
+   board:add_wires(P(1, 1), P(3, 1), HORIZONTAL, WR(LAYER_TOP, WIDTH_1))
    return sandbox
 end
 
@@ -52,7 +52,6 @@ do
    assert(get(P(3, 1, E), 4).def.key == "__led")
 end
 
---[[
 do
    print("   - Compile")
    local sandbox = circuit_single_tile()
@@ -74,7 +73,7 @@ end
 do
    print("   - Multiple connections to the same component")
    local sandbox = circuit_single_tile()
-   sandbox.boards[1]:add_wires(P(1, 0), P(1, 1), VERTICAL, { WIDTH_1, LAYER_TOP })
+   sandbox.boards[1]:add_wires(P(1, 0), P(1, 1), VERTICAL, WR(LAYER_TOP, WIDTH_1))
    
    local connections = compiler.compile(sandbox)
    assert(#connections == 2)
@@ -89,7 +88,6 @@ do
    assert(has_pin(connections[1], 1, "__npn"))
    assert(has_pin(connections[1], 2, "__led"))
 end
-]]
 
 print(" - IC")
 

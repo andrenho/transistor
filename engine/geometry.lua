@@ -52,6 +52,8 @@ Position = {}
 Position.__index = Position
 
 function Position.new(x, y, dir)
+   assert(dir == nil or dir == CENTER or dir == N or dir == W or dir == E or dir == S)
+   
    local self = setmetatable({}, Position)
    self.x = x
    self.y = y

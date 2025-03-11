@@ -1,3 +1,11 @@
+- [ ] Major refactoring
+  - [x] Rewrite lua engine
+  - [ ] Serialization
+  - [ ] Component def assertions
+  - [ ] Cursor
+  - [ ] Simulation
+
+
 - [x] Base game
   - [x] Base application
   - [x] Wires
