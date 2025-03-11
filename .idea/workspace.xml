@@ -28,10 +28,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="21c7ec71-c9ee-4ebd-950c-c84342844b28" name="Changes" comment=".">
+      <change afterPath="$PROJECT_DIR$/engine/tests/connected_wires.lua" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/board.lua" beforeDir="false" afterPath="$PROJECT_DIR$/engine/board.lua" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/geometry.lua" beforeDir="false" afterPath="$PROJECT_DIR$/engine/geometry.lua" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/tests/placement.lua" beforeDir="false" afterPath="$PROJECT_DIR$/engine/tests/placement.lua" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/tests/todo/connected_wires.lua" beforeDir="false" afterPath="$PROJECT_DIR$/engine/compiler.lua" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/run_tests.sh" beforeDir="false" afterPath="$PROJECT_DIR$/run_tests.sh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -134,6 +136,7 @@
       <recent name="$PROJECT_DIR$/contrib" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/engine/tests" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/util" />
       <recent name="$PROJECT_DIR$/.old" />
@@ -282,7 +285,7 @@
       <option name="presentableId" value="Default" />
       <updated>1741361380317</updated>
       <workItem from="1741361381314" duration="38775000" />
-      <workItem from="1741634187399" duration="20939000" />
+      <workItem from="1741634187399" duration="22370000" />
     </task>
     <task id="LOCAL-00001" summary=".">
       <option name="closed" value="true" />
@@ -596,7 +599,15 @@
       <option name="project" value="LOCAL" />
       <updated>1741656080966</updated>
     </task>
-    <option name="localTasksCounter" value="40" />
+    <task id="LOCAL-00040" summary=".">
+      <option name="closed" value="true" />
+      <created>1741662043056</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1741662043056</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

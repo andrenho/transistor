@@ -95,6 +95,38 @@ end
 P = Position.new
 
 --
+-- Position set
+--
+
+PositionSet = {}
+PositionSet.__index = PositionSet
+
+function PositionSet.new()
+   local self = setmetatable({}, PositionSet)
+   self.items = {}
+   self.size = 0
+   return self
+end
+
+function PositionSet:add(pos, y, dir)
+   if y ~= nil then
+      pos = P(pos, y, dir)
+   end
+   if not self.items[pos:hash()] then
+      self.size = self.size + 1
+      self.items[pos:hash()] = pos
+   end
+end
+
+function PositionSet:first()
+   return self.items[1]
+end
+
+function PositionSet:len()
+   return self.size
+end
+
+--
 -- Rect
 --
 

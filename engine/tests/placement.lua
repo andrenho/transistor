@@ -119,7 +119,7 @@ do
    board:add_wires(P(0, 1), P(4, 1), HORIZONTAL, { WIDTH_1, LAYER_TOP })
    board:add_component("__or_2i", P(2, 1), N)
    
-   local i = 0; for _,_ in pairs(board.wires) do i = i + 1 end; print(i); assert(i == 4)
+   local i = 0; for _,_ in pairs(board.wires) do i = i + 1 end; assert(i == 4)
    assert(board:wire(P(0, 1, E)) ~= nil)
    assert(board:wire(P(1, 1, W)) ~= nil)
    assert(board:wire(P(3, 1, E)) ~= nil)

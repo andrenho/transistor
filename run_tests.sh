@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 LIB=''
 for f in engine/*.lua; do
   LIB="$LIB -l ${f%%.*}"
