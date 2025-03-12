@@ -117,8 +117,10 @@ Snapshot Engine::take_snapshot()
     auto snapshot = parse_snapshot(L);
     lua_pop(L, 1);
 
+    auto result = simulation_.result();
     simulation_.resume();
 
+    hydrate_snapshot_with_values(snapshot, result);
     return snapshot;
 }
 

@@ -4,6 +4,8 @@
 #include <lua.hpp>
 #include <vector>
 
+#include "compilation.hh"
+
 struct Snapshot {
 
     enum class Direction { N, S, E, W, Center };
@@ -34,5 +36,6 @@ struct Snapshot {
 };
 
 Snapshot parse_snapshot(lua_State* L);
+void     hydrate_snapshot_with_values(Snapshot& snapshot, CompilationResult const& result);
 
 #endif //SNAPSHOT_HH

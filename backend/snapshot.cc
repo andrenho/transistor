@@ -76,3 +76,8 @@ Snapshot parse_snapshot(lua_State* L)
 
     return snap;
 }
+
+void hydrate_snapshot_with_values(Snapshot& snapshot, CompilationResult const& result)
+{
+
+}
