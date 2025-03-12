@@ -23,8 +23,6 @@ void run_tests()
             n[1] = 48
             assert(n[1] == 48)
             assert(#n == 1)
-            assert(#n:tbl() == 1)
-            assert(n:tbl()[1] == 48)
          end
     )", false);
 

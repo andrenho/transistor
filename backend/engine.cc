@@ -154,19 +154,6 @@ void Engine::register_native_array_function()
                     return 1;
                 }
 
-                if (strcmp(function, "tbl") == 0) {
-                    lua_pushcfunction(LL, [](lua_State* LLL) {
-                        NativeArray* native_array = (NativeArray *) luaL_checkudata(LLL, 1, "NativeArray");
-                        lua_createtable(LLL, (int) native_array->sz, 0);
-                        for (int i = 0; i < native_array->sz; ++i) {
-                            lua_pushinteger(LLL, native_array->data[i]);
-                            lua_rawseti(LLL, -1, i + 1);
-                        }
-                        return 1;
-                    });
-                    return 1;
-                }
-
                 luaL_error(LL, "Invalid method '%s'", function);
             }
 
