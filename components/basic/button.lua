@@ -20,12 +20,14 @@ return {
       button.data[1] = bnot(button.data[1])
    end,
    
+   --[[
    simulate = function(button)
       button.pin[1] = button.data[1]
       button.pin[2] = button.data[1]
       button.pin[3] = button.data[1]
       button.pin[4] = button.data[1]
    end,
+   ]]
    
    render = function(button, G, x, y, context)
       G:render_image('shadow_square', x+1, y+1)

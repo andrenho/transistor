@@ -151,6 +151,14 @@ function Board:take_snapshot()
    return snap
 end
 
+function Board:simulate_lua_components()
+   for _,c in ipairs(self.components) do
+      if c.def.simulate then
+         c.def.simulate(c)
+      end
+   end
+end
+
 function Board.from_snapshot(snap, sandbox)
    local board = Board.new(snap.w, snap.h, sandbox)
    for _,w in ipairs(snap.wires) do

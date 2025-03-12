@@ -25,6 +25,12 @@ function Sandbox:add_board(w, h)
    return board
 end
 
+function Sandbox:simulate_lua_components()
+   for _,board in ipairs(self.board) do
+      board:simulate_lua_components()
+   end
+end
+
 function Sandbox:take_snapshot(goal)
    assert(goal == "save" or goal == "scene")
    local snap = { boards = {} }

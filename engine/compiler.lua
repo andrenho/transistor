@@ -170,10 +170,12 @@ compiler = {
    
    snapshot = function(sandbox, connections)
       local snap = { components = {} }
-      -- components to be simulated
+      -- components to be simulated in C
       for _,board in ipairs(sandbox.boards) do
          for _,c in ipairs(board.components) do
-            snap.components[#snap.components+1] = { c.def.key, c.data:ptr(), c.pins:ptr() }
+            if not c.def.simulate then
+               snap.components[#snap.components+1] = { c.def.key, c.data:ptr(), c.pins:ptr() }
+            end
          end
       end
       -- TODO - add connections

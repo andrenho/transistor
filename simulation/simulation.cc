@@ -47,6 +47,7 @@ void Simulation::simulation_single_step(Simulation* simulation)
 
     // TODO - simulate components (Lua)
 
+
     // update connection and pin values
     //for (auto& connection: simulation->connections_) {
 
