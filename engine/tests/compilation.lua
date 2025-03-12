@@ -94,6 +94,7 @@ print(" - IC")
 do
    print("   - Compile")
    local sandbox = circuit_ic(N)
+   print(serpent.line(sandbox:take_snapshot("scene"), { comment=false, fatal=true }))
    
    local connections = compiler.compile(sandbox)
    print(serpent.line(compiler.snapshot(sandbox, connections), { comment=false, fatal=true }))

@@ -42,6 +42,7 @@ endif
 
 OBJ = \
 	main.o \
+	backend/compilation.o \
 	backend/engine.o \
 	backend/tests.o \
 	simulation/native.o \

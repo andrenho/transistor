@@ -32,6 +32,13 @@ void run_tests()
     engine.execute("sandbox.boards[1]:add_component('__button', P(1, 1), N)");
     engine.execute("sandbox.boards[1]:add_component('__led', P(3, 1), N)");
     engine.execute("sandbox.boards[1]:add_wires(P(1, 1), P(3, 1), HORIZONTAL, WR(LAYER_TOP, WIDTH_1))");
+    // TODO - take snapshot
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+    // TODO - on click
+    // TODO - take snapshot
+
+    // TODO - on click again
+    // TODO - take snapshot
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(20));
 }

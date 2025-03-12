@@ -6,7 +6,7 @@
 #include <condition_variable>
 #include <thread>
 
-#include "backend/compilationresult.hh"
+#include "backend/compilation.hh"
 
 enum class CpuUsage { Light, Normal, Aggressive };
 

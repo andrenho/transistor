@@ -3,6 +3,7 @@
 
 #include "simulation/native.hh"
 
+#include <lua.hpp>
 #include <vector>
 
 struct Component {
@@ -28,5 +29,7 @@ struct CompilationResult {
     std::vector<Component> components {};
     std::vector<Connection> connections {};
 };
+
+CompilationResult parse_compilation_result(lua_State* L);
 
 #endif //CONNECTION_HH
