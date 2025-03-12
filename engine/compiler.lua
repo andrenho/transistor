@@ -177,17 +177,18 @@ compiler = {
       -- components to be simulated in C
       for _,board in ipairs(sandbox.boards) do
          for _,c in ipairs(board.components) do
-            if not c.def.simulate then
-               snap.components[#snap.components+1] = { c.def.key, c.data:ptr(), c.pin:ptr() }
-            end
+            snap.components[#snap.components+1] = { c.def.key, c.data:ptr(), c.pin:ptr(), c.def.simulate == nil, board:pos_hash_c(c.position) }
          end
       end
       
       -- add connections
       for _,connection in ipairs(connections) do
-         local conn = { pins = {} }
+         local conn = { pins = {}, wires = {} }
          for _,pin in ipairs(connection.pins) do
             conn.pins[#conn.pins+1] = { pin.component.pin:ptr(), pin.pin_no, pin.component.def.pins[pin.pin_no].direction }
+         end
+         for _,wire_pos in pairs(connection.wires) do
+            conn.wires[#conn.wires+1] = sandbox.boards[1]:pos_hash_c(wire_pos) -- TODO - add board
          end
          snap.connections[#snap.connections+1] = conn
       end

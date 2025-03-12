@@ -1,5 +1,9 @@
+local bit = require('bit')
+
 Board = {}
 Board.__index = Board
+
+local board_id = 0
 
 function Board.new(w, h, sandbox)
    local self = setmetatable({}, Board)
@@ -9,6 +13,8 @@ function Board.new(w, h, sandbox)
    self.components = {}
    self.sandbox = sandbox
    self.cursor = Cursor.new(self)
+   self.id = board_id
+   board_id = board_id + 1
    return self
 end
 
@@ -143,10 +149,10 @@ function Board:take_snapshot()
    local snap = { w = self.w, h = self.w, wires = {}, components = {} }
    for pos_hash, wire in pairs(self.wires) do
       local pos = Position.unhash(pos_hash)
-      snap.wires[#snap.wires+1] = { pos.x, pos.y, pos.dir, wire.layer .. wire.width }
+      snap.wires[#snap.wires+1] = { pos.x, pos.y, pos.dir, wire.layer .. wire.width, self:pos_hash_c(pos) }
    end
    for i, component in ipairs(self.components) do
-      snap.components[i] = { component.position.x, component.position.y, component.direction, component.def.key }
+      snap.components[i] = { component.position.x, component.position.y, component.direction, component.def.key, self:pos_hash_c(component.position) }
    end
    return snap
 end
@@ -168,4 +174,9 @@ function Board.from_snapshot(snap, sandbox)
       board:add_component(c[4], P(c[1], c[2]), c[3])
    end
    return board
+end
+
+-- used to generate a hash of the position for the C side, to match components/wires with their compilation counterparts
+function Board:pos_hash_c(pos)
+   return bit.bxor(bit.lshift(pos:hash(), 8), board_id)
 end
