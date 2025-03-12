@@ -26,7 +26,7 @@ function Sandbox:add_board(w, h)
 end
 
 function Sandbox:simulate_lua_components()
-   for _,board in ipairs(self.board) do
+   for _,board in ipairs(self.boards) do
       board:simulate_lua_components()
    end
 end

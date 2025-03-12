@@ -17,9 +17,11 @@ return {
        ${image: __infobox_led_0}${image_sl: __infobox_led_1}
    ]],
    
+   --[[
    simulate = function(led)
       led.data[1] = bor(led.pin[1], led.pin[2], led.pin[3], led.pin[4])
    end,
+   ]]
    
    render = function(led, G, x, y, context)
       G:render_image('shadow_circle', x+1, y+1)

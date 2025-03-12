@@ -15,14 +15,21 @@ Simulation::Simulation(lua_State* L)
 
 void Simulation::start()
 {
+    if (thread_.joinable())
+        return;
+
+    running_ = true;
+    paused_ = false;
     thread_ = std::thread(simulation_thread, this);
 }
 
 void Simulation::stop()
 {
-    resume();
-    running_ = false;
-    thread_.join();
+    if (thread_.joinable()) {
+        resume();
+        running_ = false;
+        thread_.join();
+    }
 }
 
 void Simulation::simulation_thread(Simulation* simulation)
@@ -51,31 +58,33 @@ void Simulation::simulation_thread(Simulation* simulation)
 
 void Simulation::simulation_single_step(Simulation* simulation)
 {
+    assert(lua_gettop(simulation->L) == 0);
+
     // simulate components (C)
     for (auto& component: simulation->result_.components)
         component.simulate(component.data, component.pins);
 
     // simulate components (Lua)
-    assert(lua_gettop(simulation->L) == 0);
-    /*
     if (simulation->simulate_luaref_ != -1) {
         lua_rawgeti(simulation->L, LUA_REGISTRYINDEX, simulation->simulate_luaref_);
-        assert(lua_type(simulation->L, -1) == LUA_TFUNCTION);
         if (lua_pcall(simulation->L, 0, 0, 0) != LUA_OK)
             throw std::runtime_error("Error executing Lua simulation: "s + lua_tostring(simulation->L, -1));
     }
-    */
 
     // update connection and pin values
-    //for (auto& connection: simulation->connections_) {
+    for (auto& connection: simulation->result_.connections) {
 
-        // TODO - calculate value from output pins
+        // calculate value from output pins
+        connection.value = 0;
+        for (auto const& pin: connection.pins)
+            if (pin.dir == PinDirection::Output)
+                connection.value |= pin.pins[pin.pin_no];
 
-        // TODO - set connection value
-
-        // TODO - set input pins
-
-    // }
+        // set input pins
+        for (auto const& pin: connection.pins)
+            if (pin.dir == PinDirection::Input)
+                pin.pins[pin.pin_no] = connection.value;
+    }
 
     ++simulation->steps_;
 }
