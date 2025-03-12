@@ -1,9 +1,11 @@
 #ifndef CONNECTION_HH
 #define CONNECTION_HH
+#include <simulation/native.hh>
 
 struct Component {
     uint8_t* data;
     uint8_t* pins;
+    SimFunc  simulate;
 };
 
 struct Connection {

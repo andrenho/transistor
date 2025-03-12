@@ -1,9 +1,11 @@
 #include "engine.hh"
 
-#include <assert.h>
+#include <cassert>
 #include <string>
 #include <stdexcept>
 using namespace std::string_literals;
+
+#include "simulation/native.hh"
 
 #include "engine/util/strict.lua.h"
 #include "engine/util/serialize.lua.h"
@@ -17,7 +19,6 @@ using namespace std::string_literals;
 #include "engine/geometry.lua.h"
 #include "engine/sandbox.lua.h"
 #include "engine/wire.lua.h"
-
 
 Engine::Engine()
     : L(luaL_newstate()), simulation_(L)
@@ -91,11 +92,23 @@ void Engine::recompile_sandbox()
     assert(lua_istable(L, -1));
     lua_pushnil(L);
     while (lua_next(L, -2)) {
-        Component component {};
-        lua_rawgeti(L, -1, 1); component.data = (uint8_t *) lua_tointeger(L, -1); lua_pop(L, 1);
-        lua_rawgeti(L, -1, 2); component.pins = (uint8_t *) lua_tointeger(L, -1); lua_pop(L, 1);
-        // TODO - get def and link simulation
-        result.components.emplace_back(std::move(component));
+
+        // find simulate function
+        lua_rawgeti(L, -1, 1); std::string key = lua_tostring(L, -1); lua_pop(L, 1);
+        auto it = native_functions.find(key);
+
+        // if found, add component to list
+        if (it != native_functions.end()) {
+
+            Component component {};
+            component.simulate = it->second;
+
+            // find additional data
+            lua_rawgeti(L, -1, 2); component.data = (uint8_t *) lua_tointeger(L, -1); lua_pop(L, 1);
+            lua_rawgeti(L, -1, 3); component.pins = (uint8_t *) lua_tointeger(L, -1); lua_pop(L, 1);
+
+            result.components.emplace_back(std::move(component));
+        }
         lua_pop(L, 1);
     }
     lua_pop(L, 1);

@@ -173,7 +173,7 @@ compiler = {
       -- components to be simulated
       for _,board in ipairs(sandbox.boards) do
          for _,c in ipairs(board.components) do
-            snap.components[#snap.components+1] = { c.data:ptr(), c.pins:ptr(), c.def.key }
+            snap.components[#snap.components+1] = { c.def.key, c.data:ptr(), c.pins:ptr() }
          end
       end
       -- TODO - add connections

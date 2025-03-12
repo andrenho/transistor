@@ -41,7 +41,9 @@ void Simulation::simulation_thread(Simulation* simulation)
 
 void Simulation::simulation_single_step(Simulation* simulation)
 {
-    // TODO - simulate components (C)
+    // simulate components (C)
+    for (auto& component: simulation->result_.components)
+        component.simulate(component.data, component.pins);
 
     // TODO - simulate components (Lua)
 

@@ -44,6 +44,7 @@ OBJ = \
 	main.o \
 	backend/engine.o \
 	backend/tests.o \
+	simulation/native.o \
 	simulation/simulation.o #\
 	ui/common.o \
 	ui/resources.o \
