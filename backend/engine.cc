@@ -44,6 +44,12 @@ Engine::Engine()
 #undef LOAD
 
     execute(false, "sandbox = Sandbox.new()");
+
+    simulation_.pause();
+    execute(false, "return function() sandbox:simulate_lua_components() end");
+    simulation_.set_simulate_luaref(luaL_ref(L, LUA_REGISTRYINDEX));
+    simulation_.resume();
+
     execute(true, "sandbox:add_board(20, 10)");
 }
 

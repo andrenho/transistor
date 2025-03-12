@@ -1,10 +1,10 @@
 #ifndef SIMULATION_HH
 #define SIMULATION_HH
 
+#include <lua.hpp>
+
 #include <thread>
 #include <vector>
-
-#include <lua.h>
 
 #include "backend/compilationresult.hh"
 
@@ -22,6 +22,8 @@ public:
 
     void set_cpu_usage(CpuUsage cpu_usage) { cpu_usage_ = cpu_usage; }
 
+    void set_simulate_luaref(int simulate_luaref) { simulate_luaref_ = simulate_luaref; }
+
 private:
     lua_State* L;
 
@@ -34,6 +36,7 @@ private:
     CompilationResult result_;
     bool              running_ = true;
     CpuUsage          cpu_usage_ = CpuUsage::Normal;
+    int               simulate_luaref_ = -1;
 
     // written inside thread
     uint64_t    steps_ = 0;

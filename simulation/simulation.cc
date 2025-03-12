@@ -1,7 +1,12 @@
 #include "simulation.hh"
 
+#include <cassert>
+#include <lua.hpp>
+
 #include <chrono>
+#include <string>
 using namespace std::chrono_literals;
+using namespace std::string_literals;
 
 Simulation::Simulation(lua_State* L)
     : L(L), thread_(simulation_thread, this)
@@ -45,8 +50,13 @@ void Simulation::simulation_single_step(Simulation* simulation)
     for (auto& component: simulation->result_.components)
         component.simulate(component.data, component.pins);
 
-    // TODO - simulate components (Lua)
-
+    // simulate components (Lua)
+    if (simulation->simulate_luaref_ != -1) {
+        lua_rawgeti(simulation->L, LUA_REGISTRYINDEX, simulation->simulate_luaref_);
+        assert(lua_type(simulation->L, -1) == LUA_TFUNCTION);
+        if (lua_pcall(simulation->L, 0, 0, 0) != LUA_OK)
+            throw std::runtime_error("Error executing Lua simulation: "s + lua_tostring(simulation->L, -1));
+    }
 
     // update connection and pin values
     //for (auto& connection: simulation->connections_) {
@@ -79,3 +89,4 @@ void Simulation::resume()
     paused_ = false;
     cv_.notify_one();
 }
+
