@@ -1,3 +1,6 @@
+-- TODO - there's a logical error here, that the board is not included on the wire, so a position in a board
+-- TODO - would also match the position in the other boards
+
 compiler = {
 
    find_connected_wires = function(wires, single_tile_component_pos)
@@ -188,7 +191,7 @@ compiler = {
             conn.pins[#conn.pins+1] = { pin.component.pin:ptr(), pin.pin_no, pin.component.def.pins[pin.pin_no].direction }
          end
          for _,wire_pos in pairs(connection.wires) do
-            conn.wires[#conn.wires+1] = sandbox.boards[1]:pos_hash_c(wire_pos) -- TODO - add board
+            conn.wires[#conn.wires+1] = sandbox.boards[1]:pos_hash_c(wire_pos) -- TODO - add board to the hash
          end
          snap.connections[#snap.connections+1] = conn
       end
