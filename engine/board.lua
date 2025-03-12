@@ -146,7 +146,7 @@ function Board:take_snapshot()
       snap.wires[#snap.wires+1] = { pos.x, pos.y, pos.dir, wire.layer .. wire.width }
    end
    for i, component in ipairs(self.components) do
-      snap.components[i] = { component.position.x, component.position.y, component.direction, component.def.key }
+      snap.components[i] = { component.position.x, component.position.y, component.direction, component.def.key, component.data:tbl() }
    end
    return snap
 end

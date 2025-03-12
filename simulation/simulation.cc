@@ -77,12 +77,12 @@ void Simulation::simulation_single_step(Simulation* simulation)
         // calculate value from output pins
         connection.value = 0;
         for (auto const& pin: connection.pins)
-            if (pin.dir == PinDirection::Output)
+            if (pin.dir == CompilationResult::PinDirection::Output)
                 connection.value |= pin.pins[pin.pin_no];
 
         // set input pins
         for (auto const& pin: connection.pins)
-            if (pin.dir == PinDirection::Input)
+            if (pin.dir == CompilationResult::PinDirection::Input)
                 pin.pins[pin.pin_no] = connection.value;
     }
 

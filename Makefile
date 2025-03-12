@@ -45,6 +45,7 @@ OBJ = \
 	backend/compilation.o \
 	backend/engine.o \
 	backend/tests.o \
+	backend/snapshot.o \
 	simulation/native.o \
 	simulation/simulation.o #\
 	ui/common.o \

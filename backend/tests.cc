@@ -16,6 +16,18 @@ void run_tests()
 {
     Engine engine;
 
+    // test NativeQuery
+    engine.execute(R"(
+        do
+            local n = native_array(1)
+            n[1] = 48
+            assert(n[1] == 48)
+            assert(#n == 1)
+            assert(#n:tbl() == 1)
+            assert(n:tbl()[1] == 48)
+         end
+    )", false);
+
     // run tests on Lua
 #define LOAD(name) engine.load_bytecode(#name, engine_tests_##name##_lua, engine_tests_##name##_lua_sz);
     LOAD(compilation)
@@ -28,11 +40,14 @@ void run_tests()
     LOAD(serialization)
 #undef LOAD
 
+    // test simulation
+
     engine.start();
     engine.execute("sandbox.boards[1]:add_component('__button', P(1, 1), N)");
     engine.execute("sandbox.boards[1]:add_component('__led', P(3, 1), N)");
     engine.execute("sandbox.boards[1]:add_wires(P(1, 1), P(3, 1), HORIZONTAL, WR(LAYER_TOP, WIDTH_1))");
-    // TODO - take snapshot
+
+    Snapshot snap = engine.take_snapshot();
 
     // TODO - on click
     // TODO - take snapshot

@@ -8,10 +8,10 @@ CompilationResult parse_compilation_result(lua_State* L)
     CompilationResult result;
 
     assert(lua_gettop(L) == 1);
+    assert(lua_istable(L, -1));
 
     // components
 
-    assert(lua_istable(L, -1));
     lua_getfield(L, -1, "components");
     assert(lua_istable(L, -1));
     lua_pushnil(L);
@@ -24,7 +24,7 @@ CompilationResult parse_compilation_result(lua_State* L)
         // if found, add component to list
         if (it != native_functions.end()) {
 
-            Component component {};
+            CompilationResult::Component component {};
             component.simulate = it->second;
 
             // find additional data
@@ -45,16 +45,16 @@ CompilationResult parse_compilation_result(lua_State* L)
     while (lua_next(L, -2)) {
         assert(lua_istable(L, -1));
 
-        Connection connection;
+        CompilationResult::Connection connection;
 
         // pins
         lua_getfield(L, -1, "pins");
         lua_pushnil(L);
         while (lua_next(L, -2)) {
-            Pin pin;
+            CompilationResult::Pin pin;
             lua_rawgeti(L, -1, 1); pin.pins = (uint8_t *) lua_tointeger(L, -1); lua_pop(L, 1);
             lua_rawgeti(L, -1, 2); pin.pin_no = lua_tointeger(L, -1) - 1; lua_pop(L, 1);
-            lua_rawgeti(L, -1, 3); pin.dir = lua_tostring(L, -1)[0] == 'i' ? PinDirection::Input : PinDirection::Output; lua_pop(L, 1);
+            lua_rawgeti(L, -1, 3); pin.dir = lua_tostring(L, -1)[0] == 'i' ? CompilationResult::PinDirection::Input : CompilationResult::PinDirection::Output; lua_pop(L, 1);
             connection.pins.emplace_back(std::move(pin));
             lua_pop(L, 1);
         }
@@ -65,8 +65,7 @@ CompilationResult parse_compilation_result(lua_State* L)
     }
     lua_pop(L, 1);
 
-    lua_pop(L, 1);
-    assert(lua_gettop(L) == 0);
+    assert(lua_gettop(L) == 1);
 
     return result;
 }

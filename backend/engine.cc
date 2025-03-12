@@ -103,21 +103,42 @@ void Engine::recompile_sandbox()
         throw std::runtime_error("Error compiling: "s + lua_tostring(L, -1));
 
     auto result = parse_compilation_result(L);
+    lua_pop(L, 1);
+
     simulation_.update_compilation_result(std::move(result));
+}
+
+Snapshot Engine::take_snapshot()
+{
+    simulation_.pause();
+    if (luaL_dostring(L, "return sandbox:take_snapshot('scene')") != LUA_OK)
+        throw std::runtime_error("Error taking snapshot: "s + lua_tostring(L, -1));
+
+    auto snapshot = parse_snapshot(L);
+    lua_pop(L, 1);
+
+    simulation_.resume();
+
+    return snapshot;
 }
 
 void Engine::register_native_array_function()
 {
+    struct NativeArray {
+        size_t   sz;
+        uint8_t* data;
+    };
+
     // `NativeArray` metatable
 
     luaL_newmetatable(L, "NativeArray");
     luaL_setfuncs(L, (luaL_Reg[]) {
 
         { "__index", [](lua_State* LL) {
-            uint8_t* data = (uint8_t *) lua_touserdata(LL, 1);
 
             if (lua_isnumber(LL, 2)) {
-                lua_pushinteger(LL, data[lua_tointeger(LL, 2)]);
+                NativeArray* native_array = (NativeArray*) lua_touserdata(LL, 1);
+                lua_pushinteger(LL, native_array->data[lua_tointeger(LL, 2) - 1]);
                 return 1;
             }
 
@@ -125,9 +146,22 @@ void Engine::register_native_array_function()
                 const char* function = lua_tostring(LL, 2);
 
                 if (strcmp(function, "ptr") == 0) {
-                    lua_pushcfunction(LL, [](lua_State* LL) {
-                        void* ptr = luaL_checkudata(LL, 1, "NativeArray");
-                        lua_pushinteger(LL, (intptr_t) ptr);
+                    lua_pushcfunction(LL, [](lua_State* LLL) {
+                        NativeArray* native_array = (NativeArray *) luaL_checkudata(LLL, 1, "NativeArray");
+                        lua_pushinteger(LLL, (intptr_t) native_array->data);
+                        return 1;
+                    });
+                    return 1;
+                }
+
+                if (strcmp(function, "tbl") == 0) {
+                    lua_pushcfunction(LL, [](lua_State* LLL) {
+                        NativeArray* native_array = (NativeArray *) luaL_checkudata(LLL, 1, "NativeArray");
+                        lua_createtable(LLL, (int) native_array->sz, 0);
+                        for (int i = 0; i < native_array->sz; ++i) {
+                            lua_pushinteger(LLL, native_array->data[i]);
+                            lua_rawseti(LLL, -1, i + 1);
+                        }
                         return 1;
                     });
                     return 1;
@@ -141,8 +175,20 @@ void Engine::register_native_array_function()
         } },
 
         { "__newindex", [](lua_State* LL) {
-            uint8_t* data = (uint8_t *) lua_touserdata(LL, 1);
-            data[luaL_checkinteger(LL, 2)] = luaL_checkinteger(LL, 3) & 0xff;
+            NativeArray* native_array = (NativeArray*) lua_touserdata(LL, 1);
+            native_array->data[luaL_checkinteger(LL, 2) - 1] = luaL_checkinteger(LL, 3) & 0xff;
+            return 0;
+        } },
+
+        { "__len", [](lua_State* LL) {
+            NativeArray* native_array = (NativeArray*) lua_touserdata(LL, 1);
+            lua_pushinteger(LL, native_array->sz);
+            return 1;
+        } },
+
+        { "__gc", [](lua_State* LL) {
+            NativeArray* native_array = (NativeArray*) lua_touserdata(LL, 1);
+            free(native_array->data);
             return 0;
         } },
 
@@ -154,8 +200,10 @@ void Engine::register_native_array_function()
     // `native_array` function
     lua_pushcfunction(L, [](lua_State* LL) -> int {
         int sz = luaL_checkinteger(LL, 1);
-        void* data = lua_newuserdata(LL, sz);
-        memset(data, 0, sz);
+        NativeArray* native_array = (NativeArray *) lua_newuserdata(LL, sizeof(NativeArray));
+        native_array->sz = sz;
+        native_array->data = (uint8_t *) malloc(sz);
+        memset(native_array->data, 0, sz);
         luaL_getmetatable(LL, "NativeArray");
         assert(!lua_isnil(LL, -1));
         lua_setmetatable(LL, -2);

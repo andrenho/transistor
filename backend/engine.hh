@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <lua.hpp>
 
+#include "snapshot.hh"
 #include "simulation/simulation.hh"
 
 class Engine {
@@ -13,6 +14,8 @@ public:
     ~Engine();
 
     void start();
+
+    Snapshot take_snapshot();
 
 private:
     lua_State* L;
