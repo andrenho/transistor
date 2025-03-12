@@ -4,6 +4,7 @@ local custom_ic = {
    key = "my",
    type = "OVERWRITE",
    pins = {},  -- OVERWRITE
+   data_size = 0,
    
    name = "yyy",
    category = "digital",

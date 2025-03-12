@@ -28,6 +28,5 @@ void run_tests()
     LOAD(serialization)
 #undef LOAD
 
-    // run simulation tests
-    engine.start();
+    engine.execute(true, "sandbox.boards[1]:add_component('__button', P(1, 1), N)");
 }

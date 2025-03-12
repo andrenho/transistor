@@ -5,6 +5,9 @@
   - [x] Run tests from C
   - [x] Component def assertions
   - [ ] Test simulation
+    - [ ] Create thread
+    - [ ] Send components to simulator
+    - [ ] Sind pins to simulator
 
 
 - [x] Base game

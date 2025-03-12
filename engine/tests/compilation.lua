@@ -96,6 +96,7 @@ do
    local sandbox = circuit_ic(N)
    
    local connections = compiler.compile(sandbox)
+   print(serpent.line(compiler.snapshot(sandbox, connections), { comment=false, fatal=true }))
    assert(#connections == 1)
    assert(#connections[1].pins == 2)
    assert(#connections[1].wires == 2)

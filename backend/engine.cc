@@ -1,5 +1,6 @@
 #include "engine.hh"
 
+#include <assert.h>
 #include <string>
 #include <stdexcept>
 using namespace std::string_literals;
@@ -23,6 +24,8 @@ Engine::Engine()
 {
     luaL_openlibs(L);  // TODO - sandbox
 
+    register_native_array_function();
+
     // load engine
 #define LOAD(name) load(#name, engine_##name##_lua, engine_##name##_lua_sz);
     LOAD(util_strict)
@@ -39,15 +42,8 @@ Engine::Engine()
     LOAD(wire)
 #undef LOAD
 
-    /*
-    // run tests
-    execute("run_tests()");
-
-    // create sandbox
-    execute("create_sandbox()");
-    lua_assert(lua_gettop() == 1);
-    sandbox_ref_ = luaL_ref(L, LUA_REGISTRYINDEX);
-    */
+    execute(false, "sandbox = Sandbox.new()");
+    execute(true, "sandbox:add_board(20, 10)");
 }
 
 Engine::~Engine()
@@ -55,15 +51,10 @@ Engine::~Engine()
     lua_close(L);
 }
 
-void Engine::start()
-{
-    simulation_.start();
-    execute(false, "sandbox = Sandbox.new()");
-    execute(true, "sandbox:add_board(20, 10)");
-}
-
 void Engine::execute(bool recompile, const char* fmt, ...)
 {
+    assert(lua_gettop(L) == 0);
+
     va_list ap;
     va_start(ap, fmt);
     int n = vsnprintf(nullptr, 0, fmt, ap);
@@ -88,6 +79,70 @@ void Engine::load(const char* name, uint8_t const* bytecode, size_t sz)
 
 void Engine::recompile_sandbox()
 {
-    if (luaL_dostring(L, "compiler.compile(sandbox)") != LUA_OK)
+    if (luaL_dostring(L, "return compiler.snapshot(sandbox, compiler.compile(sandbox))") != LUA_OK)
         throw std::runtime_error("Error compiling: "s + lua_tostring(L, -1));
+    assert(lua_gettop(L) == 1);
+
+    CompilationResult result;
+
+    // get components
+    assert(lua_istable(L, -1));
+    lua_getfield(L, -1, "components");
+    assert(lua_istable(L, -1));
+    lua_pushnil(L);
+    while (lua_next(L, -2)) {
+        Component component {};
+        lua_rawgeti(L, -1, 1); component.data = (uint8_t *) lua_tointeger(L, -1); lua_pop(L, 1);
+        lua_rawgeti(L, -1, 2); component.pins = (uint8_t *) lua_tointeger(L, -1); lua_pop(L, 1);
+        // TODO - get def and link simulation
+        result.components.emplace_back(std::move(component));
+        lua_pop(L, 1);
+    }
+    lua_pop(L, 1);
+
+    /*
+    lua_pushnil(L);
+    while (lua_next(L, -2)) {
+
+        Connection connection;
+
+
+        lua_pop(L, 1);
+    }
+    */
+
+    lua_pop(L, 1);
+
+    simulation_.update_compilation_result(std::move(result));
+}
+
+void Engine::register_native_array_function()
+{
+    // `NativeArray` metatable
+    luaL_newmetatable(L, "NativeArray");
+    luaL_setfuncs(L, (luaL_Reg[]) {
+        { "ptr", [](lua_State* LL) {
+            void* ptr = luaL_checkudata(LL, 1, "NativeArray");
+            lua_pushinteger(LL, (intptr_t) ptr);
+            return 1;
+        } },
+        { nullptr, nullptr },
+    }, 0);
+    lua_pushvalue(L, -1);
+    lua_setfield(L, -2, "__index");
+    lua_pop(L, 1);
+    assert(lua_gettop(L) == 0);
+
+    // `native_array` function
+    lua_pushcfunction(L, [](lua_State* LL) -> int {
+        int sz = luaL_checkinteger(LL, 1);
+        void* data = lua_newuserdata(LL, sz);
+        memset(data, 0, sz);
+        luaL_getmetatable(LL, "NativeArray");
+        assert(!lua_isnil(LL, -1));
+        lua_setmetatable(LL, -2);
+        return 1;
+    });
+    lua_setglobal(L, "native_array");
+    assert(lua_gettop(L) == 0);
 }

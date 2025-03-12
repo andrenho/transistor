@@ -6,8 +6,8 @@ function Component.new(def, pos, dir)
    self.def = def
    self.position = pos
    self.direction = dir or N
-   -- self.data = native_array(def.data_size)
-   -- self.pins = native_array(#def.pins)
+   self.data = native_array(def.data_size)
+   self.pins = native_array(#def.pins)
    return self
 end
 

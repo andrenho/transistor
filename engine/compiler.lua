@@ -166,5 +166,17 @@ compiler = {
       end
       
       return connections
-   end
+   end,
+   
+   snapshot = function(sandbox, connections)
+      local snap = { components = {} }
+      -- components to be simulated
+      for _,board in ipairs(sandbox.boards) do
+         for _,c in ipairs(board.components) do
+            snap.components[#snap.components+1] = { c.data:ptr(), c.pins:ptr(), c.def.key }
+         end
+      end
+      -- TODO - add connections
+      return snap
+   end,
 }

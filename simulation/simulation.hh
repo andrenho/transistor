@@ -1,26 +1,46 @@
 #ifndef SIMULATION_HH
 #define SIMULATION_HH
 
+#include <thread>
 #include <vector>
+
 #include <lua.h>
 
-struct Connection {
-};
+#include "backend/compilationresult.hh"
+
+enum class CpuUsage { Light, Normal, Aggressive };
 
 class Simulation {
 public:
-    explicit Simulation(lua_State* L) : L(L) {}
+    explicit Simulation(lua_State* L);
+    ~Simulation();
 
-    void start();
-
-    void update_connections(std::vector<Connection> connections);
+    void update_compilation_result(CompilationResult&& result);
 
     void pause();
     void resume();
 
+    void set_cpu_usage(CpuUsage cpu_usage) { cpu_usage_ = cpu_usage; }
+
 private:
     lua_State* L;
-    std::vector<Connection> connections_;
+
+    // thread control
+    std::thread thread_;
+    std::mutex  mutex_;
+    std::condition_variable cv_;
+
+    // read-only inside thread
+    CompilationResult result_;
+    bool              running_ = true;
+    CpuUsage          cpu_usage_ = CpuUsage::Normal;
+
+    // written inside thread
+    uint64_t    steps_ = 0;
+    bool        paused_ = false;
+
+    static void simulation_thread(Simulation* simulation);
+    static void simulation_single_step(Simulation* simulation);
 };
 
 #endif //SIMULATION_HH

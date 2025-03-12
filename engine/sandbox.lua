@@ -25,12 +25,13 @@ function Sandbox:add_board(w, h)
    return board
 end
 
-function Sandbox:take_snapshot(include_db)
+function Sandbox:take_snapshot(goal)
+   assert(goal == "save" or goal == "scene")
    local snap = { boards = {} }
    for i,board in ipairs(self.boards) do
       snap.boards[i] = board:take_snapshot()
    end
-   if include_db then
+   if goal == "save" then
       snap.component_db = self.component_db:take_snapshot()
    end
    return snap
