@@ -1,6 +1,7 @@
 #ifndef NATIVE_HH
 #define NATIVE_HH
 
+#include <cstdint>
 #include <string>
 #include <unordered_map>
 

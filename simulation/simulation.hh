@@ -3,8 +3,8 @@
 
 #include <lua.hpp>
 
+#include <condition_variable>
 #include <thread>
-#include <vector>
 
 #include "backend/compilationresult.hh"
 

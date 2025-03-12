@@ -1,6 +1,9 @@
 #ifndef CONNECTION_HH
 #define CONNECTION_HH
-#include <simulation/native.hh>
+
+#include "simulation/native.hh"
+
+#include <vector>
 
 struct Component {
     uint8_t* data;

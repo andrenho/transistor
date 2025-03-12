@@ -1,9 +1,11 @@
 #ifndef ENGINE_HH
 #define ENGINE_HH
 
-#include <lua.hpp>
+#include <functional>
 #include <cstdint>
-#include <simulation/simulation.hh>
+#include <lua.hpp>
+
+#include "simulation/simulation.hh"
 
 class Engine {
 public:
