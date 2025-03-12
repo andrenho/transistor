@@ -13,7 +13,9 @@ enum class CpuUsage { Light, Normal, Aggressive };
 class Simulation {
 public:
     explicit Simulation(lua_State* L);
-    ~Simulation();
+
+    void start();
+    void stop();
 
     void update_compilation_result(CompilationResult&& result);
 

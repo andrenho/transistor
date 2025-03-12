@@ -10,13 +10,15 @@ public:
     Engine();
     ~Engine();
 
+    void start();
+
 private:
     lua_State* L;
     Simulation simulation_;
     int sandbox_ref_ = -1;
 
-    void load(const char* name, uint8_t const* bytecode, size_t sz);
-    void execute(bool recompile, const char* fmt, ...)  __attribute__((__format__ (__printf__, 3, 4)));
+    void load_bytecode(const char* name, uint8_t const* bytecode, size_t sz);
+    void execute(std::string const& command, bool recompile=true, std::function<void()> const& and_also_do=nullptr);
 
     void recompile_sandbox();
 

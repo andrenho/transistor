@@ -17,7 +17,7 @@ void run_tests()
     Engine engine;
 
     // run tests on Lua
-#define LOAD(name) engine.load(#name, engine_tests_##name##_lua, engine_tests_##name##_lua_sz);
+#define LOAD(name) engine.load_bytecode(#name, engine_tests_##name##_lua, engine_tests_##name##_lua_sz);
     LOAD(compilation)
     LOAD(componentdb)
     LOAD(connected_wires)
@@ -28,5 +28,6 @@ void run_tests()
     LOAD(serialization)
 #undef LOAD
 
-    engine.execute(true, "sandbox.boards[1]:add_component('__button', P(1, 1), N)");
+    engine.start();
+    engine.execute("sandbox.boards[1]:add_component('__button', P(1, 1), N)");
 }

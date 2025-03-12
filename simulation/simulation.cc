@@ -9,12 +9,18 @@ using namespace std::chrono_literals;
 using namespace std::string_literals;
 
 Simulation::Simulation(lua_State* L)
-    : L(L), thread_(simulation_thread, this)
+    : L(L)
 {
 }
 
-Simulation::~Simulation()
+void Simulation::start()
 {
+    thread_ = std::thread(simulation_thread, this);
+}
+
+void Simulation::stop()
+{
+    resume();
     running_ = false;
     thread_.join();
 }
@@ -23,15 +29,14 @@ void Simulation::simulation_thread(Simulation* simulation)
 {
     while (simulation->running_) {
 
-        // pause thread
-        std::unique_lock lock(simulation->mutex_);
-        simulation->cv_.wait(lock, [&simulation] { return !simulation->paused_; });
+        {
+            // pause thread
+            std::unique_lock lock(simulation->mutex_);
+            simulation->cv_.wait(lock, [simulation] { return !simulation->paused_; });
 
-        // execute
-        simulation_single_step(simulation);
-
-        // unpause
-        simulation->paused_ = false;
+            // execute
+            simulation_single_step(simulation);
+        }
 
         // give the CPU a break
         switch (simulation->cpu_usage_) {
@@ -51,12 +56,15 @@ void Simulation::simulation_single_step(Simulation* simulation)
         component.simulate(component.data, component.pins);
 
     // simulate components (Lua)
+    assert(lua_gettop(simulation->L) == 0);
+    /*
     if (simulation->simulate_luaref_ != -1) {
         lua_rawgeti(simulation->L, LUA_REGISTRYINDEX, simulation->simulate_luaref_);
         assert(lua_type(simulation->L, -1) == LUA_TFUNCTION);
         if (lua_pcall(simulation->L, 0, 0, 0) != LUA_OK)
             throw std::runtime_error("Error executing Lua simulation: "s + lua_tostring(simulation->L, -1));
     }
+    */
 
     // update connection and pin values
     //for (auto& connection: simulation->connections_) {
@@ -74,19 +82,21 @@ void Simulation::simulation_single_step(Simulation* simulation)
 
 void Simulation::update_compilation_result(CompilationResult&& result)
 {
-    pause();
     result_ = std::move(result);
-    resume();
 }
 
 void Simulation::pause()
 {
+    std::lock_guard lock(mutex_);
     paused_ = true;
 }
 
 void Simulation::resume()
 {
-    paused_ = false;
+    {
+        std::lock_guard lock(mutex_);
+        paused_ = false;
+    }
     cv_.notify_one();
 }
 
