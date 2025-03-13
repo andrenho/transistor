@@ -8,8 +8,7 @@ function ComponentDB.new()
    return self
 end
 
-function ComponentDB:add_from_str(lua_code, native)
-   local def = load(lua_code, "component_loader")()
+function ComponentDB:add(def, native, lua_code)
    ComponentDef.validate(def)
    setmetatable(def, ComponentDef)
    def.code = lua_code
@@ -17,14 +16,20 @@ function ComponentDB:add_from_str(lua_code, native)
    self.items[def.key] = def
 end
 
+function ComponentDB:add_from_str(lua_code, native)
+   local def = load(lua_code, "component_loader")()
+   self:add(def, native, lua_code)
+end
+
 function ComponentDB:load_all_native_components()  -- this function is just for testing and is overwritten by C engine
+   assert(not RUNNING_FROM_C)
    local function load_component(filename)
       local f = io.open(filename, "r")
       local content = f:read("*a")
       f:close()
       self:add_from_str(content, true)
    end
-   load_component("engine/components/basic/button.lua")  -- TODO - load all files in directory
+   load_component("engine/components/basic/button.lua")
    load_component("engine/components/basic/led.lua")
    load_component("engine/components/basic/npn.lua")
    load_component("engine/components/basic/pnp.lua")

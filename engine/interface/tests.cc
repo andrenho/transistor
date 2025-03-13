@@ -6,14 +6,14 @@
 
 #include "engine.hh"
 
-#include "tests/compilation.lua.h"
-#include "tests/componentdb.lua.h"
-#include "tests/connected_wires.lua.h"
-#include "tests/cursor.lua.h"
-#include "tests/pinpositions.lua.h"
-#include "tests/placement.lua.h"
-#include "tests/positions.lua.h"
-#include "tests/serialization.lua.h"
+#include "engine/tests/compilation.lua.h"
+#include "engine/tests/componentdb.lua.h"
+#include "engine/tests/connected_wires.lua.h"
+#include "engine/tests/cursor.lua.h"
+#include "engine/tests/pinpositions.lua.h"
+#include "engine/tests/placement.lua.h"
+#include "engine/tests/positions.lua.h"
+#include "engine/tests/serialization.lua.h"
 
 void Tests::run_tests()
 {

@@ -22,7 +22,9 @@ private:
     Simulation simulation_;
     int sandbox_ref_ = -1;
 
-    void load_bytecode(const char* name, uint8_t const* bytecode, size_t sz);
+    void register_load_all_components_function() const;
+
+    void load_bytecode(const char* name, uint8_t const* bytecode, size_t sz) const;
     void execute(std::string const& command, bool recompile=true, std::function<void()> const& and_also_do=nullptr);
 
     void recompile_sandbox();

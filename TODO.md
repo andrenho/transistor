@@ -9,7 +9,7 @@
     - [x] Send components to simulator
     - [x] Send pins to simulator
     - [x] Test simulation
-  - [ ] Reorganize directories
+  - [x] Reorganize directories
   - [ ] Include and load components from C
 
 - [ ] UI

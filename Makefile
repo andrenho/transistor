@@ -13,7 +13,7 @@ all: $(PROJECT_NAME)
 
 include contrib/pastel-base/mk/config.mk
 
-CPPFLAGS += -I. -Iengine -Iengine/interface -Iengine/engine -Iui/resources/fonts -Iui/resources/images \
+CPPFLAGS += -I. -Iengine -Iengine/interface -Iui/resources  \
 			-Icontrib/pastel2d/src -Icontrib/pastel-base/pl_log -Icontrib/pastel2d/contrib/pocketmod \
 			-isystem contrib/imgui
 
