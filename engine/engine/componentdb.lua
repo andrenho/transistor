@@ -24,12 +24,12 @@ function ComponentDB:load_all_native_components()  -- this function is just for 
       f:close()
       self:add_from_str(content, true)
    end
-   load_component("components/basic/button.lua")
-   load_component("components/basic/led.lua")
-   load_component("components/basic/npn.lua")
-   load_component("components/basic/pnp.lua")
-   load_component("components/basic/vcc.lua")
-   load_component("components/gates/or_2i.lua")
+   load_component("engine/components/basic/button.lua")  -- TODO - load all files in directory
+   load_component("engine/components/basic/led.lua")
+   load_component("engine/components/basic/npn.lua")
+   load_component("engine/components/basic/pnp.lua")
+   load_component("engine/components/basic/vcc.lua")
+   load_component("engine/components/gates/or_2i.lua")
 end
 
 function ComponentDB:def(key)

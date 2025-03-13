@@ -10,6 +10,7 @@
     - [x] Send pins to simulator
     - [x] Test simulation
   - [ ] Reorganize directories
+  - [ ] Include and load components from C
 
 - [ ] UI
   - [ ] Basic setup

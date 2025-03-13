@@ -13,7 +13,7 @@ all: $(PROJECT_NAME)
 
 include contrib/pastel-base/mk/config.mk
 
-CPPFLAGS += -I. -Iengine -Iresources/fonts -Iresources/images \
+CPPFLAGS += -I. -Iengine -Iengine/interface -Iengine/engine -Iui/resources/fonts -Iui/resources/images \
 			-Icontrib/pastel2d/src -Icontrib/pastel-base/pl_log -Icontrib/pastel2d/contrib/pocketmod \
 			-isystem contrib/imgui
 
@@ -42,13 +42,13 @@ endif
 
 OBJ = \
 	main.o \
-	backend/compilation.o \
-	backend/engine.o \
-	backend/native_array.o \
-	backend/tests.o \
-	backend/snapshot.o \
-	simulation/native.o \
-	simulation/simulation.o #\
+	engine/interface/compilation.o \
+	engine/interface/engine.o \
+	engine/interface/native_array.o \
+	engine/interface/tests.o \
+	engine/interface/snapshot.o \
+	engine/simulation/native.o \
+	engine/simulation/simulation.o #\
 	ui/common.o \
 	ui/resources.o \
 	ui/gui/gui.o \
@@ -68,15 +68,15 @@ IMGUI_OBJ = \
 	contrib/imgui/backends/imgui_impl_sdlrenderer3.o
 
 ENGINE = \
-	$(wildcard engine/*.lua) \
-	$(wildcard engine/tests/*.lua) \
-	$(wildcard engine/util/*.lua) \
-	$(wildcard components/basic/*.lua) \
-	$(wildcard components/gates/*.lua)
+	$(wildcard engine/engine/*.lua) \
+	$(wildcard engine/engine/util/*.lua) \
+	$(wildcard engine/engine/tests/*.lua) \
+	$(wildcard engine/components/basic/*.lua) \
+	$(wildcard engine/components/gates/*.lua)
 
 EMBED = \
-	$(filter-out %.h, $(wildcard resources/fonts/*)) \
-	$(filter-out %.h, $(wildcard resources/images/*))
+	$(filter-out %.h, $(wildcard ui/resources/fonts/*)) \
+	$(filter-out %.h, $(wildcard ui/resources/images/*))
 
 $(OBJ): $(ENGINE:=.h)
 $(OBJ): $(EMBED:=.h)

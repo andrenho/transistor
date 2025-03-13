@@ -3,13 +3,13 @@
 set -e
 
 LIB=''
-for f in engine/util/*.lua; do
+for f in engine/engine/util/*.lua; do
   LIB="$LIB -l ${f%%.*}"
 done
-for f in engine/*.lua; do
+for f in engine/engine/*.lua; do
   LIB="$LIB -l ${f%%.*}"
 done
 
-for f in engine/tests/*.lua; do
+for f in engine/engine/tests/*.lua; do
   luajit $LIB $f
 done

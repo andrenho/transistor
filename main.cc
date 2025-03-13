@@ -1,4 +1,4 @@
-#include <backend/tests.hh>
+#include "tests.hh"
 
 int main()
 {

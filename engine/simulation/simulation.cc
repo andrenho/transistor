@@ -43,6 +43,7 @@ void Simulation::simulation_thread(Simulation* simulation)
 
             // execute
             simulation_single_step(simulation);
+            assert(lua_gettop(simulation->L) == 0);
         }
 
         // give the CPU a break

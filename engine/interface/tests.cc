@@ -1,18 +1,18 @@
 #include "tests.hh"
 
 #include <cassert>
-#include <algorithm>
+#include <thread>
 
 #include "engine.hh"
 
-#include "engine/tests/compilation.lua.h"
-#include "engine/tests/componentdb.lua.h"
-#include "engine/tests/connected_wires.lua.h"
-#include "engine/tests/cursor.lua.h"
-#include "engine/tests/pinpositions.lua.h"
-#include "engine/tests/placement.lua.h"
-#include "engine/tests/positions.lua.h"
-#include "engine/tests/serialization.lua.h"
+#include "tests/compilation.lua.h"
+#include "tests/componentdb.lua.h"
+#include "tests/connected_wires.lua.h"
+#include "tests/cursor.lua.h"
+#include "tests/pinpositions.lua.h"
+#include "tests/placement.lua.h"
+#include "tests/positions.lua.h"
+#include "tests/serialization.lua.h"
 
 void Tests::run_tests()
 {
@@ -42,7 +42,7 @@ void Tests::test_lua_engine()
 {
     Engine engine;
 
-#define LOAD(name) engine.load_bytecode(#name, engine_tests_##name##_lua, engine_tests_##name##_lua_sz);
+#define LOAD(name) engine.load_bytecode(#name, engine_engine_tests_##name##_lua, engine_engine_tests_##name##_lua_sz);
     LOAD(compilation)
     LOAD(componentdb)
     LOAD(connected_wires)
@@ -78,7 +78,7 @@ void Tests::test_simulation()
     }
 
     // click button
-    engine.execute("sandbox.boards[1]:component(P(1, 1)):on_click()");
+    engine.execute("sandbox.boards[1]:component(P(1, 1)):on_click()", false);
     std::this_thread::sleep_for(std::chrono::milliseconds(20));
     {
         Snapshot snap = engine.take_snapshot();
@@ -87,7 +87,7 @@ void Tests::test_simulation()
     }
 
     // click button again
-    engine.execute("sandbox.boards[1]:component(P(1, 1)):on_click()");
+    engine.execute("sandbox.boards[1]:component(P(1, 1)):on_click()", false);
     std::this_thread::sleep_for(std::chrono::milliseconds(20));
     {
         Snapshot snap = engine.take_snapshot();

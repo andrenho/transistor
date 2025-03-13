@@ -12,18 +12,19 @@ using namespace std::string_literals;
 #include "compilation.hh"
 #include "simulation/native.hh"
 
-#include "engine/util/strict.lua.h"
-#include "engine/util/serialize.lua.h"
-#include "engine/util/util.lua.h"
-#include "engine/board.lua.h"
-#include "engine/compiler.lua.h"
-#include "engine/component.lua.h"
-#include "engine/componentdb.lua.h"
-#include "engine/componentdef.lua.h"
-#include "engine/cursor.lua.h"
-#include "engine/geometry.lua.h"
-#include "engine/sandbox.lua.h"
-#include "engine/wire.lua.h"
+// embedded resources
+#include "util/strict.lua.h"
+#include "util/serialize.lua.h"
+#include "util/util.lua.h"
+#include "board.lua.h"
+#include "compiler.lua.h"
+#include "component.lua.h"
+#include "componentdb.lua.h"
+#include "componentdef.lua.h"
+#include "cursor.lua.h"
+#include "geometry.lua.h"
+#include "sandbox.lua.h"
+#include "wire.lua.h"
 
 static const char* lua_init = R"(
     bit = require("bit")
@@ -43,7 +44,7 @@ Engine::Engine()
     register_native_array(L);
 
     // load engine
-#define LOAD(name) load_bytecode(#name, engine_##name##_lua, engine_##name##_lua_sz);
+#define LOAD(name) load_bytecode(#name, engine_engine_##name##_lua, engine_engine_##name##_lua_sz);
     LOAD(util_strict)
     LOAD(util_serialize)
     LOAD(util_util)
@@ -120,8 +121,8 @@ Snapshot Engine::take_snapshot()
     lua_pop(L, 1);
 
     auto result = simulation_.result();
-    simulation_.resume();
-
     hydrate_snapshot_with_values(snapshot, result);
+
+    simulation_.resume();
     return snapshot;
 }
