@@ -1,65 +1,35 @@
-- [ ] Major refactoring
+- [x] Major refactoring
   - [x] Rewrite lua engine
   - [x] Serialization
   - [x] Cursor
   - [x] Run tests from C
   - [x] Component def assertions
-  - [ ] Test simulation
+  - [x] Test simulation
     - [x] Create thread
     - [x] Send components to simulator
     - [x] Send pins to simulator
-    - [ ] Test simulation
-    - [ ] Performance test
-  - [ ] Bugfix
-   - [ ] On the compilation, consider the board along with the position when creating the list of wires
+    - [x] Test simulation
+  - [ ] Reorganize directories
 
-- [x] Base game
-  - [x] Base application
-  - [x] Wires
-  - [x] Components
-    - [x] Image drawing in transistor-sandbox
-    - [x] Render
-      - [x] Render
-      - [x] Context
-      - [x] Shadow
-  - [x] Show steps in title
-    - [x] Improve performance
-  - [x] Create components
-  - [x] Other buttons (rotate, delete)
-  - [x] Overall code review
-    - [x] Improve assertions & error handling
-    - [x] Rename ts_transitor to ts_ -> also remove executable from project
-  - [x] Bugfixes
-    - [x] NPN/PNP are not working
-    - [x] Improve serialization (only write to file, not to string)
-    - [x] ps: regenerate header file when making changes
-    - [x] Remove direct references to transistor
-    - [x] Simulation issues
-      - [x] Simulation is not considering rotation
-      - [x] Delete seems to be deleting random wires
-      - [x] Fix multithreaded simulation with Lua
-        - [x] Write additional tests
-      - [x] Improve wire orientation (reset when coming back to original position when drawing)
-      - [x] Move LuaJIT out of pastel2d
-  - [x] Use Makefile instead of CMake
-  - [x] Optionally link instead of embedding (preferred for DEBUG)
-  - [x] Download lua, SDL, STB instead of submodule
-  - [ ] Architecture document(s)
-  
 - [ ] UI
-  - [x] Demo window
-  - [x] Main menu
-    - [x] Thread policy
-    - [x] About
-  - [x] Save/load (serialize/unserialize)
-    - [x] Treat errors
-  - [x] Save on close, periodic saving
-  - [x] Check for leaks
-    - [x] Why do I have to reload the components? Should work without.
-    - [x] Deal with loading of native components
-    - [x] Don't add components if already exist
-    - [x] Simulation not starting after load
-  - [x] Resolve warnings
+  - [ ] Basic setup
+  - [ ] Load resources
+  - [ ] Draw board + wires
+    - [ ] Events
+  - [ ] Render components
+    - [ ] Graphics object
+  - [ ] Timing capture (FPS, steps, process timings)
+  - [ ] Close version
+    - [ ] Test for leaks
+    - [ ] Test release
+  
+- [ ] GUI
+  - [ ] Demo window
+  - [ ] Main menu
+    - [ ] Thread policy
+    - [ ] About
+  - [ ] Save/load (serialize/unserialize)
+    - [ ] Treat errors
   - [ ] Toolbox
     - [x] Create toolbox (basic components)
     - [ ] Organize database per category/subcategory
@@ -99,6 +69,8 @@
   - [ ] Subcircuits
 
 - [ ] Future implementation 3
+  - [ ] Multiple boards
+    - [ ] Bugfix: on the compilation, consider the board along with the position when creating the list of wires
   - [ ] Video
   - [ ] Audio
   - [ ] Inputs (keyboard, etc)
