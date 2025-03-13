@@ -1,6 +1,6 @@
-#include "backend/tests.hh"
+#include <backend/tests.hh>
 
 int main()
 {
-    run_tests();
+    Tests::run_tests();
 }

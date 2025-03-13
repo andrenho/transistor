@@ -1,5 +1,8 @@
 #include "tests.hh"
 
+#include <cassert>
+#include <algorithm>
+
 #include "engine.hh"
 
 #include "engine/tests/compilation.lua.h"
@@ -11,7 +14,14 @@
 #include "engine/tests/positions.lua.h"
 #include "engine/tests/serialization.lua.h"
 
-void run_tests()
+void Tests::run_tests()
+{
+    test_native_query();
+    test_lua_engine();
+    test_simulation();
+}
+
+void Tests::test_native_query()
 {
     Engine engine;
 
@@ -26,8 +36,12 @@ void run_tests()
             assert(#n == 1)
          end
     )", false);
+}
 
-    // run tests on Lua
+void Tests::test_lua_engine()
+{
+    Engine engine;
+
 #define LOAD(name) engine.load_bytecode(#name, engine_tests_##name##_lua, engine_tests_##name##_lua_sz);
     LOAD(compilation)
     LOAD(componentdb)
@@ -38,8 +52,11 @@ void run_tests()
     LOAD(positions)
     LOAD(serialization)
 #undef LOAD
+}
 
-    // test simulation
+void Tests::test_simulation()
+{
+    Engine engine;
 
     engine.start();
     engine.execute(R"(
@@ -50,13 +67,32 @@ void run_tests()
         sandbox.boards[1]:add_wires(P(1, 1), P(3, 1), HORIZONTAL, WR(LAYER_TOP, WIDTH_1))
     )");
 
-    Snapshot snap = engine.take_snapshot();
+    auto find_button = [](Snapshot const& snap) -> Snapshot::Component const* {
+        return &*std::find_if(snap.boards.at(0).components.begin(), snap.boards.at(0).components.end(),
+            [](Snapshot::Component const& comp) { return comp.key == "__button"; });
+    };
+    {
+        Snapshot snap = engine.take_snapshot();
+        assert(find_button(snap)->data.at(0) == 0);
+        assert(snap.boards.at(0).wires.at(0).value == 0);
+    }
 
-    // TODO - on click
-    // TODO - take snapshot
-
-    // TODO - on click again
-    // TODO - take snapshot
-
+    // click button
+    engine.execute("sandbox.boards[1]:component(P(1, 1)):on_click()");
     std::this_thread::sleep_for(std::chrono::milliseconds(20));
+    {
+        Snapshot snap = engine.take_snapshot();
+        assert(find_button(snap)->data.at(0) != 0);
+        assert(snap.boards.at(0).wires.at(0).value != 0);
+    }
+
+    // click button again
+    engine.execute("sandbox.boards[1]:component(P(1, 1)):on_click()");
+    std::this_thread::sleep_for(std::chrono::milliseconds(20));
+    {
+        Snapshot snap = engine.take_snapshot();
+        assert(find_button(snap)->data.at(0) == 0);
+        assert(snap.boards.at(0).wires.at(0).value == 0);
+    }
+
 }

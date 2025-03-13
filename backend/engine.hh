@@ -27,7 +27,7 @@ private:
 
     void recompile_sandbox();
 
-    friend void run_tests();
+    friend class Tests;
 };
 
 #endif //ENGINE_HH

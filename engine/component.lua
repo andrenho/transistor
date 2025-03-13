@@ -18,3 +18,9 @@ end
 function Component:rect()
    return self.def:rect(self.position, self.direction)
 end
+
+function Component:on_click()
+   if self.def.on_click then
+      self.def.on_click(self)
+   end
+end
