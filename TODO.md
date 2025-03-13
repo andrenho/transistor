@@ -9,6 +9,7 @@
     - [x] Send components to simulator
     - [x] Send pins to simulator
     - [ ] Test simulation
+    - [ ] Performance test
   - [ ] Bugfix
    - [ ] On the compilation, consider the board along with the position when creating the list of wires
 

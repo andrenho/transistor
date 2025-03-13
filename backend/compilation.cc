@@ -17,22 +17,23 @@ CompilationResult parse_compilation_result(lua_State* L)
     lua_pushnil(L);
     while (lua_next(L, -2)) {
 
-        // find simulate function
+        // create component
+        CompilationResult::Component component {};
         lua_rawgeti(L, -1, 1); std::string key = lua_tostring(L, -1); lua_pop(L, 1);
-        auto it = native_functions.find(key);
-
-        // if found, add component to list
-        if (it != native_functions.end()) {
-
-            CompilationResult::Component component {};
-            component.simulate = it->second;
-
-            // find additional data
-            lua_rawgeti(L, -1, 2); component.data = (uint8_t *) lua_tointeger(L, -1); lua_pop(L, 1);
-            lua_rawgeti(L, -1, 3); component.pins = (uint8_t *) lua_tointeger(L, -1); lua_pop(L, 1);
-
-            result.components.emplace_back(std::move(component));
+        lua_rawgeti(L, -1, 2); component.data = (uint8_t *) lua_tointeger(L, -1); lua_pop(L, 1);
+        lua_rawgeti(L, -1, 3); component.pins = (uint8_t *) lua_tointeger(L, -1); lua_pop(L, 1);
+        lua_rawgeti(L, -1, 4); bool simulate_in_c = lua_toboolean(L, 1); lua_pop(L, 1);
+        if (simulate_in_c) {
+            auto it = native_functions.find(key);
+            if (it != native_functions.end())
+                component.simulate = it->second;
         }
+        result.components.emplace_back(std::move(component));
+
+        // store component by id
+        lua_rawgeti(L, -1, 5); ComponentId id = lua_tointeger(L, -1); lua_pop(L, 1);
+        result.component_by_id[id] = result.components.size() - 1;
+
         lua_pop(L, 1);
     }
     lua_pop(L, 1);
@@ -61,6 +62,19 @@ CompilationResult parse_compilation_result(lua_State* L)
         lua_pop(L, 1);
 
         result.connections.emplace_back(std::move(connection));
+
+        // wires
+        lua_getfield(L, -1, "wires");
+        size_t len = lua_objlen(L, -1);
+        size_t connection_idx = result.connections.size() - 1;
+        for (int i = 0; i < len; ++i) {
+            lua_rawgeti(L, -1, i + 1);
+            WireId wire_id = lua_tointeger(L, -1);
+            result.connection_by_wire_id[wire_id] = connection_idx;
+            lua_pop(L, 1);
+        }
+        lua_pop(L, 1);
+
         lua_pop(L, 1);
     }
     lua_pop(L, 1);

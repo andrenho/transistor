@@ -2,7 +2,6 @@
 
 #include "engine.hh"
 
-
 #include "engine/tests/compilation.lua.h"
 #include "engine/tests/componentdb.lua.h"
 #include "engine/tests/connected_wires.lua.h"
@@ -18,7 +17,9 @@ void run_tests()
 
     // test NativeQuery
     engine.execute(R"(
+        print('Native query')
         do
+            print('- Operations')
             local n = native_array(1)
             n[1] = 48
             assert(n[1] == 48)
@@ -41,9 +42,13 @@ void run_tests()
     // test simulation
 
     engine.start();
-    engine.execute("sandbox.boards[1]:add_component('__button', P(1, 1), N)");
-    engine.execute("sandbox.boards[1]:add_component('__led', P(3, 1), N)");
-    engine.execute("sandbox.boards[1]:add_wires(P(1, 1), P(3, 1), HORIZONTAL, WR(LAYER_TOP, WIDTH_1))");
+    engine.execute(R"(
+        print('Simulation')
+        print(' - Simulate simple circuit')
+        sandbox.boards[1]:add_component('__button', P(1, 1), N)
+        sandbox.boards[1]:add_component('__led', P(3, 1), N)
+        sandbox.boards[1]:add_wires(P(1, 1), P(3, 1), HORIZONTAL, WR(LAYER_TOP, WIDTH_1))
+    )");
 
     Snapshot snap = engine.take_snapshot();
 

@@ -62,7 +62,8 @@ void Simulation::simulation_single_step(Simulation* simulation)
 
     // simulate components (C)
     for (auto& component: simulation->result_.components)
-        component.simulate(component.data, component.pins);
+        if (component.simulate)
+            component.simulate(component.data, component.pins);
 
     // simulate components (Lua)
     if (simulation->simulate_luaref_ != -1) {

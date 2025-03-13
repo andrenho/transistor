@@ -152,7 +152,7 @@ function Board:take_snapshot()
       snap.wires[#snap.wires+1] = { pos.x, pos.y, pos.dir, wire.layer .. wire.width, self:pos_hash_c(pos) }
    end
    for i, component in ipairs(self.components) do
-      snap.components[i] = { component.position.x, component.position.y, component.direction, component.def.key, self:pos_hash_c(component.position) }
+      snap.components[i] = { component.position.x, component.position.y, component.direction, component.def.key, self:pos_hash_c(component.position), component.def.data_size }
    end
    return snap
 end

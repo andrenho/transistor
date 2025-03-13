@@ -14,9 +14,12 @@ struct Snapshot {
     enum class Layer { Top, Bottom };
 
     struct Component {
-        int         x, y;
-        Direction   direction;
-        std::string key;
+        int                  x, y;
+        Direction            direction;
+        std::string          key;
+        ComponentId          id;
+        size_t               data_size;
+        std::vector<uint8_t> data;
     };
 
     struct Wire {
@@ -24,12 +27,14 @@ struct Snapshot {
         Direction   direction;
         Width       width;
         Layer       layer;
+        WireId      id;
+        uint8_t     value;
     };
 
     struct Board {
         int                    w, h;
         std::vector<Component> components;
-        std::vector<Wire>      wire;
+        std::vector<Wire>      wires;
     };
 
     std::vector<Board> boards;

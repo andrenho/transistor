@@ -6,6 +6,9 @@
 #include <lua.hpp>
 #include <vector>
 
+typedef long ComponentId;
+typedef long WireId;
+
 struct CompilationResult {
     struct Component {
         uint8_t* data = nullptr;
@@ -22,12 +25,15 @@ struct CompilationResult {
     };
 
     struct Connection {
-        std::vector<Pin> pins {};
-        uint8_t          value = 0;
+        std::vector<Pin>    pins {};
+        uint8_t             value = 0;
     };
 
     std::vector<Component> components {};
     std::vector<Connection> connections {};
+
+    std::unordered_map<ComponentId, size_t> component_by_id;         // value = index in the component vector
+    std::unordered_map<WireId, size_t>      connection_by_wire_id;   // value = index in the connection vector
 };
 
 CompilationResult parse_compilation_result(lua_State* L);
