@@ -88,15 +88,17 @@ void Engine::load_bytecode(const char* name, uint8_t const* bytecode, size_t sz)
 
 void Engine::execute(std::string const& command, bool recompile, std::function<void()> const& and_also_do)
 {
+    simulation_.pause();
+
     assert(lua_gettop(L) == 0);
 
-    simulation_.pause();
     if (luaL_dostring(L, command.c_str()) != LUA_OK)
         throw std::runtime_error("Error executing '"s + command + "': " + lua_tostring(L, -1));
     if (recompile)
         recompile_sandbox();
     if (and_also_do)
         and_also_do();
+
     simulation_.resume();
 }
 

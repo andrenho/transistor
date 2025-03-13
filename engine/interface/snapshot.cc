@@ -1,6 +1,7 @@
 #include "snapshot.hh"
 
 #include <cassert>
+#include <cstring>
 
 static Snapshot::Direction lua_todirection(lua_State* L, int i)
 {

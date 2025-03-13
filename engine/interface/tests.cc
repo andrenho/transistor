@@ -1,5 +1,6 @@
 #include "tests.hh"
 
+#include <algorithm>
 #include <cassert>
 #include <thread>
 

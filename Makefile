@@ -118,6 +118,12 @@ check:
 leaks: $(PROJECT_NAME)
 	$(LEAKS_CMD) $(LEAKS_SUPP) ./$^
 
+helgrind: $(PROJECT_NAME)
+	valgrind --tool=helgrind --fair-sched=yes ./$^
+
+drd: $(PROJECT_NAME)
+	valgrind --tool=drd --fair-sched=yes ./$^
+
 #
 # cleanup
 #
