@@ -5,10 +5,12 @@
   - [x] Run tests from C
   - [x] Component def assertions
   - [ ] Test simulation
-    - [ ] Create thread
-    - [ ] Send components to simulator
-    - [ ] Sind pins to simulator
-
+    - [x] Create thread
+    - [x] Send components to simulator
+    - [x] Send pins to simulator
+    - [ ] Test simulation
+  - [ ] Bugfix
+   - [ ] On the compilation, consider the board along with the position when creating the list of wires
 
 - [x] Base game
   - [x] Base application

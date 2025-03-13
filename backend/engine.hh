@@ -27,8 +27,6 @@ private:
 
     void recompile_sandbox();
 
-    void register_native_array_function();
-
     friend void run_tests();
 };
 

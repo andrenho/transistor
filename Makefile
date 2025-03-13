@@ -44,6 +44,7 @@ OBJ = \
 	main.o \
 	backend/compilation.o \
 	backend/engine.o \
+	backend/native_array.o \
 	backend/tests.o \
 	backend/snapshot.o \
 	simulation/native.o \
