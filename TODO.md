@@ -31,6 +31,7 @@
     - [ ] About
   - [ ] Save/load (serialize/unserialize)
     - [ ] Treat errors
+    - [ ] Autosave/load on initialization
   - [ ] Toolbox
     - [x] Create toolbox (basic components)
     - [ ] Organize database per category/subcategory

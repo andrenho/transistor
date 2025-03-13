@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cassert>
+#include <cstdio>
 #include <thread>
 
 #include "engine.hh"
@@ -17,9 +18,11 @@
 
 void Tests::run_tests()
 {
+    printf("=== RUNNING TESTS ===============================================\n");
     test_native_query();
     test_lua_engine();
     test_simulation();
+    printf("=== TESTS SUCCESSFUL ============================================\n");
 }
 
 void Tests::test_native_query()

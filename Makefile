@@ -3,7 +3,7 @@
 #
 
 PROJECT_NAME = transistor
-PROJECT_VERSION = 0.1.1
+PROJECT_VERSION = 0.1.2
 
 all: $(PROJECT_NAME)
 
@@ -14,7 +14,7 @@ all: $(PROJECT_NAME)
 include contrib/pastel-base/mk/config.mk
 
 CPPFLAGS += -I. -Iengine -Iengine/interface -Iui/resources  \
-			-Icontrib/pastel2d/src -Icontrib/pastel-base/pl_log -Icontrib/pastel2d/contrib/pocketmod \
+			-Icontrib/pastel2d/src -Icontrib/pastel-base/pl_log -Icontrib/pastel2d/contrib/pocketmod -Icontrib/pastel2d/contrib/stb \
 			-isystem contrib/imgui
 
 ifdef RELEASE
@@ -42,21 +42,15 @@ endif
 
 OBJ = \
 	main.o \
+	implementation.o \
 	engine/interface/compilation.o \
 	engine/interface/engine.o \
 	engine/interface/native_array.o \
 	engine/interface/tests.o \
 	engine/interface/snapshot.o \
 	engine/simulation/native.o \
-	engine/simulation/simulation.o #\
-	ui/common.o \
-	ui/resources.o \
-	ui/gui/gui.o \
-	ui/gui/dialog.o \
-	ui/gui/mainmenu.o \
-	ui/gui/toolbox.o \
-	ui/board/board.o \
-	ui/board/components.o
+	engine/simulation/simulation.o \
+	ui/resources.o
 
 IMGUI_OBJ = \
 	contrib/imgui/imgui.o \
@@ -77,6 +71,9 @@ ENGINE = \
 EMBED = \
 	$(filter-out %.h, $(wildcard ui/resources/fonts/*)) \
 	$(filter-out %.h, $(wildcard ui/resources/images/*))
+
+RESOURCES = \
+	ui/resources/images/bg.jpg
 
 $(OBJ): $(ENGINE:=.h)
 $(OBJ): $(EMBED:=.h)
