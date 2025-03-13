@@ -14,12 +14,13 @@ static void error_callback(void* _)
 ps::Scene background_scene()
 {
     ps::Scene scene;
-    // TODO scene.set_z_order(1000);
+    scene.set_z_order(1000);
 
-    int ww, wh, rw, rh;
+    int ww, wh;
     SDL_GetWindowSize(ps_graphics_window(), &ww, &wh);
-    // ps::res::image_size(rs_bg, &rw, &rh);
+    auto [rw, rh] = ps::res::image_size(rs_bg);
     scene.add_image(rs_bg, (SDL_Rect) { ww/2 - rw/2, wh/2 - rh/2, 0, 0 });
+    return scene;
 }
 
 int main()

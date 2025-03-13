@@ -127,10 +127,10 @@ drd: $(PROJECT_NAME)
 
 .PHONY: softclean
 softclean:
-	rm -f $(PROJECT_NAME) $(OBJ) $(TEST_OBJ) $(IMGUI_OBJ) $(CLEANFILES) $(EMBED:=.h) $(ENGINE:=.h) libpastel2d.a
+	rm -f $(PROJECT_NAME) $(OBJ) $(TEST_OBJ) $(IMGUI_OBJ) $(CLEANFILES) $(EMBED:=.h) $(ENGINE:=.h) **/*.d libpastel2d.a
 
 .PHONY: clean
 clean: softclean
 	$(MAKE) -C contrib/pastel2d clean
-	rm -rf build-sdl3 libSDL3.a libluajit.a
+	rm -rf build-sdl3 libSDL3.a libluajit.a libpastel2d-cc.a
 
