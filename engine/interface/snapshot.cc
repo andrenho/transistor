@@ -3,15 +3,15 @@
 #include <cassert>
 #include <cstring>
 
-static Snapshot::Direction lua_todirection(lua_State* L, int i)
+static Direction lua_todirection(lua_State* L, int i)
 {
     const char* dir = lua_tostring(L, i);
     switch (dir[0]) {
-        case 'N': return Snapshot::Direction::N;
-        case 'S': return Snapshot::Direction::S;
-        case 'W': return Snapshot::Direction::W;
-        case 'E': return Snapshot::Direction::E;
-        case 'C': return Snapshot::Direction::Center;
+        case 'N': return Direction::N;
+        case 'S': return Direction::S;
+        case 'W': return Direction::W;
+        case 'E': return Direction::E;
+        case 'C': return Direction::Center;
         default: abort();
     }
 }

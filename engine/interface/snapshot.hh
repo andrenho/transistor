@@ -6,9 +6,9 @@
 
 #include "compilation.hh"
 
-struct Snapshot {
+enum class Direction { Center=0, N=1, S=2, E=3, W=4 };
 
-    enum class Direction { N, S, E, W, Center };
+struct Snapshot {
 
     enum class Width { W1, W8 };
     enum class Layer { Top, Bottom };

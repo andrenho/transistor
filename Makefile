@@ -73,10 +73,13 @@ EMBED = \
 	$(filter-out %.h, $(wildcard ui/resources/images/*))
 
 RESOURCES = \
-	ui/resources/images/bg.jpg
+	ui/resources/images/bg.jpg \
+	ui/resources/images/circuit.png \
+	ui/resources/images/circuit.tileset.lua
 
 $(OBJ): $(ENGINE:=.h)
 $(OBJ): $(EMBED:=.h)
+$(OBJ): $(RESOURCES :=.h)
 
 #
 # executable
@@ -127,7 +130,7 @@ drd: $(PROJECT_NAME)
 
 .PHONY: softclean
 softclean:
-	rm -f $(PROJECT_NAME) $(OBJ) $(TEST_OBJ) $(IMGUI_OBJ) $(CLEANFILES) $(EMBED:=.h) $(ENGINE:=.h) **/*.d libpastel2d.a
+	rm -f $(PROJECT_NAME) $(OBJ) $(TEST_OBJ) $(IMGUI_OBJ) $(CLEANFILES) $(EMBED:=.h) $(ENGINE:=.h) $(RESOURCES:=.h) **/*.d libpastel2d.a
 
 .PHONY: clean
 clean: softclean
