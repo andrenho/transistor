@@ -47,6 +47,7 @@ Snapshot parse_snapshot(lua_State* L)
             lua_rawgeti(L, -1, 4); component.key = lua_tostring(L, -1); lua_pop(L, 1);
             lua_rawgeti(L, -1, 5); component.id = lua_tointeger(L, -1); lua_pop(L, 1);
             lua_rawgeti(L, -1, 6); component.data_size = lua_tointeger(L, -1); lua_pop(L, 1);
+            lua_rawgeti(L, -1, 7); component.is_cursor = lua_toboolean(L, -1); lua_pop(L, 1);
             board.components.emplace_back(std::move(component));
             lua_pop(L, 1);
         }
@@ -67,6 +68,7 @@ Snapshot parse_snapshot(lua_State* L)
                 wire.width = wr[1] == '1' ? Snapshot::Width::W1 : Snapshot::Width::W8;
             lua_pop(L, 1);
             lua_rawgeti(L, -1, 5); wire.id = lua_tointeger(L, -1); lua_pop(L, 1);
+            lua_rawgeti(L, -1, 6); wire.is_cursor = lua_toboolean(L, -1); lua_pop(L, 1);
             board.wires.emplace_back(std::move(wire));
             lua_pop(L, 1);
         }
@@ -85,11 +87,17 @@ Snapshot parse_snapshot(lua_State* L)
 void hydrate_snapshot_with_values(Snapshot& snapshot, CompilationResult const& result)
 {
     for (auto& board: snapshot.boards) {
-        for (auto& wire: board.wires)
-            wire.value = result.connections.at(result.connection_by_wire_id.at(wire.id)).value;
+        for (auto& wire: board.wires) {
+            if (!wire.is_cursor)
+                wire.value = result.connections.at(result.connection_by_wire_id.at(wire.id)).value;
+            else
+                wire.value = 0;
+        }
         for (auto& component: board.components) {
-            component.data.resize(component.data_size);
-            memcpy(component.data.data(), result.components.at(result.component_by_id.at(component.id)).data, component.data_size);
+            if (!component.is_cursor) {
+                component.data.resize(component.data_size);
+                memcpy(component.data.data(), result.components.at(result.component_by_id.at(component.id)).data, component.data_size);
+            }
         }
     }
 }

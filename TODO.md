@@ -15,9 +15,10 @@
 - [ ] UI
   - [x] Basic setup
   - [x] Load resources
-  - [ ] Wire cursor
-  - [ ] Draw board + wires
-    - [ ] Events
+  - [x] Draw board + wires
+    - [x] Events
+  - [x] Wire cursor
+    - [x] Place single wire
   - [ ] Render components
     - [ ] Graphics object
     - [ ] Component cursor

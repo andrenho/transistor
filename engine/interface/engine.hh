@@ -19,7 +19,7 @@ public:
 
     Snapshot take_snapshot();
 
-    void cursor_set_pointer(BoardId board_id, int x, int y);
+    void cursor_set_pointer(BoardId board_id, int x, int y, Direction dir);
     void cursor_click(BoardId board_id, Button button);
     void cursor_button_release(BoardId board_id, Button button);
     void cursor_key_press(BoardId board_id, char key);

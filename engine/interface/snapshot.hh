@@ -22,6 +22,7 @@ struct Snapshot {
         ComponentId          id;
         size_t               data_size;
         std::vector<uint8_t> data;
+        bool                 is_cursor;
     };
 
     struct Wire {
@@ -30,6 +31,7 @@ struct Snapshot {
         Width       width;
         Layer       layer;
         WireId      id;
+        bool        is_cursor;
         uint8_t     value;
     };
 

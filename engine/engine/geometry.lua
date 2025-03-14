@@ -78,6 +78,8 @@ end
 
 function Position.a_to_b(a, b, orientation)
    
+   if a == b then return { P(a.x, a.y, a.dir == CENTER and E or a.dir) } end
+   
    local function a_to_b_horizontal(x1, x2, y)
       if x1 == x2 then return {} end
       assert(x2 > x1)
@@ -107,8 +109,6 @@ function Position.a_to_b(a, b, orientation)
       
       return pos
    end
-   
-   if a == b then return { a } end
    
    local pos, pos2
    if orientation == HORIZONTAL then

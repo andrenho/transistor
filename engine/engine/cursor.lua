@@ -28,8 +28,6 @@ function Cursor:set_pointer(pos)   -- nil = out of bounds
       return
    end
    
-   print(pos.x, pos.y)
-   
    self.pos = pos
    
    if pos ~= nil then

@@ -55,9 +55,17 @@ static std::string lua_button(Engine::Button button)
     return "invalid";
 }
 
-void Engine::cursor_set_pointer(BoardId board_id, int x, int y)
+void Engine::cursor_set_pointer(BoardId board_id, int x, int y, Direction dir)
 {
-    execute(std::format("sandbox.boards[{}].cursor:set_pointer(P({}, {}))", board_id, x, y), true);
+    std::string direction;
+    switch (dir) {
+        case Direction::N: direction = "N"; break;
+        case Direction::S: direction = "S"; break;
+        case Direction::E: direction = "E"; break;
+        case Direction::W: direction = "W"; break;
+        default: direction = "CENTER"; break;
+    }
+    execute(std::format("sandbox.boards[{}].cursor:set_pointer(P({}, {}, {}))", board_id, x, y, direction), true);
 }
 
 void Engine::cursor_click(BoardId board_id, Button button)

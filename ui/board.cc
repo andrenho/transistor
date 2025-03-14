@@ -58,6 +58,18 @@ static void move_board(Snapshot::Board const& board, int xrel, int yrel)
 // events
 //
 
+static Direction tile_direction(float x, float y)
+{
+    x = x - floor(x);
+    y = y - floor(y);
+
+    float s = 1.f - y, n = y, e = 1.f- x, w = x;
+    if (n <= s && n <= e && n <= w) return Direction::N;
+    if (s <= n && s <= e && s <= w) return Direction::S;
+    if (e <= s && e <= n && e <= w) return Direction::E;
+    return Direction::W;
+}
+
 void board_events(Engine& engine, SDL_Event const* e, Snapshot::Board const& board)
 {
     if (!topmost_board)
@@ -69,6 +81,7 @@ void board_events(Engine& engine, SDL_Event const* e, Snapshot::Board const& boa
     SDL_GetMouseState(&mx, &my);
     int tile_x = (mx - board_def.x) / board_def.zoom / TILE_SIZE;
     int tile_y = (my - board_def.y) / board_def.zoom / TILE_SIZE;
+    Direction tile_dir = tile_direction((mx - (float) board_def.x) / board_def.zoom / TILE_SIZE, (my - (float) board_def.y) / board_def.zoom / TILE_SIZE);
 
     switch (e->type) {
         case SDL_EVENT_MOUSE_BUTTON_DOWN:
@@ -80,7 +93,7 @@ void board_events(Engine& engine, SDL_Event const* e, Snapshot::Board const& boa
         case SDL_EVENT_MOUSE_MOTION:
             if (board_moving >= 0)
                 move_board(board, e->motion.xrel, e->motion.yrel);
-            engine.cursor_set_pointer(*topmost_board, tile_x, tile_y);
+            engine.cursor_set_pointer(*topmost_board, tile_x, tile_y, tile_dir);
             break;
 
         case SDL_EVENT_MOUSE_BUTTON_UP:
@@ -140,7 +153,7 @@ static void render_board(Snapshot::Board const& board, ps::Scene& scene)
 static void render_wires(Snapshot::Board const& board, ps::Scene& scene)
 {
     for (auto const& wire: board.wires)
-        ADD_IMAGE(rs_wire_top_1[(int) wire.direction][wire.value ? 1 : 0], wire.x, wire.y);
+        ADD_IMAGE(rs_wire_top_1[(int) wire.direction][wire.value ? 1 : 0], wire.x, wire.y, { .opacity = wire.is_cursor ? .5f : 1.f });
 }
 
 #undef ADD_IMAGE

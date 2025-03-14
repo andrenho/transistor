@@ -146,10 +146,15 @@ function Board:take_snapshot()
    local snap = { w = self.w, h = self.h, wires = {}, components = {}, id = self.id }
    for pos_hash, wire in pairs(self.wires) do
       local pos = Position.unhash(pos_hash)
-      snap.wires[#snap.wires+1] = { pos.x, pos.y, pos.dir, wire.layer .. wire.width, self:pos_hash_c(pos) }
+      snap.wires[#snap.wires+1] = { pos.x, pos.y, pos.dir, wire.layer .. wire.width, self:pos_hash_c(pos), false }
+   end
+   if self.cursor.wire.drawing then
+      for _,pos in ipairs(Position.a_to_b(self.cursor.wire.starting_pos, self.cursor.pos, self.cursor.wire.orientation)) do
+         snap.wires[#snap.wires+1] = { pos.x, pos.y, pos.dir, self.cursor.selected_wire.layer .. self.cursor.selected_wire.width, self:pos_hash_c(pos), true }
+      end
    end
    for i, component in ipairs(self.components) do
-      snap.components[i] = { component.position.x, component.position.y, component.direction, component.def.key, self:pos_hash_c(component.position), component.def.data_size }
+      snap.components[i] = { component.position.x, component.position.y, component.direction, component.def.key, self:pos_hash_c(component.position), component.def.data_size, false }
    end
    return snap
 end
