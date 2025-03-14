@@ -21,7 +21,8 @@
     - [x] Place single wire
   - [x] Render components
     - [x] Graphics object
-  - [ ] Create simulation functions
+  - [x] Create simulation functions
+  - [ ] Error on delete
   - [ ] Timing capture (FPS, steps, process timings)
   - [ ] Close version
     - [ ] Test for leaks
