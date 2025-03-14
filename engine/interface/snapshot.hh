@@ -8,13 +8,15 @@
 
 enum class Direction { Center=0, N=1, S=2, E=3, W=4 };
 
+using BoardId = long;
+
 struct Snapshot {
 
     enum class Width { W1, W8 };
     enum class Layer { Top, Bottom };
 
     struct Component {
-        int                  x, y;
+        long                 x, y;
         Direction            direction;
         std::string          key;
         ComponentId          id;
@@ -23,7 +25,7 @@ struct Snapshot {
     };
 
     struct Wire {
-        int         x, y;
+        long        x, y;
         Direction   direction;
         Width       width;
         Layer       layer;
@@ -32,7 +34,8 @@ struct Snapshot {
     };
 
     struct Board {
-        int                    w, h;
+        BoardId                id;
+        long                   w, h;
         std::vector<Component> components;
         std::vector<Wire>      wires;
     };

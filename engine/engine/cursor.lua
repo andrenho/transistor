@@ -23,6 +23,13 @@ function Cursor.new(board)
 end
 
 function Cursor:set_pointer(pos)   -- nil = out of bounds
+   if pos.x < 0 or pos.y < 0 or pos.x >= self.board.w or pos.y >= self.board.h then
+      self.pos = nil
+      return
+   end
+   
+   print(pos.x, pos.y)
+   
    self.pos = pos
    
    if pos ~= nil then
@@ -54,7 +61,7 @@ end
 function Cursor:click(button)
    if self.pos then
       if button == BUTTON_LEFT then
-         local component = self.board:component(pos)
+         local component = self.board:component(self.pos)
          if component then
             component:on_click()
          elseif self.selected_key then
@@ -70,7 +77,7 @@ end
 function Cursor:key_press(key, mod)
    if self.pos then
       if key == 'r' then
-         local component = board:component(pos)
+         local component = board:component(self.pos)
          if component then
             board:rotate_tile(self.pos)
          else

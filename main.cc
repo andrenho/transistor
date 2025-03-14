@@ -1,11 +1,12 @@
 #include <pl_log.h>
 #include <pastel2d.hh>
+#include <ui/board.hh>
 #include <ui/resources.hh>
 
 #include "engine.hh"
 #include "tests.hh"
 
-static void error_callback(void* _)
+[[noreturn]] static void error_callback(void* _)
 {
     SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", pl_last_error(), ps_graphics_window());
     abort();
@@ -56,19 +57,23 @@ int main()
     //
 
     while (ps::graphics::running()) {
+        Snapshot snapshot = engine.take_snapshot();
+
         SDL_Event e;
         while (SDL_PollEvent(&e)) {
             if (e.type == SDL_EVENT_QUIT || (e.type == SDL_EVENT_KEY_DOWN && e.key.key == SDLK_Q))
                 ps::graphics::quit();
-            // TODO - board update
+            for (auto const& board: snapshot.boards)
+                board_events(engine, &e, board);
             // TODO - gui events
         }
 
         // create and render scenes
 
-        Snapshot snapshot = engine.take_snapshot();
         std::vector<ps::Scene> scenes;
         scenes.push_back(background_scene());
+        for (auto const& board: snapshot.boards)
+            scenes.push_back(board_scene(board));
         ps::graphics::render_scenes(scenes);
 
         // present display

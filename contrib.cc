@@ -1,8 +1,11 @@
 #define PL_LOG_IMPLEMENTATION
 #include <pl_log.h>
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wmissing-field-initializers"
 #define STB_DS_IMPLEMENTATION
 #include <stb_ds.h>
+#pragma clang diagnostic pop
 
 #define STBI_ONLY_PNG
 #define STBI_ONLY_JPEG

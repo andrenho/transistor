@@ -3,6 +3,7 @@
 #include <cassert>
 #include <cstring>
 
+#include <format>
 #include <string>
 #include <stdexcept>
 using namespace std::string_literals;
@@ -44,6 +45,46 @@ Engine::~Engine()
     lua_close(L);
 }
 
+static std::string lua_button(Engine::Button button)
+{
+    switch (button) {
+        case Engine::Button::Left:   return "left";
+        case Engine::Button::Middle: return "middle";
+        case Engine::Button::Right:  return "right";
+    }
+    return "invalid";
+}
+
+void Engine::cursor_set_pointer(BoardId board_id, int x, int y)
+{
+    execute(std::format("sandbox.boards[{}].cursor:set_pointer(P({}, {}))", board_id, x, y), true);
+}
+
+void Engine::cursor_click(BoardId board_id, Button button)
+{
+    execute(std::format("sandbox.boards[{}].cursor:click('{}')", board_id, lua_button(button)), true);
+}
+
+void Engine::cursor_button_release(BoardId board_id, Button button)
+{
+    execute(std::format("sandbox.boards[{}].cursor:button_release('{}')", board_id, lua_button(button)), true);
+}
+
+void Engine::cursor_key_press(BoardId board_id, char key)
+{
+    execute(std::format("sandbox.boards[{}].cursor:key_press('{}')", board_id, key), true);
+}
+
+void Engine::cursor_key_release(BoardId board_id, char key)
+{
+    execute(std::format("sandbox.boards[{}].cursor:key_release('{}')", board_id, key), true);
+}
+
+void Engine::cursor_select_component_def(BoardId board_id, std::string const& key)
+{
+    execute(std::format("sandbox.boards[{}].cursor:select_component_def('{}')", board_id, key), true);
+}
+
 void Engine::register_load_all_components_function() const
 {
     lua_getglobal(L, "ComponentDB");
@@ -74,7 +115,7 @@ void Engine::start()
     execute("sandbox = Sandbox.new()", false);
     execute("return function() sandbox:simulate_lua_components() end", false);
     simulation_.set_simulate_luaref(luaL_ref(L, LUA_REGISTRYINDEX));
-    execute("sandbox:add_board(20, 10)");
+    execute("sandbox:add_board(20, 10)", true);
     simulation_.start();
 }
 

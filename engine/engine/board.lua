@@ -3,9 +3,7 @@ local bit = require('bit')
 Board = {}
 Board.__index = Board
 
-local board_id = 0
-
-function Board.new(w, h, sandbox)
+function Board.new(id, w, h, sandbox)
    local self = setmetatable({}, Board)
    self.w = w
    self.h = h
@@ -13,8 +11,7 @@ function Board.new(w, h, sandbox)
    self.components = {}
    self.sandbox = sandbox
    self.cursor = Cursor.new(self)
-   self.id = board_id
-   board_id = board_id + 1
+   self.id = id
    return self
 end
 
@@ -146,7 +143,7 @@ function Board:remove_wires_for_ic(rect)
 end
 
 function Board:take_snapshot()
-   local snap = { w = self.w, h = self.w, wires = {}, components = {} }
+   local snap = { w = self.w, h = self.h, wires = {}, components = {}, id = self.id }
    for pos_hash, wire in pairs(self.wires) do
       local pos = Position.unhash(pos_hash)
       snap.wires[#snap.wires+1] = { pos.x, pos.y, pos.dir, wire.layer .. wire.width, self:pos_hash_c(pos) }
@@ -157,16 +154,8 @@ function Board:take_snapshot()
    return snap
 end
 
-function Board:simulate_lua_components()
-   for _,c in ipairs(self.components) do
-      if c.def.simulate then
-         c.def.simulate(c)
-      end
-   end
-end
-
 function Board.from_snapshot(snap, sandbox)
-   local board = Board.new(snap.w, snap.h, sandbox)
+   local board = Board.new(snap.id, snap.w, snap.h, sandbox)
    for _,w in ipairs(snap.wires) do
       board:add_wire(P(w[1], w[2], w[3]), WR(w[4]:sub(1, 1), w[4]:sub(2, 2)))
    end
@@ -176,7 +165,15 @@ function Board.from_snapshot(snap, sandbox)
    return board
 end
 
+function Board:simulate_lua_components()
+   for _,c in ipairs(self.components) do
+      if c.def.simulate then
+         c.def.simulate(c)
+      end
+   end
+end
+
 -- used to generate a hash of the position for the C side, to match components/wires with their compilation counterparts
 function Board:pos_hash_c(pos)
-   return bit.bxor(bit.lshift(pos:hash(), 8), board_id)
+   return bit.bxor(bit.lshift(pos:hash(), 8), self.id)
 end

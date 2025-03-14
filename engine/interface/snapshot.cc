@@ -31,8 +31,9 @@ Snapshot parse_snapshot(lua_State* L)
 
         Snapshot::Board board;
 
-        lua_getfield(L, -1, "w"); board.w = lua_tointeger(L, -1); lua_pop(L, 1);
-        lua_getfield(L, -1, "h"); board.h = lua_tointeger(L, -1); lua_pop(L, 1);
+        lua_getfield(L, -1, "id"); board.id = lua_tointeger(L, -1); lua_pop(L, 1);
+        lua_getfield(L, -1, "w");  board.w = lua_tointeger(L, -1); lua_pop(L, 1);
+        lua_getfield(L, -1, "h");  board.h = lua_tointeger(L, -1); lua_pop(L, 1);
 
         // components
         lua_getfield(L, -1, "components");

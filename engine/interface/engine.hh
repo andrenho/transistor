@@ -10,12 +10,21 @@
 
 class Engine {
 public:
+    enum class Button { Left, Middle, Right };
+
     Engine();
     ~Engine();
 
     void start();
 
     Snapshot take_snapshot();
+
+    void cursor_set_pointer(BoardId board_id, int x, int y);
+    void cursor_click(BoardId board_id, Button button);
+    void cursor_button_release(BoardId board_id, Button button);
+    void cursor_key_press(BoardId board_id, char key);
+    void cursor_key_release(BoardId board_id, char key);
+    void cursor_select_component_def(BoardId board_id, std::string const& key);
 
 private:
     lua_State* L;
@@ -25,7 +34,7 @@ private:
     void register_load_all_components_function() const;
 
     void load_bytecode(const char* name, uint8_t const* bytecode, size_t sz) const;
-    void execute(std::string const& command, bool recompile=true, std::function<void()> const& and_also_do=nullptr);
+    void execute(std::string const& command, bool recompile, std::function<void()> const& and_also_do=nullptr);
 
     void recompile_sandbox();
 

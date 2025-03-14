@@ -42,7 +42,7 @@ endif
 
 OBJ = \
 	main.o \
-	implementation.o \
+	contrib.o \
 	engine/interface/compilation.o \
 	engine/interface/engine.o \
 	engine/interface/native_array.o \
@@ -50,7 +50,8 @@ OBJ = \
 	engine/interface/snapshot.o \
 	engine/simulation/native.o \
 	engine/simulation/simulation.o \
-	ui/resources.o
+	ui/resources.o \
+	ui/board.o
 
 IMGUI_OBJ = \
 	contrib/imgui/imgui.o \

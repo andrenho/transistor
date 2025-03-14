@@ -69,7 +69,7 @@ void Tests::test_simulation()
         sandbox.boards[1]:add_component('__button', P(1, 1), N)
         sandbox.boards[1]:add_component('__led', P(3, 1), N)
         sandbox.boards[1]:add_wires(P(1, 1), P(3, 1), HORIZONTAL, WR(LAYER_TOP, WIDTH_1))
-    )");
+    )", true);
 
     auto find_button = [](Snapshot const& snap) -> Snapshot::Component const* {
         return &*std::find_if(snap.boards.at(0).components.begin(), snap.boards.at(0).components.end(),

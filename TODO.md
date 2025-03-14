@@ -10,15 +10,17 @@
     - [x] Send pins to simulator
     - [x] Test simulation
   - [x] Reorganize directories
-  - [ ] Include and load components from C
+  - [x] Include and load components from C
 
 - [ ] UI
-  - [ ] Basic setup
-  - [ ] Load resources
+  - [x] Basic setup
+  - [x] Load resources
+  - [ ] Wire cursor
   - [ ] Draw board + wires
     - [ ] Events
   - [ ] Render components
     - [ ] Graphics object
+    - [ ] Component cursor
   - [ ] Timing capture (FPS, steps, process timings)
   - [ ] Close version
     - [ ] Test for leaks
