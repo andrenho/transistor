@@ -1,6 +1,7 @@
 #include <pl_log.h>
 #include <pastel2d.hh>
 #include <ui/board.hh>
+#include <ui/lua_interface.hh>
 #include <ui/resources.hh>
 
 #include "engine.hh"
@@ -31,6 +32,7 @@ int main()
 
     // initialize engine
     Engine engine;
+    engine.with_lua_object(initialize_lua_G_object);
     engine.start();
 
     // initialize graphics
@@ -73,7 +75,7 @@ int main()
         std::vector<ps::Scene> scenes;
         scenes.push_back(background_scene());
         for (auto const& board: snapshot.boards)
-            scenes.push_back(board_scene(board));
+            scenes.push_back(board_scene(engine, board));
         ps::graphics::render_scenes(scenes);
 
         // present display

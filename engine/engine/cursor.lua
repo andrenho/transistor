@@ -75,9 +75,9 @@ end
 function Cursor:key_press(key, mod)
    if self.pos then
       if key == 'r' then
-         local component = board:component(self.pos)
+         local component = self.board:component(self.pos)
          if component then
-            board:rotate_tile(self.pos)
+            self.board:rotate_tile(self.pos)
          else
             self.selected_direction = dir_rotate_component(self.selected_direction)
          end

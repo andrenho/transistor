@@ -98,16 +98,20 @@ void Simulation::update_compilation_result(CompilationResult&& result)
 
 void Simulation::pause()
 {
-    std::lock_guard lock(mutex_);
-    paused_ = true;
+    if (thread_.joinable()) {
+        std::lock_guard lock(mutex_);
+        paused_ = true;
+    }
 }
 
 void Simulation::resume()
 {
-    {
-        std::lock_guard lock(mutex_);
-        paused_ = false;
+    if (thread_.joinable()) {
+        {
+            std::lock_guard lock(mutex_);
+            paused_ = false;
+        }
+        cv_.notify_one();
     }
-    cv_.notify_one();
 }
 

@@ -178,6 +178,16 @@ function Board:simulate_lua_components()
    end
 end
 
+function Board:render_components(G, tile_size)
+   for _,c in ipairs(self.components) do
+      local x = c.position.x * tile_size
+      local y = c.position.y * tile_size
+      local context = {}
+      context.rotation = dir_angle(c.direction)
+      c.def.render(c, G, x, y, context)
+   end
+end
+
 -- used to generate a hash of the position for the C side, to match components/wires with their compilation counterparts
 function Board:pos_hash_c(pos)
    return bit.bxor(bit.lshift(pos:hash(), 8), self.id)

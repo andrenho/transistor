@@ -26,6 +26,15 @@ public:
     void cursor_key_release(BoardId board_id, char key);
     void cursor_select_component_def(BoardId board_id, std::string const& key);
 
+    void render_all_components(BoardId board_id, int G_luaref, int tile_size);
+
+    template <typename F>
+    void with_lua_object(F f) {
+        simulation_.pause();
+        f(L);
+        simulation_.resume();
+    }
+
 private:
     lua_State* L;
     Simulation simulation_;

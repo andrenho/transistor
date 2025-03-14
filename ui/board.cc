@@ -2,6 +2,7 @@
 
 #include <unordered_map>
 
+#include "lua_interface.hh"
 #include "resources.hh"
 
 static constexpr int BOARD_ON_TOP = 1;
@@ -156,9 +157,18 @@ static void render_wires(Snapshot::Board const& board, ps::Scene& scene)
         ADD_IMAGE(rs_wire_top_1[(int) wire.direction][wire.value ? 1 : 0], wire.x, wire.y, { .opacity = wire.is_cursor ? .5f : 1.f });
 }
 
+static void render_components(Engine& engine, Snapshot::Board const& board, ps::Scene& scene)
+{
+    // set scene
+    engine.with_lua_object([&](lua_State* L) {
+        G_set_scene(L, &scene);
+    });
+    engine.render_all_components(board.id, G_luaref, TILE_SIZE);
+}
+
 #undef ADD_IMAGE
 
-ps::Scene board_scene(Snapshot::Board const& board)
+ps::Scene board_scene(Engine& engine, Snapshot::Board const& board)
 {
     check_for_new_board(board);
     BoardDef const& board_def = board_defs.at(board.id);
@@ -171,6 +181,7 @@ ps::Scene board_scene(Snapshot::Board const& board)
     });
     render_board(board, scene);
     render_wires(board, scene);
+    render_components(engine, board, scene);
 
     return scene;
 }

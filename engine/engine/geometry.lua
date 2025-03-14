@@ -37,6 +37,14 @@ function dir_rotate_component(dir)
    assert(false)
 end
 
+function dir_angle(dir)
+   if dir == CENTER then return 0 end
+   if dir == N then return 0 end
+   if dir == E then return 90 end
+   if dir == S then return 180 end
+   if dir == W then return 270 end
+end
+
 --
 -- orientation
 --

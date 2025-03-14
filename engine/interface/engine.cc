@@ -45,6 +45,15 @@ Engine::~Engine()
     lua_close(L);
 }
 
+void Engine::start()
+{
+    execute("sandbox = Sandbox.new()", false);
+    execute("return function() sandbox:simulate_lua_components() end", false);
+    simulation_.set_simulate_luaref(luaL_ref(L, LUA_REGISTRYINDEX));
+    execute("sandbox:add_board(20, 10)", true);
+    simulation_.start();
+}
+
 static std::string lua_button(Engine::Button button)
 {
     switch (button) {
@@ -93,6 +102,37 @@ void Engine::cursor_select_component_def(BoardId board_id, std::string const& ke
     execute(std::format("sandbox.boards[{}].cursor:select_component_def('{}')", board_id, key), true);
 }
 
+void Engine::render_all_components(BoardId board_id, int G_luaref, int tile_size)
+{
+    simulation_.pause();
+
+    int top = lua_gettop(L);
+    lua_getglobal(L, "sandbox");                       // sandbox
+    luaL_checktype(L, -1, LUA_TTABLE);
+    lua_getfield(L, -1, "boards");                     // sandbox, boards
+    luaL_checktype(L, -1, LUA_TTABLE);
+    lua_pushinteger(L, board_id); lua_gettable(L, -2); // sandbox, boards, board
+    luaL_checktype(L, -1, LUA_TTABLE);
+    lua_getfield(L, -1, "render_components");          // sandbox, boards, board, render_components
+    luaL_checktype(L, -1, LUA_TFUNCTION);
+    lua_pushvalue(L, -2);                              // sandbox, boards, board, render_components, board
+    lua_rawgeti(L, LUA_REGISTRYINDEX, G_luaref);       // sandbox, boards, board, render_components, board, G
+    luaL_checktype(L, -1, LUA_TTABLE);
+    lua_pushinteger(L, tile_size);                     // sandbox, boards, board, render_components, board, G, tile_size
+
+    if (lua_pcall(L, 3, 0, 0) != LUA_OK)
+        luaL_error(L, "error on 'render_components': %s", lua_tostring(L, -1));
+
+    lua_pop(L, 3);
+    assert(lua_gettop(L) == top);
+
+    simulation_.resume();
+}
+
+//
+// PRIVATE
+//
+
 void Engine::register_load_all_components_function() const
 {
     lua_getglobal(L, "ComponentDB");
@@ -118,14 +158,6 @@ void Engine::register_load_all_components_function() const
 }
 
 
-void Engine::start()
-{
-    execute("sandbox = Sandbox.new()", false);
-    execute("return function() sandbox:simulate_lua_components() end", false);
-    simulation_.set_simulate_luaref(luaL_ref(L, LUA_REGISTRYINDEX));
-    execute("sandbox:add_board(20, 10)", true);
-    simulation_.start();
-}
 
 void Engine::load_bytecode(const char* name, uint8_t const* bytecode, size_t sz) const
 {

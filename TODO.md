@@ -19,9 +19,9 @@
     - [x] Events
   - [x] Wire cursor
     - [x] Place single wire
-  - [ ] Render components
-    - [ ] Graphics object
-    - [ ] Component cursor
+  - [x] Render components
+    - [x] Graphics object
+  - [ ] Create simulation functions
   - [ ] Timing capture (FPS, steps, process timings)
   - [ ] Close version
     - [ ] Test for leaks
@@ -39,6 +39,7 @@
     - [x] Create toolbox (basic components)
     - [ ] Organize database per category/subcategory
     - [ ] Add additional components to toolbox
+    - [ ] Component cursor (add opacity to Board:render_components in board.lua)
   - [ ] Cursors
     - [ ] Custom?
     - [ ] Deleting

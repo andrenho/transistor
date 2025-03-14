@@ -51,7 +51,8 @@ OBJ = \
 	engine/simulation/native.o \
 	engine/simulation/simulation.o \
 	ui/resources.o \
-	ui/board.o
+	ui/board.o \
+	ui/lua_interface.o
 
 IMGUI_OBJ = \
 	contrib/imgui/imgui.o \
