@@ -28,6 +28,8 @@ public:
 
     void render_all_components(BoardId board_id, int G_luaref, int tile_size);
 
+    Simulation& simulation() { return simulation_; }
+
     template <typename F>
     void with_lua_object(F f) {
         simulation_.pause();

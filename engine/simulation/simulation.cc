@@ -53,7 +53,7 @@ void Simulation::simulation_thread(Simulation* simulation)
             case CpuUsage::Aggressive: break;
         }
 
-        // TODO - calculate timing
+        ++simulation->steps_;
     }
 }
 
@@ -115,3 +115,17 @@ void Simulation::resume()
     }
 }
 
+void Simulation::reset_steps()
+{
+    pause();
+    steps_ = 0;
+    resume();
+}
+
+uint64_t Simulation::steps()
+{
+    pause();
+    uint64_t s = steps_;
+    resume();
+    return s;
+}

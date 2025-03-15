@@ -22,7 +22,7 @@
   - [x] Render components
     - [x] Graphics object
   - [x] Create simulation functions
-  - [ ] Error on delete
+  - [x] Error on delete
   - [ ] Timing capture (FPS, steps, process timings)
   - [ ] Close version
     - [ ] Test for leaks

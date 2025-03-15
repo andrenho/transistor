@@ -22,7 +22,10 @@ public:
     void pause();
     void resume();
 
+    void reset_steps();
+
     [[nodiscard]] CompilationResult const& result() const { return result_; }
+    [[nodiscard]] uint64_t steps();
 
     void set_cpu_usage(CpuUsage cpu_usage) { cpu_usage_ = cpu_usage; }
     void set_simulate_luaref(int simulate_luaref) { simulate_luaref_ = simulate_luaref; }

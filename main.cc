@@ -7,13 +7,22 @@
 #include "engine.hh"
 #include "tests.hh"
 
+size_t steps_per_second = 0;
+
 [[noreturn]] static void error_callback(void* _)
 {
     SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", pl_last_error(), ps_graphics_window());
     abort();
 }
 
-ps::Scene background_scene()
+static Uint32 steps_callback(void* engine, SDL_TimerID, Uint32 interval)
+{
+    steps_per_second = ((Engine *) engine)->simulation().steps();
+    ((Engine *) engine)->simulation().reset_steps();
+    return interval;
+}
+
+static ps::Scene background_scene()
 {
     ps::Scene scene;
     scene.set_z_order(1000);
@@ -51,6 +60,7 @@ int main()
 
     // initialize resources
     load_resources();
+    SDL_AddTimer(1000, steps_callback, &engine);
 
     // TODO initialize GUI
 
@@ -59,6 +69,9 @@ int main()
     //
 
     while (ps::graphics::running()) {
+
+        ps::graphics::timestep();
+
         Snapshot snapshot = engine.take_snapshot();
 
         SDL_Event e;
@@ -80,6 +93,7 @@ int main()
 
         // present display
 
-        ps_graphics_present();
+        ps::graphics::set_window_title(std::format("transistor ({} FPS -- {}K steps/sec)", ps::graphics::fps(), steps_per_second / 1000));
+        ps::graphics::present();
     }
 }

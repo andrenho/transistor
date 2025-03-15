@@ -51,7 +51,7 @@ function Cursor:set_pointer(pos)   -- nil = out of bounds
       end
       
       if self.erasing then
-         self.board:clear_tile(self.pos)
+         self.board:clear_tile(P(self.pos.x, self.pos.y))
       end
    end
 end
@@ -86,7 +86,9 @@ function Cursor:key_press(key, mod)
       elseif key == 'l' then self.board:add_component("__led", self.pos, self.selected_direction)
       elseif key == 'p' then self.board:add_component("__pnp", self.pos, self.selected_direction)
       elseif key == 'n' then self.board:add_component("__npn", self.pos, self.selected_direction)
-      elseif key == 'x' then self.erasing = true
+      elseif key == 'x' then
+         self.erasing = true
+         self.board:clear_tile(P(self.pos.x, self.pos.y))
       elseif key == 'w' then
          self.wire.drawing = true
          self.wire.orientation_defined = false
