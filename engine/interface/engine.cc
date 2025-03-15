@@ -72,6 +72,7 @@ void Engine::cursor_set_pointer(BoardId board_id, int x, int y, Direction dir)
         case Direction::S: direction = "S"; break;
         case Direction::E: direction = "E"; break;
         case Direction::W: direction = "W"; break;
+        case Direction::Center:
         default: direction = "CENTER"; break;
     }
     execute(std::format("sandbox.boards[{}].cursor:set_pointer(P({}, {}, {}))", board_id, x, y, direction), true);
