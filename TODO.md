@@ -23,10 +23,11 @@
     - [x] Graphics object
   - [x] Create simulation functions
   - [x] Error on delete
-  - [ ] Timing capture (FPS, steps, process timings)
-  - [ ] Close version
-    - [ ] Test for leaks
-    - [ ] Test release
+  - [x] Timing capture (FPS, steps, process timings)
+
+- [ ] Thread refactoring
+  - [ ] Lua state owned by simulation thread
+  - [ ] Rendering done on Lua side, no more snapshot
   
 - [ ] GUI
   - [ ] Demo window
@@ -48,6 +49,9 @@
   - [ ] Exception management
   - [ ] Deal with extern "C"
   - [ ] Nomenclature: deserialize vs unserialize
+  - [ ] Close version
+    - [ ] Test for leaks
+    - [ ] Test release
   
 - [ ] ICs
   - [ ] Toolbox for ICs
