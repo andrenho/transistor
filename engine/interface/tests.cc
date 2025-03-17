@@ -4,6 +4,7 @@
 #include <cassert>
 #include <cstdio>
 #include <thread>
+#include <simulation/luamutex.hh>
 
 #include "engine.hh"
 
@@ -45,17 +46,18 @@ void Tests::test_native_query()
 void Tests::test_lua_engine()
 {
     Engine engine;
-
-#define LOAD(name) engine.load_bytecode(#name, engine_engine_tests_##name##_lua, engine_engine_tests_##name##_lua_sz);
-    LOAD(compilation)
-    LOAD(componentdb)
-    LOAD(connected_wires)
-    LOAD(cursor)
-    LOAD(pinpositions)
-    LOAD(placement)
-    LOAD(positions)
-    LOAD(serialization)
+    lua.execute([&engine](lua_State* L) {
+#define LOAD(name) engine.load_bytecode(L, #name, engine_engine_tests_##name##_lua, engine_engine_tests_##name##_lua_sz);
+        LOAD(compilation)
+        LOAD(componentdb)
+        LOAD(connected_wires)
+        LOAD(cursor)
+        LOAD(pinpositions)
+        LOAD(placement)
+        LOAD(positions)
+        LOAD(serialization)
 #undef LOAD
+    });
 }
 
 void Tests::test_simulation()

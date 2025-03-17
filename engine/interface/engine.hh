@@ -30,24 +30,16 @@ public:
 
     Simulation& simulation() { return simulation_; }
 
-    template <typename F>
-    void with_lua_object(F f) {
-        simulation_.pause();
-        f(L);
-        simulation_.resume();
-    }
-
 private:
-    lua_State* L;
     Simulation simulation_;
     int sandbox_ref_ = -1;
 
-    void register_load_all_components_function() const;
+    void register_load_all_components_function(lua_State* L) const;
 
-    void load_bytecode(const char* name, uint8_t const* bytecode, size_t sz) const;
-    void execute(std::string const& command, bool recompile, std::function<void()> const& and_also_do=nullptr);
+    void load_bytecode(lua_State* L, const char* name, uint8_t const* bytecode, size_t sz) const;
+    void execute(std::string const& command, bool recompile, std::function<void(lua_State*)> const& and_also_do=nullptr);
 
-    void recompile_sandbox();
+    void recompile_sandbox(lua_State* L);
 
     friend class Tests;
 };

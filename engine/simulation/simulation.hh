@@ -12,15 +12,10 @@ enum class CpuUsage { Light, Normal, Aggressive };
 
 class Simulation {
 public:
-    explicit Simulation(lua_State* L);
-
     void start();
     void stop();
 
     void update_compilation_result(CompilationResult&& result);
-
-    void pause();
-    void resume();
 
     void reset_steps();
 
@@ -31,12 +26,8 @@ public:
     void set_simulate_luaref(int simulate_luaref) { simulate_luaref_ = simulate_luaref; }
 
 private:
-    lua_State* L;
-
     // thread control
     std::thread thread_;
-    std::mutex  mutex_;
-    std::condition_variable cv_;
 
     // read-only inside thread
     CompilationResult result_;
@@ -46,10 +37,9 @@ private:
 
     // written inside thread
     uint64_t    steps_ = 0;
-    bool        paused_ = false;
 
     static void simulation_thread(Simulation* simulation);
-    static void simulation_single_step(Simulation* simulation);
+    static void simulation_single_step(lua_State* L, Simulation* simulation);
 };
 
 #endif //SIMULATION_HH

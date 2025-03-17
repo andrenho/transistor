@@ -1,5 +1,6 @@
 #include <pl_log.h>
 #include <pastel2d.hh>
+#include <simulation/luamutex.hh>
 #include <ui/board.hh>
 #include <ui/lua_interface.hh>
 #include <ui/resources.hh>
@@ -41,7 +42,7 @@ int main()
 
     // initialize engine
     Engine engine;
-    engine.with_lua_object(initialize_lua_G_object);
+    lua.execute(initialize_lua_G_object);
     engine.start();
 
     // initialize graphics

@@ -5,13 +5,10 @@
 
 #include <chrono>
 #include <string>
+
+#include "luamutex.hh"
 using namespace std::chrono_literals;
 using namespace std::string_literals;
-
-Simulation::Simulation(lua_State* L)
-    : L(L)
-{
-}
 
 void Simulation::start()
 {
@@ -19,14 +16,12 @@ void Simulation::start()
         return;
 
     running_ = true;
-    paused_ = false;
     thread_ = std::thread(simulation_thread, this);
 }
 
 void Simulation::stop()
 {
     if (thread_.joinable()) {
-        resume();
         running_ = false;
         thread_.join();
     }
@@ -36,30 +31,24 @@ void Simulation::simulation_thread(Simulation* simulation)
 {
     while (simulation->running_) {
 
-        {
-            // pause thread
-            std::unique_lock lock(simulation->mutex_);
-            simulation->cv_.wait(lock, [simulation] { return !simulation->paused_; });
+        // execute
+        lua.execute([&simulation](lua_State* L) {
+            simulation_single_step(L, simulation);
 
-            // execute
-            simulation_single_step(simulation);
-            assert(lua_gettop(simulation->L) == 0);
-        }
+            // give the CPU a break
+            switch (simulation->cpu_usage_) {
+                case CpuUsage::Light:      std::this_thread::sleep_for(100ns); break;
+                case CpuUsage::Normal:     std::this_thread::yield(); break;
+                case CpuUsage::Aggressive: break;
+            }
+        });
 
-        // give the CPU a break
-        switch (simulation->cpu_usage_) {
-            case CpuUsage::Light:      std::this_thread::sleep_for(100ns); break;
-            case CpuUsage::Normal:     std::this_thread::yield(); break;
-            case CpuUsage::Aggressive: break;
-        }
-
-        ++simulation->steps_;
     }
 }
 
-void Simulation::simulation_single_step(Simulation* simulation)
+void Simulation::simulation_single_step(lua_State* L, Simulation* simulation)
 {
-    assert(lua_gettop(simulation->L) == 0);
+    assert(lua_gettop(L) == 0);
 
     // simulate components (C)
     for (auto& component: simulation->result_.components)
@@ -68,9 +57,9 @@ void Simulation::simulation_single_step(Simulation* simulation)
 
     // simulate components (Lua)
     if (simulation->simulate_luaref_ != -1) {
-        lua_rawgeti(simulation->L, LUA_REGISTRYINDEX, simulation->simulate_luaref_);
-        if (lua_pcall(simulation->L, 0, 0, 0) != LUA_OK)
-            throw std::runtime_error("Error executing Lua simulation: "s + lua_tostring(simulation->L, -1));
+        lua_rawgeti(L, LUA_REGISTRYINDEX, simulation->simulate_luaref_);
+        if (lua_pcall(L, 0, 0, 0) != LUA_OK)
+            throw std::runtime_error("Error executing Lua simulation: "s + lua_tostring(L, -1));
     }
 
     // update connection and pin values
@@ -96,36 +85,12 @@ void Simulation::update_compilation_result(CompilationResult&& result)
     result_ = std::move(result);
 }
 
-void Simulation::pause()
-{
-    if (thread_.joinable()) {
-        std::lock_guard lock(mutex_);
-        paused_ = true;
-    }
-}
-
-void Simulation::resume()
-{
-    if (thread_.joinable()) {
-        {
-            std::lock_guard lock(mutex_);
-            paused_ = false;
-        }
-        cv_.notify_one();
-    }
-}
-
 void Simulation::reset_steps()
 {
-    pause();
-    steps_ = 0;
-    resume();
+    lua.execute([this](lua_State*) { steps_ = 0; });
 }
 
 uint64_t Simulation::steps()
 {
-    pause();
-    uint64_t s = steps_;
-    resume();
-    return s;
+    return lua.execute<uint64_t>([this](lua_State*) { return steps_; });
 }

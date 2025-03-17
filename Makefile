@@ -50,6 +50,7 @@ OBJ = \
 	engine/interface/snapshot.o \
 	engine/simulation/native.o \
 	engine/simulation/simulation.o \
+	engine/simulation/luamutex.o \
 	ui/resources.o \
 	ui/board.o \
 	ui/lua_interface.o

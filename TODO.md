@@ -28,6 +28,11 @@
 - [ ] Thread refactoring
   - [ ] Lua state owned by simulation thread
   - [ ] Rendering done on Lua side, no more snapshot
+  - Design:
+    - Simulation thread
+      - Owns Lua state
+      - Accepts Lua requests, pauses simulation, execute it and returns it
+    - Engine: higher level requests, calls simulation
   
 - [ ] GUI
   - [ ] Demo window

@@ -6,6 +6,7 @@
 #include <format>
 #include <string>
 #include <stdexcept>
+#include <simulation/luamutex.hh>
 using namespace std::string_literals;
 
 #include "native_array.hh"
@@ -22,34 +23,34 @@ static const char* lua_init = R"(
 )";
 
 Engine::Engine()
-    : L(luaL_newstate()), simulation_(L)
 {
-    luaL_openlibs(L);
+    lua.execute([this](lua_State* L) {
+        luaL_openlibs(L);
 
-    // initialization code
-    if (luaL_dostring(L, lua_init) != LUA_OK)
-        throw std::runtime_error("Error executing Lua initialization: "s + lua_tostring(L, -1));
+        // initialization code
+        if (luaL_dostring(L, lua_init) != LUA_OK)
+            throw std::runtime_error("Error executing Lua initialization: "s + lua_tostring(L, -1));
 
-    // create NativeArray
-    register_native_array(L);
+        // create NativeArray
+        register_native_array(L);
 
-    // load engine
-    for (auto const& bytecode : engine_lua)
-        load_bytecode(bytecode.name, bytecode.data, bytecode.sz);
-    register_load_all_components_function();   // replace function
+        // load engine
+        for (auto const& bytecode : engine_lua)
+            load_bytecode(L, bytecode.name, bytecode.data, bytecode.sz);
+        register_load_all_components_function(L);   // replace function
+    });
 }
 
 Engine::~Engine()
 {
     simulation_.stop();
-    lua_close(L);
 }
 
 void Engine::start()
 {
     execute("sandbox = Sandbox.new()", false);
-    execute("return function() sandbox:simulate_lua_components() end", false);
-    simulation_.set_simulate_luaref(luaL_ref(L, LUA_REGISTRYINDEX));
+    execute("return function() sandbox:simulate_lua_components() end", false,
+        [this](lua_State* L) {simulation_.set_simulate_luaref(luaL_ref(L, LUA_REGISTRYINDEX)); });
     execute("sandbox:add_board(20, 10)", true);
     simulation_.start();
 }
@@ -105,36 +106,34 @@ void Engine::cursor_select_component_def(BoardId board_id, std::string const& ke
 
 void Engine::render_all_components(BoardId board_id, int G_luaref, int tile_size)
 {
-    simulation_.pause();
+    lua.execute([&board_id, &G_luaref, &tile_size](lua_State* L) {
+        int top = lua_gettop(L);
+        lua_getglobal(L, "sandbox");                       // sandbox
+        luaL_checktype(L, -1, LUA_TTABLE);
+        lua_getfield(L, -1, "boards");                     // sandbox, boards
+        luaL_checktype(L, -1, LUA_TTABLE);
+        lua_pushinteger(L, board_id); lua_gettable(L, -2); // sandbox, boards, board
+        luaL_checktype(L, -1, LUA_TTABLE);
+        lua_getfield(L, -1, "render_components");          // sandbox, boards, board, render_components
+        luaL_checktype(L, -1, LUA_TFUNCTION);
+        lua_pushvalue(L, -2);                              // sandbox, boards, board, render_components, board
+        lua_rawgeti(L, LUA_REGISTRYINDEX, G_luaref);       // sandbox, boards, board, render_components, board, G
+        luaL_checktype(L, -1, LUA_TTABLE);
+        lua_pushinteger(L, tile_size);                     // sandbox, boards, board, render_components, board, G, tile_size
 
-    int top = lua_gettop(L);
-    lua_getglobal(L, "sandbox");                       // sandbox
-    luaL_checktype(L, -1, LUA_TTABLE);
-    lua_getfield(L, -1, "boards");                     // sandbox, boards
-    luaL_checktype(L, -1, LUA_TTABLE);
-    lua_pushinteger(L, board_id); lua_gettable(L, -2); // sandbox, boards, board
-    luaL_checktype(L, -1, LUA_TTABLE);
-    lua_getfield(L, -1, "render_components");          // sandbox, boards, board, render_components
-    luaL_checktype(L, -1, LUA_TFUNCTION);
-    lua_pushvalue(L, -2);                              // sandbox, boards, board, render_components, board
-    lua_rawgeti(L, LUA_REGISTRYINDEX, G_luaref);       // sandbox, boards, board, render_components, board, G
-    luaL_checktype(L, -1, LUA_TTABLE);
-    lua_pushinteger(L, tile_size);                     // sandbox, boards, board, render_components, board, G, tile_size
+        if (lua_pcall(L, 3, 0, 0) != LUA_OK)
+            luaL_error(L, "error on 'render_components': %s", lua_tostring(L, -1));
 
-    if (lua_pcall(L, 3, 0, 0) != LUA_OK)
-        luaL_error(L, "error on 'render_components': %s", lua_tostring(L, -1));
-
-    lua_pop(L, 3);
-    assert(lua_gettop(L) == top);
-
-    simulation_.resume();
+        lua_pop(L, 3);
+        assert(lua_gettop(L) == top);
+    });
 }
 
 //
 // PRIVATE
 //
 
-void Engine::register_load_all_components_function() const
+void Engine::register_load_all_components_function(lua_State* L) const
 {
     lua_getglobal(L, "ComponentDB");
     assert(lua_istable(L, -1));
@@ -160,7 +159,7 @@ void Engine::register_load_all_components_function() const
 
 
 
-void Engine::load_bytecode(const char* name, uint8_t const* bytecode, size_t sz) const
+void Engine::load_bytecode(lua_State* L, const char* name, uint8_t const* bytecode, size_t sz) const
 {
     if (luaL_loadbuffer(L, (const char *) bytecode, sz, name) != LUA_OK)
         throw std::runtime_error("Error loading '"s + name + "' script: " + lua_tostring(L, -1));
@@ -168,23 +167,21 @@ void Engine::load_bytecode(const char* name, uint8_t const* bytecode, size_t sz)
         throw std::runtime_error("Error running '"s + name + "' script: " + lua_tostring(L, -1));
 }
 
-void Engine::execute(std::string const& command, bool recompile, std::function<void()> const& and_also_do)
+void Engine::execute(std::string const& command, bool recompile, std::function<void(lua_State* L)> const& and_also_do)
 {
-    simulation_.pause();
+    lua.execute([&](lua_State* L) {
+        assert(lua_gettop(L) == 0);
 
-    assert(lua_gettop(L) == 0);
-
-    if (luaL_dostring(L, command.c_str()) != LUA_OK)
-        throw std::runtime_error("Error executing '"s + command + "': " + lua_tostring(L, -1));
-    if (recompile)
-        recompile_sandbox();
-    if (and_also_do)
-        and_also_do();
-
-    simulation_.resume();
+        if (luaL_dostring(L, command.c_str()) != LUA_OK)
+            throw std::runtime_error("Error executing '"s + command + "': " + lua_tostring(L, -1));
+        if (recompile)
+            recompile_sandbox(L);
+        if (and_also_do)
+            and_also_do(L);
+    });
 }
 
-void Engine::recompile_sandbox()
+void Engine::recompile_sandbox(lua_State* L)
 {
     if (luaL_dostring(L, "return compiler.snapshot(sandbox, compiler.compile(sandbox))") != LUA_OK)
         throw std::runtime_error("Error compiling: "s + lua_tostring(L, -1));
@@ -197,16 +194,16 @@ void Engine::recompile_sandbox()
 
 Snapshot Engine::take_snapshot()
 {
-    simulation_.pause();
-    if (luaL_dostring(L, "return sandbox:take_snapshot('scene')") != LUA_OK)
-        throw std::runtime_error("Error taking snapshot: "s + lua_tostring(L, -1));
+    return lua.execute<Snapshot>([this](lua_State* L) {
+        if (luaL_dostring(L, "return sandbox:take_snapshot('scene')") != LUA_OK)
+            throw std::runtime_error("Error taking snapshot: "s + lua_tostring(L, -1));
 
-    auto snapshot = parse_snapshot(L);
-    lua_pop(L, 1);
+        auto snapshot = parse_snapshot(L);
+        lua_pop(L, 1);
 
-    auto result = simulation_.result();
-    hydrate_snapshot_with_values(snapshot, result);
+        auto result = simulation_.result();
+        hydrate_snapshot_with_values(snapshot, result);
 
-    simulation_.resume();
-    return snapshot;
+        return snapshot;
+    });
 }

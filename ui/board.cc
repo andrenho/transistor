@@ -1,6 +1,7 @@
 #include "board.hh"
 
 #include <unordered_map>
+#include <simulation/luamutex.hh>
 
 #include "lua_interface.hh"
 #include "resources.hh"
@@ -160,7 +161,7 @@ static void render_wires(Snapshot::Board const& board, ps::Scene& scene)
 static void render_components(Engine& engine, Snapshot::Board const& board, ps::Scene& scene)
 {
     // set scene
-    engine.with_lua_object([&](lua_State* L) {
+    lua.execute([&scene](lua_State *L) {
         G_set_scene(L, &scene);
     });
     engine.render_all_components(board.id, G_luaref, TILE_SIZE);
