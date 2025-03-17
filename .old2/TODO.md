@@ -25,14 +25,17 @@
   - [x] Error on delete
   - [x] Timing capture (FPS, steps, process timings)
 
-- [ ] Thread refactoring
-  - [ ] Lua state owned by simulation thread
-  - [ ] Rendering done on Lua side, no more snapshot
-  - Design:
-    - Simulation thread
-      - Owns Lua state
-      - Accepts Lua requests, pauses simulation, execute it and returns it
-    - Engine: higher level requests, calls simulation
+- [x] Thread refactoring
+  - [x] Lua state owned by simulation thread
+
+C-Lua interactions
+
+C            Lua
+        <-- Compilation (at each command, restart simulation)
+Simulation --> (updates data/pins)
+Simulation --> (simulate Lua components)
+        <-- Snapshot
+        <-- Render components
   
 - [ ] GUI
   - [ ] Demo window

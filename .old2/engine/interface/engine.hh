@@ -3,7 +3,6 @@
 
 #include <functional>
 #include <cstdint>
-#include <lua.hpp>
 
 #include "snapshot.hh"
 #include "simulation/simulation.hh"
