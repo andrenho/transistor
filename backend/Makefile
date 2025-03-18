@@ -1,39 +1,65 @@
-all: transistor.so simulator.so
+# this make file will generate
+#  - dev version (make all)
+#      - a glue .so library (transistor) which runs individual Lua files + a simulation .so library
+#  - release version (make release)
+#      - a single .a library that contains everything embedded
+
+
+PROJECT_NAME = transistor
+PROJECT_VERSION = 0.2.1
+
+ifndef RELEASE
+all: transistor.so simulator.so tests  # dev libraries
+else
+all: transistor.a tests                # prod library
+endif
 
 include ../contrib/pastel-base/mk/config.mk
 
 # rules
 
 ifndef RELEASE
-	CXXFLAGS += -fPIC
+	# dev version
+	CXXFLAGS += -fPIC -DDEV $(shell pkg-config --cflags luajit)
+	LDFLAGS += $(shell pkg-config --libs luajit)
+	TARGET := transistor.so
+else
+	# release version
+	CXXFLAGS += -DRELEASE
+	LIB_DEPS := libluajit.a
+	TARGET := transistor.a
 endif
 
 # sources
 
 ENGINE_SRC = engine/sandbox.tl
 
-API_SRC_CPP = api/transistor.o
+API_SRC_CPP = api/transistor.o api/loader.o
 API_SRC_LUA = api/api.lua
 
 SIM_SRC = sim/simulator.o
 
-# rules
+# build rules
 
-ifdef RELEASE
-release:
-	make RELEASE=1
-else
-release: transistor.a
-endif
+transistor.so: $(API_SRC_CPP) $(LIB_DEPS)
+	$(CXX) -shared -fPIC $^ -o $@ $(LDFLAGS)
 
-transistor.so: $(API_SRC_CPP)
-	gcc -shared -fPIC $^ -o $@ $(LDFLAGS)
-
-simulator.so: $(SIM_SRC)
-	gcc -shared -fPIC $^ -o $@ $(LDFLAGS)
+simulator.so: $(SIM_SRC) $(LIB_DEPS)
+	$(CC) -shared -fPIC $^ -o $@ $(LDFLAGS)
 
 transistor.a: $(API_SRC_CPP) $(SIM_SRC)
 	ar rcs $@ $^
 
+tests: $(TARGET) runtests.o $(LIB_DEPS)
+	$(CXX) -o $@ $^ $(LDFLAGS)
+
+# special rules
+
+release:
+	make RELEASE=1
+
+check: tests
+	./$^
+
 clean:
-	rm -f $(API_SRC_CPP) $(SIM_SRC) transistor.so simulator.so transistor.o
+	rm -f $(API_SRC_CPP) $(SIM_SRC) libluajit.a transistor.so simulator.so transistor.a tests runtests.d runtests.o

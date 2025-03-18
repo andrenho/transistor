@@ -1,8 +1,15 @@
 #ifndef TRANSISTOR_H_
 #define TRANSISTOR_H_
 
+#include <lua.hpp>
+
 class Transistor {
-    Transistor() = default;
+public:
+    Transistor();
+    ~Transistor();
+
+private:
+    lua_State* L;
 };
 
 #endif
