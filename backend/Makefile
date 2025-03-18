@@ -9,9 +9,9 @@ PROJECT_NAME = transistor
 PROJECT_VERSION = 0.2.1
 
 ifndef RELEASE
-all: transistor.so simulator.so tests  # dev libraries
+all: check_tl transistor.so simulator.so tests  # dev targets
 else
-all: transistor.a tests                # prod library
+all: transistor.a tests                         # prod targets
 endif
 
 include ../contrib/pastel-base/mk/config.mk
@@ -33,13 +33,26 @@ endif
 # sources
 
 ENGINE_SRC = engine/sandbox.tl
+ENGINE_SRC_LUA = $(ENGINE_SRC:.tl=.lua)
 
 API_SRC_CPP = api/transistor.o api/loader.o
 API_SRC_LUA = api/api.lua
 
 SIM_SRC = sim/simulator.o
 
+# embed sources
+
+ifdef RELEASE
+api/loader.o: $(ENGINE_SRC_LUA:=.h)
+endif
+
+%.lua: %.tl
+	tl gen $^ -o $@
+
 # build rules
+
+check_tl:
+	tl check engine/*.tl engine/**.tl
 
 transistor.so: $(API_SRC_CPP) $(LIB_DEPS)
 	$(CXX) -shared -fPIC $^ -o $@ $(LDFLAGS)
@@ -48,7 +61,7 @@ simulator.so: $(SIM_SRC) $(LIB_DEPS)
 	$(CC) -shared -fPIC $^ -o $@ $(LDFLAGS)
 
 transistor.a: $(API_SRC_CPP) $(SIM_SRC)
-	ar rcs $@ $^
+	ar rcs $@ $(API_SRC_CPP) $(SIM_SRC)
 
 tests: $(TARGET) runtests.o $(LIB_DEPS)
 	$(CXX) -o $@ $^ $(LDFLAGS)
@@ -62,4 +75,4 @@ check: tests
 	./$^
 
 clean:
-	rm -f $(API_SRC_CPP) $(SIM_SRC) libluajit.a transistor.so simulator.so transistor.a tests runtests.d runtests.o
+	rm -f $(API_SRC_CPP) $(SIM_SRC) libluajit.a transistor.so simulator.so transistor.a tests runtests.d runtests.o $(ENGINE_SRC_LUA:=.h) $(ENGINE_SRC_LUA)
