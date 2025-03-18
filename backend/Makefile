@@ -19,8 +19,12 @@ SIM_SRC = sim/simulator.o
 
 # rules
 
-release: RELEASE=1
+ifdef RELEASE
+release:
+	make RELEASE=1
+else
 release: transistor.a
+endif
 
 transistor.so: $(API_SRC_CPP)
 	gcc -shared -fPIC $^ -o $@ $(LDFLAGS)
