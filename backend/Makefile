@@ -32,7 +32,9 @@ endif
 
 # sources
 
-ENGINE_SRC = engine/sandbox.tl
+ENGINE_SRC = \
+	engine/sandbox.tl \
+	engine/board.tl
 ENGINE_SRC_LUA = $(ENGINE_SRC:.tl=.lua)
 
 API_SRC_CPP = api/transistor.o api/loader.o
@@ -43,7 +45,7 @@ SIM_SRC = sim/simulator.o
 # embed sources
 
 ifdef RELEASE
-api/loader.o: $(ENGINE_SRC_LUA:=.h)
+api/loader.o: $(ENGINE_SRC_LUA:=.h) $(API_SRC_LUA:=.h)
 endif
 
 %.lua: %.tl
@@ -52,7 +54,7 @@ endif
 # build rules
 
 check_tl:
-	tl check engine/*.tl engine/**.tl
+	tl check -Iengine engine/*.tl engine/**.tl
 
 transistor.so: $(API_SRC_CPP) $(LIB_DEPS)
 	$(CXX) -shared -fPIC $^ -o $@ $(LDFLAGS)
@@ -75,4 +77,4 @@ check: tests
 	./$^
 
 clean:
-	rm -f $(API_SRC_CPP) $(SIM_SRC) libluajit.a transistor.so simulator.so transistor.a tests runtests.d runtests.o $(ENGINE_SRC_LUA:=.h) $(ENGINE_SRC_LUA)
+	rm -f *.a *.so *.o **/*.o *.d **/*.d **/*.lua.h tests $(ENGINE_SRC_LUA)
