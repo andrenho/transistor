@@ -9,7 +9,7 @@ PROJECT_NAME = transistor
 PROJECT_VERSION = 0.2.1
 
 ifndef RELEASE
-all: check_tl transistor.so simulator.so tests  # dev targets
+all: check_tl transistor.so sim/simulator.so tests  # dev targets
 else
 all: transistor.a tests                         # prod targets
 endif
@@ -54,12 +54,12 @@ endif
 # build rules
 
 check_tl:
-	tl check -Iengine engine/*.tl engine/**.tl
+	tl check -Iengine -Isim engine/*.tl engine/**.tl
 
-transistor.so: $(API_SRC_CPP) $(LIB_DEPS)
+transistor.so: $(API_SRC_CPP) $(LIB_DEPS) | sim/simulator.so
 	$(CXX) -shared -fPIC $^ -o $@ $(LDFLAGS)
 
-simulator.so: $(SIM_SRC) $(LIB_DEPS)
+sim/simulator.so: $(SIM_SRC) $(LIB_DEPS)
 	$(CC) -shared -fPIC $^ -o $@ $(LDFLAGS)
 
 transistor.a: $(API_SRC_CPP) $(SIM_SRC)
@@ -77,4 +77,4 @@ check: tests
 	./$^
 
 clean:
-	rm -f *.a *.so *.o **/*.o *.d **/*.d **/*.lua.h tests $(ENGINE_SRC_LUA)
+	rm -f *.a *.so sim/*.so *.o **/*.o *.d **/*.d **/*.lua.h tests $(ENGINE_SRC_LUA)

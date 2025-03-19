@@ -13,7 +13,8 @@ using namespace std::string_literals;
 void load_transistor(lua_State* L)
 {
     if (luaL_dostring(L, R"(
-        package.path = package.path .. ';./engine/?.lua;./backend/engine/?.lua'
+        package.path = package.path .. ';./backend/?.lua;./engine/?.lua;./backend/engine/?.lua'
+        package.cpath = package.cpath .. ';./sim/?.so'
         local tl = require 'contrib.tl'
         tl.loader()
     )") != LUA_OK)
@@ -39,7 +40,9 @@ struct Bytecode {
 #include "engine/board.lua.h"
 #include "engine/sandbox.lua.h"
 
-static std::unordered_map<std::string, Bytecode> engine_lua = {
+extern "C" { extern int luaopen_simulator(lua_State* L); }
+
+static std::unordered_map<std::string, Bytecode> embedded_bytecode = {
 #define LOAD(name) { #name, { engine_##name##_lua, engine_##name##_lua_sz } }
     LOAD(sandbox),
     LOAD(board),
@@ -50,16 +53,48 @@ void load_transistor(lua_State* L)
 {
     // override `require`
     lua_pushcfunction(L, [](lua_State* LL) {
+        int top = lua_gettop(LL);
+
         const char* name = luaL_checkstring(LL, 1);
-        auto it = engine_lua.find(name);
-        if (it != engine_lua.end()) {
-            int top = lua_gettop(LL);
+        std::string cached_name = "__require_"s + name;
+
+        // look for cached version
+        lua_getglobal(LL, cached_name.c_str());
+        if (!lua_isnil(LL, -1))
+            return 1;
+        lua_pop(LL, 1);
+
+        // cache module function
+        auto cache = [&]() {
+            int n_results = lua_gettop(LL) - top;
+            if (n_results == 0)
+                lua_newtable(LL);
+            else if (n_results == 1)
+                lua_pushvalue(LL, -1);
+            else
+                luaL_error(LL, "Modules returning >1 result not supported.");
+            lua_setglobal(LL, cached_name.c_str());
+        };
+
+        // name == "simulator"
+        if (strcmp(name, "simulator") == 0) {
+            luaopen_simulator(LL);
+            cache();
+            return 1;
+        }
+
+        // name in `embedded_bytecode`
+        auto it = embedded_bytecode.find(name);
+        if (it != embedded_bytecode.end()) {
             if (luaL_loadbuffer(LL, (const char *) it->second.data, it->second.sz, name) != LUA_OK)
                 luaL_error(LL, "Error loading script `%s`: %s", name, lua_tostring(LL, -1));
             if (lua_pcall(LL, 0, LUA_MULTRET, 0) != LUA_OK)
                 luaL_error(LL, "Error running script `%s`: %s", name, lua_tostring(LL, -1));
-            return lua_gettop(LL) - top;  // TODO
+            cache();
+            return lua_gettop(LL) - top;
         }
+
+        // name not found
         luaL_error(LL, "Script `%s` not found embedded in the binary.", name);
         return 0;
     });
