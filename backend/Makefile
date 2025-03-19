@@ -49,7 +49,7 @@ api/loader.o: $(ENGINE_SRC_LUA:=.h) $(API_SRC_LUA:=.h)
 endif
 
 %.lua: %.tl
-	tl gen -c -Iengine -Isim $^ -o $@
+	tl gen -c -Iengine -Isim --gen-target 5.1 $^ -o $@
 
 # build rules
 

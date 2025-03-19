@@ -1,12 +1,9 @@
-local Board = require 'board'
-print(Board)
-print(require('board'))
+local type Sandbox = record
+end
 
-local Simulator = require 'simulator'
-print(Simulator)
-print(require('simulator'))
+function Sandbox.new() : Sandbox
+   local self : Sandbox = setmetatable({}, { __index = Sandbox })
+   return self
+end
 
-local sim = Simulator.new()
-print(sim)
-
-print('Hello world')
+return Sandbox

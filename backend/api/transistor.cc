@@ -7,6 +7,9 @@ Transistor::Transistor()
 {
     luaL_openlibs(L);
     load_transistor(L);
+
+    lua_getglobal(L, "init");
+    lua_call(L, 0, 0);
 }
 
 Transistor::~Transistor()

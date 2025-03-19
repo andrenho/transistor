@@ -1,5 +1,8 @@
-require 'sandbox'
+local Sandbox = require 'sandbox'
+
+sandbox = nil
 
 function init()
-    print('Initialized')
+    sandbox = Sandbox.new()
+    print(sandbox)
 end
