@@ -9,9 +9,9 @@ PROJECT_NAME = transistor
 PROJECT_VERSION = 0.2.1
 
 ifndef RELEASE
-all: libtransistor.so sim/simulator.so tests       # dev targets
+all: libtransistor.so sim/simulator.so test        # dev targets
 else
-all: transistor.a tests                         # prod targets
+all: transistor.a test                             # prod targets
 endif
 
 include ../contrib/pastel-base/mk/config.mk
@@ -32,7 +32,9 @@ endif
 
 ENGINE_SRC = \
 	engine/sandbox.tl \
-	engine/board.tl
+	engine/device.tl \
+	engine/devicedb.tl \
+	engine/board/board.tl
 ENGINE_SRC_LUA = $(ENGINE_SRC:.tl=.lua)
 
 API_SRC_CPP = api/transistor.o api/loader.o
@@ -64,10 +66,10 @@ transistor.a: $(API_SRC_CPP) $(SIM_SRC)
 	ar rcs $@ $(API_SRC_CPP) $(SIM_SRC)
 
 ifndef RELEASE  # dev version
-tests: runtests.o | libtransistor.so sim/simulator.so
+test: tests/runtests.o | libtransistor.so sim/simulator.so
 	$(CXX) -o $@ $^ $(LDFLAGS) -Wl,-rpath,. -L. -ltransistor
 else            # release version
-tests: runtests.o transistor.a
+test: tests/runtests.o transistor.a
 	$(CXX) -o $@ $^ $(LDFLAGS) $(shell pkg-config --libs luajit)
 endif
 
@@ -76,8 +78,8 @@ endif
 release:
 	make RELEASE=1
 
-check: tests
+check: test
 	./$^
 
 clean:
-	rm -f *.a *.so sim/*.so *.o **/*.o *.d **/*.d **/*.lua.h tests $(ENGINE_SRC_LUA)
+	rm -f *.a *.so sim/*.so *.o **/*.o *.d **/*.d **/*.lua.h test $(ENGINE_SRC_LUA)

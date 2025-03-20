@@ -39,15 +39,19 @@ struct Bytecode {
 };
 
 #include "api/api.lua.h"
-#include "engine/board.lua.h"
 #include "engine/sandbox.lua.h"
+#include "engine/device.lua.h"
+#include "engine/devicedb.lua.h"
+#include "engine/board/board.lua.h"
 
 extern "C" { extern int luaopen_simulator(lua_State* L); }
 
 static std::unordered_map<std::string, Bytecode> embedded_bytecode = {
 #define LOAD(name) { #name, { engine_##name##_lua, engine_##name##_lua_sz } }
     LOAD(sandbox),
-    LOAD(board),
+    LOAD(device),
+    LOAD(devicedb),
+    LOAD(board_board),
 #undef LOAD
 };
 

@@ -4,12 +4,12 @@ if #arg == 0 then
    error("Usage: ./new_class CLASSNAME")
 end
 
-local template = [[local type CLASS = record
+local template = [[local record CLASS
 end
 
 function CLASS.new() : CLASS
-   local self : CLASS = setmetatable({}, { __index = CLASS })
-   return self
+    local self : CLASS = setmetatable({}, { __index = CLASS })
+    return self
 end
 
 return CLASS]]
