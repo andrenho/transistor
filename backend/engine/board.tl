@@ -1,3 +1,9 @@
-print("Board")
+local type Board = record
+end
 
-return {}
+function Board.new(id: number, w: number, h: number, sandbox: Sandbox) : Board
+   local self : Board = setmetatable({}, { __index = Board })
+   return self
+end
+
+return Board

@@ -1,0 +1,18 @@
+#!/usr/bin/env luajit
+
+if #arg == 0 then
+   error("Usage: ./new_class CLASSNAME")
+end
+
+local template = [[local type CLASS = record
+end
+
+function CLASS.new() : CLASS
+   local self : CLASS = setmetatable({}, { __index = CLASS })
+   return self
+end
+
+return CLASS]]
+
+local r = template:gsub("CLASS", arg[1])
+print(r)
