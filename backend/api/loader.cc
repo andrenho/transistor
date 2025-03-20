@@ -46,6 +46,15 @@ struct Bytecode {
 #include "engine/device.lua.h"
 #include "engine/devicedb.lua.h"
 #include "engine/board/board.lua.h"
+#include "engine/board/componentdb.lua.h"
+#include "engine/board/componentdef.lua.h"
+#include "engine/board/geo/dir.lua.h"
+#include "engine/board/geo/direction.lua.h"
+#include "engine/board/geo/orientation.lua.h"
+#include "engine/board/geo/position.lua.h"
+#include "engine/board/geo/positionset.lua.h"
+#include "engine/board/geo/rect.lua.h"
+#include "engine/tests/positions.lua.h"
 
 extern "C" { extern int luaopen_simulator(lua_State* L); }
 
@@ -55,17 +64,38 @@ static std::unordered_map<std::string, Bytecode> embedded_bytecode = {
     LOAD(device),
     LOAD(devicedb),
     LOAD(board_board),
+    LOAD(board_componentdb),
+    LOAD(board_componentdef),
+    LOAD(board_geo_dir),
+    LOAD(board_geo_direction),
+    LOAD(board_geo_orientation),
+    LOAD(board_geo_position),
+    LOAD(board_geo_positionset),
+    LOAD(board_geo_rect),
+    LOAD(tests_positions),
 #undef LOAD
 };
 
 void load_transistor(lua_State* L)
 {
+    // save old require
+    lua_getglobal(L, "require");
+    lua_setglobal(L, "old_require");
+
     // override `require`
     lua_pushcfunction(L, [](lua_State* LL) {
         int top = lua_gettop(LL);
 
         const char* name = luaL_checkstring(LL, 1);
         std::string cached_name = "__require_"s + name;
+
+        // is it "bit"?
+        if (strcmp(name, "bit") == 0) {
+            lua_getglobal(LL, "old_require");
+            lua_pushstring(LL, name);
+            lua_call(LL, 1, 1);
+            return 1;
+        }
 
         // look for cached version
         lua_getglobal(LL, cached_name.c_str());

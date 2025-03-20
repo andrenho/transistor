@@ -31,10 +31,11 @@ endif
 # sources
 
 ENGINE_SRC = \
-	engine/sandbox.tl \
-	engine/device.tl \
-	engine/devicedb.tl \
-	engine/board/board.tl
+	$(wildcard engine/*.tl) \
+	$(wildcard engine/board/*.tl) \
+	$(wildcard engine/board/geo/*.tl) \
+	$(wildcard engine/tests/*.tl)
+
 ENGINE_SRC_LUA = $(ENGINE_SRC:.tl=.lua)
 
 API_SRC_CPP = api/transistor.o api/loader.o

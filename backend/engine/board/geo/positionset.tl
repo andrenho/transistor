@@ -32,10 +32,11 @@ function PositionSet:remove(pos: Position | integer, y?: integer, dir?: Directio
       self.size = self.size -1
       self.items[(pos as Position):hash()] = nil
    end
-f : PositionSetnd
+end
 
 function PositionSet:first() : Position | nil
    for _,v in pairs(self.items) do return v end
+   return nil
 end
 
 function PositionSet:len() : integer
