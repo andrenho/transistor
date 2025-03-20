@@ -63,4 +63,3 @@ compile_commands.json
 .idea/workspace.xml
 .idea/tasks.xml
 .idea/*.iws
-/backend/tests
