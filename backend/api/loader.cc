@@ -2,6 +2,8 @@
 
 #include <cstdint>
 #include <cstring>
+
+#include <algorithm>
 #include <string>
 #include <stdexcept>
 using namespace std::string_literals;
@@ -90,7 +92,9 @@ void load_transistor(lua_State* L)
         }
 
         // name in `embedded_bytecode`
-        auto it = embedded_bytecode.find(name);
+        std::string key = name;
+        std::replace(key.begin(), key.end(), '.', '_');
+        auto it = embedded_bytecode.find(key);
         if (it != embedded_bytecode.end()) {
             if (luaL_loadbuffer(LL, (const char *) it->second.data, it->second.sz, name) != LUA_OK)
                 luaL_error(LL, "Error loading script `%s`: %s", name, lua_tostring(LL, -1));
