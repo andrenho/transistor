@@ -1,7 +1,7 @@
 local type Device = require('device')
 
 local record DeviceDB
-    items: {string: Device}
+   items: {string: Device}
 end
 
 function DeviceDB.new() : DeviceDB
@@ -11,22 +11,24 @@ function DeviceDB.new() : DeviceDB
 end
 
 function DeviceDB:get(name: string): Device
-    local dev = self.items[name]
-    if dev == nil then
-        error("Device `" .. name .. "` not found.")
-    end
-    return dev
+   local dev = self.items[name]
+   if dev == nil then
+      error("Device `" .. name .. "` not found.")
+   end
+   return dev
 end
 
 function DeviceDB:validate_device(dev: Device)
-    assert(dev.name)
-    assert(dev.new)
+   assert(dev.name)
+   assert(dev.new)
 end
 
 function DeviceDB:add_native(dev: Device) : Device
-    self:validate_device(dev)
-    self.items[dev.name] = dev
-    return dev
+   self:validate_device(dev)
+   self.items[dev.name] = dev
+   return dev
 end
 
 return DeviceDB
+
+-- vim:sw=3:st=3:sts=3:noexpandtab

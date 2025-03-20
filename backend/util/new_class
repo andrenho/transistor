@@ -12,7 +12,10 @@ function CLASS.new() : CLASS
     return self
 end
 
-return CLASS]]
+return CLASS
+
+-- vim:sw=3:st=3:sts=3:noexpandtab
+]]
 
 local r = template:gsub("CLASS", arg[1])
 print(r)
