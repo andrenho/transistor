@@ -1,4 +1,4 @@
-local type Direction = require('board.geo.direction')
+local Direction = require('board.geo.direction')
 
 return {
 

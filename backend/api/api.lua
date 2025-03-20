@@ -4,5 +4,8 @@ sandbox = nil
 
 function init()
     sandbox = Sandbox.new()
-    print(sandbox)
+end
+
+function run_tests()
+    require 'tests.positions'
 end

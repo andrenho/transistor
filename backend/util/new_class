@@ -5,10 +5,12 @@ if #arg == 0 then
 end
 
 local template = [[local record CLASS
+   __index: CLASS
 end
+CLASS.__index = CLASS
 
 function CLASS.new() : CLASS
-    local self : CLASS = setmetatable({}, { __index = CLASS })
+    local self : CLASS = setmetatable({}, CLASS as metatable<CLASS>)
     return self
 end
 

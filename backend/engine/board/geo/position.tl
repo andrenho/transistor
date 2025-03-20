@@ -1,5 +1,6 @@
 local type Direction = require('board.geo.direction')
 local type Orientation = require('board.geo.orientation')
+require('board.geo.orientation')
 
 local bit = require('bit')
 local fdir = require('board.geo.dir')
@@ -12,10 +13,13 @@ local record Position
    x: integer
    y: integer
    dir: Direction
+
+   __index: Position
 end
+Position.__index = Position
 
 function Position.new(x: integer, y: integer, dir?: Direction) : Position
-   local self : Position = setmetatable({}, { __index = Position })
+   local self : Position = setmetatable({}, Position as metatable<Position>)
    self.x = x
    self.y = y
    self.dir = dir or CENTER

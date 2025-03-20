@@ -16,3 +16,9 @@ Transistor::~Transistor()
 {
     lua_close(L);
 }
+
+void Transistor::run_tests()
+{
+    lua_getglobal(L, "run_tests");
+    lua_call(L, 0, 0);
+}

@@ -19,6 +19,7 @@ void load_transistor(lua_State* L)
     if (luaL_dostring(L, R"(
         package.path = package.path .. ';./backend/?.lua;./engine/?.lua;./backend/engine/?.lua'
         package.cpath = package.cpath .. ';./sim/?.so'
+        serpent = require 'contrib.serpent'
         local tl = require 'contrib.tl'
         tl.loader()
     )") != LUA_OK)
