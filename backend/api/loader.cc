@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <cstring>
+#include <string>
 #include <stdexcept>
 using namespace std::string_literals;
 

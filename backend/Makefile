@@ -65,7 +65,7 @@ transistor.a: $(API_SRC_CPP) $(SIM_SRC)
 
 ifndef RELEASE  # dev version
 tests: runtests.o | libtransistor.so sim/simulator.so
-	$(CXX) -o $@ $^ $(LDFLAGS) -Wl,-rpath='.' -L. -ltransistor
+	$(CXX) -o $@ $^ $(LDFLAGS) -Wl,-rpath,. -L. -ltransistor
 else            # release version
 tests: runtests.o transistor.a
 	$(CXX) -o $@ $^ $(LDFLAGS) $(shell pkg-config --libs luajit)
