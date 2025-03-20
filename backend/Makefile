@@ -9,25 +9,23 @@ PROJECT_NAME = transistor
 PROJECT_VERSION = 0.2.1
 
 ifndef RELEASE
-all: transistor.so sim/simulator.so tests       # dev targets
+all: libtransistor.so sim/simulator.so tests       # dev targets
 else
 all: transistor.a tests                         # prod targets
 endif
 
 include ../contrib/pastel-base/mk/config.mk
 
-# rules
+# config
 
-ifndef RELEASE
-	# dev version
-	CXXFLAGS += -fPIC -DDEV $(shell pkg-config --cflags luajit)
+CPPFLAGS += -I. $(shell pkg-config --cflags luajit)
+
+ifndef RELEASE  # dev version
+	CPPFLAGS += -fPIC -DDEV
 	LDFLAGS += $(shell pkg-config --libs luajit)
-	TARGET := transistor.so
-else
-	# release version
-	CXXFLAGS += -DRELEASE
-	LIB_DEPS := libluajit.a
-	TARGET := transistor.a
+
+else           # release version
+	CPPFLAGS += -DRELEASE
 endif
 
 # sources
@@ -56,7 +54,7 @@ endif
 check_tl:
 	tl check -Iengine -Isim engine/*.tl engine/**.tl
 
-transistor.so: $(API_SRC_CPP) $(LIB_DEPS) | check_tl sim/simulator.so
+libtransistor.so: $(API_SRC_CPP) $(LIB_DEPS) | check_tl
 	$(CXX) -shared -fPIC $^ -o $@ $(LDFLAGS)
 
 sim/simulator.so: $(SIM_SRC) $(LIB_DEPS)
@@ -65,8 +63,13 @@ sim/simulator.so: $(SIM_SRC) $(LIB_DEPS)
 transistor.a: $(API_SRC_CPP) $(SIM_SRC)
 	ar rcs $@ $(API_SRC_CPP) $(SIM_SRC)
 
-tests: $(TARGET) runtests.o $(LIB_DEPS)
-	$(CXX) -o $@ $^ $(LDFLAGS)
+ifndef RELEASE  # dev version
+tests: runtests.o | libtransistor.so sim/simulator.so
+	$(CXX) -o $@ $^ $(LDFLAGS) -Wl,-rpath='.' -L. -ltransistor
+else            # release version
+tests: runtests.o transistor.a
+	$(CXX) -o $@ $^ $(LDFLAGS) $(shell pkg-config --libs luajit)
+endif
 
 # special rules
 

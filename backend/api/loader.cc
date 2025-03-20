@@ -1,7 +1,8 @@
 #include "loader.hh"
 
+#include <cstdint>
+#include <cstring>
 #include <stdexcept>
-#include <string>
 using namespace std::string_literals;
 
 //
