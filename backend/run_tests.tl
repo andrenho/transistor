@@ -1,4 +1,4 @@
-#!/usr/bin/env tl run -Iengine
+#!/usr/bin/env -S tl run -Iengine
 
 local Sandbox = require('sandbox')
 local Board = require('board.board')
