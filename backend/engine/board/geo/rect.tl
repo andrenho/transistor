@@ -42,4 +42,6 @@ function Rect:intersects_with(rect: Rect): boolean
    return true
 end
 
+return Rect
+
 -- vim:sw=3:st=3:sts=3:noexpandtab

@@ -1,11 +1,13 @@
 local type Device = require('device')
-local Board = require('board.board')
 local DeviceDB = require('devicedb')
+local ComponentDB = require('components.componentdb')
+local Board = require('board.board')
 
 local record Sandbox
    device_db: DeviceDB
    devices: {number: Device}
    device_id_counter: number
+   component_db: ComponentDB
 end
 
 function Sandbox.new() : Sandbox
@@ -14,6 +16,7 @@ function Sandbox.new() : Sandbox
    self.device_db:add_native(Board)
    self.devices = {}
    self.device_id_counter = 1
+   self.component_db = ComponentDB.new()
    return self
 end
 

@@ -30,12 +30,7 @@ endif
 
 # sources
 
-ENGINE_SRC = \
-	$(wildcard engine/*.tl) \
-	$(wildcard engine/board/*.tl) \
-	$(wildcard engine/board/geo/*.tl) \
-	$(wildcard engine/tests/*.tl)
-
+ENGINE_SRC = $(shell find engine -type f -name '*.tl')
 ENGINE_SRC_LUA = $(ENGINE_SRC:.tl=.lua)
 
 API_SRC_CPP = api/transistor.o api/loader.o
@@ -83,4 +78,4 @@ check: test
 	./$^
 
 clean:
-	rm -f *.a *.so sim/*.so *.o **/*.o *.d **/*.d **/*.lua.h test $(ENGINE_SRC_LUA)
+	rm -rf *.a *.so sim/*.so *.o **/*.o *.d **/*.d **/*.lua.h test $(ENGINE_SRC_LUA)

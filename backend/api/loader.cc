@@ -46,14 +46,23 @@ struct Bytecode {
 #include "engine/device.lua.h"
 #include "engine/devicedb.lua.h"
 #include "engine/board/board.lua.h"
-#include "engine/board/componentdb.lua.h"
-#include "engine/board/componentdef.lua.h"
 #include "engine/board/geo/dir.lua.h"
 #include "engine/board/geo/direction.lua.h"
 #include "engine/board/geo/orientation.lua.h"
 #include "engine/board/geo/position.lua.h"
 #include "engine/board/geo/positionset.lua.h"
 #include "engine/board/geo/rect.lua.h"
+#include "engine/components/component.lua.h"
+#include "engine/components/componentdb.lua.h"
+#include "engine/components/componentdef.lua.h"
+#include "engine/components/basic/button.lua.h"
+#include "engine/components/basic/led.lua.h"
+#include "engine/components/basic/npn.lua.h"
+#include "engine/components/basic/pnp.lua.h"
+#include "engine/components/basic/vcc.lua.h"
+#include "engine/components/gates/or_2i.lua.h"
+#include "engine/graphics/graphics.lua.h"
+#include "engine/graphics/context.lua.h"
 #include "engine/tests/positions.lua.h"
 
 extern "C" { extern int luaopen_simulator(lua_State* L); }
@@ -64,14 +73,23 @@ static std::unordered_map<std::string, Bytecode> embedded_bytecode = {
     LOAD(device),
     LOAD(devicedb),
     LOAD(board_board),
-    LOAD(board_componentdb),
-    LOAD(board_componentdef),
     LOAD(board_geo_dir),
     LOAD(board_geo_direction),
     LOAD(board_geo_orientation),
     LOAD(board_geo_position),
     LOAD(board_geo_positionset),
     LOAD(board_geo_rect),
+    LOAD(components_component),
+    LOAD(components_componentdb),
+    LOAD(components_componentdef),
+    LOAD(components_basic_button),
+    LOAD(components_basic_led),
+    LOAD(components_basic_npn),
+    LOAD(components_basic_pnp),
+    LOAD(components_basic_vcc),
+    LOAD(components_gates_or_2i),
+    LOAD(graphics_graphics),
+    LOAD(graphics_context),
     LOAD(tests_positions),
 #undef LOAD
 };
