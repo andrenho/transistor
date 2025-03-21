@@ -25,7 +25,7 @@ function ComponentDB:load_all_native_components()  -- this function is just for 
 	  'basic.led',
 	  'basic.npn',
 	  'basic.pnp',
-	  'basic.vcc',
+	  'basic.button',
 	  'gates.or_2i',
    }
    for _,c in ipairs(native_components) do
@@ -42,7 +42,9 @@ function ComponentDB.new() : ComponentDB
 end
 
 function ComponentDB:def(key: string) : ComponentDef
-   return self.items[key]
+   local item = self.items[key]
+   if not item then error("Component " .. key .. " not found", 2) end
+   return item
 end
 
 --[[

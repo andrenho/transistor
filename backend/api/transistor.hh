@@ -8,7 +8,7 @@ public:
     Transistor();
     ~Transistor();
 
-    void run_tests();
+    bool run_tests();
 
 private:
     lua_State* L;

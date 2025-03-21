@@ -18,14 +18,19 @@ local record Board is Device
    h: integer
    wires: {PosHash: Wire}
    components: {Component}
+
+   __index: Board
 end
 
+Board.__index = Board
 Board.name = "board"
 
 function Board.new(...: any) : Device
    assert(#{...} == 2)
-   local self : Board = setmetatable({}, { __index = Board })
+   local self : Board = setmetatable({}, Board as metatable<Board>)
    self.w, self.h = ... as (integer, integer)
+   self.wires = {}
+   self.components = {}
    assert(type(self.w) == 'number' and type(self.h) == 'number')
    return self
 end
