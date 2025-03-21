@@ -35,12 +35,11 @@ ENGINE_SRC = $(shell find engine -type f -name '*.tl')
 ENGINE_SRC_LUA = $(ENGINE_SRC:.tl=.lua)
 
 API_SRC_CPP = api/transistor.o api/loader.o
-API_SRC_LUA = api/api.lua
 
 # embed sources
 
 ifdef RELEASE
-api/loader.o: $(ENGINE_SRC_LUA:=.h) $(API_SRC_LUA:=.h)   # embed Lua files into the application
+api/loader.o: $(ENGINE_SRC_LUA:=.h)    # embed Lua files into the application
 endif
 
 %.lua: %.tl
@@ -71,4 +70,5 @@ check_tl:
 	tl check ${TL_CONFIG} engine/*.tl engine/**/*.tl
 
 clean:
-	rm -rf *.a *.so sim/*.so *.o **/*.o *.d **/*.d **/*.lua.h test-dev test-release $(ENGINE_SRC_LUA)
+	rm -rf *.a *.so sim/*.so *.o **/*.o *.d **/*.d test-dev test-release $(ENGINE_SRC_LUA) $(ENGINE_SRC_LUA:=.h)
+

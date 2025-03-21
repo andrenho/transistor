@@ -24,8 +24,6 @@ void load_transistor(lua_State* L)
         tl.loader()
     )") != LUA_OK)
         throw std::runtime_error("Error initializing tl: "s + lua_tostring(L, -1));
-    if (luaL_dofile(L, "./api/api.lua") != LUA_OK)
-        throw std::runtime_error("Error loading Transistor API lua file: "s + lua_tostring(L, -1));
 }
 
 //
@@ -41,7 +39,7 @@ struct Bytecode {
     size_t sz;
 };
 
-#include "api/api.lua.h"
+#include "engine/api.lua.h"
 #include "engine/sandbox.lua.h"
 #include "engine/device.lua.h"
 #include "engine/devicedb.lua.h"
@@ -73,6 +71,7 @@ extern "C" { extern int luaopen_simulator(lua_State* L); }
 
 static std::unordered_map<std::string, Bytecode> embedded_bytecode = {
 #define LOAD(name) { #name, { engine_##name##_lua, engine_##name##_lua_sz } }
+    LOAD(api),
     LOAD(sandbox),
     LOAD(device),
     LOAD(devicedb),
@@ -168,12 +167,6 @@ void load_transistor(lua_State* L)
         return 0;
     });
     lua_setglobal(L, "require");
-
-    // run Lua API
-    if (luaL_loadbuffer(L, (const char *) api_api_lua, api_api_lua_sz, "api") != LUA_OK)
-        throw std::runtime_error("Error loading Lua API: "s + lua_tostring(L, -1));
-    if (lua_pcall(L, 0, 0, 0) != LUA_OK)
-        throw std::runtime_error("Error running Lua API: "s + lua_tostring(L, -1));
 }
 
 #endif

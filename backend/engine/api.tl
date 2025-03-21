@@ -1,14 +1,15 @@
 local Sandbox = require 'sandbox'
 
-sandbox = nil
+global sandbox : Sandbox = nil
 
-function init()
+global function init()
    sandbox = Sandbox.new()
 end
 
-function run_tests()
+global function run_tests()
    require 'tests.positions'
    require 'tests.pinpositions'
    require 'tests.placement'
-   -- require 'tests.connected_wires'
 end
+
+-- vim:sw=3:st=3:sts=3:noexpandtab
