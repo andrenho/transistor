@@ -20,13 +20,13 @@ function Sandbox.new() : Sandbox
    return self
 end
 
-function Sandbox:add_device(name: string, ...: any) : number
+function Sandbox:add_device(name: string, ...: any) : number, Device
    local dev = self.device_db:get(name)
    self.devices[self.device_id_counter] = dev.new(...)
    dev.id = self.device_id_counter
    dev.sandbox = self
    self.device_id_counter = self.device_id_counter + 1
-   return dev.id
+   return dev.id, dev
 end
 
 function Sandbox:get_device(id: number) : Device

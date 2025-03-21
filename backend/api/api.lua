@@ -9,4 +9,6 @@ end
 function run_tests()
    require 'tests.positions'
    require 'tests.pinpositions'
+   require 'tests.placement'
+   -- require 'tests.connected_wires'
 end

@@ -43,4 +43,6 @@ function PositionSet:len() : integer
    return self.size
 end
 
+return PositionSet
+
 -- vim:sw=3:st=3:sts=3:noexpandtab
