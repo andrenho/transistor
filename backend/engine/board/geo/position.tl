@@ -90,6 +90,8 @@ function Position.a_to_b(a: Position, b: Position, orientation: Orientation) : {
    return pos
 end
 
+global type PosHash = integer
+
 return Position
 
 -- vim:sw=3:st=3:sts=3:noexpandtab

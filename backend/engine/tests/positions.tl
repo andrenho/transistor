@@ -45,3 +45,5 @@ do
    assert(list_contains(pos, P(1, 3, E)))
    assert(list_contains(pos, P(2, 3, W)))
 end
+
+-- vim:sw=3:st=3:sts=3:noexpandtab

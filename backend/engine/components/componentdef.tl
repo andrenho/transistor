@@ -1,10 +1,11 @@
 local Rect = require('board.geo.rect')
 local Position = require('board.geo.position')
+local PinPos = require('board.geo.pinpos')
 local type Direction = require('board.geo.direction'); require('board.geo.direction')
 local Graphics = require("graphics.graphics")
 local Context = require("graphics.context")
 
-local enum ComponentType
+global enum ComponentType
    "single_tile"
    "ic_dip"
    "ic_quad"
@@ -18,11 +19,6 @@ end
 local record ComponentPin
    name: string
    direction: PinDirection
-end
-
-local record PinPos
-   pos: Position
-   pin_no: integer
 end
 
 local enum ComponentCategory
@@ -55,7 +51,10 @@ local record ComponentDef
    -- internal
    code: string
    native: boolean
+   __index: ComponentDef
 end
+
+ComponentDef.__index = ComponentDef
 
 function ComponentDef.validate(def: ComponentDef)
    assert(type(def.key) == 'string')
