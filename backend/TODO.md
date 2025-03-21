@@ -1,0 +1,4 @@
+- [ ] Native array
+- [ ] Serialization (serialization.lua)
+- [ ] Compilation (compilation.lua, connected_wires.lua)
+- [ ] UI management (events/graphics) (cursor.lua)

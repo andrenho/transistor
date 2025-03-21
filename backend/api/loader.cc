@@ -46,12 +46,14 @@ struct Bytecode {
 #include "engine/device.lua.h"
 #include "engine/devicedb.lua.h"
 #include "engine/board/board.lua.h"
+#include "engine/board/wire.lua.h"
 #include "engine/board/geo/dir.lua.h"
 #include "engine/board/geo/direction.lua.h"
 #include "engine/board/geo/orientation.lua.h"
 #include "engine/board/geo/position.lua.h"
 #include "engine/board/geo/positionset.lua.h"
 #include "engine/board/geo/rect.lua.h"
+#include "engine/board/geo/pinpos.lua.h"
 #include "engine/components/component.lua.h"
 #include "engine/components/componentdb.lua.h"
 #include "engine/components/componentdef.lua.h"
@@ -63,6 +65,8 @@ struct Bytecode {
 #include "engine/components/gates/or_2i.lua.h"
 #include "engine/graphics/graphics.lua.h"
 #include "engine/graphics/context.lua.h"
+#include "engine/tests/placement.lua.h"
+#include "engine/tests/pinpositions.lua.h"
 #include "engine/tests/positions.lua.h"
 
 extern "C" { extern int luaopen_simulator(lua_State* L); }
@@ -73,9 +77,11 @@ static std::unordered_map<std::string, Bytecode> embedded_bytecode = {
     LOAD(device),
     LOAD(devicedb),
     LOAD(board_board),
+    LOAD(board_wire),
     LOAD(board_geo_dir),
     LOAD(board_geo_direction),
     LOAD(board_geo_orientation),
+    LOAD(board_geo_pinpos),
     LOAD(board_geo_position),
     LOAD(board_geo_positionset),
     LOAD(board_geo_rect),
@@ -90,7 +96,9 @@ static std::unordered_map<std::string, Bytecode> embedded_bytecode = {
     LOAD(components_gates_or_2i),
     LOAD(graphics_graphics),
     LOAD(graphics_context),
+    LOAD(tests_pinpositions),
     LOAD(tests_positions),
+    LOAD(tests_placement),
 #undef LOAD
 };
 
@@ -134,11 +142,13 @@ void load_transistor(lua_State* L)
         };
 
         // name == "simulator"
+        /* TODO
         if (strcmp(name, "simulator") == 0) {
             luaopen_simulator(LL);
             cache();
             return 1;
         }
+        */
 
         // name in `embedded_bytecode`
         std::string key = name;

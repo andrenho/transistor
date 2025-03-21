@@ -1,2 +1,4 @@
-test
+test-dev
+test-release
 *.lua.h
+.*.swp
