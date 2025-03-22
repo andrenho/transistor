@@ -34,6 +34,8 @@ function Sandbox:get_device(id: number) : Device
    return assert(self.devices[id])
 end
 
+function Sandbox:render() : Render
+
 return Sandbox
 
 -- vim:sw=3:st=3:sts=3:noexpandtab

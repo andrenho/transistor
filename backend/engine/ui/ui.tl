@@ -1,4 +1,4 @@
-local type Scene = require "ui.scene"
+local type Render = require "ui.render"
 local Sandbox = require "sandbox"
 
 local record UI
@@ -11,7 +11,7 @@ function UI.new() : UI
     return self
 end
 
-function UI:render(sandbox: Sandbox) : {Scene}
+function UI:render(sandbox: Sandbox) : Render
    return {}
 end
 
