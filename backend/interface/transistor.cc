@@ -14,7 +14,7 @@ Transistor::Transistor()
 
 #ifdef DEV
     if (luaL_dostring(L, R"(
-        package.path = package.path .. ';./backend/?.lua;./engine/?.lua;./backend/engine/?.lua;./engine/?.d.tl'
+        package.path = package.path .. ';./backend/?.lua;./engine/?.lua;./backend/engine/?.lua;./engine/?.d.tl;./backend/engine/?.d.tl'
         package.cpath = package.cpath .. ';./sim/?.so'
         serpent = require 'contrib.serpent'
         local tl = require 'contrib.tl'
