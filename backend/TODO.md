@@ -1,3 +1,5 @@
+- [x] Reorganize project
+  - [ ] Automatically generate embedded.hh
 - [ ] Native array
 - [ ] Serialization (serialization.lua)
 - [ ] Compilation (compilation.lua, connected_wires.lua)

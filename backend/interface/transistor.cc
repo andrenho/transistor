@@ -4,19 +4,28 @@
 #include <stdexcept>
 using namespace std::string_literals;
 
-#include "loader.hh"
+extern void setup_require(lua_State* L);
 
 Transistor::Transistor()
     : L(luaL_newstate())
 {
     luaL_openlibs(L);
 
-    load_transistor(L);
+#ifdef DEV
+    if (luaL_dostring(L, R"(
+        package.path = package.path .. ';./backend/?.lua;./engine/?.lua;./backend/engine/?.lua'
+        package.cpath = package.cpath .. ';./sim/?.so'
+        serpent = require 'contrib.serpent'
+        local tl = require 'contrib.tl'
+        tl.loader()
+    )") != LUA_OK)
+        throw std::runtime_error("Error initializing tl: "s + lua_tostring(L, -1));
+#else
+    setup_require(L);
+#endif
+
     if (luaL_dostring(L, "require 'api'") != LUA_OK)
         throw std::runtime_error("Error loading Transistor API lua file: "s + lua_tostring(L, -1));
-
-    lua_getglobal(L, "init");
-    lua_call(L, 0, 0);
 }
 
 Transistor::~Transistor()

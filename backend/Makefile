@@ -40,15 +40,16 @@ endif
 ENGINE_SRC = $(shell find engine -type f -name '*.tl')
 ENGINE_SRC_LUA = $(ENGINE_SRC:.tl=.lua)
 
-API_SRC_CPP = \
-	interface/transistor.o \
- 	interface/loader.o
+EMBEDDED_HH = interface/embedded.hh
+
+INTERFACE_OBJ = \
+	interface/transistor.o
 
 #
 # dev rules
 #
 
-libtransistor.so: $(API_SRC_CPP) $(LIB_DEPS) | check_tl
+libtransistor.so: $(INTERFACE_OBJ) $(LIB_DEPS) | check_tl
 	$(CXX) -shared -fPIC $^ -o $@ $(LDFLAGS)
 
 test-dev: interface/runtests.o | libtransistor.so
@@ -62,11 +63,14 @@ test-dev: interface/runtests.o | libtransistor.so
 	tl gen -c ${TL_CONFIG} $^ -o $@
 
 ifdef RELEASE
-interface/loader.o: $(ENGINE_SRC_LUA:=.h)    # embed Lua files into the application
+interface/transistor.o: $(ENGINE_SRC_LUA:=.h) $(EMBEDDED_HH)   # embed Lua files into the application
 endif
 
-transistor.a: $(API_SRC_CPP) $(SIM_SRC)
-	ar rcs $@ $(API_SRC_CPP) $(SIM_SRC)
+$(EMBEDDED_HH): interface/generate_embedded.lua
+	luajit $^ > $@
+
+transistor.a: $(INTERFACE_OBJ) interface/require.o
+	ar rcs $@ $^
 
 test-release: interface/runtests.o transistor.a
 	$(CXX) -o $@ $^ $(LDFLAGS) $(shell pkg-config --libs luajit)
@@ -82,5 +86,5 @@ check_tl:
 	tl check ${TL_CONFIG} engine/*.tl engine/**/*.tl
 
 clean:
-	rm -rf *.a *.so sim/*.so *.o **/*.o *.d **/*.d test-dev test-release $(ENGINE_SRC_LUA) $(ENGINE_SRC_LUA:=.h)
+	rm -rf *.a *.so sim/*.so *.o **/*.o *.d **/*.d test-dev test-release $(ENGINE_SRC_LUA) $(ENGINE_SRC_LUA:=.h) $(EMBEDDED_HH)
 
