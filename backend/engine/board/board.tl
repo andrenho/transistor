@@ -1,17 +1,16 @@
-local type Device = require('device')
-local type Direction = require('board.geo.direction')
-local type Orientation = require('board.geo.orientation')
+local type Device = require "device"
+local type Direction = require "board.geo.direction"
+local type Orientation = require "board.geo.orientation"
+local type SceneItem = require "ui.sceneitem"
 
 global type Sandbox
 
-local fdir = require('board.geo.dir')
-local Component = require('components.component')
-local ComponentDef = require('components.componentdef')
-local Graphics = require('graphics.graphics')
-local Context = require('graphics.context')
-local Position = require('board.geo.position')
-local Rect = require('board.geo.rect')
-local Wire = require('board.wire')
+local fdir = require "board.geo.dir"
+local Component = require "components.component"
+local ComponentDef = require "components.componentdef"
+local Position = require "board.geo.position"
+local Rect = require "board.geo.rect"
+local Wire = require "board.wire"
 
 local record Board is Device
    w: integer
@@ -157,6 +156,12 @@ function Board:clear_tile(pos: Position)
    self.wires[P(pos.x, pos.y, W):hash()] = nil
 end
 
+function Board:render() : {SceneItem}
+   return {
+	  { "board_top_left", 0, 0 },
+   }
+end
+
 --[[
 function Board:take_snapshot()
    local snap = { w = self.w, h = self.h, wires = {}, components = {}, id = self.id }
@@ -185,7 +190,6 @@ function Board.from_snapshot(snap, sandbox)
    end
    return board
 end
-]]
 
 function Board:simulate_lua_components()
    for _,c in ipairs(self.components) do
@@ -204,6 +208,7 @@ function Board:render_components(G: Graphics, tile_size: integer)
       c.def.render(c, G, x, y, context)
    end
 end
+]]
 
 return Board
 

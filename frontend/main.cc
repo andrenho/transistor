@@ -25,13 +25,15 @@ static ps::Scene background_scene()
     return scene;
 }
 
-int main()
+int main(int argc, char* argv[])
 {
     pl_init();
 
     // initialize engine and run tests
     Transistor T;
     T.run_tests();
+    if (argc == 2 && strcmp(argv[1], "-t") == 0)
+        return EXIT_SUCCESS;
 
     // initialize graphics
     PL_INFO("pastel2d version %s", ps::version().c_str());
@@ -48,7 +50,7 @@ int main()
     ps::graphics::set_bg(20, 40, 60);
 
     // load bg
-    rs_bg = ps::res::add_image(resources_images_bg_jpg, resources_images_bg_jpg_sz);
+    rs_bg = ps::res::add_image(frontend_resources_images_bg_jpg, frontend_resources_images_bg_jpg_sz);
 
     while (ps::graphics::running()) {
         ps::graphics::timestep();

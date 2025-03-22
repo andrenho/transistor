@@ -1,12 +1,19 @@
+local type SceneItem = require "ui.sceneitem"
+
 global type Sandbox
+global type DeviceId = integer
 
 local interface Device
    -- interface definition
    name: string
    new: function(...: any) : Device
+   render: function(self) : {SceneItem}
 
    -- local fields
-   id: number
+   id: DeviceId
+   x: integer
+   y: integer
+   z_order: integer
    sandbox: Sandbox
 end
 

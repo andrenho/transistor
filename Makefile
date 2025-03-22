@@ -13,7 +13,7 @@ all: $(PROJECT_NAME)
 
 include contrib/pastel-base/mk/config.mk
 
-CPPFLAGS += -Ifrontend -Ibackend/interface -Iresources \
+CPPFLAGS += -Ifrontend -Ibackend/interface -Ifrontend/resources \
 			-Icontrib/pastel2d/src -Icontrib/pastel-base/pl_log -Icontrib/pastel2d/contrib/pocketmod -Icontrib/pastel2d/contrib/stb \
 			-isystem contrib/imgui -Icontrib/SDL/include
 
@@ -51,8 +51,8 @@ IMGUI_OBJ = \
 	contrib/imgui/backends/imgui_impl_sdlrenderer3.o
 
 RESOURCES = \
-	$(filter-out %.h, $(wildcard resources/fonts/*)) \
-	$(filter-out %.h, $(wildcard resources/images/*))
+	$(filter-out %.h, $(wildcard frontend/resources/fonts/*)) \
+	$(filter-out %.h, $(wildcard frontend/resources/images/*))
 
 $(OBJ): $(RESOURCES:=.h)
 
@@ -80,11 +80,14 @@ libtransistor.so:
 
 # transistor executable
 
-$(PROJECT_NAME): $(OBJ) $(IMGUI_OBJ) libpastel2d-cc.a $(LIB_DEPS) | $(EXTRA_DEPS)
+$(PROJECT_NAME): $(OBJ) $(IMGUI_OBJ) libpastel2d-cc.a $(LIB_DEPS) | $(EXTRA_DEPS) check_tl
 	$(CXX) -o $@ $^ $(LDFLAGS)
 ifdef RELEASE
 	strip $@
 endif
+
+check_tl:
+	$(MAKE) -C backend check_tl
 
 release:
 	make RELEASE=1

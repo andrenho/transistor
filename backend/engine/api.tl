@@ -1,9 +1,16 @@
 local Sandbox = require 'sandbox'
+local UI = require 'ui.ui'
+local Render = require 'ui.render'
 
 global sandbox : Sandbox = nil
+global ui : UI = nil
 
 global function init()
    sandbox = Sandbox.new()
+end
+
+global function render() : Render
+   return ui:render(sandbox)
 end
 
 global function run_tests()
