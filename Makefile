@@ -37,7 +37,9 @@ endif
 # object files
 #
 
-OBJ = frontend/main.o
+OBJ = \
+	frontend/main.o \
+	frontend/implementation.o
 
 IMGUI_OBJ = \
 	contrib/imgui/imgui.o \
@@ -49,10 +51,10 @@ IMGUI_OBJ = \
 	contrib/imgui/backends/imgui_impl_sdlrenderer3.o
 
 RESOURCES = \
-	$(filter-out %.h, $(wildcard ui/resources/fonts/*)) \
-	$(filter-out %.h, $(wildcard ui/resources/images/*))
+	$(filter-out %.h, $(wildcard resources/fonts/*)) \
+	$(filter-out %.h, $(wildcard resources/images/*))
 
-$(OBJ): $(RESOURCES := .h)
+$(OBJ): $(RESOURCES:=.h)
 
 #
 # executable
