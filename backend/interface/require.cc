@@ -1,5 +1,8 @@
 // replace Lua `require` with a version that loads embedded files
 
+#include <cstdint>
+#include <cstring>
+#include <algorithm>
 #include <string>
 using namespace std::string_literals;
 

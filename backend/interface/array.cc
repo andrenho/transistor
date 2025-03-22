@@ -1,5 +1,6 @@
 #include <cassert>
 #include <cstring>
+#include <cstdint>
 #include <lua.hpp>
 
 void setup_array(lua_State* L)
