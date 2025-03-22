@@ -15,9 +15,11 @@ void setup_require(lua_State* L)
 
     // override `require`
     lua_pushcfunction(L, [](lua_State* LL) {
+
         int top = lua_gettop(LL);
 
         const char* name = luaL_checkstring(LL, 1);
+        std::string key = name;
         std::string cached_name = "__require_"s + name;
 
         // is it "bit"?
@@ -46,6 +48,9 @@ void setup_require(lua_State* L)
             lua_setglobal(LL, cached_name.c_str());
         };
 
+        if (key == "decl.array")
+            return 0;
+
         // name == "simulator"
         /* TODO
         if (strcmp(name, "simulator") == 0) {
@@ -56,7 +61,6 @@ void setup_require(lua_State* L)
         */
 
         // name in `embedded_bytecode`
-        std::string key = name;
         std::replace(key.begin(), key.end(), '.', '_');
         auto it = embedded_bytecode.find(key);
         if (it != embedded_bytecode.end()) {

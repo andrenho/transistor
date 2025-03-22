@@ -24,7 +24,7 @@ PROJECT_VERSION = 0.2.1
 include ../contrib/pastel-base/mk/config.mk
 
 CPPFLAGS += -I. $(shell pkg-config --cflags luajit)
-TL_CONFIG = -Iengine -Iengine/contrib --gen-target 5.1
+TL_CONFIG = -Iengine -Iengine/decl --gen-target 5.1
 
 ifndef RELEASE
 	CPPFLAGS += -fPIC -DDEV
@@ -43,7 +43,8 @@ ENGINE_SRC_LUA = $(ENGINE_SRC:.tl=.lua)
 EMBEDDED_HH = interface/embedded.hh
 
 INTERFACE_OBJ = \
-	interface/transistor.o
+	interface/transistor.o \
+	interface/array.o
 
 #
 # dev rules

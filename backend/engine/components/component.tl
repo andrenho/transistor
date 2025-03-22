@@ -3,13 +3,14 @@ local Position = require("board.geo.position")
 local Rect = require("board.geo.rect")
 local PinPos = require('board.geo.pinpos')
 local type Direction = require("board.geo.direction")
+require('decl.array')
 
 local record Component
    def: ComponentDef
    position: Position
    direction: Direction
 
-   data: {integer: integer}  -- TODO
+   data: {integer}
 
    __index: Component
 end
@@ -20,6 +21,7 @@ function Component.new(def: ComponentDef, position: Position, direction: Directi
 	self.def = def
 	self.position = position
 	self.direction = direction
+	self.data = Array(def.data_size)
     return self
 end
 
