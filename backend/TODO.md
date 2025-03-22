@@ -1,7 +1,7 @@
 - [x] Reorganize project
   - [x] Automatically generate embedded.hh
-- [ ] Native array
-- [ ] Serialization (serialization.lua)
+- [x] Native array
 - [ ] Rendering
   - [ ] UI management (events/graphics) (cursor.lua)
+- [ ] Serialization (serialization.lua)
 - [ ] Compilation (compilation.lua, connected_wires.lua)
