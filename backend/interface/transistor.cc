@@ -28,6 +28,20 @@ Transistor::~Transistor()
 #endif
 }
 
+static void lua_execute(lua_State* L, int n_pars, int n_results=0)
+{
+    if (lua_pcall(L, n_pars, n_results, 0) != LUA_OK)
+        throw std::runtime_error("Error executing Lua command: "s + lua_tostring(L, -1));
+}
+
+void Transistor::init()
+{
+    return lua_.with_lua([](lua_State* L) {
+        lua_getglobal(L, "init");
+        lua_execute(L, 0);
+    });
+}
+
 std::pair<bool, std::string> Transistor::run_tests()
 {
     return lua_.with_lua<std::pair<bool, std::string>>([](lua_State* L) -> std::pair<bool, std::string> {
@@ -42,8 +56,18 @@ Render Transistor::render() const
 {
     Render render;
     render.engine_compilation = engine_compilation_;
+    lua_.with_lua([&render](lua_State* L) {
+        lua_getglobal(L, "render");
+        lua_execute(L, 0, 1);
+        render.load_from_lua(L);
+        lua_pop(L, 1);
+    });
     return render;
 }
+
+//
+// PRIVATE
+//
 
 void Transistor::setup()
 {
@@ -82,6 +106,9 @@ void Transistor::setup()
         else
             engine_compilation_.test_errors = err;
     }
+
+    if (engine_compilation_.success)
+        init();
 }
 
 void Transistor::setup_autoreload()

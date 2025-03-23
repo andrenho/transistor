@@ -5,6 +5,8 @@
 #include <gui/gui.hh>
 
 #include "images/bg.jpg.h"
+#include "images/circuit.png.h"
+#include "images/circuit.tileset.lua.h"
 
 class Frontend {
 public:
@@ -26,10 +28,27 @@ public:
         pl_set_abort_callback(error_callback, nullptr);
         ps::graphics::set_bg(20, 40, 60);
 
-        // load bg
+        // load resources
         rs_bg = ps::res::add_image(frontend_resources_images_bg_jpg, frontend_resources_images_bg_jpg_sz);
+        ps::res::add_image("circuit", frontend_resources_images_circuit_png, frontend_resources_images_circuit_png_sz);
+        ps::res::add_tiles_from_lua("circuit", frontend_resources_images_circuit_tileset_lua, frontend_resources_images_circuit_tileset_lua_sz);
 
         gui.init();
+    }
+
+    static void map_render_to_scenes(Render const& render, std::vector<ps::Scene>& scenes)
+    {
+        for (Scene const& scene: render.scenes) {
+            ps::Scene ps_scene;
+            for (Instruction const& inst: scene) {
+                std::visit(overload {
+                    [&](DrawInstruction const& di) {
+                        ps_scene.add_image(di.image, SDL_Rect { di.x, di.y, di.w, di.h });
+                    },
+                }, inst);
+            }
+            scenes.emplace_back(ps_scene);
+        }
     }
 
     void main_loop()
@@ -47,7 +66,7 @@ public:
 
             std::vector<ps::Scene> scenes = { background_scene() };
             Render render = T.render();
-            // TODO - render graphics from engine
+            map_render_to_scenes(render, scenes);
             ps::graphics::render_scenes(scenes);
 
             gui.render(render);

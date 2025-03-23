@@ -9,6 +9,7 @@ public:
     Transistor();
     ~Transistor();
 
+    void                         init();
     std::pair<bool, std::string> run_tests();
 
     [[nodiscard]] Render render() const;

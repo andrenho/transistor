@@ -12,7 +12,9 @@ function UI.new() : UI
 end
 
 function UI:render(sandbox: Sandbox) : Render
-   return {}
+   return {
+      scenes = sandbox:render()
+   }
 end
 
 return UI

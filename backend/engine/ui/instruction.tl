@@ -14,6 +14,8 @@ global record DrawInstruction
     image: string
     x: integer
     y: integer
+    w: integer
+    h: integer
     context: Context
 end
 

@@ -1,6 +1,7 @@
+local type Scene = require "ui.scene"
+
 local ComponentDB = require "components.componentdb"
 local Board = require "board.board"
-local Render = require "ui.render"
 
 local record Sandbox
    boards: {BoardId: Board}
@@ -32,18 +33,17 @@ function Sandbox:get_board(id: BoardId) : Board
    return assert(self.boards[id])
 end
 
-function Sandbox:render() : Render
+function Sandbox:render() : {Scene}
    -- order device list
    local boards: {Board} = {}
    for _,board in pairs(self.boards) do boards[#boards+1] = board end
    table.sort(boards, function(a: Board, b: Board) : boolean return a.z_order < b.z_order end)
 
-   local render: Render = {}
-   render.steps_per_second = 0
+   local scenes : {Scene} = {}
    for _,board in ipairs(boards) do
-	  render.scenes[#render.scenes+1] = board:render()
+	   scenes[#scenes+1] = board:render()
    end
-   return render
+   return scenes
 end
 
 return Sandbox

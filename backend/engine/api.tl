@@ -7,6 +7,8 @@ global ui : UI = nil
 
 global function init()
    sandbox = Sandbox.new()
+   sandbox:add_board(20, 10)
+   ui = UI.new()
 end
 
 global function render() : Render
