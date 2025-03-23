@@ -40,7 +40,8 @@ endif
 
 OBJ = \
 	frontend/main.o \
-	frontend/implementation.o
+	frontend/implementation.o \
+	frontend/gui/gui.o
 
 IMGUI_OBJ = \
 	contrib/imgui/imgui.o \
