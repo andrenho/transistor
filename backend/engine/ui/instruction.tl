@@ -8,7 +8,7 @@ local interface Instruction
     command: Command
 end
 
-local record DrawInstruction
+global record DrawInstruction
         is Instruction
         where self.command == "draw"
     image: string
