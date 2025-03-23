@@ -12,6 +12,8 @@ public:
 
 private:
     lua_State* L;
+
+    void setup();
 };
 
 #endif
