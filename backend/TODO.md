@@ -1,7 +1,7 @@
 - [x] Reorganize project
   - [x] Automatically generate embedded.hh
 - [x] Native array
-- [ ] Simulation owns Lua state
+- [x] Simulation owns Lua state
 - [ ] Auto reload, print tests results, print error but don't quit
 - [ ] Rendering
   - [ ] Translate to C++
