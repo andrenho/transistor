@@ -10,11 +10,12 @@ extern void setup_require(lua_State* L);
 extern void setup_array(lua_State* L);
 
 Transistor::Transistor()
-    : L(luaL_newstate())
 {
-    luaL_openlibs(L);
+    lua_.with_lua([](lua_State* L) {
+        luaL_openlibs(L);
 
-    setup();
+        setup(L);
+    });
 
 #ifdef DEV
     // watch for files and restart simulation
@@ -27,22 +28,24 @@ Transistor::Transistor()
 
 Transistor::~Transistor()
 {
+#ifdef DEV
     dmon_deinit();
-    lua_close(L);
+#endif
 }
 
 bool Transistor::run_tests()
 {
-    lua_getglobal(L, "run_tests");
-    if (lua_pcall(L, 0, 0, 0) != LUA_OK) {
-        printf("Tests failed:\n%s\n", lua_tostring(L, -1));
-        return false;
-    }
-
-    return true;
+    return lua_.with_lua<bool>([](lua_State* L) {
+        lua_getglobal(L, "run_tests");
+        if (lua_pcall(L, 0, 0, 0) != LUA_OK) {
+            printf("Tests failed:\n%s\n", lua_tostring(L, -1));
+            return false;
+        }
+        return true;
+    });
 }
 
-void Transistor::setup()
+void Transistor::setup(lua_State* L)
 {
 #ifdef DEV
     if (luaL_dostring(L, R"(

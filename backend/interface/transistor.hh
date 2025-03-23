@@ -1,7 +1,7 @@
 #ifndef TRANSISTOR_H_
 #define TRANSISTOR_H_
 
-#include <lua.hpp>
+#include "lua.hh"
 
 class Transistor {
 public:
@@ -11,9 +11,9 @@ public:
     bool run_tests();
 
 private:
-    lua_State* L;
+    Lua lua_;
 
-    void setup();
+    static void setup(lua_State* L);
 };
 
 #endif
