@@ -16,6 +16,7 @@ include contrib/pastel-base/mk/config.mk
 CPPFLAGS += -Ifrontend -Ibackend/interface -Ifrontend/resources \
 			-Icontrib/pastel2d/src -Icontrib/pastel-base/pl_log -Icontrib/pastel2d/contrib/pocketmod -Icontrib/pastel2d/contrib/stb \
 			-isystem contrib/imgui -Icontrib/SDL/include
+LDFLAGS += -lpthread
 
 ifdef RELEASE
 	LIB_DEPS = backend/transistor.a libSDL3.a libluajit.a
@@ -74,7 +75,7 @@ libpastel2d-cc.a:
 backend/transistor.a:
 	$(MAKE) -C backend release
 
-libtransistor.so:
+libtransistor.so: FORCE
 	$(MAKE) -C backend
 	cp backend/libtransistor.so .
 
@@ -118,3 +119,5 @@ softclean:
 clean: softclean
 	$(MAKE) -C contrib/pastel2d clean
 	rm -rf build-sdl3 libSDL3.a libluajit.a libpastel2d-cc.a
+
+FORCE: ;

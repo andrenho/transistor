@@ -2,18 +2,24 @@
 #define TRANSISTOR_H_
 
 #include "lua.hh"
+#include "render.hh"
 
 class Transistor {
 public:
     Transistor();
     ~Transistor();
 
-    bool run_tests();
+    std::pair<bool, std::string> run_tests();
+
+    [[nodiscard]] Render render() const;
 
 private:
     Lua lua_;
+    EngineCompilation engine_compilation_;
 
-    static void setup(lua_State* L);
+    void setup();
+    std::pair<bool, std::string> check_engine();
+    void setup_autoreload();
 };
 
 #endif

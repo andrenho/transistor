@@ -3,5 +3,5 @@
 int main()
 {
     Transistor t;
-    return t.run_tests() ? 0 : 127;
+    return t.run_tests().first ? 0 : 127;
 }

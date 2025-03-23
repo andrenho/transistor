@@ -3,10 +3,14 @@
 - [x] Native array
 - [x] Simulation owns Lua state
 - [ ] Auto reload, print tests results, print error but don't quit
+  - [x] Setup auto-reload
+  - [x] Collect compilation and test results
+  - [x] Put on output
+  - [ ] Render in window
+- [ ] Board - special citizen?
+  - [ ] Device - component type
 - [ ] Rendering
   - [ ] Translate to C++
   - [ ] UI management (events/graphics) (cursor.lua)
-- [ ] Board - special citizen?
-  - [ ] Device - component type
 - [ ] Serialization (serialization.lua)
 - [ ] Compilation (compilation.lua, connected_wires.lua)

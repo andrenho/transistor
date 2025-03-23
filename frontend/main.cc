@@ -31,7 +31,6 @@ int main(int argc, char* argv[])
 
     // initialize engine and run tests
     Transistor T;
-    T.run_tests();
     if (argc == 2 && strcmp(argv[1], "-t") == 0)
         return EXIT_SUCCESS;
 

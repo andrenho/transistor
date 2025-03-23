@@ -33,6 +33,10 @@ else
 	CPPFLAGS += -DRELEASE
 endif
 
+ifdef APPLE  # SDL requirements for mac
+	LDFLAGS += -framework CoreFoundation -framework CoreServices -liconv -lpthread
+endif
+
 #
 # sources
 #
@@ -50,7 +54,7 @@ INTERFACE_OBJ = \
 # dev rules
 #
 
-libtransistor.so: $(INTERFACE_OBJ) $(LIB_DEPS) | check_tl
+libtransistor.so: $(INTERFACE_OBJ) $(LIB_DEPS)
 	$(CXX) -shared -fPIC $^ -o $@ $(LDFLAGS)
 
 test-dev: interface/runtests.o | libtransistor.so
