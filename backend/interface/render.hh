@@ -12,6 +12,8 @@ struct EngineCompilation {
 
 struct Render {
     EngineCompilation engine_compilation;
+
+    int steps_per_second = 0;
 };
 
 #endif //RENDER_HH

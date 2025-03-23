@@ -52,7 +52,7 @@ public:
 
             gui.render(render);
 
-            // TODO - ps::graphics::set_window_title(std::format("transistor ({} FPS -- {}K steps/sec)", ps::graphics::fps(), steps_per_second / 1000));
+            ps::graphics::set_window_title(std::format("transistor ({} FPS -- {}K steps/sec)", ps::graphics::fps(), render.steps_per_second / 1000));
             ps::graphics::present();
         }
     }

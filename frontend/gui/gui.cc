@@ -109,11 +109,11 @@ void GUI::error_window(Render const& render)
     ImGui::SetNextWindowBgAlpha(0.65f); // Transparent background
     if (ImGui::Begin("Error overlay", &show_error_window_, window_flags)) {
         if (render.engine_compilation.test_errors)
-            ImGui::TextColored(ImVec4(1.0f, 0.4f, 0.4f, 1.0f), "Tests failing: %s", render.engine_compilation.test_errors.value().c_str());
+            ImGui::TextColored(ImVec4(1.0f, 0.6f, 0.6f, 1.0f), "Tests failing: %s", render.engine_compilation.test_errors.value().c_str());
         else
             ImGui::Text("Tests ok.");
         ImGui::Separator();
-        ImVec4 color = render.engine_compilation.success ? ImVec4(1.0f, 1.0f, 1.0f, 1.0f) : ImVec4(1.0f, 0.4f, 0.4f, 1.0f);
+        ImVec4 color = render.engine_compilation.success ? ImVec4(1.0f, 1.0f, 1.0f, 1.0f) : ImVec4(1.0f, 0.6f, 0.6f, 1.0f);
         ImGui::TextColored(color, "%s", render.engine_compilation.compilation_messages.c_str());
     }
     ImGui::End();

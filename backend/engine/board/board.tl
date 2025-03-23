@@ -1,9 +1,9 @@
-local type Device = require "device"
 local type Direction = require "board.geo.direction"
 local type Orientation = require "board.geo.orientation"
 local type SceneItem = require "ui.sceneitem"
 
 global type Sandbox
+global type BoardId = integer
 
 local fdir = require "board.geo.dir"
 local Component = require "components.component"
@@ -12,22 +12,28 @@ local Position = require "board.geo.position"
 local Rect = require "board.geo.rect"
 local Wire = require "board.wire"
 
-local record Board is Device
+local record Board
+   -- fields
    w: integer
    h: integer
    wires: {PosHash: Wire}
    components: {Component}
 
+   -- fields set externally
+   id: BoardId
+   x: integer
+   y: integer
+   z_order: integer
+   sandbox: Sandbox
+
    __index: Board
 end
 
 Board.__index = Board
-Board.name = "board"
 
-function Board.new(...: any) : Device
-   assert(#{...} == 2)
+function Board.new(w: integer, h: integer) : Board
    local self : Board = setmetatable({}, Board as metatable<Board>)
-   self.w, self.h = ... as (integer, integer)
+   self.w, self.h = w, h
    self.wires = {}
    self.components = {}
    assert(type(self.w) == 'number' and type(self.h) == 'number')

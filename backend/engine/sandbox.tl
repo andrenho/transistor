@@ -1,53 +1,47 @@
-local type Device = require "device"
-local DeviceDB = require "devicedb"
 local ComponentDB = require "components.componentdb"
 local Board = require "board.board"
 local Render = require "ui.render"
 
 local record Sandbox
-   device_db: DeviceDB
-   devices: {DeviceId: Device}
-   device_id_counter: DeviceId
+   boards: {BoardId: Board}
+   board_id_counter: BoardId
    component_db: ComponentDB
 end
 
 function Sandbox.new() : Sandbox
    local self : Sandbox = setmetatable({}, { __index = Sandbox })
-   self.device_db = DeviceDB.new()
-   self.device_db:add_native(Board)
-   self.devices = {}
-   self.device_id_counter = 1
+   self.boards = {}
+   self.board_id_counter = 1
    self.component_db = ComponentDB.new()
    return self
 end
 
-function Sandbox:add_device(name: string, ...: any) : number, Device
-   local dev_type = self.device_db:get(name)
-   local device = dev_type.new(...)
-   self.devices[self.device_id_counter] = device
-   device.id = self.device_id_counter
-   device.x = device.id * 30
-   device.y = device.id * 30
-   device.z_order = 0
-   device.sandbox = self
-   self.device_id_counter = self.device_id_counter + 1
-   return device.id, device
+function Sandbox:add_board(w: integer, h: integer): number, Board
+   local board = Board.new(w, h)
+   self.boards[self.board_id_counter] = board
+   board.id = self.board_id_counter
+   board.x = board.id * 30
+   board.y = board.id * 30
+   board.z_order = 0
+   board.sandbox = self
+   self.board_id_counter = self.board_id_counter + 1
+   return board.id, board
 end
 
-function Sandbox:get_device(id: DeviceId) : Device
-   return assert(self.devices[id])
+function Sandbox:get_board(id: BoardId) : Board
+   return assert(self.boards[id])
 end
 
 function Sandbox:render() : Render
    -- order device list
-   local devices : {Device} = {}
-   for _,dev in pairs(self.devices) do devices[#devices+1] = dev end
-   table.sort(devices, function(a: Device, b: Device) : boolean return a.z_order < b.z_order end)
+   local boards: {Board} = {}
+   for _,board in pairs(self.boards) do boards[#boards+1] = board end
+   table.sort(boards, function(a: Board, b: Board) : boolean return a.z_order < b.z_order end)
 
    local render: Render = {}
    render.steps_per_second = 0
-   for _,device in ipairs(devices) do
-	  render.scenes[#render.scenes+1] = device:render()
+   for _,board in ipairs(boards) do
+	  render.scenes[#render.scenes+1] = board:render()
    end
    return render
 end

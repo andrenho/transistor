@@ -5,7 +5,7 @@ print("Wire placement")
 
 local function add_board() : Sandbox, Board
     local msandbox = Sandbox.new()
-    local _, board = msandbox:add_device("board", 20, 10)
+    local _, board = msandbox:add_board(20, 10)
     return msandbox, board as Board
 end
 
@@ -96,7 +96,7 @@ end
 do
    print(" - Don't place outside of circuit bounds")
    local msandbox = Sandbox.new()
-   local _,board = msandbox:add_device("board", 10, 10) as (integer, Board)
+   local _,board = msandbox:add_board(10, 10)
    board:add_component(msandbox.component_db:def("__or_2i"), P(11, 1), N)
    assert(board:component(P(11, 1)) == nil)
 end

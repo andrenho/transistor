@@ -7,8 +7,7 @@
   - [x] Collect compilation and test results
   - [x] Put on output
   - [x] Render in window
-- [ ] Board - special citizen?
-  - [ ] Device - component type
+- [x] Board - special citizen?
 - [ ] Rendering
   - [ ] Translate to C++
   - [ ] UI management (events/graphics) (cursor.lua)
