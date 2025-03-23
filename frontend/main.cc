@@ -41,6 +41,7 @@ public:
             while (SDL_PollEvent(&e)) {
                 if (e.type == SDL_EVENT_QUIT || (e.type == SDL_EVENT_KEY_DOWN && e.key.key == SDLK_Q))
                     ps::graphics::quit();
+                gui.do_event(&e);
                 // TODO - handle events
             }
 

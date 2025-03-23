@@ -2,11 +2,11 @@
   - [x] Automatically generate embedded.hh
 - [x] Native array
 - [x] Simulation owns Lua state
-- [ ] Auto reload, print tests results, print error but don't quit
+- [x] Auto reload, print tests results, print error but don't quit
   - [x] Setup auto-reload
   - [x] Collect compilation and test results
   - [x] Put on output
-  - [ ] Render in window
+  - [x] Render in window
 - [ ] Board - special citizen?
   - [ ] Device - component type
 - [ ] Rendering

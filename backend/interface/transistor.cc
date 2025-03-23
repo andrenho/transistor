@@ -50,18 +50,14 @@ void Transistor::setup()
 #ifdef DEV
     {
         auto [success, msg] = check_engine();
-        if (success) {
-            engine_compilation_.success = true;
-            engine_compilation_.compilation_messages = "";
-        } else {
-            engine_compilation_.success = false;
-            engine_compilation_.compilation_messages = msg;
-        }
+        engine_compilation_.success = success;
+        engine_compilation_.compilation_messages = msg;
     }
 #endif
 
     lua_.with_lua([](lua_State* L) {
-            luaL_openlibs(L);
+        luaL_openlibs(L);
+        setup_array(L);
     #ifdef DEV
         if (luaL_dostring(L, R"(
             package.path = package.path .. ';./backend/?.lua;./engine/?.lua;./backend/engine/?.lua;./engine/?.d.tl;./backend/engine/?.d.tl'
@@ -71,14 +67,12 @@ void Transistor::setup()
             tl.loader()
         )") != LUA_OK)
             throw std::runtime_error("Error initializing tl: "s + lua_tostring(L, -1));
+        luaL_dostring(L, "require 'api'");  // errors are ignored and displayed on the screen
     #else
         setup_require(L);
-    #endif
-
-        setup_array(L);
-
         if (luaL_dostring(L, "require 'api'") != LUA_OK)
             throw std::runtime_error("Error loading Transistor API lua file: "s + lua_tostring(L, -1));
+    #endif
     });
 
     {
