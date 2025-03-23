@@ -1,6 +1,7 @@
 local type Direction = require "board.geo.direction"
 local type Orientation = require "board.geo.orientation"
-local type SceneItem = require "ui.sceneitem"
+local type Scene = require "ui.scene"
+local type Instruction = require "ui.instruction"
 
 global type Sandbox
 global type BoardId = integer
@@ -162,9 +163,9 @@ function Board:clear_tile(pos: Position)
    self.wires[P(pos.x, pos.y, W):hash()] = nil
 end
 
-function Board:render() : {SceneItem}
+function Board:render() : Scene
    return {
-	  { "board_top_left", 0, 0 },
+	  -- { command = "draw", image = "board_top_left", x = 0, y = 0 },
    }
 end
 
