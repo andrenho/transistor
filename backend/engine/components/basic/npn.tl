@@ -23,10 +23,8 @@ local npn : ComponentDef = {
    ]],
    
    render = function(component: Component, scene: Scene, context: Context)
-      --[[
-      G:render_image('shadow_rect', x+1, y+1, context)
-      G:render_image('npn', x, y, context)
-      ]]
+      scene:add_image("shadow_rect", 1, 1, context)
+      scene:add_image("npn", 0, 0, context)
    end,
 }
 

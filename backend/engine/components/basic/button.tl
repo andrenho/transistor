@@ -28,11 +28,11 @@ local button: ComponentDef = {
    end,
    
    render = function(button: Component, scene: Scene, context: Context)
-	  scene:add_image("shadow_square", 1, 1, context)
+      scene:add_image("shadow_square", 1, 1, context)
       if not button or button.data[1] == 0 then
-		 scene:add_image("button_off", 0, 0, context)
+         scene:add_image("button_off", 0, 0, context)
       else
-		 scene:add_image("button_on", 0, 0, context)
+         scene:add_image("button_on", 0, 0, context)
       end
    end,
 }

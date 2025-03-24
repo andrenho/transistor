@@ -23,14 +23,12 @@ local led : ComponentDef = {
    ]],
    
    render = function(component: Component, scene: Scene, context: Context)
-	  --[[
-      G:render_image('shadow_circle', x+1, y+1)
+      scene:add_image("shadow_circle", 1, 1, context)
       if not led or led.data[1] == 0 then
-         G:render_image('led_off', x, y, context)
+		   scene:add_image("led_off", 0, 0, context)
       else
-         G:render_image('led_on', x, y, context)
+		   scene:add_image("led_off", 0, 0, context)
       end
-	  ]]
    end,
 }
 
