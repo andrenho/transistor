@@ -28,15 +28,9 @@ Transistor::~Transistor()
 #endif
 }
 
-static void lua_execute(lua_State* L, int n_pars, int n_results=0)
-{
-    if (lua_pcall(L, n_pars, n_results, 0) != LUA_OK)
-        throw std::runtime_error("Error executing Lua command: "s + lua_tostring(L, -1));
-}
-
 void Transistor::init()
 {
-    return lua_.with_lua([](lua_State* L) {
+    return lua_.with_lua([this](lua_State* L) {
         lua_getglobal(L, "init");
         lua_execute(L, 0);
     });
@@ -52,11 +46,26 @@ std::pair<bool, std::string> Transistor::run_tests()
     });
 }
 
+void Transistor::update()
+{
+    if (reset_lua_) {
+        lua_.restart();
+        setup();
+        reset_lua_ = false;
+    }
+}
+
 Render Transistor::render(SceneRenderer& scene_renderer) const
 {
+    if (!engine_compilation_.success) {
+        Render render;
+        render.engine_compilation = engine_compilation_;
+        return render;
+    }
+
     Render render;
     render.engine_compilation = engine_compilation_;
-    lua_.with_lua([&render, &scene_renderer](lua_State* L) {
+    lua_.with_lua([&](lua_State* L) {
         lua_getglobal(L, "render");
         lua_execute(L, 0, 1);
         render.load_from_lua(L);
@@ -120,9 +129,7 @@ void Transistor::setup_autoreload()
         [](dmon_watch_id watch_id, dmon_action action, const char* dirname, const char* filename, const char* oldname, void* user) {
             if (std::string(filename).ends_with(".tl")) {
                 auto self = (Transistor *) user;
-                self->lua_.restart();
-                // TODO - restart simulation
-                self->setup();
+                self->reset_lua_ = true;
             }
         }, DMON_WATCHFLAGS_RECURSIVE | DMON_WATCHFLAGS_FOLLOW_SYMLINKS, this);
 }
@@ -140,3 +147,21 @@ std::pair<bool, std::string> Transistor::check_engine()
     int status = pclose(pipe);
     return { WEXITSTATUS(status) == 0, result };
 }
+
+void Transistor::lua_execute(lua_State* L, int n_pars, int n_results) const
+{
+#ifdef DEV
+    if (lua_pcall(L, n_pars, n_results, 0) != LUA_OK) {
+        engine_compilation_.success = false;
+        engine_compilation_.compilation_messages = lua_tostring(L, -1);
+        fprintf(stderr, "Error: %s\n", lua_tostring(L, -1));
+        lua_pop(L, -1);
+        for (int i = 0; i < n_results; ++i)
+            lua_pushnil(L);
+    }
+#else
+    if (lua_pcall(L, n_pars, n_results, 0) != LUA_OK)
+        throw std::runtime_error("Error executing Lua command: "s + lua_tostring(L, -1));
+#endif
+}
+

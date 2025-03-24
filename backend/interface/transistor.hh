@@ -12,6 +12,8 @@ public:
     void                         init();
     std::pair<bool, std::string> run_tests();
 
+    void                         update();
+
     class SceneRenderer {
     public:
         virtual ~SceneRenderer() = default;
@@ -21,11 +23,14 @@ public:
 
 private:
     Lua lua_;
-    EngineCompilation engine_compilation_;
+    mutable EngineCompilation engine_compilation_;
+    bool reset_lua_ = false;
 
     void setup();
     std::pair<bool, std::string> check_engine();
     void setup_autoreload();
+
+    void lua_execute(lua_State* L, int n_pars, int n_results=0) const;
 };
 
 #endif

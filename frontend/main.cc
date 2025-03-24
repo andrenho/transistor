@@ -37,18 +37,10 @@ public:
         gui.init();
     }
 
-    void main_loop()
-    {
-        while (ps::graphics::running()) {
-            ps::graphics::timestep();
-            do_events();
-            render();
-            ps::graphics::present();
-        }
-    }
-
     void do_events()
     {
+        T.update();
+
         SDL_Event e;
         while (SDL_PollEvent(&e)) {
             if (e.type == SDL_EVENT_QUIT || (e.type == SDL_EVENT_KEY_DOWN && e.key.key == SDLK_Q))
@@ -99,5 +91,11 @@ int main(int argc, char* argv[])
         return EXIT_SUCCESS;
 
     frontend.init();
-    frontend.main_loop();
+
+    while (ps::graphics::running()) {
+        ps::graphics::timestep();
+        frontend.do_events();
+        frontend.render();
+        ps::graphics::present();
+    }
 }

@@ -27,7 +27,7 @@ return {
         [W] = W,
     },
 
-    angle:  {Direction: number} = {
+    angle: {Direction: number} = {
         [CENTER] = 0,
         [N] = 0,
         [E] = 90,

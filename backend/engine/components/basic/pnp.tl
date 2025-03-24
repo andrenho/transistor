@@ -1,7 +1,7 @@
+local type Scene = require "ui.scene"
+local type Context = require "ui.context"
 local ComponentDef = require("components.componentdef")
 local Component = require("components.component")
-local Graphics = require("graphics.graphics")
-local Context = require("graphics.context")
 
 local pnp : ComponentDef = {
    key = "__pnp",
@@ -24,10 +24,14 @@ local pnp : ComponentDef = {
        Press `R` to rotate the component.
    ]],
    
-   render = function(_: Component, G: Graphics, x: integer, y: integer, context: Context)
+   render = function(component: Component, scene: Scene, context: Context)
+	  --[[
       G:render_image('shadow_rect', x+1, y+1, context)
       G:render_image('pnp', x, y, context)
+	  ]]
    end,
 }
 
 return pnp
+
+-- vim:sw=3:st=3:sts=3:noexpandtab

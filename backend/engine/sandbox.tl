@@ -21,9 +21,10 @@ function Sandbox:add_board(w: integer, h: integer): number, Board
    local board = Board.new(w, h)
    self.boards[self.board_id_counter] = board
    board.id = self.board_id_counter
-   board.x = board.id * 30
-   board.y = board.id * 30
+   board.x = (board.id + 1) * 30
+   board.y = (board.id + 1) * 35
    board.z_order = 0
+   board.zoom = 2
    board.sandbox = self
    self.board_id_counter = self.board_id_counter + 1
    return board.id, board

@@ -1,7 +1,7 @@
+local type Scene = require "ui.scene"
+local type Context = require "ui.context"
 local ComponentDef = require("components.componentdef")
 local Component = require("components.component")
-local Graphics = require("graphics.graphics")
-local Context = require("graphics.context")
 local bit = require("bit")
 local bnot = bit.bnot
 
@@ -27,12 +27,12 @@ local button: ComponentDef = {
       button.data[1] = bnot(button.data[1])
    end,
    
-   render = function(button: Component, G: Graphics, x: integer, y: integer, context: Context)
-      G:render_image('shadow_square', x+1, y+1)
+   render = function(button: Component, scene: Scene, context: Context)
+	  scene:add_image("shadow_square", 1, 1, context)
       if not button or button.data[1] == 0 then
-         G:render_image('button_off', x, y, context)
+		 scene:add_image("button_off", 0, 0, context)
       else
-         G:render_image('button_on', x, y, context)
+		 scene:add_image("button_on", 0, 0, context)
       end
    end,
 }

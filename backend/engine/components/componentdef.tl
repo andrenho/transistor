@@ -1,9 +1,11 @@
-local Rect = require('board.geo.rect')
-local Position = require('board.geo.position')
-local PinPos = require('board.geo.pinpos')
-local type Direction = require('board.geo.direction'); require('board.geo.direction')
-local Graphics = require("graphics.graphics")
-local Context = require("graphics.context")
+local type Direction = require "board.geo.direction"
+local type Scene = require "ui.scene"
+local type Context = require "ui.context"
+
+local Rect = require "board.geo.rect"
+local Position = require "board.geo.position"
+local PinPos = require "board.geo.pinpos"
+require "board.geo.direction"
 
 global enum ComponentType
    "single_tile"
@@ -43,9 +45,9 @@ local record ComponentDef
    category: ComponentCategory
    subcategory: string
 
-   init: function(Graphics)
+   init: function()
    on_click: function(Component)
-   render: function(Component, Graphics, integer, integer, Context)
+   render: function(Component, Scene, Context)
    simulate: function(Component)
 
    -- internal

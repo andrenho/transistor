@@ -11,6 +11,7 @@ local record Component
    direction: Direction
 
    data: {integer}
+   pins: {integer}
 
    __index: Component
 end
@@ -21,7 +22,8 @@ function Component.new(def: ComponentDef, position: Position, direction: Directi
 	self.def = def
 	self.position = position
 	self.direction = direction
-	self.data = Array(def.data_size)
+	self.data = {0} -- Array(def.data_size)
+	self.pins = {0,0,0,0} -- Array(#def.pins)
     return self
 end
 

@@ -1,7 +1,7 @@
+local type Scene = require "ui.scene"
+local type Context = require "ui.context"
 local ComponentDef = require("components.componentdef")
 local Component = require("components.component")
-local Graphics = require("graphics.graphics")
-local Context = require("graphics.context")
 
 local or_2i : ComponentDef = {
    key = "__or_2i",
@@ -27,9 +27,11 @@ local or_2i : ComponentDef = {
       -- TODO - load icon
    end,
    
-   render = function(_: Component, _: Graphics, _: integer, _: integer, _: Context)
+   render = function(component: Component, scene: Scene, context: Context)
       -- TODO
    end,
 }
 
 return or_2i
+
+-- vim:sw=3:st=3:sts=3:noexpandtab

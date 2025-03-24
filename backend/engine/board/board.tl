@@ -1,7 +1,7 @@
 local type Direction = require "board.geo.direction"
 local type Orientation = require "board.geo.orientation"
 local type Scene = require "ui.scene"
-local type Instruction = require "ui.instruction"
+local type Context = require "ui.context"
 
 global type Sandbox
 global type BoardId = integer
@@ -12,6 +12,8 @@ local ComponentDef = require "components.componentdef"
 local Position = require "board.geo.position"
 local Rect = require "board.geo.rect"
 local Wire = require "board.wire"
+
+local TILE_SIZE = 16
 
 local record Board
    -- fields
@@ -24,6 +26,7 @@ local record Board
    id: BoardId
    x: integer
    y: integer
+   zoom: number
    z_order: integer
    sandbox: Sandbox
 
@@ -41,6 +44,10 @@ function Board.new(w: integer, h: integer) : Board
    return self
 end
 
+--
+-- INFORMATION
+--
+
 function Board:wire(pos: Position) : Wire
    return self.wires[pos:hash()]
 end
@@ -53,6 +60,10 @@ function Board:component(pos: Position) : Component
    end
    return nil
 end
+
+--
+-- CHANGES
+--
 
 function Board:remove_wires_for_ic(rect: Rect)
    -- remove sides
@@ -163,14 +174,69 @@ function Board:clear_tile(pos: Position)
    self.wires[P(pos.x, pos.y, W):hash()] = nil
 end
 
+-- 
+-- RENDERDING
+--
+
+function Board:add_image(scene: Scene, image: string, x: integer, y: integer, context?: Context)
+   scene:add_image(image, math.floor(x * TILE_SIZE + (self.x / self.zoom)), math.floor(y * TILE_SIZE + (self.y / self.zoom)), context)
+end
+
+function Board:__draw_board(scene: Scene)
+   self:add_image(scene, "board_top_left", -2, -2)
+   self:add_image(scene, "board_top_right", self.w, -2)
+   self:add_image(scene, "board_bottom_left", -2, self.h)
+   self:add_image(scene, "board_bottom_right", self.w, self.h)
+   for x=0,self.w-1 do
+	  self:add_image(scene, "board_top", x, -2)
+	  self:add_image(scene, "board_bottom", x, self.h)
+   end
+   for y=0,self.h-1 do
+	  self:add_image(scene, "board_left", -2, y)
+	  self:add_image(scene, "board_right", self.w, y)
+   end
+   for x=0,self.w-1 do
+	  for y=0,self.h-1 do
+		 self:add_image(scene, "tile", x, y)
+	  end
+   end
+end
+
+function Board:__draw_wires(scene: Scene)
+   for pos_hash, wire in pairs(self.wires) do
+	  local pos = Position.unhash(pos_hash)
+	  local image = "wire_" .. wire.layer .. "_off_" .. pos.dir:lower() .. "_" .. wire.width
+	  self:add_image(scene, image, pos.x, pos.y)
+   end
+end
+
+function Board:__draw_components(scene: Scene)
+   for _, component in ipairs(self.components) do
+      local context = { 
+		 position = { 
+			x = math.floor(component.position.x * TILE_SIZE + (self.x / self.zoom)),
+			y = math.floor(component.position.y * TILE_SIZE + (self.y / self.zoom)),
+		 },
+		 rotation = fdir.angle[component.direction]
+	  }
+	  component.def.render(component, scene, context)
+   end
+end
+
 function Board:render() : Scene
-   return {
-      { command = "push_context", context = { zoom = 2 } } as Instruction,
-	   { command = "draw", image = "board_top_left", x = 0, y = 0 } as Instruction,
-   }
+   local scene = Scene.new()
+   scene:push_context({ zoom = 2 })
+   self:__draw_board(scene)
+   self:__draw_wires(scene)
+   self:__draw_components(scene)
+   return scene
 end
 
 --[[
+--
+-- SERIALIZATION
+--
+
 function Board:take_snapshot()
    local snap = { w = self.w, h = self.h, wires = {}, components = {}, id = self.id }
    for pos_hash, wire in pairs(self.wires) do
