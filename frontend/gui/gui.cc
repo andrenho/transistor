@@ -113,8 +113,12 @@ void GUI::error_window(Render const& render)
         else
             ImGui::Text("Tests ok.");
         ImGui::Separator();
-        ImVec4 color = render.engine_compilation.success ? ImVec4(1.0f, 1.0f, 1.0f, 1.0f) : ImVec4(1.0f, 0.6f, 0.6f, 1.0f);
-        ImGui::TextColored(color, "%s", render.engine_compilation.compilation_messages.c_str());
+        if (render.engine_compilation.compilation_messages.empty()) {
+            ImGui::Text("No warnings.");
+        } else {
+            ImVec4 color = render.engine_compilation.success ? ImVec4(1.0f, 1.0f, 1.0f, 1.0f) : ImVec4(1.0f, 0.6f, 0.6f, 1.0f);
+            ImGui::TextColored(color, "%s", render.engine_compilation.compilation_messages.c_str());
+        }
     }
     ImGui::End();
 }

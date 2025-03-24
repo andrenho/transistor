@@ -14,7 +14,8 @@ public:
 private:
     std::vector<ps::Scene>& scenes;
 
-    void instruction(lua_State* L, ps::Scene& scene);
+    static ps::Context context(lua_State* L);
+    static void instruction(lua_State* L, ps::Scene& scene);
 };
 
 #endif //FRONTENDSCENERENDERER_HH
