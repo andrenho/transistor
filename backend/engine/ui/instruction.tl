@@ -2,6 +2,7 @@ local type Context = require "ui.context"
 
 local enum Command
     "draw"
+    "push_context"
 end
 
 local interface Instruction
@@ -17,6 +18,12 @@ global record DrawInstruction
     w: integer
     h: integer
     context: Context
+end
+
+global record PushContextInstruction
+      is Instruction
+      where self.command == "push_context"
+   context: Context
 end
 
 return Instruction

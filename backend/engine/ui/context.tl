@@ -1,6 +1,7 @@
 local record Context
    rotation: number
    opacity: number
+   zoom: number
 
    __index: Context
 end

@@ -165,7 +165,8 @@ end
 
 function Board:render() : Scene
    return {
-	  { command = "draw", image = "board_top_left", x = 0, y = 0 } as Instruction,
+      { command = "push_context", context = { zoom = 2 } } as Instruction,
+	   { command = "draw", image = "board_top_left", x = 0, y = 0 } as Instruction,
    }
 end
 
