@@ -24,7 +24,7 @@ PROJECT_VERSION = 0.2.1
 include ../contrib/pastel-base/mk/config.mk
 
 CPPFLAGS += -I. $(shell pkg-config --cflags luajit)
-TL_CONFIG = -Iengine -Iengine/decl --gen-target 5.1
+TL_CONFIG = -Iengine -Iengine/decl --gen-target 5.1 --global-env-def decl
 
 ifndef RELEASE
 	CPPFLAGS += -fPIC -DDEV

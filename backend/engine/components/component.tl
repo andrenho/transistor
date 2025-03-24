@@ -3,7 +3,6 @@ local Position = require("board.geo.position")
 local Rect = require("board.geo.rect")
 local PinPos = require('board.geo.pinpos')
 local type Direction = require("board.geo.direction")
-require('decl.array')
 
 local record Component
    def: ComponentDef

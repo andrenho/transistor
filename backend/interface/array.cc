@@ -14,6 +14,12 @@ void setup_array(lua_State* L)
     luaL_newmetatable(L, "Array_mt");
     luaL_setfuncs(L, (luaL_Reg[]) {
 
+        { "__gc", [](lua_State* LL) {
+            Array* array = (Array*) lua_touserdata(LL, 1);
+            delete[] array->data;
+            return 0;
+        } },
+
         { "__index", [](lua_State* LL) {
 
             if (lua_isnumber(LL, 2)) {
@@ -53,17 +59,13 @@ void setup_array(lua_State* L)
             return 1;
         } },
 
-        { "__gc", [](lua_State* LL) {
-            Array* array = (Array*) lua_touserdata(LL, 1);
-            delete[] array->data;
-            return 0;
-        } },
         { nullptr, nullptr }
     }, 0);
     lua_pop(L, 1);
     assert(lua_gettop(L) == 0);
 
     // constructor
+    lua_newtable(L);
     lua_pushcfunction(L, [](lua_State* LL) -> int {
         int sz = luaL_checkinteger(LL, 1);
         Array* array = (Array *) lua_newuserdata(LL, sizeof(Array));
@@ -75,6 +77,7 @@ void setup_array(lua_State* L)
         lua_setmetatable(LL, -2);
         return 1;
     });
+    lua_setfield(L, -2, "new");
     lua_setglobal(L, "Array");
     assert(lua_gettop(L) == 0);
 }
