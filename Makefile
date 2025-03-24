@@ -41,6 +41,7 @@ endif
 OBJ = \
 	frontend/main.o \
 	frontend/implementation.o \
+	frontend/scene.o \
 	frontend/gui/gui.o
 
 IMGUI_OBJ = \

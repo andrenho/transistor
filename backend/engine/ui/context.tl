@@ -1,15 +1,21 @@
+local record ContextPos
+   x: integer
+   y: integer
+end
+
+local record ContextRect
+   x: integer
+   y: integer
+   w: integer
+   h: integer
+end
+
 local record Context
+   position: ContextRect
    rotation: number
    opacity: number
    zoom: number
-
-   __index: Context
-end
-Context.__index = Context
-
-function Context.new() : Context
-    local self : Context = setmetatable({}, Context as metatable<Context>)
-    return self
+   rotation_center: ContextPos
 end
 
 return Context

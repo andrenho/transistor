@@ -12,7 +12,12 @@ public:
     void                         init();
     std::pair<bool, std::string> run_tests();
 
-    [[nodiscard]] Render render() const;
+    class SceneRenderer {
+    public:
+        virtual ~SceneRenderer() = default;
+        virtual void render(lua_State* L) = 0;
+    };
+    [[nodiscard]] Render render(SceneRenderer& scene_renderer) const;
 
 private:
     Lua lua_;

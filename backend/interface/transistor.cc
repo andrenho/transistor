@@ -52,14 +52,15 @@ std::pair<bool, std::string> Transistor::run_tests()
     });
 }
 
-Render Transistor::render() const
+Render Transistor::render(SceneRenderer& scene_renderer) const
 {
     Render render;
     render.engine_compilation = engine_compilation_;
-    lua_.with_lua([&render](lua_State* L) {
+    lua_.with_lua([&render, &scene_renderer](lua_State* L) {
         lua_getglobal(L, "render");
         lua_execute(L, 0, 1);
         render.load_from_lua(L);
+        scene_renderer.render(L);
         lua_pop(L, 1);
     });
     return render;

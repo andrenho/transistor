@@ -2,6 +2,7 @@
 
 #include <pl_log.h>
 #include <pastel2d.hh>
+#include <scene.hh>
 #include <gui/gui.hh>
 
 #include "images/bg.jpg.h"
@@ -36,44 +37,35 @@ public:
         gui.init();
     }
 
-    static void map_render_to_scenes(Render const& render, std::vector<ps::Scene>& scenes)
-    {
-        for (Scene const& scene: render.scenes) {
-            ps::Scene ps_scene;
-            for (Instruction const& inst: scene) {
-                std::visit(overload {
-                    [&](DrawInstruction const& di) {
-                        ps_scene.add_image(di.image, SDL_Rect { di.x, di.y, di.w, di.h });
-                    },
-                }, inst);
-            }
-            scenes.emplace_back(ps_scene);
-        }
-    }
-
     void main_loop()
     {
         while (ps::graphics::running()) {
             ps::graphics::timestep();
-
-            SDL_Event e;
-            while (SDL_PollEvent(&e)) {
-                if (e.type == SDL_EVENT_QUIT || (e.type == SDL_EVENT_KEY_DOWN && e.key.key == SDLK_Q))
-                    ps::graphics::quit();
-                gui.do_event(&e);
-                // TODO - handle events
-            }
-
-            std::vector<ps::Scene> scenes = { background_scene() };
-            Render render = T.render();
-            map_render_to_scenes(render, scenes);
-            ps::graphics::render_scenes(scenes);
-
-            gui.render(render);
-
-            ps::graphics::set_window_title(std::format("transistor ({} FPS -- {}K steps/sec)", ps::graphics::fps(), render.steps_per_second / 1000));
+            do_events();
+            render();
             ps::graphics::present();
         }
+    }
+
+    void do_events()
+    {
+        SDL_Event e;
+        while (SDL_PollEvent(&e)) {
+            if (e.type == SDL_EVENT_QUIT || (e.type == SDL_EVENT_KEY_DOWN && e.key.key == SDLK_Q))
+                ps::graphics::quit();
+            gui.do_event(&e);
+            // TODO - handle events
+        }
+    }
+
+    void render()
+    {
+        std::vector scenes = { background_scene() };
+        SceneMapper fsr(scenes);
+        Render render = T.render(fsr);
+        ps::graphics::render_scenes(scenes);
+        gui.render(render);
+        ps::graphics::set_window_title(std::format("transistor ({} FPS -- {}K steps/sec)", ps::graphics::fps(), render.steps_per_second / 1000));
     }
 
 private:
