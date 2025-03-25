@@ -18,11 +18,6 @@ public:
             return f(L, args...);
     }
 
-    void restart() {
-        lua_close(L);
-        L = luaL_newstate();
-    }
-
 private:
     lua_State* L;
     mutable std::mutex mutex_;
