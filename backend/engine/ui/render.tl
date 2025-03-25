@@ -5,7 +5,7 @@ global type Sandbox
 global record MenuItem
    text: string
    ask_confirmation: string
-   f: function(Sandbox)
+   callback: function(Sandbox)
    items: {MenuItem}
 end
 

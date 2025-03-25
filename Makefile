@@ -42,7 +42,8 @@ OBJ = \
 	frontend/main.o \
 	frontend/implementation.o \
 	frontend/scene.o \
-	frontend/gui/gui.o
+	frontend/gui/gui.o \
+	frontend/gui/menu.o
 
 IMGUI_OBJ = \
 	contrib/imgui/imgui.o \

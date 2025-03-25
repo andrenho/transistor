@@ -17,7 +17,7 @@ function UI:menu(): {MenuItem}
 		 { 
 			text = "Clear circuit",
 			ask_confirmation = "Are you sure you want to clear the circuit?",
-			f = function(sandbox: Sandbox) print("XXX") end,
+			callback = function(sandbox: Sandbox) print("XXX") end,
 		 },
 	  } },
    }

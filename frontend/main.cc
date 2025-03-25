@@ -56,7 +56,7 @@ public:
         SceneMapper fsr(scenes);
         Render render = T.render(fsr);
         ps::graphics::render_scenes(scenes);
-        gui.render(render);
+        gui.render(render, T);
         ps::graphics::set_window_title(std::format("transistor ({} FPS -- {}K steps/sec)", ps::graphics::fps(), render.steps_per_second / 1000));
     }
 

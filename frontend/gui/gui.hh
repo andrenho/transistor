@@ -4,6 +4,7 @@
 #include <imgui.h>
 #include <SDL3/SDL.h>
 
+#include "transistor.hh"
 #include "render.hh"
 
 class GUI {
@@ -14,7 +15,7 @@ public:
     void init();
     void do_event(SDL_Event* e);
 
-    void render(Render const& render);
+    void render(Render const& render, Transistor& T);
 
 private:
     ImGuiIO* io = nullptr;

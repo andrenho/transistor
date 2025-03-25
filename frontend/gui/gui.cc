@@ -2,6 +2,7 @@
 
 #include <pastel2d.hh>
 
+#include "menu.hh"
 #include "backends/imgui_impl_sdl3.h"
 #include "backends/imgui_impl_sdlrenderer3.h"
 
@@ -45,7 +46,7 @@ void GUI::do_event(SDL_Event* e)
     ImGui_ImplSDL3_ProcessEvent(e);
 }
 
-void GUI::render(Render const& render)
+void GUI::render(Render const& render, Transistor& T)
 {
     ImGui_ImplSDLRenderer3_NewFrame();
     ImGui_ImplSDL3_NewFrame();
@@ -55,6 +56,8 @@ void GUI::render(Render const& render)
         ImGui::ShowDemoWindow(&show_demo_window_);
     if (show_error_window_)
         error_window(render);
+
+    render_menu(render.menus, T);
 
     ImGui::Render();
     ImGui_ImplSDLRenderer3_RenderDrawData(ImGui::GetDrawData(), ps::graphics::renderer());

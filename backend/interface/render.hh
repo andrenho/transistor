@@ -11,7 +11,7 @@
 struct MenuItem {
     std::string                text;
     std::optional<std::string> ask_confirmation {};
-    LuaRef                     callback_ref;
+    std::optional<LuaRef>      callback_ref;
     std::vector<MenuItem>      items {};
 };
 
@@ -29,7 +29,7 @@ struct Render {
     void load_from_lua(lua_State* L);
 
 private:
-    void load_menu(lua_State* L, MenuItem& menu);
+    std::vector<MenuItem> load_menus(lua_State* L);
 };
 
 #endif //RENDER_HH
