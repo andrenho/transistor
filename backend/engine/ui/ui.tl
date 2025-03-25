@@ -11,9 +11,22 @@ function UI.new() : UI
     return self
 end
 
+function UI:menu(): {MenuItem}
+   return {
+	  { text = "Circuit", items = {
+		 { 
+			text = "Clear circuit",
+			ask_confirmation = "Are you sure you want to clear the circuit?",
+			f = function(sandbox: Sandbox) print("XXX") end,
+		 },
+	  } },
+   }
+end
+
 function UI:render(sandbox: Sandbox) : Render
    return {
-      scenes = sandbox:render()
+      scenes = sandbox:render(),
+	  menu = self:menu(),
    }
 end
 

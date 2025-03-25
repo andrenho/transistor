@@ -49,7 +49,6 @@ std::pair<bool, std::string> Transistor::run_tests()
 void Transistor::update()
 {
     if (reset_lua_) {
-        lua_.restart();
         setup();
         reset_lua_ = false;
     }
@@ -92,13 +91,21 @@ void Transistor::setup()
     lua_.with_lua([](lua_State* L) {
         luaL_openlibs(L);
         setup_array(L);
+
     #ifdef DEV
         if (luaL_dostring(L, R"(
+            if not initialized then
+                original_loaded = {}
+                for k,v in pairs(package.loaded) do original_loaded[k] = true end
+            else
+                print("Reloading engine...")
+                for k,v in pairs(package.loaded) do if not original_loaded[k] then unload_package(k) end end
+            end
             package.path = package.path .. ';./backend/?.lua;./engine/?.lua;./backend/engine/?.lua;./engine/?.d.tl;./backend/engine/?.d.tl'
-            package.cpath = package.cpath .. ';./sim/?.so'
             serpent = require 'contrib.serpent'
             local tl = require 'contrib.tl'
             tl.loader()
+            initialized = true
         )") != LUA_OK)
             throw std::runtime_error("Error initializing tl: "s + lua_tostring(L, -1));
         luaL_dostring(L, "require 'api'");  // errors are ignored and displayed on the screen
@@ -123,6 +130,26 @@ void Transistor::setup()
 
 void Transistor::setup_autoreload()
 {
+    lua_.with_lua([](lua_State* L) {
+        lua_pushcfunction(L, [](lua_State* L) -> int {
+            const char* name = luaL_checkstring(L, 1);
+
+            lua_getfield(L, LUA_REGISTRYINDEX, "_LOADED");
+            lua_pushnil(L);
+            lua_setfield(L, -2, name);
+            lua_pop(L, 1);
+
+            lua_getglobal(L, "package");
+            lua_getfield(L, -1, "loaded");
+            lua_pushnil(L);
+            lua_setfield(L, -2, name);
+            lua_pop(L, 2);
+
+            return 0;
+        });
+        lua_setglobal(L, "unload_package");
+    });
+
     // watch for files and restart simulation
     dmon_init();
     dmon_watch("./backend/engine",

@@ -28,4 +28,31 @@ private:
     mutable std::mutex mutex_;
 };
 
+class LuaRef {
+public:
+    explicit LuaRef(Lua const& lua) : lua(lua) {}
+
+    ~LuaRef()
+    {
+        if (ref_ != -1)
+            lua.with_lua([this](lua_State* L) { luaL_unref(L, LUA_REGISTRYINDEX, ref_); });
+    }
+
+    void set()
+    {
+        lua.with_lua([this](lua_State* L) { this->ref_ = luaL_ref(L, LUA_REGISTRYINDEX); });
+    }
+
+    void get() const
+    {
+        lua.with_lua([this](lua_State* L) { lua_rawgeti(L, LUA_REGISTRYINDEX, ref_); });
+    }
+
+    bool has() const { return ref_ != -1; }
+
+private:
+    int ref_ = -1;
+    Lua const& lua;
+};
+
 #endif //LUA_HH

@@ -8,8 +8,8 @@
   - [x] Put on output
   - [x] Render in window
 - [x] Board - special citizen?
-- [ ] Rendering
-  - [ ] Translate to C++
+- [x] Rendering
+  - [x] Translate to C++
   - [ ] UI management (events/graphics) (cursor.lua)
 - [ ] Serialization (serialization.lua)
 - [ ] Compilation (compilation.lua, connected_wires.lua)
