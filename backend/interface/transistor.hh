@@ -14,6 +14,8 @@ public:
 
     void                         update();
 
+    void execure_ref_with_sandbox(LuaRef const& ref);
+
     class SceneRenderer {
     public:
         virtual ~SceneRenderer() = default;

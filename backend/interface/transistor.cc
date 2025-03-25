@@ -74,6 +74,15 @@ Render Transistor::render(SceneRenderer& scene_renderer) const
     return render;
 }
 
+void Transistor::execure_ref_with_sandbox(LuaRef const& ref)
+{
+    lua_.with_lua([&](lua_State* L) {
+        ref.get();
+        lua_getglobal(L, "sandbox");
+        lua_execute(L, 1, 0);
+    });
+}
+
 //
 // PRIVATE
 //

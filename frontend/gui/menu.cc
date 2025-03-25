@@ -2,7 +2,7 @@
 
 #include "imgui.h"
 
-static void add_menu_item(MenuItem const& menu_item, Transistor const& T)
+static void add_menu_item(MenuItem const& menu_item, Transistor& T)
 {
     if (!menu_item.items.empty()) {
         if (ImGui::BeginMenu(menu_item.text.c_str())) {
@@ -12,7 +12,8 @@ static void add_menu_item(MenuItem const& menu_item, Transistor const& T)
         }
     } else {
         if (ImGui::MenuItem(menu_item.text.c_str()))
-            ;
+            if (menu_item.callback_ref)
+                T.execure_ref_with_sandbox(*menu_item.callback_ref);
     }
 }
 
