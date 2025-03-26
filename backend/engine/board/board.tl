@@ -4,7 +4,6 @@ local type Scene = require "ui.scene"
 local type Context = require "ui.context"
 
 global type Sandbox
-global type BoardId = integer
 
 local fdir = require "board.geo.dir"
 local Component = require "components.component"
@@ -23,12 +22,10 @@ local record Board
    components: {Component}
 
    -- fields set externally
-   id: BoardId
    x: integer
    y: integer
    zoom: number
    z_order: integer
-   sandbox: Sandbox
 
    __index: Board
 end
@@ -37,6 +34,9 @@ Board.__index = Board
 
 function Board.new(w: integer, h: integer) : Board
    local self : Board = setmetatable({}, Board as metatable<Board>)
+   self.x, self.y = 70, 70
+   self.zoom = 2.0
+   self.z_order = 100
    self.w, self.h = w, h
    self.wires = {}
    self.components = {}
@@ -154,6 +154,11 @@ function Board:rotate_tile(pos: Position)
    if component and component.def.can_rotate then
       component.direction = fdir.rotation[component.direction]
    end
+end
+
+function Board:clear()
+   self.wires = {}
+   self.components = {}
 end
 
 function Board:clear_tile(pos: Position)

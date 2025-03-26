@@ -10,6 +10,10 @@
 - [x] Board - special citizen?
 - [x] Rendering
   - [x] Translate to C++
-  - [ ] UI management (events/graphics) (cursor.lua)
+  - [x] UI management (events/graphics) (cursor.lua)
+    - [ ] Question dialog box
 - [ ] Serialization (serialization.lua)
 - [ ] Compilation (compilation.lua, connected_wires.lua)
+
+- [ ] Toolbar
+- [ ] ICs
