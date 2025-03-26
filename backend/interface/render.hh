@@ -11,7 +11,7 @@
 struct MenuItem {
     std::string                text;
     std::optional<std::string> ask_confirmation {};
-    std::optional<LuaRef>      callback_ref;
+    std::unique_ptr<LuaRef>    callback_ref;
     std::vector<MenuItem>      items {};
 };
 

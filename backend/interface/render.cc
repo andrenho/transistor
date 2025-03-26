@@ -24,7 +24,7 @@ std::vector<MenuItem> Render::load_menus(lua_State* L)
         MenuItem menu;
         lua_getfield(L, -1, "text"); menu.text = lua_tostring(L, -1); lua_pop(L, 1);
         lua_getfield(L, -1, "ask_confirmation"); menu.ask_confirmation = lua_isnil(L, -1) ? std::optional<std::string> {} : lua_tostring(L, -1); lua_pop(L, 1);
-        lua_getfield(L, -1, "callback"); if (!lua_isnil(L, -1)) menu.callback_ref = LuaRef(L); else lua_pop(L, 1);
+        lua_getfield(L, -1, "callback"); if (!lua_isnil(L, -1)) menu.callback_ref = std::make_unique<LuaRef>(L); else lua_pop(L, 1);
 
         lua_getfield(L, -1, "items");
         if (!lua_isnil(L, -1))

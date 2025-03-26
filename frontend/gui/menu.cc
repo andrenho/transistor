@@ -11,9 +11,11 @@ static void add_menu_item(MenuItem const& menu_item, Transistor& T)
             ImGui::EndMenu();
         }
     } else {
-        if (ImGui::MenuItem(menu_item.text.c_str()))
-            if (menu_item.callback_ref)
+        if (ImGui::MenuItem(menu_item.text.c_str())) {
+            if (menu_item.callback_ref) {
                 T.execure_ref_with_sandbox(*menu_item.callback_ref);
+            }
+        }
     }
 }
 
