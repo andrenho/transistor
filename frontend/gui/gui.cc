@@ -3,6 +3,7 @@
 #include <pastel2d.hh>
 
 #include "menu.hh"
+#include "dialog.hh"
 #include "backends/imgui_impl_sdl3.h"
 #include "backends/imgui_impl_sdlrenderer3.h"
 
@@ -57,7 +58,8 @@ void GUI::render(Render const& render, Transistor& T)
     if (show_error_window_)
         error_window(render);
 
-    render_menu(render.menus, T);
+    render_menu(render, T);
+    render_dialogs(render.dialogs, T);
 
     ImGui::Render();
     ImGui_ImplSDLRenderer3_RenderDrawData(ImGui::GetDrawData(), ps::graphics::renderer());

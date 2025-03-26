@@ -4,6 +4,6 @@
 #include "render.hh"
 #include "transistor.hh"
 
-void render_menu(std::vector<MenuItem> const& menu_items, Transistor& T);
+void render_menu(Render const& render, Transistor& T);
 
 #endif //MENU_HH

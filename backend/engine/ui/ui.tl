@@ -1,5 +1,6 @@
-local type Render = require "ui.render"
 local Sandbox = require "sandbox"
+local type Dialog = require "ui.dialog"
+local type Render = require "ui.render"
 
 local record UI
    __index: UI
@@ -16,7 +17,7 @@ function UI:menu(): {MenuItem}
 	  { text = "Circuit", items = {
 		 { 
 			text = "Clear circuit",
-			ask_confirmation = "Are you sure you want to clear the circuit?",
+			ask_confirmation = Dialog.question("Clear circuit", "Are you sure you want to clear the circuit?"),
 			callback = function(sandbox: Sandbox) sandbox.board:clear() end,
 		 },
 	  } },
@@ -33,4 +34,3 @@ end
 return UI
 
 -- vim:sw=3:st=3:sts=3:noexpandtab
-

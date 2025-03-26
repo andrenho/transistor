@@ -43,6 +43,7 @@ OBJ = \
 	frontend/implementation.o \
 	frontend/scene.o \
 	frontend/gui/gui.o \
+	frontend/gui/dialog.o \
 	frontend/gui/menu.o
 
 IMGUI_OBJ = \
