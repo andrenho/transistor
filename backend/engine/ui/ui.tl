@@ -14,13 +14,15 @@ end
 
 function UI:menu(): {MenuItem}
    return {
-	  { text = "Circuit", items = {
-		 { 
-			text = "Clear circuit",
-			ask_confirmation = Dialog.question("Clear circuit", "Are you sure you want to clear the circuit?"),
-			callback = function(sandbox: Sandbox) sandbox.board:clear() end,
-		 },
-	  } },
+	  { 
+		 text = "Circuit",
+		 items = {
+			{ 
+			   text = "Clear circuit",
+			   ask_confirmation = Dialog.question("Clear circuit", "Are you sure you want to clear the circuit?", { command = "board_clear" }),
+			},
+		 }
+	  },
    }
 end
 

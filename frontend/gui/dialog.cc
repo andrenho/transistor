@@ -17,9 +17,9 @@ void render_dialogs(std::vector<Dialog> const& dialogs, Transistor& T)
                 ImGui::Text("%s", text.c_str());
             ImGui::Separator();
             for (auto const& button: dialog.buttons) {
-                if (ImGui::Button(button.c_str())) {
-                    if (*dialog.callback)
-                        T.execure_ref_with_sandbox(**dialog.callback);
+                if (ImGui::Button(button.text.c_str())) {
+                    if (button.callback)
+                        T.call_api_function(*button.callback);
                     ImGui::CloseCurrentPopup();
                 }
                 ImGui::SameLine();

@@ -5,26 +5,28 @@
 #include <string>
 #include <vector>
 
-#include "lua.hh"
+#include "apifunction.hh"
 
-using Callback = std::unique_ptr<LuaRef>;
+struct DialogButton {
+    std::string                text;
+    std::optional<ApiFunction> callback;
+};
 
 struct Dialog {
     enum class Type { None, Information, Question, Warning, Error };
-    std::string              title;
-    std::vector<std::string> text;
-    Type                     type;
-    std::vector<std::string> buttons;
-    size_t                   default_button;
-    mutable bool             show;
-    Callback const*          callback;
+    std::string               title;
+    std::vector<std::string>  text;
+    Type                      type;
+    std::vector<DialogButton> buttons;
+    size_t                    default_button;
+    mutable bool              show;
 };
 
 struct MenuItem {
-    std::string              text;
-    std::optional<size_t>    confirmation_dialog;
-    Callback                 callback_ref;
-    std::vector<MenuItem>    items {};
+    std::string                text;
+    std::optional<size_t>      confirmation_dialog;
+    std::optional<ApiFunction> callback;
+    std::vector<MenuItem>      items {};
 };
 
 struct EngineCompilation {
@@ -42,8 +44,8 @@ struct Render {
     void load_from_lua(lua_State* L);
 
 private:
-    size_t add_dialog(lua_State* L, Callback const* callback);
-    std::vector<MenuItem> load_menus(lua_State* L);
+    size_t                parse_dialog(lua_State* L);
+    std::vector<MenuItem> parse_menu(lua_State* L);
 };
 
 #endif //RENDER_HH

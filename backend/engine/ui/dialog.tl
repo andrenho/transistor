@@ -1,3 +1,5 @@
+local type Callback = require "ui.callback"
+
 global enum DialogType
    "information"
    "question"
@@ -5,11 +7,16 @@ global enum DialogType
    "error"
 end
 
+local record DialogButton
+   text: string
+   callback: Callback
+end
+
 local record Dialog
    title: string   -- needs to be unique
    text: string | {string}
    type: DialogType
-   buttons: {string}
+   buttons: {DialogButton}
    default_button: integer
 end
 
@@ -18,17 +25,20 @@ function Dialog.messagebox(title: string, text: string, type_?: DialogType) : Di
 	  title = title,
 	  text = text,
 	  type = type_ or "information",
-	  buttons = { "Ok" },
+	  buttons = { { text = "Ok" } },
 	  default_button = 1,
    }
 end
 
-function Dialog.question(title: string, text: string, default_button?: integer) : Dialog
+function Dialog.question(title: string, text: string, callback: Callback, default_button?: integer) : Dialog
    return {
 	  title = title,
 	  text = text,
 	  type = "question",
-	  buttons = { "Yes", "No" },
+	  buttons = { 
+		 { text = "Yes", callback = callback },
+		 { text = "No" }
+	  },
 	  default_button = default_button or 2,
    }
 end

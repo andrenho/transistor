@@ -1,6 +1,7 @@
 #ifndef TRANSISTOR_H_
 #define TRANSISTOR_H_
 
+#include "apifunction.hh"
 #include "lua.hh"
 #include "render.hh"
 
@@ -14,7 +15,7 @@ public:
 
     void                         update();
 
-    void execure_ref_with_sandbox(LuaRef const& ref);
+    void call_api_function(ApiFunction const& api_function);
 
     class SceneRenderer {
     public:

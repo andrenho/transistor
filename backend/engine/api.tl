@@ -12,6 +12,10 @@ global function init()
    ui = UI.new()
 end
 
+global function board_clear()
+   sandbox.board:clear()
+end
+
 global function render() : Render
    return ui:render(sandbox)
 end

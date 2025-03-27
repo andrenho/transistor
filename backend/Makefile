@@ -49,7 +49,8 @@ EMBEDDED_HH = interface/embedded.hh
 INTERFACE_OBJ = \
 	interface/transistor.o \
 	interface/array.o \
-	interface/render.o
+	interface/render.o \
+	interface/apifunction.o
 
 #
 # dev rules
