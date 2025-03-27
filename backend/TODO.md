@@ -11,9 +11,10 @@
 - [x] Rendering
   - [x] Translate to C++
   - [x] UI management (events/graphics) (cursor.lua)
-    - [ ] Question dialog box
-- [ ] Serialization (serialization.lua)
+    - [x] Question dialog box
+- [ ] Interact with circuit
 - [ ] Compilation (compilation.lua, connected_wires.lua)
+- [ ] Serialization (serialization.lua)
 
 - [ ] Toolbar
 - [ ] ICs
