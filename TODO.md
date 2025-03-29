@@ -1,0 +1,5 @@
+- [ ] Base project
+  - [ ] Import luaw
+  - [ ] Main loop
+  - [ ] Mappers, talk to engine
+  - [ ] Simulator

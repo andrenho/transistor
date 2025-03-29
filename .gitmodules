@@ -10,3 +10,6 @@
 	path = contrib/imgui
 	url = https://github.com/ocornut/imgui.git
 	branch = master
+[submodule "contrib/luaw"]
+	path = contrib/luaw
+	url = https://github.com/andrenho/luaw.git
