@@ -27,12 +27,13 @@ void Engine::setup()
 
 void Engine::events(std::vector<Event> const& events)
 {
-
 }
 
 Render Engine::render() const
 {
-    return {};
+    return lua_.with_lua<Render>([](lua_State *L) {
+        return luaw_call_global<Render>(L, "render");
+    });
 }
 
 void Engine::init()

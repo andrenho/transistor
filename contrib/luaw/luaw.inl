@@ -131,6 +131,7 @@ template <typename T> T luaw_to(lua_State* L, int index, T const& default_)
 
 template <typename T> T luaw_to(lua_State* L, int index)
 {
+    /*
     if (!luaw_is<T>(L, index)) {
         std::string cpp_type = typeid(T).name();
 
@@ -146,6 +147,7 @@ template <typename T> T luaw_to(lua_State* L, int index)
         luaL_error(L, "Type unexpected (expected C++ type `%s`, actual lua type is `%s` (%s))",
                    cpp_type.c_str(), lua_typename(L, lua_type(L, index)), luaw_dump(L, index, false).c_str());
     }
+    */
     return luaw_to_<T>(L, index);
 }
 

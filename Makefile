@@ -138,7 +138,7 @@ drd: $(PROJECT_NAME)
 
 .PHONY: softclean
 softclean:
-	rm -f $(PROJECT_NAME) $(OBJ) $(CONTRIB_OBJ) $(CLEANFILES) $(RESOURCES:=.h) *.d **/*.d
+	rm -f $(PROJECT_NAME) $(OBJ) $(CONTRIB_OBJ) $(CLEANFILES) $(RESOURCES:=.h) $(EMBEDDED_HH) $(ENGINE_SRC_LUA:=.h) *.d **/*.d
 
 .PHONY: clean
 clean: softclean
