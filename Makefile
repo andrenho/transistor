@@ -13,8 +13,8 @@ all: $(PROJECT_NAME)
 
 include contrib/pastel-base/mk/config.mk
 
-CPPFLAGS += -Icontrib/pastel2d/src -Icontrib/pastel-base/pl_log -Icontrib/pastel2d/contrib/pocketmod -Icontrib/pastel2d/contrib/stb \
-			-isystem contrib/imgui -Icontrib/SDL/include
+CPPFLAGS += -isystem contrib/pastel2d/src -isystem contrib/pastel-base/pl_log -isystem contrib/pastel2d/contrib/pocketmod \
+            -isystem contrib/pastel2d/contrib/stb -isystem contrib/imgui -Icontrib/SDL/include -isystem contrib/luaw/luaw
 LDFLAGS += -lpthread
 
 ifdef RELEASE
@@ -43,6 +43,7 @@ OBJ = \
 	implementation.o
 
 CONTRIB_OBJ = \
+	contrib/luaw/luaw/luaw.o \
 	contrib/imgui/imgui.o \
 	contrib/imgui/imgui_demo.o \
 	contrib/imgui/imgui_draw.o \
