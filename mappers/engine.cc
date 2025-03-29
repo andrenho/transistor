@@ -1,5 +1,9 @@
 #include "engine.hh"
 
+#include <cerrno>
+#include <cstring>
+
+#include <array>
 #include <string>
 using namespace std;
 

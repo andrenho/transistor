@@ -13,6 +13,8 @@ all: $(PROJECT_NAME)
 
 include contrib/pastel-base/mk/config.mk
 
+CPPFLAGS += -Wno-shadow
+
 CPPFLAGS += -isystem contrib -isystem contrib/pastel2d/src -isystem contrib/pastel-base/pl_log -isystem contrib/pastel2d/contrib/pocketmod \
             -isystem contrib/pastel2d/contrib/stb -isystem contrib/imgui -Icontrib/SDL/include -isystem contrib/luaw
 LDFLAGS += -lpthread
