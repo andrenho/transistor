@@ -48,7 +48,8 @@ OBJ = \
 	mappers/engine.o \
 	mappers/in/render.o \
 	mappers/out/event.o \
-	ui/ui.o
+	ui/ui.o \
+	ui/gui/gui.o
 
 ifdef RELEASE
 	OBJ += luaenv/require.o

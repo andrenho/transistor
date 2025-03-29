@@ -46,8 +46,8 @@ void Engine::setup_dev()
 {
     // run compiler and check for errors
     auto [success, msg] = check_engine();
-    compilation_successful = success;
-    compilation_messages = msg;
+    compilation_successful_ = success;
+    compilation_messages_ = msg;
 
     // load/reload engine from files
     lua_.with_lua([](lua_State*L) {
@@ -71,7 +71,7 @@ void Engine::setup_dev()
 
     // run tests
     auto [tsuccess, err] = run_tests();
-    test_errors = success ? std::optional<std::string> {} : err;
+    test_errors_ = success ? std::optional<std::string> {} : err;
 }
 
 void Engine::setup_release()

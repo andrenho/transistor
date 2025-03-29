@@ -14,6 +14,10 @@ public:
 
     [[nodiscard]] Render render() const;
 
+    [[nodiscard]] bool                              compilation_successful() const { return compilation_successful_; }
+    [[nodiscard]] std::string const&                compilation_messages() const { return compilation_messages_; }
+    [[nodiscard]] std::optional<std::string> const& test_errors() const { return test_errors_; }
+
 private:
     Lua& lua_;
 
@@ -24,9 +28,9 @@ private:
     static std::pair<bool, std::string> check_engine();
     std::pair<bool, std::string>        run_tests() const;
 
-    bool                       compilation_successful = true;
-    std::string                compilation_messages;
-    std::optional<std::string> test_errors;
+    bool                       compilation_successful_ = true;
+    std::string                compilation_messages_;
+    std::optional<std::string> test_errors_;
 };
 
 #endif //ENGINE_HH

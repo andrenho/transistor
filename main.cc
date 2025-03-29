@@ -1,3 +1,5 @@
+#include <pl_log.h>
+
 #include "luaenv/array.hh"
 #include "luaenv/lua.hh"
 #include "luaenv/hotreload.hh"
@@ -9,6 +11,8 @@
 
 int main()
 {
+    pl_init();
+
     Lua lua;
     HotReload hotreload(lua);
 
@@ -22,6 +26,6 @@ int main()
         // TODO - update from engine
 
         Render render = engine.render();
-        ui.render(render);
+        ui.render(render, engine);
     }
 }
