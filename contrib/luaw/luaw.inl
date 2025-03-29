@@ -493,6 +493,14 @@ void luaw_pairs(lua_State* L, int index, F fn)
 // FIELDS
 //
 
+template <Optional T> T luaw_getfield(lua_State* L, int index, std::string const& field)
+{
+    if (luaw_hasfield(L, index, field))
+        return luaw_getfield<typename T::value_type>(L, index, field);
+    else
+        return {};
+}
+
 template <typename T> T luaw_getfield(lua_State* L, int index, std::string const& field)
 {
     luaw_getfield(L, index, field);

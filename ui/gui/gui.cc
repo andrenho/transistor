@@ -45,7 +45,7 @@ void GUI::do_event(SDL_Event* e) const
     ImGui_ImplSDL3_ProcessEvent(e);
 }
 
-void GUI::render(Render const& render, Engine& engine) const
+void GUI::render(luaobj::Render const& render, Engine& engine) const
 {
     ImGui_ImplSDLRenderer3_NewFrame();
     ImGui_ImplSDL3_NewFrame();
@@ -95,7 +95,7 @@ void GUI::setup_font()
     io->Fonts->AddFontFromMemoryTTF((void *) ui_resources_fonts_Pixellari_ttf, ui_resources_fonts_Pixellari_ttf_sz, 16, &cfg);
 }
 
-void GUI::error_window(Render const& render, Engine const& engine) const
+void GUI::error_window(luaobj::Render const& render, Engine const& engine) const
 {
     ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav;
     const float PAD = 10.0f;

@@ -21,11 +21,11 @@ int main()
 
     UI ui;
     while (ui.running()) {
-        std::vector<Event> events = ui.events();
+        std::vector<luaobj::Event> events = ui.events();
         engine.events(events);
         // TODO - update from engine
 
-        Render render = engine.render();
+        luaobj::Render render = engine.render();
         ui.render(render, engine);
     }
 }

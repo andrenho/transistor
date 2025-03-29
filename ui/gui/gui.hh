@@ -15,7 +15,7 @@ public:
     void init();
     void do_event(SDL_Event* e) const;
 
-    void render(Render const& render, Engine& engine) const;
+    void render(luaobj::Render const& render, Engine& engine) const;
 
 private:
     ImGuiIO* io = nullptr;
@@ -24,7 +24,7 @@ private:
 
     static void setup_theme();
     void setup_font();
-    void error_window(Render const& render, Engine const& engine) const;
+    void error_window(luaobj::Render const& render, Engine const& engine) const;
 };
 
 #endif //GUI_HH

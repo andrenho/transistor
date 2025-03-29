@@ -41,7 +41,7 @@ bool UI::running() const
     return ps::graphics::running();
 }
 
-std::vector<Event> UI::events() const
+std::vector<luaobj::Event> UI::events() const
 {
     SDL_Event e;
     while (SDL_PollEvent(&e)) {
@@ -52,7 +52,7 @@ std::vector<Event> UI::events() const
     return {};  // TODO
 }
 
-void UI::render(Render const& render, Engine& engine) const
+void UI::render(luaobj::Render const& render, Engine& engine) const
 {
     std::vector scenes = { background_scene() };
     //SceneMapper fsr(scenes);

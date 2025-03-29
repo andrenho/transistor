@@ -10,9 +10,9 @@ public:
     explicit Engine(Lua& lua);
 
     void setup();
-    void events(std::vector<Event> const& events);
+    void events(std::vector<luaobj::Event> const& events);
 
-    [[nodiscard]] Render render() const;
+    [[nodiscard]] luaobj::Render render() const;
 
     [[nodiscard]] bool                              compilation_successful() const { return compilation_successful_; }
     [[nodiscard]] std::string const&                compilation_messages() const { return compilation_messages_; }
