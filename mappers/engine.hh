@@ -1,13 +1,18 @@
 #ifndef ENGINE_HH
 #define ENGINE_HH
 
+#include "in/render.hh"
 #include "luaenv/lua.hh"
+#include "out/event.hh"
 
 class Engine {
 public:
     explicit Engine(Lua& lua);
 
     void setup();
+    void events(std::vector<Event> const& events);
+
+    [[nodiscard]] Render render() const;
 
 private:
     Lua& lua_;

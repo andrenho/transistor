@@ -25,6 +25,16 @@ void Engine::setup()
     init();
 }
 
+void Engine::events(std::vector<Event> const& events)
+{
+
+}
+
+Render Engine::render() const
+{
+    return {};
+}
+
 void Engine::init()
 {
     return lua_.with_lua([this](lua_State* L) {

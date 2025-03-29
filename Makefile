@@ -45,7 +45,10 @@ OBJ = \
 	implementation.o \
 	luaenv/array.o \
 	luaenv/hotreload.o \
-	mappers/engine.o
+	mappers/engine.o \
+	mappers/in/render.o \
+	mappers/out/event.o \
+	ui/ui.o
 
 ifdef RELEASE
 	OBJ += luaenv/require.o
@@ -62,8 +65,8 @@ CONTRIB_OBJ = \
 	contrib/imgui/backends/imgui_impl_sdlrenderer3.o
 
 RESOURCES = \
-	$(filter-out %.h, $(wildcard resources/fonts/*)) \
-	$(filter-out %.h, $(wildcard resources/images/*))
+	$(filter-out %.h, $(wildcard ui/resources/fonts/*)) \
+	$(filter-out %.h, $(wildcard ui/resources/images/*))
 
 $(OBJ): $(RESOURCES:=.h)
 
