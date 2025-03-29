@@ -5,17 +5,8 @@
 #include <functional>
 
 #include <tgmath.h>
-#include <zlib.h>
 
 using namespace std::string_literals;
-
-extern "C" {
-#if LUAW == JIT
-# include "../luajit/src/lua.hpp"
-#else
-# include "lua.hpp"
-#endif
-}
 
 static const char* strict_lua = R"(
 local getinfo, error, rawset, rawget = debug.getinfo, error, rawset, rawget
@@ -52,12 +43,13 @@ mt.__index = function (t, n)
 end
 )";
 
-lua_State* luaw_newstate()
+lua_State* luaw_newstate(bool strict)
 {
     lua_State* L = luaL_newstate();
     luaL_openlibs(L);
 
-    luaw_do(L, strict_lua, 0, "strict.lua");
+    if (strict)
+        luaw_do(L, strict_lua, 0, "strict.lua");
 
     return L;
 }
@@ -82,19 +74,6 @@ void luaw_do(lua_State* L, uint8_t* data, size_t sz, int nresults, std::string c
         luaL_error(L, "Runtime memory error");
     } else if (r == LUA_ERRERR){
         luaL_error(L, "Error running the error message handler");
-    }
-}
-
-struct LuaCompressedBytecode { unsigned long c, u; const char* f; unsigned char* data; };
-void luaw_do_z(lua_State* L, LuaCompressedBytecode lcb[], bool keep_results)
-{
-    size_t i = 0;
-
-    while (lcb[i].c != 0) {
-        uint8_t result[lcb[i].u];
-        uncompress(result, &lcb[i].u, lcb[i].data, lcb[i].c);
-        luaw_do(L, result, lcb[i].u, keep_results ? LUA_MULTRET : 0, lcb[i].f);
-        ++i;
     }
 }
 

@@ -22,7 +22,7 @@ local led : ComponentDef = {
        ${image: __infobox_led_0}${image_sl: __infobox_led_1}
    ]],
    
-   render = function(component: Component, scene: Scene, context: Context)
+   render = function(led: Component, scene: Scene, context: Context)
       scene:add_image("shadow_circle", 1, 1, context)
       if not led or led.data[1] == 0 then
 		   scene:add_image("led_off", 0, 0, context)

@@ -13,8 +13,8 @@ all: $(PROJECT_NAME)
 
 include contrib/pastel-base/mk/config.mk
 
-CPPFLAGS += -isystem contrib/pastel2d/src -isystem contrib/pastel-base/pl_log -isystem contrib/pastel2d/contrib/pocketmod \
-            -isystem contrib/pastel2d/contrib/stb -isystem contrib/imgui -Icontrib/SDL/include -isystem contrib/luaw/luaw
+CPPFLAGS += -isystem contrib -isystem contrib/pastel2d/src -isystem contrib/pastel-base/pl_log -isystem contrib/pastel2d/contrib/pocketmod \
+            -isystem contrib/pastel2d/contrib/stb -isystem contrib/imgui -Icontrib/SDL/include -isystem contrib/luaw
 LDFLAGS += -lpthread
 
 ifdef RELEASE
@@ -40,10 +40,17 @@ TL_CONFIG = -Iengine -Iengine/decl --gen-target 5.1 --global-env-def decl
 
 OBJ = \
 	main.o \
-	implementation.o
+	implementation.o \
+	luaenv/array.o \
+	luaenv/hotreload.o \
+	mappers/engine.o
+
+ifdef RELEASE
+	OBJ += luaenv/require.o
+endif
 
 CONTRIB_OBJ = \
-	contrib/luaw/luaw/luaw.o \
+	contrib/luaw/luaw.o \
 	contrib/imgui/imgui.o \
 	contrib/imgui/imgui_demo.o \
 	contrib/imgui/imgui_draw.o \
@@ -71,10 +78,10 @@ EMBEDDED_HH = embedded.hh
 	tl gen -c ${TL_CONFIG} $^ -o $@
 
 ifdef RELEASE
-interface/transistor.o: $(ENGINE_SRC_LUA:=.h) $(EMBEDDED_HH)   # embed Lua files into the application
+luaenv/require.o: $(ENGINE_SRC_LUA:=.h) $(EMBEDDED_HH)   # embed Lua files into the application
 endif
 
-$(EMBEDDED_HH): interface/generate_embedded.lua
+$(EMBEDDED_HH): luaenv/generate_embedded.lua
 	luajit $^ > $@
 
 check_tl:
