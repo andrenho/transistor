@@ -92,7 +92,7 @@ void GUI::setup_font()
 {
     ImFontConfig cfg;
     cfg.FontDataOwnedByAtlas = false;
-    io->Fonts->AddFontFromMemoryTTF((void *) resources_fonts_Pixellari_ttf, resources_fonts_Pixellari_ttf_sz, 16, &cfg);
+    io->Fonts->AddFontFromMemoryTTF((void *) ui_resources_fonts_Pixellari_ttf, ui_resources_fonts_Pixellari_ttf_sz, 16, &cfg);
 }
 
 void GUI::error_window(Render const& render, Engine const& engine) const

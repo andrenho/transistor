@@ -28,9 +28,9 @@ UI::UI()
     ps::graphics::set_bg(20, 40, 60);
 
     // load resources
-    rs_bg = ps::res::add_image(resources_images_bg_jpg, resources_images_bg_jpg_sz);
-    ps::res::add_image("circuit", resources_images_circuit_png, resources_images_circuit_png_sz);
-    ps::res::add_tiles_from_lua("circuit", resources_images_circuit_tileset_lua, resources_images_circuit_tileset_lua_sz);
+    rs_bg = ps::res::add_image(ui_resources_images_bg_jpg, ui_resources_images_bg_jpg_sz);
+    ps::res::add_image("circuit", ui_resources_images_circuit_png, ui_resources_images_circuit_png_sz);
+    ps::res::add_tiles_from_lua("circuit", ui_resources_images_circuit_tileset_lua, ui_resources_images_circuit_tileset_lua_sz);
 
     gui.init();
 }
