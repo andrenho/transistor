@@ -1,6 +1,7 @@
 local Sandbox = require 'sandbox'
 local UI = require 'ui.ui'
 local Render = require 'ui.render'
+local type Event = require 'event'
 
 global sandbox : Sandbox = nil
 global ui : UI = nil
@@ -18,6 +19,12 @@ end
 
 global function render() : Render
    return ui:render(sandbox)
+end
+
+global function do_events(events: {Event})
+   for _,event in ipairs(events) do
+	  print(serpent.dump(event))
+   end
 end
 
 global function run_tests()

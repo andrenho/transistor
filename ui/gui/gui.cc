@@ -49,7 +49,7 @@ void GUI::do_event(SDL_Event* e) const
     ImGui_ImplSDL3_ProcessEvent(e);
 }
 
-void GUI::render(luaobj::Render const& render, Engine& engine) const
+std::vector<luaobj::Event> GUI::render(luaobj::Render const& render, Engine& engine) const
 {
     ImGui_ImplSDLRenderer3_NewFrame();
     ImGui_ImplSDL3_NewFrame();
@@ -65,6 +65,8 @@ void GUI::render(luaobj::Render const& render, Engine& engine) const
 
     ImGui::Render();
     ImGui_ImplSDLRenderer3_RenderDrawData(ImGui::GetDrawData(), ps::graphics::renderer());
+
+    return {};
 }
 
 void GUI::setup_theme()

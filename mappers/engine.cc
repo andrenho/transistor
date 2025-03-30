@@ -27,6 +27,9 @@ void Engine::setup()
 
 void Engine::events(std::vector<luaobj::Event> const& events)
 {
+    lua_.with_lua([&](lua_State* L) {
+        luaw_call_global(L, "do_events", events);
+    });
 }
 
 luaobj::Render Engine::render() const

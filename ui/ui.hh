@@ -15,7 +15,7 @@ public:
 
     [[nodiscard]] bool                       running() const;
     [[nodiscard]] std::vector<luaobj::Event> events() const;
-    void                                     render(luaobj::Render const& render, Engine& engine) const;
+    std::vector<luaobj::Event>               render(luaobj::Render const& render, Engine& engine) const;
 
 private:
     ps::res::idx_t rs_bg = -1;

@@ -43,26 +43,59 @@ bool UI::running() const
 
 std::vector<luaobj::Event> UI::events() const
 {
+    std::vector<luaobj::Event> events;
+
+    auto button_name = [](Uint8 button) -> std::string {
+        switch (button) {
+            case 1: return "left";
+            case 2: return "middle";
+            case 3: return "right";
+            default: return "unknown";
+        }
+    };
+
     SDL_Event e;
     while (SDL_PollEvent(&e)) {
         if (e.type == SDL_EVENT_QUIT || (e.type == SDL_EVENT_KEY_DOWN && e.key.key == SDLK_Q))
             ps::graphics::quit();
+
+        switch (e.type) {
+            case SDL_EVENT_MOUSE_MOTION:
+                events.push_back({ .type = "move_pointer", .x = (int) e.motion.x, .y = (int) e.motion.y });
+                break;
+            case SDL_EVENT_MOUSE_BUTTON_DOWN:
+                events.push_back({ .type = "mouse_press", .button = button_name(e.button.button) });
+                break;
+            case SDL_EVENT_MOUSE_BUTTON_UP:
+                events.push_back({ .type = "mouse_release", .button = button_name(e.button.button), .index = e.button.button });
+                break;
+            case SDL_EVENT_KEY_DOWN:
+                events.push_back({ .type = "key_down", .key = std::string(1, (char) e.key.key), .index = e.button.button });
+                break;
+            case SDL_EVENT_KEY_UP:
+                events.push_back({ .type = "key_up", .key = std::string(1, (char) e.key.key) });
+                break;
+            default: break;
+        }
+
         gui.do_event(&e);
     }
-    return {};  // TODO
+    return events;
 }
 
-void UI::render(luaobj::Render const& render, Engine& engine) const
+std::vector<luaobj::Event> UI::render(luaobj::Render const& render, Engine& engine) const
 {
     std::vector scenes = { background_scene() };
     scenes.insert(scenes.end(), std::make_move_iterator(render.scenes.begin()), std::make_move_iterator(render.scenes.end()));
     ps::graphics::render_scenes(scenes);
 
-    gui.render(render, engine);
+    auto events = gui.render(render, engine);
 
     ps::graphics::set_window_title(std::format("transistor ({} FPS -- {}K steps/sec)", ps::graphics::fps(), 0 / 1000));
 
     ps::graphics::present();
+
+    return events;
 }
 
 ps::Scene UI::background_scene() const

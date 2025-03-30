@@ -15,7 +15,7 @@ public:
     void init();
     void do_event(SDL_Event* e) const;
 
-    void render(luaobj::Render const& render, Engine& engine) const;
+    std::vector<luaobj::Event> render(luaobj::Render const& render, Engine& engine) const;
 
 private:
     ImGuiIO* io = nullptr;
