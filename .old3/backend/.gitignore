@@ -1,5 +1,0 @@
-test-dev
-test-release
-*.lua.h
-.*.swp
-interface/embedded.hh

@@ -25,6 +25,8 @@ private:
     static void setup_theme();
     void setup_font();
     void error_window(luaobj::Render const& render, Engine const& engine) const;
+
+    static std::vector<luaobj::Dialog const*> dialog_list(luaobj::Render const& render) ;
 };
 
 #endif //GUI_HH

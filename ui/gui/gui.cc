@@ -2,6 +2,8 @@
 
 #include <pastel2d.hh>
 
+#include "dialog.hh"
+#include "menu.hh"
 #include "backends/imgui_impl_sdl3.h"
 #include "backends/imgui_impl_sdlrenderer3.h"
 
@@ -56,8 +58,8 @@ void GUI::render(luaobj::Render const& render, Engine& engine) const
     if (show_error_window_)
         error_window(render, engine);
 
-    // render_menu(render, T);
-    // render_dialogs(render.dialogs, T);
+    render_menu(render, engine);
+    render_dialogs(dialog_list(render), engine);
 
     ImGui::Render();
     ImGui_ImplSDLRenderer3_RenderDrawData(ImGui::GetDrawData(), ps::graphics::renderer());
@@ -124,4 +126,20 @@ void GUI::error_window(luaobj::Render const& render, Engine const& engine) const
         }
     }
     ImGui::End();
+}
+
+std::vector<luaobj::Dialog const*> GUI::dialog_list(luaobj::Render const& render)
+{
+    std::vector<luaobj::Dialog const*> dialogs;
+
+    std::function<void(std::vector<luaobj::MenuItem> const&)> find_dialogs = [&](std::vector<luaobj::MenuItem> const& menus) {
+        for (auto const& menu: menus) {
+            if (menu.ask_confirmation)
+                dialogs.push_back(&menu.ask_confirmation.value());
+            find_dialogs(menu.items);
+        }
+    };
+    find_dialogs(render.menu);
+
+    return dialogs;
 }

@@ -1,5 +1,5 @@
-#ifndef MENU_HH
-#define MENU_HH
+#ifndef LUAOBJ_MENU_HH
+#define LUAOBJ_MENU_HH
 
 #include <luaw.hh>
 
@@ -26,4 +26,4 @@ struct MenuItem {
 
 }
 
-#endif //MENU_HH
+#endif
