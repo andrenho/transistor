@@ -2,6 +2,8 @@
 
 #include <pastel2d.hh>
 
+#include <functional>
+
 #include "dialog.hh"
 #include "menu.hh"
 #include "backends/imgui_impl_sdl3.h"
