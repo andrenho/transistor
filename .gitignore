@@ -64,3 +64,4 @@ compile_commands.json
 .idea/tasks.xml
 .idea/*.iws
 embedded.hh
+.*.swp
