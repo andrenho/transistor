@@ -1,4 +1,4 @@
-local enum EventType
+global enum EventType
    "move_pointer"
    "mouse_press"
    "mouse_release"

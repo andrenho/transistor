@@ -15,17 +15,12 @@ end
 
 global function render() : Render
    local r = ui:render(sandbox)
-   -- print(serpent.block(r))
-   -- print("=========================================")
    return r
 end
 
 global function do_events(events: {Event})
    for _,event in ipairs(events) do
-	  -- print(serpent.line(event))
-	  if event.type == "clear_board" then
-		 sandbox.board:clear()
-	  end
+	  sandbox:do_event(event)
    end
 end
 

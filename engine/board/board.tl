@@ -1,3 +1,4 @@
+local type Device = require 'device'
 local type Direction = require "board.geo.direction"
 local type Orientation = require "board.geo.orientation"
 local type Scene = require "ui.scene"
@@ -14,18 +15,12 @@ local Wire = require "board.wire"
 
 local TILE_SIZE = 16
 
-local record Board
+local record Board is Device
    -- fields
    w: integer
    h: integer
    wires: {PosHash: Wire}
    components: {Component}
-
-   -- fields set externally
-   x: integer
-   y: integer
-   zoom: number
-   z_order: integer
 
    __index: Board
 end
@@ -59,6 +54,13 @@ function Board:component(pos: Position) : Component
       end
    end
    return nil
+end
+
+function Board:rect() : Rect
+   return {
+	  top_left = P(self.x + 8, self.y + 8),
+	  bottom_right = P(self.x + ((self.w + 3) * TILE_SIZE), self.y + ((self.h + 3) * TILE_SIZE))
+   }
 end
 
 --
