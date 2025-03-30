@@ -55,11 +55,13 @@ std::vector<luaobj::Event> UI::events() const
 void UI::render(luaobj::Render const& render, Engine& engine) const
 {
     std::vector scenes = { background_scene() };
-    //SceneMapper fsr(scenes);
-    //Render render = T.render(fsr);
+    scenes.insert(scenes.end(), std::make_move_iterator(render.scenes.begin()), std::make_move_iterator(render.scenes.end()));
     ps::graphics::render_scenes(scenes);
+
     gui.render(render, engine);
+
     ps::graphics::set_window_title(std::format("transistor ({} FPS -- {}K steps/sec)", ps::graphics::fps(), 0 / 1000));
+
     ps::graphics::present();
 }
 

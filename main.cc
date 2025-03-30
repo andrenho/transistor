@@ -25,7 +25,7 @@ int main()
         engine.events(events);
         // TODO - update from engine
 
-        luaobj::Render render = engine.render();
+        auto render = engine.render();
         ui.render(render, engine);
     }
 }
