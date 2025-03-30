@@ -13,17 +13,19 @@ global function init()
    ui = UI.new()
 end
 
-global function board_clear()
-   sandbox.board:clear()
-end
-
 global function render() : Render
-   return ui:render(sandbox)
+   local r = ui:render(sandbox)
+   -- print(serpent.block(r))
+   -- print("=========================================")
+   return r
 end
 
 global function do_events(events: {Event})
    for _,event in ipairs(events) do
-	  print(serpent.dump(event))
+	  -- print(serpent.line(event))
+	  if event.type == "clear_board" then
+		 sandbox.board:clear()
+	  end
    end
 end
 

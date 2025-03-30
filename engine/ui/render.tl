@@ -1,13 +1,13 @@
 local type Scene = require "ui.scene"
 local type Dialog = require "ui.dialog"
-local type Callback = require "ui.callback"
+local type Event = require "event"
 
 global type Sandbox
 
 global record MenuItem
    text: string
    ask_confirmation: Dialog
-   callback: Callback
+   event: Event
    items: {MenuItem}
 end
 

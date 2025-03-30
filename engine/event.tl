@@ -1,5 +1,15 @@
+local enum EventType
+   "move_pointer"
+   "mouse_press"
+   "mouse_release"
+   "key_down"
+   "key_up"
+
+   "clear_board"
+end
+
 local record Event
-   type: string
+   type: EventType
    x: integer
    y: integer
    button: string

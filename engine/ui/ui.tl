@@ -19,7 +19,7 @@ function UI:menu(): {MenuItem}
 		 items = {
 			{ 
 			   text = "Clear circuit",
-			   ask_confirmation = Dialog.question("Clear circuit", "Are you sure you want to clear the circuit?", { command = "board_clear" }),
+			   ask_confirmation = Dialog.question("Clear circuit", "Are you sure you want to clear the circuit?", { type = "clear_board" })
 			},
 		 }
 	  },

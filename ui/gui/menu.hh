@@ -4,6 +4,6 @@
 #include "mappers/engine.hh"
 #include "mappers/in/render.hh"
 
-void render_menu(luaobj::Render const& render, Engine& engine);
+void render_menu(luaobj::Render const& render, std::vector<luaobj::Event>& events);
 
 #endif //MENU_HH

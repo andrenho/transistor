@@ -2,8 +2,7 @@
 #define LUAOBJ_DIALOG_HH_
 
 #include <lua.hpp>
-
-#include "callback.hh"
+#include "mappers/out/event.hh"
 
 namespace luaobj {
 
@@ -11,13 +10,13 @@ struct Dialog {
     enum Type { Information, Question, Warning, Error };
 
     struct Button {
-        std::string             text;
-        std::optional<Callback> callback;
+        std::string          text {};
+        std::optional<Event> event {};
 
         static Button from_lua(lua_State* L, int index) {
             return {
                 .text = luaw_getfield<std::string>(L, -1, "text"),
-                .callback = luaw_getfield<std::optional<Callback>>(L, -1, "callback"),
+                .event = luaw_getfield<std::optional<Event>>(L, -1, "event"),
             };
         }
     };

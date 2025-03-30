@@ -4,7 +4,7 @@
 
 #include <imgui.h>
 
-void render_dialogs(std::vector<luaobj::Dialog const*> const& dialogs, Engine& engine)
+void render_dialogs(std::vector<luaobj::Dialog const*> const& dialogs, std::vector<luaobj::Event>& events)
 {
     for (auto const& dialog: dialogs) {
         if (dialog->show)
@@ -16,8 +16,8 @@ void render_dialogs(std::vector<luaobj::Dialog const*> const& dialogs, Engine& e
             ImGui::Separator();
             for (auto const& button: dialog->buttons) {
                 if (ImGui::Button(button.text.c_str())) {
-                    if (button.callback)
-                        engine.call_api_function(*button.callback);
+                    if (button.event)
+                        events.push_back(*button.event);
                     ImGui::CloseCurrentPopup();
                 }
                 ImGui::SameLine();

@@ -60,13 +60,14 @@ std::vector<luaobj::Event> GUI::render(luaobj::Render const& render, Engine& eng
     if (show_error_window_)
         error_window(render, engine);
 
-    render_menu(render, engine);
-    render_dialogs(dialog_list(render), engine);
+    std::vector<luaobj::Event> events;
+    render_menu(render, events);
+    render_dialogs(dialog_list(render), events);
 
     ImGui::Render();
     ImGui_ImplSDLRenderer3_RenderDrawData(ImGui::GetDrawData(), ps::graphics::renderer());
 
-    return {};
+    return events;
 }
 
 void GUI::setup_theme()

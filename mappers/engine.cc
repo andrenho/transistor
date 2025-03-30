@@ -39,13 +39,6 @@ luaobj::Render Engine::render() const
     });
 }
 
-void Engine::call_api_function(luaobj::Callback const& callback) const
-{
-    lua_.with_lua([&](lua_State* L) {
-        luaw_call_global(L, callback.command);
-    });
-}
-
 void Engine::init()
 {
     return lua_.with_lua([this](lua_State* L) {

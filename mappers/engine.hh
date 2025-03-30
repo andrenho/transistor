@@ -12,8 +12,6 @@ public:
     void setup();
     void events(std::vector<luaobj::Event> const& events);
 
-    void call_api_function(luaobj::Callback const& callback) const;
-
     [[nodiscard]] luaobj::Render render() const;
 
     [[nodiscard]] bool                              compilation_successful() const { return compilation_successful_; }

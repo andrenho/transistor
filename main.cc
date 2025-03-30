@@ -28,6 +28,7 @@ int main()
 
         auto render = engine.render();
         events = ui.render(render, engine);
-        engine.events(events);
+        if (!events.empty())
+            engine.events(events);
     }
 }
