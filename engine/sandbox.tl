@@ -49,11 +49,15 @@ end
 
 function Sandbox:move_device(idx: integer, rel_x: integer, rel_y: integer)
    local dev = self.devices[idx]
-   local rect = dev:rect()
-   -- local min_x = -- TODO
+   local size = dev:size()
 
-   self.devices[idx].x = self.devices[idx].x + rel_x
-   self.devices[idx].y = self.devices[idx].y + rel_y
+   local min_x = math.floor(-size.w + 112 * dev.zoom)
+   local min_y = math.floor(-size.h + 112 * dev.zoom)
+   local max_x = math.floor(self.window_w - 56 * dev.zoom)
+   local max_y = math.floor(self.window_h - 56 * dev.zoom)
+
+   dev.x = math.min(math.max(dev.x + rel_x, min_x), max_x)
+   dev.y = math.min(math.max(dev.y + rel_y, min_y), max_y)
 end
 
 function Sandbox:do_event(event: Event)

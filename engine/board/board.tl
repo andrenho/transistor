@@ -56,14 +56,19 @@ function Board:component(pos: Position) : Component
    return nil
 end
 
-function Board:size() : (integer, integer)
-   return (self.w + 4) * TILE_SIZE, (self.h + 4) * TILE_SIZE
+function Board:size() : Size
+   return {
+	  w = math.floor((self.w + 4) * TILE_SIZE * self.zoom), 
+	  h = math.floor((self.h + 4) * TILE_SIZE * self.zoom),
+   }
 end
 
 function Board:rect() : Rect
+   local sz = self:size()
+   local gap = math.floor(8 * self.zoom)
    return {
-	  top_left = P(self.x + 8, self.y + 8),
-	  bottom_right = P(self.x + ((self.w + 3) * TILE_SIZE), self.y + ((self.h + 3) * TILE_SIZE))
+	  top_left = P(self.x + gap, self.y + gap),
+	  bottom_right = P(self.x + sz.w - 2*gap, self.y + sz.h - 2*gap)
    }
 end
 
