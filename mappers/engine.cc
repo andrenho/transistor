@@ -7,8 +7,6 @@
 #include <string>
 using namespace std;
 
-#include "luaenv/require.hh"
-
 Engine::Engine(Lua& lua)
     : lua_(lua)
 {

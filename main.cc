@@ -4,8 +4,6 @@
 #include "luaenv/lua.hh"
 #include "luaenv/hotreload.hh"
 #include "mappers/engine.hh"
-#include "mappers/in/render.hh"
-#include "mappers/out/event.hh"
 
 #include "ui/ui.hh"
 

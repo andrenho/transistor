@@ -1,13 +1,14 @@
 #ifndef LUA_INL_
 #define LUA_INL_
 
-#include <memory>
 #include <optional>
 #include <map>
+#include <string>
 #include <unordered_map>
 #include <tuple>
 
 #include <cxxabi.h>
+#include <lua.hpp>
 
 //
 // CONCEPTS
