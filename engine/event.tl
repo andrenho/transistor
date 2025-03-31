@@ -1,6 +1,7 @@
 global enum EventType
    "move_pointer"
    "mouse_press"
+   "mouse_wheel"
    "mouse_release"
    "key_down"
    "key_up"

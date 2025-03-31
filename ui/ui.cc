@@ -74,6 +74,9 @@ std::vector<luaobj::Event> UI::events() const
             case SDL_EVENT_MOUSE_BUTTON_UP:
                 events.push_back({ .type = "mouse_release", .button = button_name(e.button.button), .index = e.button.button });
                 break;
+            case SDL_EVENT_MOUSE_WHEEL:
+                events.push_back({ .type = "mouse_wheel", .y = e.wheel.y });
+                break;
             case SDL_EVENT_KEY_DOWN:
                 events.push_back({ .type = "key_down", .key = std::string(1, (char) e.key.key), .index = e.button.button });
                 break;

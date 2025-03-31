@@ -241,7 +241,7 @@ end
 
 function Board:render() : Scene
    local scene = Scene.new()
-   scene:push_context({ zoom = 2 })
+   scene:push_context({ zoom = self.zoom })
    self:__draw_board(scene)
    self:__draw_wires(scene)
    self:__draw_components(scene)

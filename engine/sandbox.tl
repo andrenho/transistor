@@ -74,13 +74,20 @@ function Sandbox:do_event(event: Event)
 	  rel_x, rel_y = (event.x - self.last_x), (event.y - self.last_y)
 	  self.last_x, self.last_y = event.x, event.y
    end
+   local dev_at_cursor = self:__device_at_point(self.last_x, self.last_y)
+   local device = self.devices[dev_at_cursor]
 
    -- select another device?
    if event.type == "mouse_press" then
-	  local dev_at_cursor = self:__device_at_point(event.x, event.y)
 	  if dev_at_cursor ~= self:__topmost_device() then
 		 self:__bring_device_to_front(dev_at_cursor)
 	  end
+   end
+
+   -- zoom
+   if event.type == "mouse_wheel"  and device then
+	  device.zoom = device.zoom + event.y
+	  device.zoom = math.max(math.min(device.zoom, 3), 1)
    end
 
    -- move device
