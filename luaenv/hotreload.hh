@@ -8,7 +8,7 @@ public:
     HotReload(Lua& lua);
     ~HotReload();
 
-    [[nodiscard]] bool restart() const { return restart_; }
+    bool restart();
 
 private:
     bool restart_ = false;

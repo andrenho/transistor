@@ -14,7 +14,7 @@ local interface Device
 
    size: function(self): Size
    rect: function(self): Rect
-   do_event: function(self, event: Event)
+   do_event: function(self, event: Event, rel_mouse_x: integer, rel_mouse_y: integer)
 end
 
 return Device

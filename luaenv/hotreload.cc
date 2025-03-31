@@ -43,3 +43,10 @@ HotReload::~HotReload()
     dmon_deinit();
 #endif
 }
+
+bool HotReload::restart()
+{
+    const bool r = restart_;
+    restart_ = false;
+    return r;
+}

@@ -19,6 +19,9 @@ int main()
 
     UI ui;
     while (ui.running()) {
+        if (hotreload.restart())
+            engine.setup();
+
         auto events = ui.events();
         engine.events(events);
 

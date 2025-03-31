@@ -19,11 +19,11 @@ end
 
 function Sandbox.new() : Sandbox
    local self : Sandbox = setmetatable({}, { __index = Sandbox })
-   self.board = Board.new(20, 10)
+   self.component_db = ComponentDB.new()
+   self.board = Board.new(20, 10, self.component_db)
    self.devices = {self.board}
    self.selected_device = 1
    self.moving_device = nil
-   self.component_db = ComponentDB.new()
    self.last_x, self.last_y = 0, 0
    self.window_w, self.window_h = 0, 0
    return self
@@ -47,7 +47,7 @@ function Sandbox:__topmost_device() : integer
    return 1
 end
 
-function Sandbox:__bring_device_to_front(dev_idx: integer)
+function Sandbox:__bring_device_to_front(_: integer)
    -- TODO
 end
 
@@ -116,9 +116,7 @@ function Sandbox:do_event(event: Event)
    local topmost = self.devices[self:__topmost_device()]
    if topmost then
 	  if events_to_pass_always[event.type] or (device and events_to_pass_when_under_pointer[event.type]) then
-		 if event.x then event.x = event.x + topmost.x end
-		 if event.y then event.y = event.y + topmost.y end
-		 topmost:do_event(event)
+		 topmost:do_event(event, self.last_x - topmost.x, self.last_y - topmost.y)
 	  end
    end
 end

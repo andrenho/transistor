@@ -17,4 +17,5 @@
 - [ ] Serialization (serialization.lua)
 
 - [ ] Toolbar
+- [ ] Infobox
 - [ ] ICs

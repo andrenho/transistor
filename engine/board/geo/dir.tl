@@ -21,10 +21,10 @@ return {
 
     rotation: {Direction: Direction} = {
         [CENTER] = CENTER,
-        [N] = N,
-        [E] = E,
-        [S] = S,
-        [W] = W,
+        [N] = E,
+        [E] = S,
+        [S] = W,
+        [W] = N,
     },
 
     angle: {Direction: number} = {

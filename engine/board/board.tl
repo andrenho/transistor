@@ -9,6 +9,7 @@ global type Sandbox
 
 local fdir = require "board.geo.dir"
 local Component = require "components.component"
+local ComponentDB = require "components.componentdb"
 local ComponentDef = require "components.componentdef"
 local Position = require "board.geo.position"
 local Rect = require "board.geo.rect"
@@ -16,19 +17,34 @@ local Wire = require "board.wire"
 
 local TILE_SIZE = 16
 
+local record BoardCursor
+   record DrawingWire
+	  starting_pos: Position
+	  orientation: Orientation
+	  orientation_defined: boolean
+   end
+
+   selected_direction: Direction
+   selected_wire: Wire
+   selected_component: string
+   erasing: boolean
+   wire: DrawingWire
+end
+
 local record Board is Device
-   -- fields
    w: integer
    h: integer
    wires: {PosHash: Wire}
    components: {Component}
+   cursor: BoardCursor
+   component_db: ComponentDB
 
    __index: Board
 end
 
 Board.__index = Board
 
-function Board.new(w: integer, h: integer) : Board
+function Board.new(w: integer, h: integer, component_db: ComponentDB) : Board
    local self : Board = setmetatable({}, Board as metatable<Board>)
    self.x, self.y = 70, 70
    self.zoom = 2.0
@@ -36,6 +52,12 @@ function Board.new(w: integer, h: integer) : Board
    self.w, self.h = w, h
    self.wires = {}
    self.components = {}
+   self.component_db = component_db
+   self.cursor = {
+	  selected_direction = N,
+	  selected_wire = WR("top", "1"),
+	  erasing = false,
+   }
    assert(type(self.w) == 'number' and type(self.h) == 'number')
    return self
 end
@@ -132,10 +154,11 @@ function Board:add_wires(pos1: Position, pos2: Position, orientation: Orientatio
    self:remove_wires_under_ics()
 end
 
-function Board:add_component(def: ComponentDef, pos: Position, dir: Direction)
+function Board:add_component(def: ComponentDef | string, pos: Position, dir: Direction)
+   if type(def) == "string" then def = self.component_db:def(def as string) end
    assert(dir ~= CENTER)
 
-   local rect = def:rect(pos, dir)
+   local rect = (def as ComponentDef):rect(pos, dir)
 
    -- inside the board?
    if not rect:fully_inside_of(Rect.new(0, 0, self.w-1, self.h-1)) then
@@ -150,7 +173,7 @@ function Board:add_component(def: ComponentDef, pos: Position, dir: Direction)
    end
 
    -- initialize component
-   local component = Component.new(def, pos, dir)
+   local component = Component.new(def as ComponentDef, pos, dir)
    self.components[#self.components+1] = component
 
    -- remove wires underneath
@@ -193,8 +216,81 @@ end
 -- EVENTS
 --
 
-function Board:do_event(event: Event)
-   print(serpent.line(event))
+function Board:do_event(event: Event, rel_mouse_x: integer, rel_mouse_y: integer)
+   local pos = P(
+	  math.floor(rel_mouse_x / TILE_SIZE / self.zoom),
+	  math.floor(rel_mouse_y / TILE_SIZE / self.zoom)
+   )
+   local cursor = self.cursor
+
+   if event.type == "move_pointer" then
+	  if cursor.wire then
+		 local dx = cursor.wire.starting_pos.x - pos.x
+		 local dy = cursor.wire.starting_pos.y - pos.y
+		 if not cursor.wire.orientation_defined and (dx ~= 0 or dy ~= 0) then
+            if math.abs(dx) > math.abs(dy) then
+               cursor.wire.orientation = HORIZONTAL
+            else
+               cursor.wire.orientation = VERTICAL
+            end
+            cursor.wire.orientation_defined = true
+         end
+         
+         if cursor.wire.orientation_defined and dx == 0 and dy == 0 then
+            cursor.wire.orientation_defined = false
+         end
+	  end
+	  if cursor.erasing then
+		 self:clear_tile(pos)
+	  end
+	  
+   elseif event.type == "mouse_press" then
+	  if event.button == "left" then
+		 local component = self:component(pos)
+		 if component then
+			component:on_click()
+		 elseif cursor.selected_component then
+			self:add_component(cursor.selected_component, pos, cursor.selected_direction)
+		 end
+	  end
+
+   elseif event.type == "key_down" then
+	  if event.key == "r" then
+		 if self:component(pos) then
+			self:rotate_tile(pos)
+		 else
+			cursor.selected_direction = fdir.rotation[cursor.selected_direction]
+		 end
+	  elseif event.key == "v" then self:add_component("__vcc", pos, cursor.selected_direction)
+	  elseif event.key == "b" then self:add_component("__button", pos, cursor.selected_direction)
+	  elseif event.key == "l" then self:add_component("__led", pos, cursor.selected_direction)
+	  elseif event.key == "p" then self:add_component("__pnp", pos, cursor.selected_direction)
+	  elseif event.key == "n" then self:add_component("__npn", pos, cursor.selected_direction)
+	  elseif event.key == "x" then
+		 cursor.erasing = true
+		 self:clear_tile(pos)
+	  elseif event.key == "w" then
+		 cursor.wire = {
+			orientation_defined = true,
+			orientation = HORIZONTAL,
+			starting_pos = pos
+		 }
+	  end
+
+   elseif event.type == "key_up" then
+	  if event.key == "x" then
+		 cursor.erasing = false
+	  elseif event.key == "w" then
+		 if cursor.wire then
+			if pos == cursor.wire.starting_pos and pos.dir ~= CENTER then
+			   self:add_wire(pos, cursor.selected_wire)
+			else
+			   self:add_wires(cursor.wire.starting_pos, pos, cursor.wire.orientation, cursor.selected_wire)
+			end
+			cursor.wire = nil
+		 end
+	  end
+   end
 end
 
 -- 
