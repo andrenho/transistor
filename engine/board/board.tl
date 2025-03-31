@@ -56,6 +56,10 @@ function Board:component(pos: Position) : Component
    return nil
 end
 
+function Board:size() : (integer, integer)
+   return (self.w + 4) * TILE_SIZE, (self.h + 4) * TILE_SIZE
+end
+
 function Board:rect() : Rect
    return {
 	  top_left = P(self.x + 8, self.y + 8),

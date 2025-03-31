@@ -6,6 +6,7 @@ local interface Device
    zoom: number
    z_order: integer
 
+   size: function(self): (integer, integer)
    rect: function(self): Rect
 end
 

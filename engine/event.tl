@@ -6,14 +6,22 @@ global enum EventType
    "key_up"
 
    "clear_board"
+   "window_resize"
+end
+
+global enum EventButton
+   "left"
+   "middle"
+   "right"
 end
 
 local record Event
    type: EventType
    x: integer
    y: integer
-   button: string
+   button: EventButton
    key: string
+   index: integer
 end
 
 return Event

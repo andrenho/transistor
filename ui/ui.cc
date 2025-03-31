@@ -32,6 +32,9 @@ UI::UI()
     ps::res::add_image("circuit", ui_resources_images_circuit_png, ui_resources_images_circuit_png_sz);
     ps::res::add_tiles_from_lua("circuit", ui_resources_images_circuit_tileset_lua, ui_resources_images_circuit_tileset_lua_sz);
 
+    SDL_Event resize = { .type = SDL_EVENT_WINDOW_RESIZED };
+    SDL_PushEvent(&resize);
+
     gui.init();
 }
 
@@ -75,6 +78,11 @@ std::vector<luaobj::Event> UI::events() const
             case SDL_EVENT_KEY_UP:
                 events.push_back({ .type = "key_up", .key = std::string(1, (char) e.key.key) });
                 break;
+            case SDL_EVENT_WINDOW_RESIZED: {
+                int w, h;
+                SDL_GetWindowSize(ps::graphics::window(), &w, &h);
+                events.push_back({ .type = "window_resize", .x = w, .y = h });
+            }
             default: break;
         }
 
