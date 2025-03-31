@@ -1,6 +1,7 @@
 #ifndef LUAOBJ_DIALOG_HH_
 #define LUAOBJ_DIALOG_HH_
 
+#include <vector>
 #include <lua.hpp>
 #include "mappers/out/event.hh"
 
@@ -31,6 +32,8 @@ struct Dialog {
     static Dialog from_lua(lua_State* L, int index) {
         Dialog dialog = {
             .title = luaw_getfield<std::string>(L, -1, "title"),
+            .text = {},
+            .type = Information,
             .buttons = luaw_getfield<std::vector<Button>>(L, -1, "buttons"),
             .default_button = luaw_getfield<size_t>(L, -1, "default_button"),
         };

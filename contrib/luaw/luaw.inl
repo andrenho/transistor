@@ -399,6 +399,7 @@ template <ComparableToLua T> bool luaw_is(lua_State*L, int index)
 
 // variant
 
+/*
 template <typename... Types>
 int luaw_push(lua_State* L, std::variant<Types...> const& t) {
     std::visit([&](auto&& arg) {
@@ -408,7 +409,6 @@ int luaw_push(lua_State* L, std::variant<Types...> const& t) {
     return 1;
 }
 
-/*
 template <typename T, typename... Types>
 concept Variant = requires(T t) {
     std::is_same_v<T, std::variant<Types...>>;

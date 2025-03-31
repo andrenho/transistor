@@ -62,6 +62,8 @@ std::vector<luaobj::Event> UI::events() const
         if (e.type == SDL_EVENT_QUIT || (e.type == SDL_EVENT_KEY_DOWN && e.key.key == SDLK_Q))
             ps::graphics::quit();
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
         switch (e.type) {
             case SDL_EVENT_MOUSE_MOTION:
                 events.push_back({ .type = "move_pointer", .x = (int) e.motion.x, .y = (int) e.motion.y });
@@ -85,6 +87,7 @@ std::vector<luaobj::Event> UI::events() const
             }
             default: break;
         }
+#pragma GCC diagnostic pop
 
         gui.do_event(&e);
     }
