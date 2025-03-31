@@ -87,6 +87,7 @@ std::vector<luaobj::Event> UI::events() const
                 int w, h;
                 SDL_GetWindowSize(ps::graphics::window(), &w, &h);
                 events.push_back({ .type = "window_resize", .x = w, .y = h });
+                break;
             }
             default: break;
         }

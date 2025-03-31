@@ -34,7 +34,6 @@ function Sandbox:render() : {Scene}
 end
 
 function Sandbox:__device_at_point(x: integer, y: integer) : integer
-   print(x, y)
    for i,dev in ipairs(self.devices) do
 	  if dev:rect():contains(P(x, y)) then
 		 return i
@@ -51,6 +50,14 @@ end
 function Sandbox:__bring_device_to_front(dev_idx: integer)
    -- TODO
 end
+
+local events_to_pass_always : {EventType:boolean} = {
+   mouse_release=true, key_up=true
+}
+
+local events_to_pass_when_under_pointer : {EventType:boolean} = {
+   move_pointer=true, mouse_press=true, key_down=true,
+}
 
 function Sandbox:move_device(idx: integer, rel_x: integer, rel_y: integer)
    local dev = self.devices[idx]
@@ -103,6 +110,16 @@ function Sandbox:do_event(event: Event)
 	  self.moving_device = nil
    elseif event.type == "move_pointer" and self.moving_device then
 	  self:move_device(self.moving_device, rel_x, rel_y)
+   end
+
+   -- pass events to devices
+   local topmost = self.devices[self:__topmost_device()]
+   if topmost then
+	  if events_to_pass_always[event.type] or (device and events_to_pass_when_under_pointer[event.type]) then
+		 if event.x then event.x = event.x + topmost.x end
+		 if event.y then event.y = event.y + topmost.y end
+		 topmost:do_event(event)
+	  end
    end
 end
 

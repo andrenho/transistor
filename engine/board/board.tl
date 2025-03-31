@@ -3,6 +3,7 @@ local type Direction = require "board.geo.direction"
 local type Orientation = require "board.geo.orientation"
 local type Scene = require "ui.scene"
 local type Context = require "ui.context"
+local type Event = require "event"
 
 global type Sandbox
 
@@ -188,8 +189,16 @@ function Board:clear_tile(pos: Position)
    self.wires[P(pos.x, pos.y, W):hash()] = nil
 end
 
+--
+-- EVENTS
+--
+
+function Board:do_event(event: Event)
+   print(serpent.line(event))
+end
+
 -- 
--- RENDERDING
+-- RENDERING
 --
 
 function Board:add_image(scene: Scene, image: string, x: integer, y: integer, context?: Context)

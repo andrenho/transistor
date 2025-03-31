@@ -1,3 +1,4 @@
+local type Event = require "event"
 local Rect = require "board.geo.rect"
 
 global record Size
@@ -13,6 +14,7 @@ local interface Device
 
    size: function(self): Size
    rect: function(self): Rect
+   do_event: function(self, event: Event)
 end
 
 return Device
