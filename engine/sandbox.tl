@@ -34,8 +34,13 @@ function Sandbox:render() : {Scene}
 end
 
 function Sandbox:__device_at_point(x: integer, y: integer) : integer
-   -- TODO
-   return 1
+   print(x, y)
+   for i,dev in ipairs(self.devices) do
+	  if dev:rect():contains(P(x, y)) then
+		 return i
+	  end
+   end
+   return nil
 end
 
 function Sandbox:__topmost_device() : integer
@@ -74,6 +79,7 @@ function Sandbox:do_event(event: Event)
 	  rel_x, rel_y = (event.x - self.last_x), (event.y - self.last_y)
 	  self.last_x, self.last_y = event.x, event.y
    end
+
    local dev_at_cursor = self:__device_at_point(self.last_x, self.last_y)
    local device = self.devices[dev_at_cursor]
 
@@ -92,7 +98,7 @@ function Sandbox:do_event(event: Event)
 
    -- move device
    if event.type == "mouse_press" and event.button == "right" then
-	  self.moving_device = self:__device_at_point(event.x, event.y)
+	  self.moving_device = dev_at_cursor
    elseif event.type == "mouse_release" and event.button == "right" then
 	  self.moving_device = nil
    elseif event.type == "move_pointer" and self.moving_device then

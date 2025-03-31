@@ -66,10 +66,8 @@ end
 function Board:rect() : Rect
    local sz = self:size()
    local gap = math.floor(8 * self.zoom)
-   return {
-	  top_left = P(self.x + gap, self.y + gap),
-	  bottom_right = P(self.x + sz.w - 2*gap, self.y + sz.h - 2*gap)
-   }
+   return Rect.new(self.x - 2*gap, self.y - 2*gap,
+                   self.x + sz.w - 4*gap, self.y + sz.h - 4*gap)
 end
 
 --
