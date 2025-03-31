@@ -15,6 +15,7 @@ struct Render {
 
     static Render from_lua(lua_State* L, int index) {
         Render render = {
+            .scenes = {},
             .menu = luaw_getfield<std::vector<MenuItem>>(L, index, "menu"),
         };
 

@@ -32,7 +32,7 @@ ifdef APPLE  # SDL requirements for mac
 			   -framework QuartzCore -framework UniformTypeIdentifiers -liconv
 endif
 
-CPPFLAGS += -Wno-shadow
+CPPFLAGS += -Wno-unknown-pragmas
 
 TL_CONFIG = -Iengine -Iengine/decl --gen-target 5.1 --global-env-def decl
 

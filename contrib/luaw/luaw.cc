@@ -2,7 +2,7 @@
 
 #include <fstream>
 #include <sstream>
-#include <functional>
+#include <vector>
 
 #include <tgmath.h>
 
@@ -141,7 +141,7 @@ std::string luaw_dump(lua_State* L, int index, bool pretty_print, size_t max_dep
             return "nil";
         case LUA_TNUMBER: {
             lua_Number n = lua_tonumber(L, index);
-            lua_Number diff = abs(n - round(n));
+            lua_Number diff = fabs(n - round(n));
             if (diff < 0.000001)
                 return std::to_string((int) n);
             else
@@ -206,9 +206,9 @@ template<> int luaw_push<bool>(lua_State* L, bool const& t) { lua_pushboolean(L,
 template<> bool luaw_is<bool>(lua_State* L, int index) { return lua_isboolean(L, index); }
 template<> bool luaw_to_(lua_State* L, int index) { return lua_toboolean(L, index); }
 
-template<nullptr_t> int luaw_push(lua_State* L, [[maybe_unused]] nullptr_t const& t=nullptr) { lua_pushnil(L); return 1; }
-template<> bool luaw_is<nullptr_t>(lua_State* L, int index) { return lua_isnil(L, index); }
-template<> nullptr_t luaw_to_([[maybe_unused]] lua_State* L, [[maybe_unused]] int index) { return nullptr; }
+template<std::nullptr_t> int luaw_push(lua_State* L, [[maybe_unused]] std::nullptr_t const& t=nullptr) { lua_pushnil(L); return 1; }
+template<> bool luaw_is<std::nullptr_t>(lua_State* L, int index) { return lua_isnil(L, index); }
+template<> std::nullptr_t luaw_to_([[maybe_unused]] lua_State* L, [[maybe_unused]] int index) { return nullptr; }
 
 template<> int luaw_push(lua_State* L, std::string const& t) { lua_pushstring(L, t.c_str()); return 1; }
 template<> bool luaw_is<std::string>(lua_State* L, int index) { return lua_isstring(L, index); }
