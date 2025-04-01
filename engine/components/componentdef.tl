@@ -47,7 +47,7 @@ local record ComponentDef
 
    init: function()
    on_click: function(Component)
-   render: function(any, Scene, Context)   -- TODO - replace any with Component
+   render: function(any, Scene, Context)   -- TODO - replace `any` with Component
    simulate: function(Component)
 
    -- internal

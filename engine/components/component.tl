@@ -21,8 +21,8 @@ function Component.new(def: ComponentDef, position: Position, direction: Directi
 	self.def = def
 	self.position = position
 	self.direction = direction
-	self.data = {0} -- Array(def.data_size)
-	self.pins = {0,0,0,0} -- Array(#def.pins)
+	self.data = Array.new(def.data_size)
+	self.pins = Array.new(#def.pins)
     return self
 end
 
