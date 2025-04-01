@@ -1,6 +1,7 @@
 local type Scene = require "ui.scene"
 local type Event = require "event"
 local type Device = require "device"
+local type BoardRenderer = require "board.boardrenderer"
 
 local ComponentDB = require "components.componentdb"
 local Board = require "board.board"
@@ -15,6 +16,7 @@ local record Sandbox
    window_w: integer
    window_h: integer
    moving_device: integer
+   board_renderer: BoardRenderer
 end
 
 function Sandbox.new() : Sandbox
@@ -26,11 +28,12 @@ function Sandbox.new() : Sandbox
    self.moving_device = nil
    self.last_x, self.last_y = 0, 0
    self.window_w, self.window_h = 0, 0
+   self.board_renderer = BoardRenderer.new(self.board)
    return self
 end
 
 function Sandbox:render() : {Scene}
-   return {self.board:render()}
+   return {self.board_renderer:render()}
 end
 
 function Sandbox:__device_at_point(x: integer, y: integer) : integer

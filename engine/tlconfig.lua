@@ -1,3 +1,4 @@
 return {
-    global_env_def = "decl"
+    global_env_def = "decl",
+    include_dir = { "decl "},
 }

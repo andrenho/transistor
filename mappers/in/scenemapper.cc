@@ -38,6 +38,8 @@ static ps::Context map_to_context(lua_State* L)
 
 static void map_to_instruction(lua_State* L, ps::Scene& scene)
 {
+    // we're trying to be as most optimized as possible here
+
     assert(lua_istable(L, -1));
 
     lua_rawgeti(L, -1, 1); const char* command = lua_tostring(L, -1); lua_pop(L, 1);
@@ -74,9 +76,11 @@ std::vector<ps::Scene> map_to_scene(lua_State* L)
     // iterate through scenes
     luaw_ipairs(L, -1, [&scenes](lua_State* L, int _) {
         ps::Scene& scene = scenes.emplace_back();
+        lua_getfield(L, -1, "instructions");
         luaw_ipairs(L, -1, [&scene](lua_State* L, int _) {
             map_to_instruction(L, scene);
         });
+        lua_pop(L, 1);
     });
 
     assert(lua_gettop(L) == top);

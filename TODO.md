@@ -12,7 +12,14 @@
   - [x] Translate to C++
   - [x] UI management (events/graphics) (cursor.lua)
     - [x] Question dialog box
-- [ ] Interact with circuit
+- [x] Interact with circuit
+- [x] Increase performance
+  - [x] Component not being drawn
+  - [ ] Custom board renderer
+  - [ ] Further increase performance by
+    - [ ] Caching image res
+    - [ ] Single array, preallocate array
+- [ ] Clear circuit not working
 - [ ] Compilation (compilation.lua, connected_wires.lua)
 - [ ] Serialization (serialization.lua)
 

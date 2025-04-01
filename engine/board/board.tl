@@ -1,8 +1,6 @@
 local type Device = require 'device'
 local type Direction = require "board.geo.direction"
 local type Orientation = require "board.geo.orientation"
-local type Scene = require "ui.scene"
-local type Context = require "ui.context"
 local type Event = require "event"
 
 global type Sandbox
@@ -294,74 +292,6 @@ function Board:do_event(event: Event, rel_mouse_x: integer, rel_mouse_y: integer
 		 end
 	  end
    end
-end
-
--- 
--- RENDERING
---
-
-function Board:add_image(scene: Scene, image: string, x: integer, y: integer, context?: Context)
-   scene:add_image(image, math.floor(x * TILE_SIZE + (self.x / self.zoom)), math.floor(y * TILE_SIZE + (self.y / self.zoom)), context)
-end
-
-function Board:__draw_board(scene: Scene)
-   self:add_image(scene, "board_top_left", -2, -2)
-   self:add_image(scene, "board_top_right", self.w, -2)
-   self:add_image(scene, "board_bottom_left", -2, self.h)
-   self:add_image(scene, "board_bottom_right", self.w, self.h)
-   for x=0,self.w-1 do
-	  self:add_image(scene, "board_top", x, -2)
-	  self:add_image(scene, "board_bottom", x, self.h)
-   end
-   for y=0,self.h-1 do
-	  self:add_image(scene, "board_left", -2, y)
-	  self:add_image(scene, "board_right", self.w, y)
-   end
-   for x=0,self.w-1 do
-	  for y=0,self.h-1 do
-		 self:add_image(scene, "tile", x, y)
-	  end
-   end
-end
-
-function Board:__draw_wires(scene: Scene)
-   local wire_image = function(pos: Position, wire: Wire) : string
-	  return "wire_" .. wire.layer .. "_off_" .. pos.dir:lower() .. "_" .. wire.width
-   end
-   -- wires
-   for pos_hash, wire in pairs(self.wires) do
-	  local pos = Position.unhash(pos_hash)
-	  self:add_image(scene, wire_image(pos, wire), pos.x, pos.y)
-   end
-   --temporary wire
-   if self.cursor.wire then
-	  local w = self.cursor.wire
-	  for _,pos in ipairs(Position.a_to_b(w.starting_pos, w.end_pos, w.orientation)) do
-		 self:add_image(scene, wire_image(pos, self.cursor.selected_wire), pos.x, pos.y, { opacity = .5 })
-	  end
-   end
-end
-
-function Board:__draw_components(scene: Scene)
-   for _, component in ipairs(self.components) do
-      local context = { 
-		 position = { 
-			x = math.floor(component.position.x * TILE_SIZE + (self.x / self.zoom)),
-			y = math.floor(component.position.y * TILE_SIZE + (self.y / self.zoom)),
-		 },
-		 rotation = fdir.angle[component.direction]
-	  }
-	  component.def.render(component, scene, context)
-   end
-end
-
-function Board:render() : Scene
-   local scene = Scene.new()
-   scene:push_context({ zoom = self.zoom })
-   self:__draw_board(scene)
-   self:__draw_wires(scene)
-   self:__draw_components(scene)
-   return scene
 end
 
 --[[
