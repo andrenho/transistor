@@ -15,9 +15,9 @@
 - [x] Interact with circuit
 - [x] Increase performance
   - [x] Component not being drawn
-  - [ ] Custom board renderer
+  - [x] Custom board renderer
   - [ ] Further increase performance by
-    - [ ] Caching image res
+    - [x] Caching image res
     - [ ] Single array, preallocate array
 - [ ] Clear circuit not working
 - [ ] Compilation (compilation.lua, connected_wires.lua)

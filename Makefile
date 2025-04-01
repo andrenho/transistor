@@ -45,6 +45,7 @@ OBJ = \
 	implementation.o \
 	luaenv/array.o \
 	luaenv/hotreload.o \
+	luaenv/cache.o \
 	mappers/engine.o \
 	mappers/in/scenemapper.o \
 	ui/ui.o \

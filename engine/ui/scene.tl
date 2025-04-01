@@ -19,7 +19,7 @@ function Scene.new() : Scene
     return self
 end
 
-function Scene:add_image(image: string, x: integer, y: integer, context?: Context)
+function Scene:add_image(image: string | ResourceId, x: integer, y: integer, context?: Context)
    self.instructions[#self.instructions+1] = { "draw", image, x, y, 0, 0, context }
 end
 

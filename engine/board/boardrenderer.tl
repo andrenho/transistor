@@ -7,6 +7,10 @@ local Wire = require "board.wire"
 
 local record Cache
    tile: ResourceId
+   board_top: ResourceId
+   board_bottom: ResourceId
+   board_left: ResourceId
+   board_right: ResourceId
 end
 
 local record BoardRenderer
@@ -20,37 +24,41 @@ local TILE_SIZE = 16
 
 local function load_cache() : Cache
    return {
-	  tile = cache_image("tile")
+	  tile = cache_image("tile"),
+	  board_top = cache_image("board_top"),
+	  board_bottom = cache_image("board_bottom"),
+	  board_right = cache_image("board_right"),
+	  board_left = cache_image("board_left"),
    }
 end
 
 function BoardRenderer.new(board: Board) : BoardRenderer
     local self : BoardRenderer = setmetatable({}, BoardRenderer as metatable<BoardRenderer>)
 	self.board = board
-	self.cache = load_cache()
     return self
 end
 
-function BoardRenderer:add_image(scene: Scene, image: string, x: integer, y: integer, context?: Context)
+function BoardRenderer:add_image(scene: Scene, image: string | ResourceId, x: integer, y: integer, context?: Context)
    scene:add_image(image, math.floor(x * TILE_SIZE + (self.board.x / self.board.zoom)), math.floor(y * TILE_SIZE + (self.board.y / self.board.zoom)), context)
 end
 
 function BoardRenderer:__draw_board(scene: Scene)
+   local C = self.cache
    self:add_image(scene, "board_top_left", -2, -2)
    self:add_image(scene, "board_top_right", self.board.w, -2)
    self:add_image(scene, "board_bottom_left", -2, self.board.h)
    self:add_image(scene, "board_bottom_right", self.board.w, self.board.h)
    for x=0,self.board.w-1 do
-	  self:add_image(scene, "board_top", x, -2)
-	  self:add_image(scene, "board_bottom", x, self.board.h)
+	  self:add_image(scene, C.board_top, x, -2)
+	  self:add_image(scene, C.board_bottom, x, self.board.h)
    end
    for y=0,self.board.h-1 do
-	  self:add_image(scene, "board_left", -2, y)
-	  self:add_image(scene, "board_right", self.board.w, y)
+	  self:add_image(scene, C.board_left, -2, y)
+	  self:add_image(scene, C.board_right, self.board.w, y)
    end
    for x=0,self.board.w-1 do
 	  for y=0,self.board.h-1 do
-		 self:add_image(scene, "tile", x, y)
+		 self:add_image(scene, C.tile, x, y)
 	  end
    end
 end
@@ -87,6 +95,9 @@ function BoardRenderer:__draw_components(scene: Scene)
 end
 
 function BoardRenderer:render() : Scene
+   if not self.cache then
+	  self.cache = load_cache()
+   end
    local scene = Scene.new()
    scene:push_context({ zoom = self.board.zoom })
    self:__draw_board(scene)

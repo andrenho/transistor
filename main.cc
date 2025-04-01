@@ -1,6 +1,7 @@
 #include <pl_log.h>
 
 #include "luaenv/array.hh"
+#include "luaenv/cache.hh"
 #include "luaenv/lua.hh"
 #include "luaenv/hotreload.hh"
 #include "mappers/engine.hh"
@@ -14,7 +15,10 @@ int main()
     Lua lua;
     HotReload hotreload(lua);
 
-    lua.with_lua([](lua_State* L) { setup_array(L); });
+    lua.with_lua([](lua_State* L) {
+        setup_array(L);
+        setup_cache(L);
+    });
     Engine engine(lua);
 
     UI ui;
