@@ -20,6 +20,7 @@ local TILE_SIZE = 16
 local record BoardCursor
    record DrawingWire
 	  starting_pos: Position
+	  end_pos: Position
 	  orientation: Orientation
 	  orientation_defined: boolean
    end
@@ -239,6 +240,7 @@ function Board:do_event(event: Event, rel_mouse_x: integer, rel_mouse_y: integer
          if cursor.wire.orientation_defined and dx == 0 and dy == 0 then
             cursor.wire.orientation_defined = false
          end
+		 cursor.wire.end_pos = pos
 	  end
 	  if cursor.erasing then
 		 self:clear_tile(pos)
@@ -273,7 +275,8 @@ function Board:do_event(event: Event, rel_mouse_x: integer, rel_mouse_y: integer
 		 cursor.wire = {
 			orientation_defined = true,
 			orientation = HORIZONTAL,
-			starting_pos = pos
+			starting_pos = pos,
+			end_pos = pos,
 		 }
 	  end
 
@@ -322,10 +325,20 @@ function Board:__draw_board(scene: Scene)
 end
 
 function Board:__draw_wires(scene: Scene)
+   local wire_image = function(pos: Position, wire: Wire) : string
+	  return "wire_" .. wire.layer .. "_off_" .. pos.dir:lower() .. "_" .. wire.width
+   end
+   -- wires
    for pos_hash, wire in pairs(self.wires) do
 	  local pos = Position.unhash(pos_hash)
-	  local image = "wire_" .. wire.layer .. "_off_" .. pos.dir:lower() .. "_" .. wire.width
-	  self:add_image(scene, image, pos.x, pos.y)
+	  self:add_image(scene, wire_image(pos, wire), pos.x, pos.y)
+   end
+   --temporary wire
+   if self.cursor.wire then
+	  local w = self.cursor.wire
+	  for _,pos in ipairs(Position.a_to_b(w.starting_pos, w.end_pos, w.orientation)) do
+		 self:add_image(scene, wire_image(pos, self.cursor.selected_wire), pos.x, pos.y, { opacity = .5 })
+	  end
    end
 end
 

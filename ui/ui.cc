@@ -78,7 +78,8 @@ std::vector<luaobj::Event> UI::events() const
                 events.push_back({ .type = "mouse_wheel", .y = e.wheel.y });
                 break;
             case SDL_EVENT_KEY_DOWN:
-                events.push_back({ .type = "key_down", .key = std::string(1, (char) e.key.key), .index = e.button.button });
+                if (e.key.repeat == 0)
+                    events.push_back({ .type = "key_down", .key = std::string(1, (char) e.key.key), .index = e.button.button });
                 break;
             case SDL_EVENT_KEY_UP:
                 events.push_back({ .type = "key_up", .key = std::string(1, (char) e.key.key) });
