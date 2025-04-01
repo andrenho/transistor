@@ -495,26 +495,26 @@ void luaw_pairs(lua_State* L, int index, F fn)
 // FIELDS
 //
 
-template <Optional T> T luaw_getfield(lua_State* L, int index, std::string const& field)
+template <Optional T> T luaw_getfield(lua_State* L, int index, std::string const& field, bool qualified_search)
 {
-    if (luaw_hasfield(L, index, field))
+    if (luaw_hasfield(L, index, field, qualified_search))
         return luaw_getfield<typename T::value_type>(L, index, field);
     else
         return {};
 }
 
-template <typename T> T luaw_getfield(lua_State* L, int index, std::string const& field)
+template <typename T> T luaw_getfield(lua_State* L, int index, std::string const& field, bool qualified_search)
 {
-    luaw_getfield(L, index, field);
+    luaw_getfield(L, index, field, qualified_search);
     T t = luaw_to<T>(L, -1);
     lua_pop(L, 1);
     return t;
 }
 
-template <typename T> void luaw_setfield(lua_State* L, int index, std::string const& field, T const& t)
+template <typename T> void luaw_setfield(lua_State* L, int index, std::string const& field, T const& t, bool qualified_search)
 {
     luaw_push(L, t);
-    luaw_setfield(L, index - 1, field);
+    luaw_setfield(L, index - 1, field, qualified_search);
 }
 
 //

@@ -221,80 +221,95 @@ template<> const char* luaw_to_<const char*>(lua_State* L, int index) { return l
 template<> int luaw_push(lua_State* L, lua_CFunction const& f) { lua_pushcfunction(L, f); return 1; }
 int luaw_push(lua_State* L, lua_CFunction f) { lua_pushcfunction(L, f); return 1; }
 
-void luaw_getfield(lua_State* L, int index, std::string const& field)
+void luaw_getfield(lua_State* L, int index, std::string const& field, bool qualified_search)
 {
-    std::istringstream iss(field);
-    std::string property;
+    if (qualified_search) {
+        std::istringstream iss(field);
+        std::string property;
 
-    int top = lua_gettop(L);
-    int levels = 0;
+        int top = lua_gettop(L);
+        int levels = 0;
 
-    lua_pushvalue(L, index);
+        lua_pushvalue(L, index);
 
-    while (std::getline(iss, property, '.')) {
-        lua_getfield(L, -1, property.c_str());
-        int type = lua_type(L, -1);
-        if (type == LUA_TNIL || (iss.peek() != EOF /* is not last */ && type != LUA_TTABLE)) {
-            lua_settop(L, top);
-            luaL_error(L, "Field '%s' not found.", field.c_str());
+        while (std::getline(iss, property, '.')) {
+            lua_getfield(L, -1, property.c_str());
+            int type = lua_type(L, -1);
+            if (type == LUA_TNIL || (iss.peek() != EOF /* is not last */ && type != LUA_TTABLE)) {
+                lua_settop(L, top);
+                luaL_error(L, "Field '%s' not found.", field.c_str());
+            }
+            ++levels;
         }
-        ++levels;
-    }
 
-    lua_insert(L, top + 1);
-    lua_pop(L, levels);
+        lua_insert(L, top + 1);
+        lua_pop(L, levels);
+    } else {
+        lua_getfield(L, index, field.c_str());
+    }
 }
 
-bool luaw_hasfield(lua_State* L, int index, std::string const& field)
+bool luaw_hasfield(lua_State* L, int index, std::string const& field, bool qualified_search)
 {
-    std::istringstream iss(field);
-    std::string property;
+    if (qualified_search) {
+        std::istringstream iss(field);
+        std::string property;
 
-    int top = lua_gettop(L);
+        int top = lua_gettop(L);
 
-    lua_pushvalue(L, index);
+        lua_pushvalue(L, index);
 
-    while (std::getline(iss, property, '.')) {
-        lua_getfield(L, -1, property.c_str());
-        int type = lua_type(L, -1);
-        if (type == LUA_TNIL || (iss.peek() != EOF /* is not last */ && type != LUA_TTABLE)) {
-            lua_settop(L, top);
-            return false;
+        while (std::getline(iss, property, '.')) {
+            lua_getfield(L, -1, property.c_str());
+            int type = lua_type(L, -1);
+            if (type == LUA_TNIL || (iss.peek() != EOF /* is not last */ && type != LUA_TTABLE)) {
+                lua_settop(L, top);
+                return false;
+            }
         }
-    }
 
-    lua_settop(L, top);
-    return true;
+        lua_settop(L, top);
+        return true;
+    } else {
+        lua_getfield(L, index, field.c_str());
+        bool r = lua_isnil(L, -1);
+        lua_pop(L, 1);
+        return r;
+    }
 }
 
-void luaw_setfield(lua_State* L, int index, std::string const& field)
+void luaw_setfield(lua_State* L, int index, std::string const& field, bool qualified_search)
 {
-    std::istringstream iss(field);
-    std::string property;
-    std::vector<std::string> ps;
+    if (qualified_search) {
+        std::istringstream iss(field);
+        std::string property;
+        std::vector<std::string> ps;
 
-    while (std::getline(iss, property, '.'))
-        ps.push_back(property);
+        while (std::getline(iss, property, '.'))
+            ps.push_back(property);
 
-    int top = lua_gettop(L);
-    int levels = 0;
+        int top = lua_gettop(L);
+        int levels = 0;
 
-    lua_pushvalue(L, index);
+        lua_pushvalue(L, index);
 
-    for (size_t i = 0; i < ps.size() - 1; ++i) {
-        lua_getfield(L, -1, ps.at(i).c_str());
-        int type = lua_type(L, -1);
-        if (type == LUA_TNIL || (iss.peek() != EOF /* is not last */ && type != LUA_TTABLE)) {
-            lua_settop(L, top);
-            luaL_error(L, "Field '%s' not found.", field.c_str());
+        for (size_t i = 0; i < ps.size() - 1; ++i) {
+            lua_getfield(L, -1, ps.at(i).c_str());
+            int type = lua_type(L, -1);
+            if (type == LUA_TNIL || (iss.peek() != EOF /* is not last */ && type != LUA_TTABLE)) {
+                lua_settop(L, top);
+                luaL_error(L, "Field '%s' not found.", field.c_str());
+            }
+            ++levels;
         }
-        ++levels;
+
+        lua_pushvalue(L, - levels - 2);
+        lua_setfield(L, -2, ps.at(ps.size() - 1).c_str());
+
+        lua_settop(L, top - 1);
+    } else {
+        lua_setfield(L, index, field.c_str());
     }
-
-    lua_pushvalue(L, - levels - 2);
-    lua_setfield(L, -2, ps.at(ps.size() - 1).c_str());
-
-    lua_settop(L, top - 1);
 }
 
 std::string luaw_to_string(lua_State* L, int index)

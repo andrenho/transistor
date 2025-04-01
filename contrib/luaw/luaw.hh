@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <map>
 #include <string>
+#include <stdexcept>
 
 #include <lua.hpp>
 
@@ -61,18 +62,18 @@ template <typename F> requires std::invocable<F&, lua_State*>              void 
 
 // fields
 
-void luaw_getfield(lua_State* L, int index, std::string const& field);
-bool luaw_hasfield(lua_State* L, int index, std::string const& field);
-void luaw_setfield(lua_State* L, int index, std::string const& field);
+void luaw_getfield(lua_State* L, int index, std::string const& field, bool qualified_search=false);
+bool luaw_hasfield(lua_State* L, int index, std::string const& field, bool qualified_search=false);
+void luaw_setfield(lua_State* L, int index, std::string const& field, bool qualified_search=false);
 
-template <typename T> T luaw_getfield(lua_State* L, int index, std::string const& field);
-template <typename T> void luaw_setfield(lua_State* L, int index, std::string const& field, T const& t);
+template <typename T> T luaw_getfield(lua_State* L, int index, std::string const& field, bool qualified_search=false);
+template <typename T> void luaw_setfield(lua_State* L, int index, std::string const& field, T const& t, bool qualified_search=false);
 
 // calls
 
-template <typename T=std::nullptr_t> T luaw_call(lua_State* L, auto&&... args);
-template <typename T=std::nullptr_t> T luaw_call_global(lua_State* L, std::string const& global, auto&&... args);
-template <typename T=std::nullptr_t> T luaw_call_field(lua_State* L, int index, std::string const& field, auto&&... args);
+template <typename T=nullptr_t> T luaw_call(lua_State* L, auto&&... args);
+template <typename T=nullptr_t> T luaw_call_global(lua_State* L, std::string const& global, auto&&... args);
+template <typename T=nullptr_t> T luaw_call_field(lua_State* L, int index, std::string const& field, auto&&... args);
 
 int luaw_call_push(lua_State* L, int nresults, auto&&... args);
 int luaw_call_push_global(lua_State* L, std::string const& global, int nresults, auto&&... args);
