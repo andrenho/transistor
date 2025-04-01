@@ -6,29 +6,12 @@ local enum Command
     "pop_context"
 end
 
-local interface Instruction
-    command: Command
-end
+-- draw:        { "draw", image, x, y, w, h, context }
+-- push_context { "push_context", context }
+-- pop_context  { "pop_context" }
+local type Instruction = { any }
 
-local record DrawInstruction
-        is Instruction
-        where self.command == "draw"
-    image: string
-    x: integer
-    y: integer
-    w: integer
-    h: integer
-    context: Context
-end
-
-local record PushContextInstruction
-      is Instruction
-      where self.command == "push_context"
-   context: Context
-end
-
-local record Scene
-	  is {Instruction}
+local record Scene is {Instruction}
    __index: Scene
 end
 Scene.__index = Scene
@@ -39,15 +22,15 @@ function Scene.new() : Scene
 end
 
 function Scene:add_image(image: string, x: integer, y: integer, context?: Context)
-   self[#self+1] = { command = "draw", image=image, x=x, y=y, context=context } as DrawInstruction
+   self[#self+1] = { "draw", image, x, y, context }
 end
 
 function Scene:push_context(context: Context)
-   self[#self+1] = { command = "push_context", context=context } as PushContextInstruction
+   self[#self+1] = { "push_context", context }
 end
 
 function Scene:pop_context()
-   self[#self+1] = { command = "pop_context" } as Instruction
+   self[#self+1] = { "pop_context" }
 end
 
 return Scene

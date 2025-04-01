@@ -40,27 +40,28 @@ static void map_to_instruction(lua_State* L, ps::Scene& scene)
 {
     assert(lua_istable(L, -1));
 
-    auto command = luaw_getfield<std::string>(L, -1, "command");
+    lua_rawgeti(L, -1, 1); const char* command = lua_tostring(L, -1); lua_pop(L, 1);
 
-    if (command == "draw") {
+    if (strcmp(command, "draw") == 0) {
         ps::Context context {};
-        auto image = luaw_getfield<std::string>(L, -1, "image");
-        int x = luaw_getfield<int>(L, -1, "x");
-        int y = luaw_getfield<int>(L, -1, "y");
-        int w = luaw_getfield<std::optional<int>>(L, -1, "w").value_or(0);
-        int h = luaw_getfield<std::optional<int>>(L, -1, "h").value_or(0);
-        lua_getfield(L, -1, "context"); if (!lua_isnil(L, -1)) context = map_to_context(L); lua_pop(L, 1);
+        lua_rawgeti(L, -1, 2); const char* image = lua_tostring(L, -1); lua_pop(L, 1);
+        lua_rawgeti(L, -1, 3); int x = (int) lua_tointeger(L, -1); lua_pop(L, 1);
+        lua_rawgeti(L, -1, 4); int y = (int) lua_tointeger(L, -1); lua_pop(L, 1);
+        lua_rawgeti(L, -1, 5); int w = (int) lua_tointeger(L, -1); lua_pop(L, 1);
+        lua_rawgeti(L, -1, 6); int h = (int) lua_tointeger(L, -1); lua_pop(L, 1);
+        lua_rawgeti(L, -1, 7); if (!lua_isnil(L, -1)) context = map_to_context(L); lua_pop(L, 1);
         scene.add_image(image, SDL_Rect { x, y, w, h }, context);
-    } else if (command == "push_context") {
+    } else if (strcmp(command, "push_context") == 0) {
         ps::Context context {};
-        lua_getfield(L, -1, "context"); context = map_to_context(L); lua_pop(L, 1);
+        lua_rawgeti(L, -1, 2); if (!lua_isnil(L, -1)) context = map_to_context(L); lua_pop(L, 1);
         scene.push_context(context);
-    } else if (command == "pop_context") {
+    } else if (strcmp(command, "pop_context") == 0) {
         scene.pop_context();
     } else {
         throw std::runtime_error("Unknown command '"s + command + "'");
     }
 }
+
 
 std::vector<ps::Scene> map_to_scene(lua_State* L)
 {
