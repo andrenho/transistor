@@ -55,7 +55,7 @@ function Sandbox:__bring_device_to_front(_: integer)
 end
 
 local events_to_pass_always : {EventType:boolean} = {
-   mouse_release=true, key_up=true
+   mouse_release=true, key_up=true, clear_board=true
 }
 
 local events_to_pass_when_under_pointer : {EventType:boolean} = {

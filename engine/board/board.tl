@@ -291,6 +291,9 @@ function Board:do_event(event: Event, rel_mouse_x: integer, rel_mouse_y: integer
 			cursor.wire = nil
 		 end
 	  end
+
+   elseif event.type == "clear_board" then
+	  self:clear()
    end
 end
 
