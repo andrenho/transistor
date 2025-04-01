@@ -8,8 +8,6 @@ global ui : UI = nil
 
 global function init()
    sandbox = Sandbox.new()
-   sandbox.board:add_wires(P(1, 1), P(5, 3), HORIZONTAL, WR("top", "1"))
-   sandbox.board:add_component(sandbox.component_db:def("__button"), P(1, 1), N)
    ui = UI.new()
 end
 
