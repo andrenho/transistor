@@ -44,6 +44,13 @@ function Sandbox:serialize() : SerialSandbox
    }
 end
 
+function Sandbox.unserialize(data: SerialSandbox) : Sandbox
+   local sandbox = Sandbox.new()
+   sandbox.component_db = ComponentDB.unserialize(data.component_db)
+   sandbox.board = Board.unserialize(data.board, sandbox.component_db)
+   return sandbox
+end
+
 function Sandbox:render() : {Scene}
    return {self.board_renderer:render()}
 end
