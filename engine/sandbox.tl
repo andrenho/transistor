@@ -37,6 +37,15 @@ function Sandbox.new() : Sandbox
    return self
 end
 
+function Sandbox:replace_board(board: Board)
+   local old_board = self.board
+   self.board = board
+   self.board_renderer = BoardRenderer.new(board)
+   for i=1,#self.devices do
+	  if self.devices[i] == old_board then self.devices[i] = self.board end
+   end
+end
+
 function Sandbox:serialize() : SerialSandbox
    return {
 	  board = self.board:serialize(),
@@ -47,7 +56,7 @@ end
 function Sandbox.unserialize(data: SerialSandbox) : Sandbox
    local sandbox = Sandbox.new()
    sandbox.component_db = ComponentDB.unserialize(data.component_db)
-   sandbox.board = Board.unserialize(data.board, sandbox.component_db)
+   sandbox:replace_board(Board.unserialize(data.board, sandbox.component_db))
    return sandbox
 end
 

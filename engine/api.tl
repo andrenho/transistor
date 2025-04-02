@@ -4,14 +4,16 @@ local FileManager = require 'filemanager'
 local Render = require 'ui.render'
 local type Event = require 'event'
 
-local sandbox : Sandbox = nil
-local file_manager : FileManager = nil
-local ui : UI = nil
+global sandbox : Sandbox = nil
+global file_manager : FileManager = nil
+global ui : UI = nil
 
 global function init()
-   sandbox = Sandbox.new()
-   file_manager = FileManager.new(sandbox)
+   print("-----------------------")
+   file_manager = FileManager.new()
+   sandbox = file_manager.sandbox
    ui = UI.new()
+   print(sandbox.board)
 end
 
 global function render() : Render
@@ -22,6 +24,7 @@ end
 global function do_events(events: {Event})
    for _,event in ipairs(events) do
 	  sandbox:do_event(event)
+	  if event.type == "key_down" and event.key == "d" then file_manager:dump() end
    end
 end
 

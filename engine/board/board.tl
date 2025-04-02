@@ -323,7 +323,7 @@ end
 function Board.unserialize(data: SerialBoard, component_db: ComponentDB) : Board
    local board = Board.new(data.w, data.h, component_db)
    for i=1,#data.wires,2 do
-	  board:add_wire(Position.unserialize(data.wires[1] as SerialPosition), Wire.unserialize(data.wires[i+1] as SerialWire))
+	  board:add_wire(Position.unserialize(data.wires[i] as SerialPosition), Wire.unserialize(data.wires[i+1] as SerialWire))
    end
    for _,c in ipairs(data.components) do
 	  board:add_component(c.def, Position.unserialize(c.pos), c.dir)

@@ -8,15 +8,33 @@ local record FileManager
 end
 FileManager.__index = FileManager
 
-function FileManager.new(sandbox: Sandbox) : FileManager
+function FileManager:load(filename: string) : Sandbox
+   local ok, data = pcall(dofile, filename)
+   if ok then
+	  return Sandbox.unserialize(data as SerialSandbox)
+   else
+	  return nil
+   end
+end
+
+function FileManager:load_in_progress() : Sandbox
+   return self:load(self.in_progress_filename)
+end
+
+function FileManager.new() : FileManager
     local self : FileManager = setmetatable({}, FileManager as metatable<FileManager>)
-	self.sandbox = sandbox
 	if package.config:sub(1,1) == "/" then  -- unix
 	   os.execute("mkdir -p ~/.config/transistor")
 	   self.in_progress_filename = os.getenv("HOME") .. "/.config/transistor/in_progress.trn"
 	else  -- windows
 	   os.execute("md $HOME/transistor")  -- untested
 	   self.in_progress_filename = os.getenv("HOME") .. "/transistor/in_progress.trn"
+	end
+	self.sandbox = self:load_in_progress()
+	if not self.sandbox then
+	   self.sandbox = Sandbox.new()
+	else
+	   print("Loaded from previously in progress")
 	end
     return self
 end
@@ -49,6 +67,7 @@ end
 
 function FileManager:save(filename: string)
    local f = assert(io.open(filename, "w"))
+   f:write("return ")
    serialize(self.sandbox:serialize(), f)
    f:close()
 end
@@ -57,12 +76,9 @@ function FileManager:save_in_progress()
    self:save(self.in_progress_filename)
 end
 
-function FileManager:load(filename: string) : Sandbox
-   -- TODO
-end
-
-function FileManager:load_in_progress() : Sandbox
-   return self:load(self.in_progress_filename)
+function FileManager:dump()
+   serialize(self.sandbox:serialize(), io.stdout)
+   io.stdout:write("\n")
 end
 
 return FileManager
