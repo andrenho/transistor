@@ -40,7 +40,6 @@ local record Board is Device
 
    __index: Board
 end
-
 Board.__index = Board
 
 function Board.new(w: integer, h: integer, component_db: ComponentDB) : Board

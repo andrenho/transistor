@@ -13,8 +13,17 @@ local record Wire
     width: WireWidth
 end
 
+global type WireSerial = string
+
 function Wire.new(layer: WireLayer, width: WireWidth) : Wire
    return { layer = layer, width = width }
+end
+
+function Wire.unserialize(data: WireSerial) : Wire
+   return Wire.new(data.layer, data.width)
+end
+
+function Wire:serialize() : WireSerial
 end
 
 global WR = Wire.new

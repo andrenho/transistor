@@ -18,12 +18,26 @@ local record Position
 end
 Position.__index = Position
 
+global record SerialPosition
+   x: integer
+   y: integer
+   dir: Direction
+end
+
 function Position.new(x: integer, y: integer, dir?: Direction) : Position
    local self : Position = setmetatable({}, Position as metatable<Position>)
    self.x = x
    self.y = y
    self.dir = dir or CENTER
    return self
+end
+
+function Position.unserialize(data: SerialPosition) : Position
+   return Position.new(data.x, data.y, data.dir)
+end
+
+function Position:serialize() : SerialPosition
+   return { x = self.x, y = self.y, dir = self.dir }
 end
 
 global P = Position.new
