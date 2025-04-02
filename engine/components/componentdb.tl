@@ -6,6 +6,9 @@ local record ComponentDB
 end
 ComponentDB.__index = ComponentDB
 
+global record SerialComponentDB
+end
+
 function ComponentDB:add(def: ComponentDef, native: boolean, lua_code?: string)
    ComponentDef.validate(def)
    setmetatable(def, ComponentDef as metatable<ComponentDef>)
@@ -47,23 +50,13 @@ function ComponentDB:def(key: string) : ComponentDef
    return item
 end
 
---[[
-function ComponentDB:take_snapshot()
-   local defs = {}
-   for _,def in pairs(self.items) do
-      if not def.native then
-         defs[#defs+1] = def.code
-      end
-   end
-   return defs
+function ComponentDB:serialize() : SerialComponentDB
+   return {}
 end
 
-function ComponentDB:import_snapshot(snap)
-   for _,code in ipairs(snap) do
-      self:add_from_str(code, false)
-   end
+function ComponentDB.unserialize(_: SerialComponentDB) : ComponentDB
+   return ComponentDB.new()
 end
-]]
 
 return ComponentDB
 

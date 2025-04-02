@@ -13,17 +13,18 @@ local record Wire
     width: WireWidth
 end
 
-global type WireSerial = string
+global type SerialWire = string
 
 function Wire.new(layer: WireLayer, width: WireWidth) : Wire
    return { layer = layer, width = width }
 end
 
-function Wire.unserialize(data: WireSerial) : Wire
-   return Wire.new(data.layer, data.width)
+function Wire.unserialize(data: SerialWire) : Wire
+   return Wire.new(data:sub(1, 1) == "t" and "top" or "bottom", data:sub(2, 2) as WireWidth)
 end
 
-function Wire:serialize() : WireSerial
+function Wire:serialize() : SerialWire
+   return self.layer == "top" and "t" or "b" .. self.width
 end
 
 global WR = Wire.new

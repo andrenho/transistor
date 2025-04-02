@@ -19,6 +19,11 @@ local record Sandbox
    board_renderer: BoardRenderer
 end
 
+global record SerialSandbox
+   board: SerialBoard
+   component_db: SerialComponentDB
+end
+
 function Sandbox.new() : Sandbox
    local self : Sandbox = setmetatable({}, { __index = Sandbox })
    self.component_db = ComponentDB.new()
@@ -30,6 +35,13 @@ function Sandbox.new() : Sandbox
    self.window_w, self.window_h = 0, 0
    self.board_renderer = BoardRenderer.new(self.board)
    return self
+end
+
+function Sandbox:serialize() : SerialSandbox
+   return {
+	  board = self.board:serialize(),
+	  component_db = self.component_db:serialize(),
+   }
 end
 
 function Sandbox:render() : {Scene}

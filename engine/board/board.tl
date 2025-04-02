@@ -42,6 +42,13 @@ local record Board is Device
 end
 Board.__index = Board
 
+global record SerialBoard
+   w: integer
+   h: integer
+   wires: {SerialPosition|SerialWire}
+   components: {SerialComponent}
+end
+
 function Board.new(w: integer, h: integer, component_db: ComponentDB) : Board
    local self : Board = setmetatable({}, Board as metatable<Board>)
    self.x, self.y = 70, 70
@@ -296,57 +303,32 @@ function Board:do_event(event: Event, rel_mouse_x: integer, rel_mouse_y: integer
    end
 end
 
---[[
 --
 -- SERIALIZATION
 --
 
-function Board:take_snapshot()
-   local snap = { w = self.w, h = self.h, wires = {}, components = {}, id = self.id }
+function Board:serialize() : SerialBoard
+   local data : SerialBoard = { w = self.w, h = self.h, wires = {}, components = {} }
    for pos_hash, wire in pairs(self.wires) do
-      local pos = Position.unhash(pos_hash)
-      snap.wires[#snap.wires+1] = { pos.x, pos.y, pos.dir, wire.layer .. wire.width, self:pos_hash_c(pos), false }
+	  data.wires[#data.wires + 1] = Position.unhash(pos_hash):serialize()
+	  data.wires[#data.wires + 1] = wire:serialize()
    end
-   if self.cursor.wire.drawing then
-      for _,pos in ipairs(Position.a_to_b(self.cursor.wire.starting_pos, self.cursor.pos, self.cursor.wire.orientation)) do
-         snap.wires[#snap.wires+1] = { pos.x, pos.y, pos.dir, self.cursor.selected_wire.layer .. self.cursor.selected_wire.width, self:pos_hash_c(pos), true }
-      end
+   for _, component in ipairs(self.components) do
+	  data.components[#data.components + 1] = component:serialize()
    end
-   for i, component in ipairs(self.components) do
-      snap.components[i] = { component.position.x, component.position.y, component.direction, component.def.key, self:pos_hash_c(component.position), component.def.data_size, false }
-   end
-   return snap
+   return data
 end
 
-function Board.from_snapshot(snap, sandbox)
-   local board = Board.new(snap.id, snap.w, snap.h, sandbox)
-   for _,w in ipairs(snap.wires) do
-      board:add_wire(P(w[1], w[2], w[3]), WR(w[4]:sub(1, 1), w[4]:sub(2, 2)))
+function Board.unserialize(data: SerialBoard, component_db: ComponentDB) : Board
+   local board = Board.new(data.w, data.h, component_db)
+   for i=1,#data.wires,2 do
+	  board:add_wire(Position.unserialize(data.wires[1] as SerialPosition), Wire.unserialize(data.wires[i+1] as SerialWire))
    end
-   for _,c in ipairs(snap.components) do
-      board:add_component(c[4], P(c[1], c[2]), c[3])
+   for _,c in ipairs(data.components) do
+	  board:add_component(c.def, Position.unserialize(c.pos), c.dir)
    end
    return board
 end
-
-function Board:simulate_lua_components()
-   for _,c in ipairs(self.components) do
-      if c.def.simulate then
-         c.def.simulate(c)
-      end
-   end
-end
-
-function Board:render_components(G: Graphics, tile_size: integer)
-   for _,c in ipairs(self.components) do
-      local x = c.position.x * tile_size
-      local y = c.position.y * tile_size
-      local context : Context = {}
-      context.rotation = fdir.angle[c.direction]
-      c.def.render(c, G, x, y, context)
-   end
-end
-]]
 
 return Board
 
