@@ -18,10 +18,11 @@
   - [x] Custom board renderer
   - [ ] Further increase performance by
     - [x] Caching image res
-    - [ ] Single array, preallocate array
-- [ ] Clear circuit not working
+    - [x] Single array, preallocate array
+- [x] Clear circuit not working
+- [x] Serialization (serialization.lua)
 - [ ] Compilation (compilation.lua, connected_wires.lua)
-- [ ] Serialization (serialization.lua)
+- [ ] Put wire in direction
 
 - [ ] Toolbar
 - [ ] Infobox
