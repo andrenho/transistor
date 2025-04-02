@@ -11,6 +11,7 @@ public:
 
     void setup();
     void events(std::vector<luaobj::Event> const& events);
+    void save_in_progress();
 
     [[nodiscard]] luaobj::Render render() const;
 

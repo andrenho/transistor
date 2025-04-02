@@ -145,6 +145,7 @@ function Board:remove_wires_under_ics()
 end
 
 function Board:add_wire(pos: Position, wire: Wire)
+   assert(wire)
    if pos.x < 0 or pos.y < 0 or pos.x >= self.w or pos.y >= self.h then return end
    self.wires[pos:hash()] = wire
    self:remove_wires_under_ics()

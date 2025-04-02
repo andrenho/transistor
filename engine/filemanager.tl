@@ -3,6 +3,7 @@ local Sandbox = require "sandbox"
 local record FileManager
    sandbox: Sandbox
    filename: string
+   in_progress_filename: string
    __index: FileManager
 end
 FileManager.__index = FileManager
@@ -10,16 +11,58 @@ FileManager.__index = FileManager
 function FileManager.new(sandbox: Sandbox) : FileManager
     local self : FileManager = setmetatable({}, FileManager as metatable<FileManager>)
 	self.sandbox = sandbox
-	self.filename = nil
+	if package.config:sub(1,1) == "/" then  -- unix
+	   os.execute("mkdir -p ~/.config/transistor")
+	   self.in_progress_filename = os.getenv("HOME") .. "/.config/transistor/in_progress.trn"
+	else  -- windows
+	   os.execute("md $HOME/transistor")  -- untested
+	   self.in_progress_filename = os.getenv("HOME") .. "/transistor/in_progress.trn"
+	end
     return self
 end
 
-function FileManager:save(filename?: string)
-   -- TODO
+local function serialize(data: any, f: FILE)
+   if type(data) == "number" then
+	  f:write(data as number)
+   elseif type(data) == "string" then
+	  f:write(string.format("%q", data as string))
+   elseif type(data) == "table" then
+	  f:write("{")
+	  if (data as table)[1] then
+		 for i,v in ipairs(data as {any}) do
+			serialize(v, f)
+			if i ~= #(data as {any}) then f:write(",") end
+		 end
+	  else
+		 local found = false
+		 for k,v in pairs(data as {any:any}) do
+			f:write(k as string,"=")
+			serialize(v, f)
+			f:write(",")
+			found = true
+		 end
+		 if found then f:seek("set", f:seek() - 1) end -- remove last comma
+	  end
+	  f:write("}")
+   end
+end
+
+function FileManager:save(filename: string)
+   local f = assert(io.open(filename, "w"))
+   serialize(self.sandbox:serialize(), f)
+   f:close()
+end
+
+function FileManager:save_in_progress()
+   self:save(self.in_progress_filename)
 end
 
 function FileManager:load(filename: string) : Sandbox
    -- TODO
+end
+
+function FileManager:load_in_progress() : Sandbox
+   return self:load(self.in_progress_filename)
 end
 
 return FileManager

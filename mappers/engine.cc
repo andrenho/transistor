@@ -7,9 +7,16 @@
 #include <string>
 using namespace std;
 
+#include "luaenv/array.hh"
+#include "luaenv/cache.hh"
+
 Engine::Engine(Lua& lua)
     : lua_(lua)
 {
+    lua.with_lua([](lua_State* L) {
+        setup_array(L);
+        setup_cache(L);
+    });
     setup();
 }
 
@@ -34,6 +41,13 @@ luaobj::Render Engine::render() const
 {
     return lua_.with_lua<luaobj::Render>([](lua_State *L) {
         return luaw_call_global<luaobj::Render>(L, "render");
+    });
+}
+
+void Engine::save_in_progress()
+{
+    lua_.with_lua([&](lua_State* L) {
+        luaw_call_global(L, "save_in_progress");
     });
 }
 

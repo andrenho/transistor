@@ -11,12 +11,17 @@ end
 local record Wire
     layer: WireLayer
     width: WireWidth
+   __index: Wire
 end
+Wire.__index = Wire
 
 global type SerialWire = string
 
 function Wire.new(layer: WireLayer, width: WireWidth) : Wire
-   return { layer = layer, width = width }
+   local self : Wire = setmetatable({}, Wire as metatable<Wire>)
+   self.layer = layer
+   self.width = width
+   return self
 end
 
 function Wire.unserialize(data: SerialWire) : Wire
@@ -24,7 +29,7 @@ function Wire.unserialize(data: SerialWire) : Wire
 end
 
 function Wire:serialize() : SerialWire
-   return self.layer == "top" and "t" or "b" .. self.width
+   return (self.layer == "top" and "t" or "b") .. self.width
 end
 
 global WR = Wire.new

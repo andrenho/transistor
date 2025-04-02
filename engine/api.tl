@@ -4,9 +4,9 @@ local FileManager = require 'filemanager'
 local Render = require 'ui.render'
 local type Event = require 'event'
 
-global sandbox : Sandbox = nil
-global file_manager : FileManager = nil
-global ui : UI = nil
+local sandbox : Sandbox = nil
+local file_manager : FileManager = nil
+local ui : UI = nil
 
 global function init()
    sandbox = Sandbox.new()
@@ -23,6 +23,10 @@ global function do_events(events: {Event})
    for _,event in ipairs(events) do
 	  sandbox:do_event(event)
    end
+end
+
+global function save_in_progress()
+   file_manager:save_in_progress()
 end
 
 global function run_tests()

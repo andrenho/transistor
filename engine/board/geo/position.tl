@@ -29,11 +29,15 @@ function Position.new(x: integer, y: integer, dir?: Direction) : Position
 end
 
 function Position.unserialize(data: SerialPosition) : Position
-   return Position.new(data[1], data[2], data[3])
+   return Position.new(data[1], data[2], data[3] or "CENTER")
 end
 
 function Position:serialize() : SerialPosition
-   return { self.x, self.y, self.dir }
+   if self.dir == "CENTER" then
+	  return { self.x, self.y }
+   else
+	  return { self.x, self.y, self.dir }
+   end
 end
 
 global P = Position.new
