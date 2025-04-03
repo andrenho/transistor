@@ -1,9 +1,8 @@
-local type Scene = require "ui.scene"
-local type Context = require "ui.context"
-local Board = require "board/board"
-local Position = require "board.geo.position"
-local fdir = require "board.geo.dir"
-local Wire = require "board.wire"
+require "ui.scene"
+require "ui.context"
+require "board/board"
+require "board.geo.position"
+require "board.wire"
 
 local record Cache
    tile: ResourceId
@@ -13,7 +12,7 @@ local record Cache
    board_right: ResourceId
 end
 
-local record BoardRenderer
+global record BoardRenderer
    board: Board
    cache: Cache
    __index: BoardRenderer
@@ -88,7 +87,7 @@ function BoardRenderer:__draw_components(scene: Scene)
 			x = math.floor(component.position.x * TILE_SIZE + (self.board.x / self.board.zoom)),
 			y = math.floor(component.position.y * TILE_SIZE + (self.board.y / self.board.zoom)),
 		 },
-		 rotation = fdir.angle[component.direction]
+		 rotation = Dir.angle[component.direction]
 	  }
 	  component.def.render(component, scene, context)
    end
@@ -105,8 +104,6 @@ function BoardRenderer:render() : Scene
    self:__draw_components(scene)
    return scene
 end
-
-return BoardRenderer
 
 -- vim:sw=3:st=3:sts=3:noexpandtab
 

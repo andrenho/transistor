@@ -1,8 +1,8 @@
-local Sandbox = require "sandbox"
-local type Dialog = require "ui.dialog"
-local type Render = require "ui.render"
+require "sandbox"
+require "ui.dialog"
+require "ui.render"
 
-local record UI
+global record UI
    __index: UI
 end
 UI.__index = UI
@@ -32,7 +32,5 @@ function UI:render(sandbox: Sandbox) : Render
 	  menu = self:menu(),
    }
 end
-
-return UI
 
 -- vim:sw=3:st=3:sts=3:noexpandtab

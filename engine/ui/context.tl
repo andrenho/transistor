@@ -10,15 +10,13 @@ local record ContextRect
    h: integer
 end
 
-local record Context
+global record Context
    position: ContextRect
    rotation: number
    opacity: number
    zoom: number
    rotation_center: ContextPos
 end
-
-return Context
 
 -- vim:sw=3:st=3:sts=3:noexpandtab
 

@@ -1,4 +1,4 @@
-local type Context = require "ui.context"
+require "ui.context"
 
 local tnew = require "table.new"
 
@@ -7,7 +7,7 @@ local tnew = require "table.new"
 -- pop_context  { "pop_context" }
 local type Instruction = { any }
 
-local record Scene
+global record Scene
    __index: Scene
    instructions: {Instruction}
 end
@@ -30,8 +30,6 @@ end
 function Scene:pop_context()
    self.instructions[#self.instructions+1] = { "pop_context" }
 end
-
-return Scene
 
 -- vim:sw=3:st=3:sts=3:noexpandtab
 

@@ -1,15 +1,13 @@
-local type Direction = require('board.geo.direction')
-local type Orientation = require('board.geo.orientation')
-require('board.geo.orientation')
+require "board.geo.direction"
+require "board.geo.orientation"
 
 local bit = require('bit')
-local fdir = require('board.geo.dir')
 
 --
 -- Position
 --
 
-local record Position
+global record Position
    x: integer
    y: integer
    dir: Direction
@@ -47,11 +45,11 @@ function Position.__eq(a: Position, b: Position) : boolean
 end
 
 function Position:hash() : integer
-   return bit.bor(bit.lshift(self.x, 20), bit.lshift(self.y, 8), fdir.hash[self.dir])
+   return bit.bor(bit.lshift(self.x, 20), bit.lshift(self.y, 8), Dir.hash[self.dir])
 end
 
 function Position.unhash(h: integer): Position
-   local dir = fdir.unhash[bit.band(h, 0xf)]
+   local dir = Dir.unhash[bit.band(h, 0xf)]
    local y = bit.band(bit.rshift(h, 8), 0xfff)
    local x = bit.rshift(h, 20)
    return P(x, y, dir)
@@ -105,7 +103,5 @@ function Position.a_to_b(a: Position, b: Position, orientation: Orientation) : {
 end
 
 global type PosHash = integer
-
-return Position
 
 -- vim:sw=3:st=3:sts=3:noexpandtab

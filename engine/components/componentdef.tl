@@ -1,10 +1,9 @@
-local type Direction = require "board.geo.direction"
-local type Scene = require "ui.scene"
-local type Context = require "ui.context"
-
-local Rect = require "board.geo.rect"
-local Position = require "board.geo.position"
-local PinPos = require "board.geo.pinpos"
+require "board.geo.direction"
+require "ui.scene"
+require "ui.context"
+require "board.geo.rect"
+require "board.geo.position"
+require "board.geo.pinpos"
 require "board.geo.direction"
 
 global enum ComponentType
@@ -32,7 +31,7 @@ end
 
 global type Component
 
-local record ComponentDef
+global record ComponentDef
    key: string
    type: ComponentType
    can_rotate: boolean
@@ -180,7 +179,5 @@ function ComponentDef:pin_positions(pos: Position, dir: Direction) : {PinPos}
       assert(false)
    end
 end
-
-return ComponentDef
 
 -- vim:sw=3:st=3:sts=3:noexpandtab

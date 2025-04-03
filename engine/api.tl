@@ -1,8 +1,8 @@
-local Sandbox = require 'sandbox'
-local UI = require 'ui.ui'
-local FileManager = require 'filemanager'
-local Render = require 'ui.render'
-local type Event = require 'event'
+require 'sandbox'
+require 'ui.ui'
+require 'filemanager'
+require 'ui.render'
+require 'event'
 
 global sandbox : Sandbox = nil
 global file_manager : FileManager = nil

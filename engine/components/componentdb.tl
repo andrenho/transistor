@@ -1,6 +1,6 @@
-local ComponentDef = require('components.componentdef')
+require "components.componentdef"
 
-local record ComponentDB
+global record ComponentDB
    items: {string: ComponentDef}
     __index: ComponentDB
 end
@@ -57,7 +57,5 @@ end
 function ComponentDB.unserialize(_: SerialComponentDB) : ComponentDB
    return ComponentDB.new()
 end
-
-return ComponentDB
 
 -- vim:sw=3:st=3:sts=3:noexpandtab

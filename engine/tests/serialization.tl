@@ -1,4 +1,4 @@
-local Sandbox = require('sandbox')
+require 'sandbox'
 
 print("Serialization")
 

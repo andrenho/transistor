@@ -1,6 +1,6 @@
-local Sandbox = require "sandbox"
+require "sandbox"
 
-local record FileManager
+global record FileManager
    sandbox: Sandbox
    filename: string
    in_progress_filename: string
@@ -80,8 +80,6 @@ function FileManager:dump()
    serialize(self.sandbox:serialize(), io.stdout)
    io.stdout:write("\n")
 end
-
-return FileManager
 
 -- vim:sw=3:st=3:sts=3:noexpandtab
 

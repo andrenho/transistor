@@ -1,7 +1,8 @@
-local type Scene = require "ui.scene"
-local type Context = require "ui.context"
-local ComponentDef = require("components.componentdef")
-local Component = require("components.component")
+require "ui.scene"
+require "ui.context"
+require "components.componentdef"
+require "components.component"
+
 local bit = require("bit")
 local bnot = bit.bnot
 

@@ -1,6 +1,6 @@
-local Position = require('board.geo.position')
+require "board.geo.position"
 
-local record Rect
+global record Rect
    top_left: Position
    bottom_right: Position
 end
@@ -41,7 +41,5 @@ function Rect:intersects_with(rect: Rect): boolean
    end
    return true
 end
-
-return Rect
 
 -- vim:sw=3:st=3:sts=3:noexpandtab

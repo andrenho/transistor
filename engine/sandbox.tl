@@ -1,12 +1,11 @@
-local type Scene = require "ui.scene"
-local type Event = require "event"
-local type Device = require "device"
-local type BoardRenderer = require "board.boardrenderer"
+require "ui.scene"
+require "event"
+require "device"
+require "board.boardrenderer"
+require "components.componentdb"
+require "board.board"
 
-local ComponentDB = require "components.componentdb"
-local Board = require "board.board"
-
-local record Sandbox
+global record Sandbox
    board: Board
    devices: {Device}
    selected_device: integer
@@ -151,7 +150,5 @@ function Sandbox:do_event(event: Event)
 	  end
    end
 end
-
-return Sandbox
 
 -- vim:sw=3:st=3:sts=3:noexpandtab

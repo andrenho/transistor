@@ -1,5 +1,5 @@
-local Sandbox = require('sandbox')
-local Board = require('board.board')
+require 'sandbox'
+require 'board.board'
 
 print("Wire placement")
 

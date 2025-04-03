@@ -1,4 +1,4 @@
-local Position = require('board.geo.position')
+require 'board.geo.position'
 
 print("Positions")
 

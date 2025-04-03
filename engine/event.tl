@@ -16,7 +16,7 @@ global enum EventButton
    "right"
 end
 
-local record Event
+global record Event
    type: EventType
    x: integer
    y: integer
@@ -24,7 +24,5 @@ local record Event
    key: string
    index: integer
 end
-
-return Event
 
 -- vim:sw=3:st=3:sts=3:noexpandtab

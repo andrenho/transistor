@@ -1,4 +1,4 @@
-local type Event = require "event"
+require "event"
 
 global enum DialogType
    "information"
@@ -12,7 +12,7 @@ local record DialogButton
    event: Event
 end
 
-local record Dialog
+global record Dialog
    title: string   -- needs to be unique
    text: string | {string}
    type: DialogType
@@ -42,7 +42,5 @@ function Dialog.question(title: string, text: string, event: Event, default_butt
 	  default_button = default_button or 2,
    }
 end
-
-return Dialog
 
 -- vim:sw=3:st=3:sts=3:noexpandtab

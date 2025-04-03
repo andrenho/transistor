@@ -1,11 +1,11 @@
-local ComponentDef = require("components.componentdef")
-local ComponentDB = require("components.componentdb")
-local Position = require("board.geo.position")
-local Rect = require("board.geo.rect")
-local PinPos = require('board.geo.pinpos')
-local type Direction = require("board.geo.direction")
+require "components.componentdef" 
+require "components.componentdb" 
+require "board.geo.position" 
+require "board.geo.rect" 
+require 'board.geo.pinpos' 
+require "board.geo.direction" 
 
-local record Component
+global record Component
    def: ComponentDef
    position: Position
    direction: Direction
@@ -58,7 +58,5 @@ function Component:on_click()
       self.def.on_click(self)
    end
 end
-
-return Component
 
 -- vim:sw=3:st=3:sts=3:noexpandtab

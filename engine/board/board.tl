@@ -1,17 +1,15 @@
-local type Device = require 'device'
-local type Direction = require "board.geo.direction"
-local type Orientation = require "board.geo.orientation"
-local type Event = require "event"
+require 'device'
+require "board.geo.direction"
+require "board.geo.orientation"
+require "event"
+require "components.component"
+require "components.componentdb"
+require "components.componentdef"
+require "board.geo.position"
+require "board.geo.rect"
+require "board.wire"
 
 global type Sandbox
-
-local fdir = require "board.geo.dir"
-local Component = require "components.component"
-local ComponentDB = require "components.componentdb"
-local ComponentDef = require "components.componentdef"
-local Position = require "board.geo.position"
-local Rect = require "board.geo.rect"
-local Wire = require "board.wire"
 
 local TILE_SIZE = 16
 
@@ -30,7 +28,7 @@ local record BoardCursor
    wire: DrawingWire
 end
 
-local record Board is Device
+global record Board is Device
    w: integer
    h: integer
    wires: {PosHash: Wire}
@@ -191,7 +189,7 @@ end
 function Board:rotate_tile(pos: Position)
    local component = self:component(pos)
    if component and component.def.can_rotate then
-      component.direction = fdir.rotation[component.direction]
+      component.direction = Dir.rotation[component.direction]
    end
 end
 
@@ -266,7 +264,7 @@ function Board:do_event(event: Event, rel_mouse_x: integer, rel_mouse_y: integer
 		 if self:component(pos) then
 			self:rotate_tile(pos)
 		 else
-			cursor.selected_direction = fdir.rotation[cursor.selected_direction]
+			cursor.selected_direction = Dir.rotation[cursor.selected_direction]
 		 end
 	  elseif event.key == "v" then self:add_component("__vcc", pos, cursor.selected_direction)
 	  elseif event.key == "b" then self:add_component("__button", pos, cursor.selected_direction)
@@ -330,7 +328,5 @@ function Board.unserialize(data: SerialBoard, component_db: ComponentDB) : Board
    end
    return board
 end
-
-return Board
 
 -- vim:sw=3:st=3:sts=3:noexpandtab

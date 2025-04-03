@@ -1,7 +1,7 @@
-local type Direction = require('board.geo.direction')
-local Position = require('board.geo.position')
+require "board.geo.direction"
+require "board.geo.position"
 
-local record PositionSet
+global record PositionSet
     items: {integer: Position}
     size: integer
 end
@@ -42,7 +42,5 @@ end
 function PositionSet:len() : integer
    return self.size
 end
-
-return PositionSet
 
 -- vim:sw=3:st=3:sts=3:noexpandtab

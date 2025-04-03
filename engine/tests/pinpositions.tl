@@ -1,6 +1,6 @@
-local Component = require('components.component')
-local ComponentDef = require('components.componentdef')
-require('board.geo.position')
+require 'components.component'
+require 'components.componentdef'
+require 'board.geo.position'
 
 print("Pin positions")
 

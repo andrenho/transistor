@@ -8,7 +8,7 @@ global enum WireWidth
     "8"
 end
 
-local record Wire
+global record Wire
     layer: WireLayer
     width: WireWidth
    __index: Wire
@@ -33,7 +33,5 @@ function Wire:serialize() : SerialWire
 end
 
 global WR = Wire.new
-
-return Wire
 
 -- vim:sw=3:st=3:sts=3:noexpandtab
