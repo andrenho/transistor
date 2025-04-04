@@ -1,4 +1,13 @@
+require "board.geo.positionset"
+require "compiler.connections"
+
 print("Connected wires")
+
+local function contains<T>(array: {any:T}, item: T) : boolean
+   assert(type(array) == 'table')
+   for _,v in pairs(array) do if v == item then return true end end
+   return false
+end
 
 do
    print(" - Simple wires")
@@ -8,7 +17,7 @@ do
    positions:add(2, 1, E)
    positions:add(3, 1, W)
    
-   local groups = compiler.find_connected_wires(positions, {})
+   local groups = find_connected_wires(positions, {})
    assert(#groups == 1)
    
    local ps = groups[1]
@@ -33,7 +42,7 @@ do
    positions:add(2, 2, E)
    positions:add(3, 2, W)
    
-   local groups = compiler.find_connected_wires(positions, {})
+   local groups = find_connected_wires(positions, {})
    assert(#groups == 2)
    
    local ps = groups[1]
@@ -69,7 +78,7 @@ do
    positions:add(2, 2, E)
    positions:add(3, 2, W)
    
-   local groups = compiler.find_connected_wires(positions, {})
+   local groups = find_connected_wires(positions, {})
    assert(#groups == 1)
    
    local ps = groups[1]
@@ -87,7 +96,7 @@ do
    positions:add(1, 1, S)
    
    local single_tile_pins = { P(1, 1) }
-   local groups = compiler.find_connected_wires(positions, single_tile_pins)
+   local groups = find_connected_wires(positions, single_tile_pins)
    assert(#groups == 2)
    
    assert(#groups[1] == 1)
@@ -95,3 +104,5 @@ do
    assert(#groups[2] == 1)
    assert(contains(groups[2], P(1, 1, W)))
 end
+
+-- vim:sw=3:st=3:sts=3:noexpandtab

@@ -1,24 +1,34 @@
+require "sandbox"
+require "compiler.compiler"
+require "board.geo.position"
+
+local function contains<T>(array: {any:T}, item: T) : boolean
+   assert(type(array) == 'table')
+   for _,v in pairs(array) do if v == item then return true end end
+   return false
+end
+
 print("Compilation")
 
-local function circuit_single_tile()
-   local sandbox = Sandbox.new()
-   local board = sandbox:add_board(20, 10)
+local function circuit_single_tile() : Sandbox
+   local msandbox = Sandbox.new()
+   local board = msandbox.board
    board:add_component("__npn", P(1, 1), N)
    board:add_component("__led", P(3, 1), N)
-   board:add_wires(P(1, 1), P(3, 1), HORIZONTAL, WR(LAYER_TOP, WIDTH_1))
-   return sandbox
+   board:add_wires(P(1, 1), P(3, 1), HORIZONTAL, WR("top", "1"))
+   return msandbox
 end
 
-local function circuit_ic(dir)
-   local sandbox = Sandbox.new()
-   local board = sandbox:add_board(20, 10)
+local function circuit_ic(dir: Direction) : Sandbox
+   local msandbox = Sandbox.new()
+   local board = msandbox.board
    board:add_component("__npn", P(1, 1), N)
    board:add_component("__or_2i", P(3, 1), dir)
-   board:add_wires(P(1, 1), P(3, 1), HORIZONTAL, WR(LAYER_TOP, WIDTH_1))
-   return sandbox
+   board:add_wires(P(1, 1), P(3, 1), HORIZONTAL, WR("top", "1"))
+   return msandbox
 end
 
-local function has_pin(connection, pin_no, key)
+local function has_pin(connection: Connection, pin_no: integer, key: string) : boolean
    for _,pin in ipairs(connection.pins) do
       if pin.pin_no == pin_no and pin.component.def.key == key then
          return true
@@ -31,10 +41,10 @@ print(" - Basic circuit")
 
 do
    print("   - Find all pins")
-   local sandbox = circuit_single_tile()
-   local pins = compiler.find_all_pins(sandbox)
+   local msandbox = circuit_single_tile()
+   local pins = find_all_pins(msandbox)
    
-   local function get(pos, pin_no)
+   local function get(pos: Position, pin_no: integer) : Component
       for _,pin in ipairs(pins) do
          if pin.pos == pos and pin.pin_no == pin_no then return pin.component end
       end
@@ -54,9 +64,9 @@ end
 
 do
    print("   - Compile")
-   local sandbox = circuit_single_tile()
+   local msandbox = circuit_single_tile()
    
-   local connections = compiler.compile(sandbox)
+   local connections = compile(msandbox)
    assert(#connections == 1)
    assert(#connections[1].pins == 2)
    assert(#connections[1].wires == 4)
@@ -72,19 +82,19 @@ end
 
 do
    print("   - Multiple connections to the same component")
-   local sandbox = circuit_single_tile()
-   sandbox.boards[1]:add_wires(P(1, 0), P(1, 1), VERTICAL, WR(LAYER_TOP, WIDTH_1))
+   local msandbox = circuit_single_tile()
+   msandbox.board:add_wires(P(1, 0), P(1, 1), VERTICAL, WR("top", "1"))
    
-   local connections = compiler.compile(sandbox)
+   local connections = compile(msandbox)
    assert(#connections == 2)
 end
 
 do
    print("   - Single-tile component rotation")
-   local sandbox = circuit_single_tile()
-   sandbox.boards[1]:rotate_tile(P(1, 1))
+   local msandbox = circuit_single_tile()
+   msandbox.board:rotate_tile(P(1, 1))
    
-   local connections = compiler.compile(sandbox)
+   local connections = compile(msandbox)
    assert(has_pin(connections[1], 1, "__npn"))
    assert(has_pin(connections[1], 2, "__led"))
 end
@@ -93,11 +103,11 @@ print(" - IC")
 
 do
    print("   - Compile")
-   local sandbox = circuit_ic(N)
-   print(serpent.line(sandbox:take_snapshot("scene"), { comment=false, fatal=true }))
+   local msandbox = circuit_ic(N)
+   -- print(serpent.line(msandbox:take_snapshot("scene"), { comment=false, fatal=true }))
    
-   local connections = compiler.compile(sandbox)
-   print(serpent.line(compiler.snapshot(sandbox, connections), { comment=false, fatal=true }))
+   local connections = compile(msandbox)
+   -- print(serpent.line(compiler.snapshot(msandbox, connections), { comment=false, fatal=true }))
    assert(#connections == 1)
    assert(#connections[1].pins == 2)
    assert(#connections[1].wires == 2)
@@ -111,9 +121,9 @@ end
 
 do
    print(" - Rotated IC")
-   local sandbox = circuit_ic(S)
+   local msandbox = circuit_ic(S)
    
-   local connections = compiler.compile(sandbox)
+   local connections = compile(msandbox)
    assert(#connections == 1)
    assert(#connections[1].pins == 2)
    assert(#connections[1].wires == 2)

@@ -36,6 +36,8 @@ global function run_tests()
    require 'tests.positions'
    require 'tests.pinpositions'
    require 'tests.placement'
+   require 'tests.connected_wires'
+   require 'tests.compilation'
    require 'tests.array'
    require 'tests.serialization'
 end
