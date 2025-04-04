@@ -220,7 +220,9 @@ end
 -- EVENTS
 --
 
-function Board:do_event(event: Event, rel_mouse_x: integer, rel_mouse_y: integer)
+function Board:do_event(event: Event, rel_mouse_x: integer, rel_mouse_y: integer) : boolean
+   local recompile = false
+
    local pos = P(
 	  math.floor(rel_mouse_x / TILE_SIZE / self.zoom),
 	  math.floor(rel_mouse_y / TILE_SIZE / self.zoom)
@@ -247,6 +249,7 @@ function Board:do_event(event: Event, rel_mouse_x: integer, rel_mouse_y: integer
 	  end
 	  if cursor.erasing then
 		 self:clear_tile(pos)
+		 recompile = true
 	  end
 	  
    elseif event.type == "mouse_press" then
@@ -256,6 +259,7 @@ function Board:do_event(event: Event, rel_mouse_x: integer, rel_mouse_y: integer
 			component:on_click()
 		 elseif cursor.selected_component then
 			self:add_component(cursor.selected_component, pos, cursor.selected_direction)
+			recompile = true
 		 end
 	  end
 
@@ -263,17 +267,30 @@ function Board:do_event(event: Event, rel_mouse_x: integer, rel_mouse_y: integer
 	  if event.key == "r" then
 		 if self:component(pos) then
 			self:rotate_tile(pos)
+			recompile = true
 		 else
 			cursor.selected_direction = Dir.rotation[cursor.selected_direction]
+			recompile = true
 		 end
-	  elseif event.key == "v" then self:add_component("__vcc", pos, cursor.selected_direction)
-	  elseif event.key == "b" then self:add_component("__button", pos, cursor.selected_direction)
-	  elseif event.key == "l" then self:add_component("__led", pos, cursor.selected_direction)
-	  elseif event.key == "p" then self:add_component("__pnp", pos, cursor.selected_direction)
-	  elseif event.key == "n" then self:add_component("__npn", pos, cursor.selected_direction)
+	  elseif event.key == "v" then
+		 self:add_component("__vcc", pos, cursor.selected_direction)
+		 recompile = true
+	  elseif event.key == "b" then
+		 self:add_component("__button", pos, cursor.selected_direction)
+		 recompile = true
+	  elseif event.key == "l" then
+		 self:add_component("__led", pos, cursor.selected_direction)
+		 recompile = true
+	  elseif event.key == "p" then
+		 self:add_component("__pnp", pos, cursor.selected_direction)
+		 recompile = true
+	  elseif event.key == "n" then
+		 self:add_component("__npn", pos, cursor.selected_direction)
+		 recompile = true
 	  elseif event.key == "x" then
 		 cursor.erasing = true
 		 self:clear_tile(pos)
+		 recompile = true
 	  elseif event.key == "w" then
 		 cursor.wire = {
 			orientation_defined = true,
@@ -290,8 +307,10 @@ function Board:do_event(event: Event, rel_mouse_x: integer, rel_mouse_y: integer
 		 if cursor.wire then
 			if pos == cursor.wire.starting_pos and pos.dir ~= CENTER then
 			   self:add_wire(pos, cursor.selected_wire)
+			   recompile = true
 			else
 			   self:add_wires(cursor.wire.starting_pos, pos, cursor.wire.orientation, cursor.selected_wire)
+			   recompile = true
 			end
 			cursor.wire = nil
 		 end
@@ -299,7 +318,10 @@ function Board:do_event(event: Event, rel_mouse_x: integer, rel_mouse_y: integer
 
    elseif event.type == "clear_board" then
 	  self:clear()
+	  recompile = true
    end
+
+   return recompile
 end
 
 --

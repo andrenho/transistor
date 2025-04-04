@@ -102,7 +102,8 @@ function Sandbox:move_device(idx: integer, rel_x: integer, rel_y: integer)
    dev.y = math.min(math.max(dev.y + rel_y, min_y), max_y)
 end
 
-function Sandbox:do_event(event: Event)
+function Sandbox:do_event(event: Event) : boolean
+   local recompile = false
    local rel_x = 0
    local rel_y = 0
 
@@ -146,9 +147,13 @@ function Sandbox:do_event(event: Event)
    local topmost = self.devices[self:__topmost_device()]
    if topmost then
 	  if events_to_pass_always[event.type] or (device and events_to_pass_when_under_pointer[event.type]) then
-		 topmost:do_event(event, self.last_x - topmost.x, self.last_y - topmost.y)
+		 if topmost:do_event(event, self.last_x - topmost.x, self.last_y - topmost.y) then
+			recompile = true
+		 end
 	  end
    end
+
+   return recompile
 end
 
 -- vim:sw=3:st=3:sts=3:noexpandtab

@@ -1,19 +1,21 @@
-require 'sandbox'
-require 'ui.ui'
-require 'filemanager'
-require 'ui.render'
-require 'event'
+require "sandbox"
+require "ui.ui"
+require "filemanager"
+require "ui.render"
+require "event"
+require "compiler.compiler"
 
-global sandbox : Sandbox = nil
-global file_manager : FileManager = nil
-global ui : UI = nil
+global sandbox : Sandbox
+global file_manager : FileManager
+global ui : UI
+
+local first_step = true
 
 global function init()
    print("-----------------------")
    file_manager = FileManager.new()
    sandbox = file_manager.sandbox
    ui = UI.new()
-   print(sandbox.board)
 end
 
 global function render() : Render
@@ -21,11 +23,25 @@ global function render() : Render
    return r
 end
 
-global function do_events(events: {Event})
+global function do_events(events: {Event}) : CompiledCircuit
+   local recompile = false
+   
    for _,event in ipairs(events) do
-	  sandbox:do_event(event)
+	  if sandbox:do_event(event) then
+		 recompile = true
+	  end
 	  if event.type == "key_down" and event.key == "d" then file_manager:dump() end
    end
+
+   if first_step then
+	  recompile = true
+	  first_step = false
+   end
+
+   if recompile then
+	  return compile(sandbox)
+   end
+   return nil
 end
 
 global function save_in_progress()

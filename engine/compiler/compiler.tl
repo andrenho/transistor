@@ -16,6 +16,8 @@ global record Connection
    pins: {Pin}
 end
 
+global type CompiledCircuit = {Connection}
+
 global function find_all_pins(msandbox: Sandbox) : {Pin}
    local pins = {}
    
@@ -32,7 +34,7 @@ global function find_all_pins(msandbox: Sandbox) : {Pin}
    return pins
 end
 
-global function compile(msandbox: Sandbox) : {Connection}
+global function compile(msandbox: Sandbox) : CompiledCircuit
    local connections : {Connection} = {}
    
    local pins = find_all_pins(msandbox)
