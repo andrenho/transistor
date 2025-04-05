@@ -26,9 +26,9 @@ function UI:menu(): {MenuItem}
    }
 end
 
-function UI:render(sandbox: Sandbox) : Render
+function UI:render(sandbox: Sandbox, wires_values: {integer, integer}) : Render
    return {
-      scenes = sandbox:render(),
+      scenes = sandbox:render(wires_values),
 	  menu = self:menu(),
    }
 end

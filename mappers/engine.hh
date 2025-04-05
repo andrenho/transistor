@@ -17,7 +17,7 @@ public:
 
     std::optional<luaobj::CompiledCircuit> events(std::vector<luaobj::Event> const& events);
 
-    [[nodiscard]] luaobj::Render render(std::vector<std::pair<uint32_t, uint8_t>> const& wires_values) const;
+    [[nodiscard]] luaobj::Render render(std::unordered_map<uint32_t, uint8_t> const& wires_values) const;
 
     [[nodiscard]] bool                              compilation_successful() const { return compilation_successful_; }
     [[nodiscard]] std::string const&                compilation_messages() const { return compilation_messages_; }

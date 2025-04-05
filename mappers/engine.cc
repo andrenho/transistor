@@ -37,10 +37,10 @@ std::optional<luaobj::CompiledCircuit> Engine::events(std::vector<luaobj::Event>
     });
 }
 
-luaobj::Render Engine::render(std::vector<std::pair<uint32_t, uint8_t>> const& wires_values) const
+luaobj::Render Engine::render(std::unordered_map<uint32_t, uint8_t> const& wires_values) const
 {
-    return lua_.with_lua<luaobj::Render>([](lua_State *L) {
-        return luaw_call_global<luaobj::Render>(L, "render");
+    return lua_.with_lua<luaobj::Render>([&](lua_State *L) {
+        return luaw_call_global<luaobj::Render>(L, "render", wires_values);
     });
 }
 

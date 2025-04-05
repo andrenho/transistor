@@ -62,20 +62,21 @@ function BoardRenderer:__draw_board(scene: Scene)
    end
 end
 
-function BoardRenderer:__draw_wires(scene: Scene)
-   local wire_image = function(pos: Position, wire: Wire) : string
-	  return "wire_" .. wire.layer .. "_off_" .. pos.dir:lower() .. "_" .. wire.width
+function BoardRenderer:__draw_wires(scene: Scene, wires_values: {integer, integer})
+   local wire_image = function(pos: Position, wire: Wire, value: integer) : string
+	  local v : string; if value > 0 then v = "on" else v = "off" end
+	  return "wire_" .. wire.layer .. "_" .. v .. "_" .. pos.dir:lower() .. "_" .. wire.width
    end
    -- wires
    for pos_hash, wire in pairs(self.board.wires) do
 	  local pos = Position.unhash(pos_hash)
-	  self:add_image(scene, wire_image(pos, wire), pos.x, pos.y)
+	  self:add_image(scene, wire_image(pos, wire, wires_values[pos_hash] or 0), pos.x, pos.y)
    end
    --temporary wire
    if self.board.cursor.wire then
 	  local w = self.board.cursor.wire
 	  for _,pos in ipairs(Position.a_to_b(w.starting_pos, w.end_pos, w.orientation)) do
-		 self:add_image(scene, wire_image(pos, self.board.cursor.selected_wire), pos.x, pos.y, { opacity = .5 })
+		 self:add_image(scene, wire_image(pos, self.board.cursor.selected_wire, 0), pos.x, pos.y, { opacity = .5 })
 	  end
    end
 end
@@ -93,14 +94,14 @@ function BoardRenderer:__draw_components(scene: Scene)
    end
 end
 
-function BoardRenderer:render() : Scene
+function BoardRenderer:render(wires_values: {integer, integer}) : Scene
    if not self.cache then
 	  self.cache = load_cache()
    end
    local scene = Scene.new()
    scene:push_context({ zoom = self.board.zoom })
    self:__draw_board(scene)
-   self:__draw_wires(scene)
+   self:__draw_wires(scene, wires_values)
    self:__draw_components(scene)
    return scene
 end

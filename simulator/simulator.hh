@@ -19,7 +19,7 @@ public:
     void update_compiled_circuit(luaobj::CompiledCircuit&& circuit);
     void update_cpu_usage(CpuUsage usage);
 
-    [[nodiscard]] std::vector<std::pair<uint32_t, uint8_t>> wires_values() const;
+    [[nodiscard]] std::unordered_map<uint32_t, uint8_t> wires_values() const;
 
     uint64_t steps();
 

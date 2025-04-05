@@ -59,8 +59,8 @@ function Sandbox.unserialize(data: SerialSandbox) : Sandbox
    return sandbox
 end
 
-function Sandbox:render() : {Scene}
-   return {self.board_renderer:render()}
+function Sandbox:render(wires_values: {integer, integer}) : {Scene}
+   return {self.board_renderer:render(wires_values)}
 end
 
 function Sandbox:__device_at_point(x: integer, y: integer) : integer

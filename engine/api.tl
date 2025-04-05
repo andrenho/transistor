@@ -18,8 +18,8 @@ global function init()
    ui = UI.new()
 end
 
-global function render() : Render
-   local r = ui:render(sandbox)
+global function render(wires_values: {integer, integer}) : Render
+   local r = ui:render(sandbox, wires_values)
    return r
 end
 
