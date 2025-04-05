@@ -1,5 +1,6 @@
 #include "compiled_circuit.hh"
 
+#include <cassert>
 #include <luaw.hh>
 
 namespace luaobj {
@@ -44,10 +45,11 @@ Connection Connection::from_lua(lua_State* L, int index)
 {
     std::vector<uint32_t> wire_pos_hashes;
     luaw_getfield(L, index, "wires");
+    luaw_getfield(L, index, "items");
     luaw_pairs(L, -1, [&wire_pos_hashes](lua_State* L) {
-        wire_pos_hashes.push_back(luaw_to<uint32_t>(L, -2));  // key = position hash, we don't care about the value
+        wire_pos_hashes.push_back(lua_tointeger(L, -2));  // key = position hash, we don't care about the value
     });
-    lua_pop(L, 1);
+    lua_pop(L, 2);
 
     return {
         .pins = luaw_getfield<std::vector<Pin>>(L, index, "pins"),

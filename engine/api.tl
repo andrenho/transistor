@@ -19,8 +19,8 @@ global function init()
 end
 
 global function render(wires_values: {integer, integer}) : Render
-   local r = ui:render(sandbox, wires_values)
-   return r
+   -- print(serpent.line(wires_values))
+   return ui:render(sandbox, wires_values)
 end
 
 global function do_events(events: {Event}) : CompiledCircuit
