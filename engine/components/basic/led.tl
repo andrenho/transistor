@@ -27,7 +27,7 @@ local led : ComponentDef = {
       if not led or led.data[1] == 0 then
 		   scene:add_image("led_off", 0, 0, context)
       else
-		   scene:add_image("led_off", 0, 0, context)
+		   scene:add_image("led_on", 0, 0, context)
       end
    end,
 }

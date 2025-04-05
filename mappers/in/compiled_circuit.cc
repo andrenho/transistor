@@ -26,7 +26,7 @@ Pin Pin::from_lua(lua_State* L, int index)
 {
     Pin pin = {
         .pin_value_ptr = nullptr,
-        .pin_no = luaw_getfield<size_t>(L, index, "pin_no"),
+        .pin_no = luaw_getfield<size_t>(L, index, "pin_no") - 1,
         .dir = PinDirection::Input
     };
 
