@@ -21,7 +21,7 @@
     - [x] Single array, preallocate array
 - [x] Clear circuit not working
 - [x] Serialization (serialization.lua)
-- [ ] Compilation (compilation.lua, connected_wires.lua)
+- [x] Compilation (compilation.lua, connected_wires.lua)
 - [ ] Put wire in direction
 
 - [ ] Toolbar
