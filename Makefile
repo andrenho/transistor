@@ -43,6 +43,7 @@ TL_CONFIG = -Iengine -Iengine/decl --gen-target 5.1 --global-env-def decl
 OBJ = \
 	main.o \
 	implementation.o \
+	simulator/native.o \
 	simulator/simulator.o \
 	luaenv/array.o \
 	luaenv/hotreload.o \

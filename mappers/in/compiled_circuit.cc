@@ -6,10 +6,19 @@ namespace luaobj {
 
 Component Component::from_lua(lua_State* L, int index)
 {
+    lua_getfield(L, index, "def");
+    auto key = luaw_getfield<std::string>(L, -1, "key");
+    lua_pop(L, 1);
+
+    SimFunc simulate = nullptr;
+    auto it = native_functions.find(key);
+    if (it != native_functions.end())
+        simulate = it->second;
+
     return {
         .data = luaw_getfield<Array *>(L, index, "data"),
         .pins = luaw_getfield<Array *>(L, index, "pins"),
-        .simulate = nullptr,  // TODO
+        .simulate = simulate,
     };
 }
 

@@ -4,8 +4,7 @@
 #include <vector>
 
 #include "luaenv/array.hh"
-
-typedef void(*SimFunc)(uint8_t* data, uint8_t* pins);
+#include "simulator/native.hh"
 
 namespace luaobj {
 
