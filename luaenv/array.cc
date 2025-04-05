@@ -1,3 +1,5 @@
+#include "array.hh"
+
 #include <cassert>
 #include <cstring>
 #include <cstdint>
@@ -5,11 +7,6 @@
 
 void setup_array(lua_State* L)
 {
-    struct Array {
-        size_t   sz;
-        uint8_t* data;
-    };
-
     // metatable
     luaL_newmetatable(L, "Array_mt");
     luaL_setfuncs(L, (luaL_Reg[]) {

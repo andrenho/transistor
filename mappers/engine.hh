@@ -1,6 +1,9 @@
 #ifndef ENGINE_HH
 #define ENGINE_HH
 
+#include <optional>
+
+#include "in/compiled_circuit.hh"
 #include "in/render.hh"
 #include "luaenv/lua.hh"
 #include "out/event.hh"
@@ -10,8 +13,9 @@ public:
     explicit Engine(Lua& lua);
 
     void setup();
-    void events(std::vector<luaobj::Event> const& events);
     void save_in_progress();
+
+    std::optional<luaobj::CompiledCircuit> events(std::vector<luaobj::Event> const& events);
 
     [[nodiscard]] luaobj::Render render() const;
 

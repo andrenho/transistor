@@ -13,9 +13,13 @@ global record Component
    data: {integer}
    pins: {integer}
 
+   id: integer
+
    __index: Component
+   __id_counter: integer
 end
 Component.__index = Component
+Component.__id_counter = 1
 
 global record SerialComponent
    def: string
@@ -30,6 +34,8 @@ function Component.new(def: ComponentDef, position: Position, direction: Directi
 	self.direction = direction
 	self.data = Array.new(def.data_size)
 	self.pins = Array.new(#def.pins)
+	self.id = Component.__id_counter
+	Component.__id_counter = Component.__id_counter + 1
     return self
 end
 

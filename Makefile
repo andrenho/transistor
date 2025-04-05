@@ -48,6 +48,7 @@ OBJ = \
 	luaenv/cache.o \
 	mappers/engine.o \
 	mappers/in/scenemapper.o \
+	mappers/in/compiled_circuit.o \
 	ui/ui.o \
 	ui/gui/gui.o \
 	ui/gui/dialog.o \

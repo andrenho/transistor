@@ -1,6 +1,7 @@
 require "sandbox"
 require "board.board"
 require "components.component"
+require "components.componentdef"
 require "board.geo.position"
 require "board.geo.positionset"
 require "compiler.connections"
@@ -9,6 +10,7 @@ global record Pin
    component: Component
    pos: Position
    pin_no: integer
+   dir: PinDirection
 end
 
 global record Connection
@@ -16,7 +18,10 @@ global record Connection
    pins: {Pin}
 end
 
-global type CompiledCircuit = {Connection}
+global record CompiledCircuit
+   connections: {Connection}
+   components: {Component}
+end
 
 global function find_all_pins(msandbox: Sandbox) : {Pin}
    local pins = {}
@@ -27,6 +32,7 @@ global function find_all_pins(msandbox: Sandbox) : {Pin}
 			component = component,
 			pos = pp.pos,
 			pin_no = pp.pin_no,
+			dir = component.def.pins[pp.pin_no].direction
 		 }
 	  end
    end
@@ -91,8 +97,21 @@ global function compile(msandbox: Sandbox) : CompiledCircuit
 	  
 	  connections[#connections+1] = connection
    end
+
+   -- create component list
+   local component_ids : {integer: Component} = {}
+   for _,c in ipairs(connections) do
+	  for _, p in ipairs(c.pins) do
+		 component_ids[p.component.id] = p.component
+	  end
+   end
+   local components : {Component} = {}
+   for _,c in pairs(component_ids) do components[#components+1] = c end
    
-   return connections
+   return {
+	  connections = connections,
+	  components = components,
+   }
 end
 
 -- vim:sw=3:st=3:sts=3:noexpandtab

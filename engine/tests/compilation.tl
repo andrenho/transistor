@@ -66,10 +66,12 @@ do
    print("   - Compile")
    local msandbox = circuit_single_tile()
    
-   local connections = compile(msandbox)
+   local compiled = compile(msandbox)
+   local connections = compiled.connections
    assert(#connections == 1)
    assert(#connections[1].pins == 2)
    assert(#connections[1].wires == 4)
+   assert(#compiled.components == 2)
    
    assert(contains(connections[1].wires, P(1, 1, E)))
    assert(contains(connections[1].wires, P(2, 1, W)))
@@ -85,7 +87,7 @@ do
    local msandbox = circuit_single_tile()
    msandbox.board:add_wires(P(1, 0), P(1, 1), VERTICAL, WR("top", "1"))
    
-   local connections = compile(msandbox)
+   local connections = compile(msandbox).connections
    assert(#connections == 2)
 end
 
@@ -94,7 +96,7 @@ do
    local msandbox = circuit_single_tile()
    msandbox.board:rotate_tile(P(1, 1))
    
-   local connections = compile(msandbox)
+   local connections = compile(msandbox).connections
    assert(has_pin(connections[1], 1, "__npn"))
    assert(has_pin(connections[1], 2, "__led"))
 end
@@ -106,7 +108,7 @@ do
    local msandbox = circuit_ic(N)
    -- print(serpent.line(msandbox:take_snapshot("scene"), { comment=false, fatal=true }))
    
-   local connections = compile(msandbox)
+   local connections = compile(msandbox).connections
    -- print(serpent.line(compiler.snapshot(msandbox, connections), { comment=false, fatal=true }))
    assert(#connections == 1)
    assert(#connections[1].pins == 2)
@@ -123,7 +125,7 @@ do
    print(" - Rotated IC")
    local msandbox = circuit_ic(S)
    
-   local connections = compile(msandbox)
+   local connections = compile(msandbox).connections
    assert(#connections == 1)
    assert(#connections[1].pins == 2)
    assert(#connections[1].wires == 2)

@@ -12,7 +12,7 @@ global enum ComponentType
    "ic_quad"
 end
 
-local enum PinDirection
+global enum PinDirection
    "input"
    "output"
 end

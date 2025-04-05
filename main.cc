@@ -3,6 +3,7 @@
 #include "luaenv/lua.hh"
 #include "luaenv/hotreload.hh"
 #include "mappers/engine.hh"
+#include "mappers/in/compiled_circuit.hh"
 
 #include "ui/ui.hh"
 
@@ -21,9 +22,10 @@ int main()
             engine.setup();
 
         auto events = ui.events();
-        engine.events(events);
-
-        // TODO - update from engine
+        auto compiled_circuit = engine.events(events);
+        if (compiled_circuit) {
+            // TODO - recreate simulation
+        }
 
         auto render = engine.render();
         events = ui.render(render, engine);
