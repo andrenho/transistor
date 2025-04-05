@@ -216,6 +216,18 @@ function Board:clear_tile(pos: Position)
    self.wires[P(pos.x, pos.y, W):hash()] = nil
 end
 
+-- 
+-- SIMULATION
+--
+
+function Board:simulate()
+   for _,c in ipairs(self.components) do
+	  if c.def.simulate then
+		 c.def.simulate(c)
+	  end
+   end
+end
+
 --
 -- EVENTS
 --

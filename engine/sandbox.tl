@@ -156,4 +156,10 @@ function Sandbox:do_event(event: Event) : boolean
    return recompile
 end
 
+function Sandbox:simulate()
+   for _,dev in ipairs(self.devices) do
+	  dev:simulate()
+   end
+end
+
 -- vim:sw=3:st=3:sts=3:noexpandtab

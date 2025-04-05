@@ -45,7 +45,7 @@ global function do_events(events: {Event}) : CompiledCircuit
 end
 
 global function simulate()
-   -- TODO
+   sandbox:simulate()
 end
 
 global function save_in_progress()
