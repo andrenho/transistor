@@ -25,14 +25,16 @@ struct Pin {
 };
 
 struct Connection {
-    std::vector<Pin> pins;
-    uint8_t          value = 0;
+    std::vector<Pin>      pins;
+    std::vector<uint32_t> wire_pos_hashes;
+    uint8_t               value = 0;
     static Connection from_lua(lua_State* L, int index);
 };
 
 struct CompiledCircuit {
     std::vector<Connection> connections;
-    std::vector<Component> components;
+    std::vector<Component>  components;
+    size_t                  total_wires = 0;
     static CompiledCircuit from_lua(lua_State* L, int index);
 };
 

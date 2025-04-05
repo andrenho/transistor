@@ -2,12 +2,6 @@ require "sandbox"
 require "compiler.compiler"
 require "board.geo.position"
 
-local function contains<T>(array: {any:T}, item: T) : boolean
-   assert(type(array) == 'table')
-   for _,v in pairs(array) do if v == item then return true end end
-   return false
-end
-
 print("Compilation")
 
 local function circuit_single_tile() : Sandbox
@@ -70,13 +64,13 @@ do
    local connections = compiled.connections
    assert(#connections == 1)
    assert(#connections[1].pins == 2)
-   assert(#connections[1].wires == 4)
+   assert(connections[1].wires:len() == 4)
    assert(#compiled.components == 2)
    
-   assert(contains(connections[1].wires, P(1, 1, E)))
-   assert(contains(connections[1].wires, P(2, 1, W)))
-   assert(contains(connections[1].wires, P(2, 1, E)))
-   assert(contains(connections[1].wires, P(3, 1, W)))
+   assert(connections[1].wires:contains(P(1, 1, E)))
+   assert(connections[1].wires:contains(P(2, 1, W)))
+   assert(connections[1].wires:contains(P(2, 1, E)))
+   assert(connections[1].wires:contains(P(3, 1, W)))
    
    assert(has_pin(connections[1], 4, "__npn"))
    assert(has_pin(connections[1], 2, "__led"))
@@ -112,10 +106,10 @@ do
    -- print(serpent.line(compiler.snapshot(msandbox, connections), { comment=false, fatal=true }))
    assert(#connections == 1)
    assert(#connections[1].pins == 2)
-   assert(#connections[1].wires == 2)
+   assert(connections[1].wires:len() == 2)
    
-   assert(contains(connections[1].wires, P(1, 1, E)))
-   assert(contains(connections[1].wires, P(2, 1, W)))
+   assert(connections[1].wires:contains(P(1, 1, E)))
+   assert(connections[1].wires:contains(P(2, 1, W)))
    
    assert(has_pin(connections[1], 4, "__npn"))
    assert(has_pin(connections[1], 1, "__or_2i"))
@@ -128,10 +122,10 @@ do
    local connections = compile(msandbox).connections
    assert(#connections == 1)
    assert(#connections[1].pins == 2)
-   assert(#connections[1].wires == 2)
+   assert(connections[1].wires:len() == 2)
    
-   assert(contains(connections[1].wires, P(1, 1, E)))
-   assert(contains(connections[1].wires, P(2, 1, W)))
+   assert(connections[1].wires:contains(P(1, 1, E)))
+   assert(connections[1].wires:contains(P(2, 1, W)))
    
    assert(has_pin(connections[1], 4, "__npn"))
    assert(has_pin(connections[1], 3, "__or_2i"))

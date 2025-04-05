@@ -19,6 +19,8 @@ public:
     void update_compiled_circuit(luaobj::CompiledCircuit&& circuit);
     void update_cpu_usage(CpuUsage usage);
 
+    [[nodiscard]] std::vector<std::pair<uint32_t, uint8_t>> wires_values() const;
+
     uint64_t steps();
 
 private:
@@ -26,7 +28,7 @@ private:
     CpuUsage                cpu_usage_ = CpuUsage::Normal;
     Lua&                    lua_;
     std::thread             thread_;
-    std::mutex              mutex_;
+    mutable std::mutex      mutex_;
     luaobj::CompiledCircuit circuit_;
     int                     simulate_luaref_;
     size_t                  steps_ = 0;

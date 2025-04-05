@@ -88,3 +88,15 @@ uint64_t Simulator::steps()
     steps_ = 0;
     return s;
 }
+
+std::vector<std::pair<uint32_t, uint8_t>> Simulator::wires_values() const
+{
+    std::lock_guard lock_guard(mutex_);
+
+    std::vector<std::pair<uint32_t, uint8_t>> r;
+    r.reserve(circuit_.total_wires);
+    for (auto const& connection: circuit_.connections)
+        for (auto const& wire_hash: connection.wire_pos_hashes)
+            r.emplace_back(wire_hash, connection.value);
+    return r;
+}

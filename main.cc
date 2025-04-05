@@ -28,7 +28,7 @@ int main()
         if (compiled_circuit)
             simulator.update_compiled_circuit(std::move(*compiled_circuit));
 
-        auto render = engine.render();
+        auto render = engine.render(simulator.wires_values());
         events = ui.render(render, engine);
         if (!events.empty())
             engine.events(events);

@@ -14,7 +14,7 @@ global record Pin
 end
 
 global record Connection
-   wires: {Position}
+   wires: PositionSet
    pins: {Pin}
 end
 
@@ -63,7 +63,7 @@ global function compile(msandbox: Sandbox) : CompiledCircuit
    for _,group in ipairs(find_connected_wires(wire_set, single_tile_component_pins)) do
 	  
 	  local connection : Connection = {
-		 wires = {},
+		 wires = PositionSet.new(),
 		 pins = {},
 	  }
 	  
@@ -75,7 +75,7 @@ global function compile(msandbox: Sandbox) : CompiledCircuit
 		 central_pins:add(pos.x, pos.y, CENTER)
 		 
 		 -- add wire to connection
-		 connection.wires[#connection.wires+1] = pos
+		 connection.wires:add(pos)
 		 
 		 -- add pin (single-tile components) to connection
 		 for _,pin in ipairs(pins) do

@@ -1,6 +1,8 @@
 require "board.geo.direction"
 require "board.geo.position"
 
+local tnew = require "table.new"
+
 global record PositionSet
     items: {integer: Position}
     size: integer
@@ -11,6 +13,15 @@ function PositionSet.new() : PositionSet
    self.items = {}
    self.size = 0
    return self
+end
+
+function PositionSet.from_hashes(values: {integer})
+   local self : PositionSet = setmetatable({}, { __index = PositionSet })
+   self.items = tnew(0, #values) as {integer:Position}
+   for _,v in ipairs(values) do
+	  self.items[v] = Position.unhash(v)
+   end
+   self.size = #values
 end
 
 function PositionSet:add(pos: Position | integer, y?: integer, dir?: Direction)

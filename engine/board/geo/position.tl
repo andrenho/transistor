@@ -45,7 +45,7 @@ function Position.__eq(a: Position, b: Position) : boolean
 end
 
 function Position:hash() : integer
-   return bit.bor(bit.lshift(self.x, 20), bit.lshift(self.y, 8), Dir.hash[self.dir])
+   return bit.band(bit.bor(bit.lshift(self.x, 20), bit.lshift(self.y, 8), Dir.hash[self.dir]), 0xffffffff)
 end
 
 function Position.unhash(h: integer): Position

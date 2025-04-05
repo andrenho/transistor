@@ -42,17 +42,28 @@ Pin Pin::from_lua(lua_State* L, int index)
 
 Connection Connection::from_lua(lua_State* L, int index)
 {
+    std::vector<uint32_t> wire_pos_hashes;
+    luaw_getfield(L, index, "wires");
+    luaw_pairs(L, -1, [&wire_pos_hashes](lua_State* L) {
+        wire_pos_hashes.push_back(luaw_to<uint32_t>(L, -2));  // key = position hash, we don't care about the value
+    });
+    lua_pop(L, 1);
+
     return {
         .pins = luaw_getfield<std::vector<Pin>>(L, index, "pins"),
+        .wire_pos_hashes = std::move(wire_pos_hashes),
     };
 }
 
 CompiledCircuit CompiledCircuit::from_lua(lua_State* L, int index)
 {
-    return CompiledCircuit {
+    CompiledCircuit cc {
         .connections = luaw_getfield<std::vector<Connection>>(L, index, "connections"),
         .components = luaw_getfield<std::vector<Component>>(L, index, "components"),
     };
+    for (auto const& connection: cc.connections)
+        cc.total_wires += connection.wire_pos_hashes.size();
+    return cc;
 }
 
 }
