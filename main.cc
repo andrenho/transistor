@@ -24,8 +24,7 @@ int main()
             engine.setup();
 
         auto events = ui.events();
-        auto compiled_circuit = engine.events(events);
-        if (compiled_circuit)
+        if (auto compiled_circuit = engine.events(events))
             simulator.update_compiled_circuit(std::move(*compiled_circuit));
 
         auto render = engine.render(simulator.wires_values());
