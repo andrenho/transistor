@@ -1,4 +1,5 @@
 #include <pl_log.h>
+#include <simulator/simulator.hh>
 
 #include "luaenv/lua.hh"
 #include "luaenv/hotreload.hh"
@@ -14,6 +15,7 @@ int main()
     Lua lua;
     HotReload hotreload(lua);
     Engine engine(lua);
+    Simulator simulator(lua);
 
     size_t i = 0;
     UI ui;
@@ -23,15 +25,16 @@ int main()
 
         auto events = ui.events();
         auto compiled_circuit = engine.events(events);
-        if (compiled_circuit) {
-            // TODO - recreate simulation
-        }
+        if (compiled_circuit)
+            simulator.update_compiled_circuit(std::move(*compiled_circuit));
 
         auto render = engine.render();
         events = ui.render(render, engine);
         if (!events.empty())
             engine.events(events);
 
+        if (i % 60 == 0)
+            ui.set_simulation_steps(simulator.steps());
         if (i % (60 * 3) == 0)
             engine.save_in_progress();
         ++i;

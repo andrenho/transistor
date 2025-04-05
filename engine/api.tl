@@ -44,6 +44,10 @@ global function do_events(events: {Event}) : CompiledCircuit
    return nil
 end
 
+global function simulate()
+   -- TODO
+end
+
 global function save_in_progress()
    file_manager:save_in_progress()
 end

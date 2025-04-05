@@ -107,7 +107,7 @@ std::vector<luaobj::Event> UI::render(luaobj::Render const& render, Engine& engi
 
     auto events = gui.render(render, engine);
 
-    ps::graphics::set_window_title(std::format("transistor ({} FPS -- {}K steps/sec)", ps::graphics::fps(), 0 / 1000));
+    ps::graphics::set_window_title(std::format("transistor ({} FPS -- {}K steps/sec)", ps::graphics::fps(), simulation_steps_ / 1000));
 
     ps::graphics::present();
 

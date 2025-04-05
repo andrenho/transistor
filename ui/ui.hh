@@ -17,9 +17,12 @@ public:
     [[nodiscard]] std::vector<luaobj::Event> events() const;
     std::vector<luaobj::Event>               render(luaobj::Render const& render, Engine& engine) const;
 
+    void set_simulation_steps(uint64_t simulation_steps) { simulation_steps_ = simulation_steps; }
+
 private:
     ps::res::idx_t rs_bg = -1;
-    GUI gui;
+    GUI            gui;
+    uint64_t       simulation_steps_ = 0;
 
     ps::Scene background_scene() const;
 };
