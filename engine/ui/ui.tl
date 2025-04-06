@@ -35,7 +35,7 @@ function UI:menu(): {MenuItem}
    }
 end
 
-function UI:toolbox() : ToolBox
+function UI:toolbox(component_db: ComponentDB) : ToolBox
    local toolbox : {ToolItem} = {
 	  { image = "tb_arrow",  key = "",         tooltip = "Unselect (ESC)" },
 	  { image = "tb_vcc",    key = "__vcc",    tooltip = "VCC [always `1`] (v)" },
@@ -59,7 +59,7 @@ function UI:render(sandbox: Sandbox, wires_values: {integer, integer}) : UI.Rend
    return {
       scenes = sandbox:render(wires_values),
 	  menu = self:menu(),
-	  toolbox = self:toolbox(),
+	  toolbox = self:toolbox(sandbox.component_db),
    }
 end
 

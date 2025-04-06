@@ -3,11 +3,30 @@ require "components.category"
 
 global record ComponentDB
    items: {string: ComponentDef}
+   categories: Categories
     __index: ComponentDB
 end
 ComponentDB.__index = ComponentDB
 
 global record SerialComponentDB
+end
+
+function ComponentDB:update_categories()
+   self.categories = { 
+	  categories = { logic_gates={}, digital={}, memory={}, cpu={} },
+	  subcategories = {}
+   }
+   for key,def in pairs(self.items) do
+	  if def.category then
+		 table.insert(self.categories.categories[def.category], def.subcategory)
+		 if not self.categories.subcategories[def.subcategory] then self.categories.subcategories[def.subcategory] = {} end
+		 table.insert(self.categories.subcategories[def.subcategory], { name = def.name, key = key })
+	  end
+   end
+   for _,subcategories in pairs(self.categories.categories) do table.sort(subcategories) end
+   for _,def in pairs(self.categories.subcategories) do
+	  table.sort(def, function(a: Categories.Def, b: Categories.Def) : boolean return a.name < b.name end)
+   end
 end
 
 function ComponentDB:add(def: ComponentDef, native: boolean, lua_code?: string)
@@ -16,6 +35,7 @@ function ComponentDB:add(def: ComponentDef, native: boolean, lua_code?: string)
    def.code = lua_code
    def.native = native
    self.items[def.key] = def
+   self:update_categories()
 end
 
 function ComponentDB:add_from_str(lua_code: string, native: boolean)
