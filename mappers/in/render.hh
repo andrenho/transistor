@@ -5,6 +5,7 @@
 #include <pastel2d.hh>
 
 #include "menu.hh"
+#include "toolbox.hh"
 #include "scenemapper.hh"
 
 namespace luaobj {
@@ -12,11 +13,13 @@ namespace luaobj {
 struct Render {
     std::vector<ps::Scene> scenes;
     std::vector<MenuItem>  menu;
+    ToolBox                toolbox;
 
     static Render from_lua(lua_State* L, int index) {
         Render render = {
             .scenes = {},
             .menu = luaw_getfield<std::vector<MenuItem>>(L, index, "menu"),
+            .toolbox = luaw_getfield<ToolBox>(L, index, "toolbox"),
         };
 
         luaw_getfield(L, index, "scenes");

@@ -8,6 +8,8 @@ global enum EventType
 
    "clear_board"
    "window_resize"
+
+   "select_key"
 end
 
 global enum EventButton

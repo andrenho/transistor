@@ -1,14 +1,23 @@
 require "sandbox"
 require "ui.dialog"
-require "ui.render"
+require "ui.menu"
+require "ui.toolbox"
 
 global record UI
+   record Render
+	   scenes: {Scene}
+	   menu: {MenuItem}
+	   toolbox: ToolBox
+   end
+   selected_key: string
+
    __index: UI
 end
 UI.__index = UI
 
 function UI.new() : UI
     local self : UI = setmetatable({}, UI as metatable<UI>)
+	self.selected_key = ""
     return self
 end
 
@@ -26,10 +35,31 @@ function UI:menu(): {MenuItem}
    }
 end
 
-function UI:render(sandbox: Sandbox, wires_values: {integer, integer}) : Render
+function UI:toolbox() : ToolBox
+   local toolbox : {ToolItem} = {
+	  { image = "tb_arrow",  key = "",         tooltip = "Unselect (ESC)" },
+	  { image = "tb_vcc",    key = "__vcc",    tooltip = "VCC [always `1`] (v)" },
+	  { image = "tb_button", key = "__button", tooltip = "Input button (b)" },
+	  { image = "tb_led",    key = "__led",    tooltip = "LED (l)" },
+	  { image = "tb_npn",    key = "__npn",    tooltip = "NPN transistor [activate to open] (n)" },
+	  { image = "tb_pnp",    key = "__pnp",    tooltip = "PNP transistor [activate to close] (p)" },
+	  { separator = true },
+	  { image = "tb_logic_gates", category = "logic_gates", tooltip = "Logic gates" },
+	  { image = "tb_digital",     category = "digital",     tooltip = "Digital components" },
+	  { image = "tb_memory",      category = "memory",      tooltip = "Memories" },
+	  { image = "tb_cpu",         category = "cpu",         tooltip = "CPUs and microcontrollers" },
+   }
+   for _,t in ipairs(toolbox) do 
+	  t.selected = (t.key == self.selected_key)
+   end
+   return toolbox
+end
+
+function UI:render(sandbox: Sandbox, wires_values: {integer, integer}) : UI.Render
    return {
       scenes = sandbox:render(wires_values),
 	  menu = self:menu(),
+	  toolbox = self:toolbox(),
    }
 end
 

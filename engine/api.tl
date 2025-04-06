@@ -1,13 +1,14 @@
 require "sandbox"
 require "ui.ui"
 require "filemanager"
-require "ui.render"
 require "event"
 require "compiler.compiler"
 
 global sandbox : Sandbox
 global file_manager : FileManager
 global ui : UI
+
+local last_render: UI.Render
 
 local first_step = true
 
@@ -18,8 +19,21 @@ global function init()
    ui = UI.new()
 end
 
-global function render(wires_values: {integer, integer}) : Render
-   return ui:render(sandbox, wires_values)
+global function render(wires_values: {integer, integer}) : UI.Render
+   last_render = ui:render(sandbox, wires_values)
+   return last_render
+end
+
+local function dump_last_state()
+   local filename = file_manager.directory .. "/state.lua"
+   local f = assert(io.open(filename, "w"))
+   f:write("return " .. serpent.block({
+	  serialization = sandbox:serialize(),
+	  compilation = compile(sandbox),
+	  last_render = last_render,
+   }, { comment=false, nocode=true, keyignore={ def=true }, valtypeignore={ userdata=true, ["function"]=true } }))
+   f:close()
+   print("State filed saved in " .. filename)
 end
 
 global function do_events(events: {Event}) : CompiledCircuit
@@ -29,7 +43,11 @@ global function do_events(events: {Event}) : CompiledCircuit
 	  if sandbox:do_event(event) then
 		 recompile = true
 	  end
-	  if event.type == "key_down" and event.key == "d" then file_manager:dump() end
+	  if event.type == "key_down" and event.key == "d" and event.mod.ctrl then
+		 dump_last_state()
+	  elseif event.type == "select_key" then
+		 ui.selected_key = event.key
+	  end
    end
 
    if first_step then

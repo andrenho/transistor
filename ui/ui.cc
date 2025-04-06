@@ -35,7 +35,8 @@ UI::UI()
     SDL_Event resize = { .type = SDL_EVENT_WINDOW_RESIZED };
     SDL_PushEvent(&resize);
 
-    gui.init();
+    auto [w, h] = ps::res::image_size("circuit");
+    gui.init(w, h);
 }
 
 bool UI::running() const
@@ -63,7 +64,11 @@ std::vector<luaobj::Event> UI::events() const
             ps::graphics::quit();
 
         luaobj::Event::KeyMod mod = {
+#if SDL_PLATFORM_APPLE
+            .ctrl = (e.key.mod & SDL_KMOD_GUI) != 0,
+#else
             .ctrl = (e.key.mod & SDL_KMOD_CTRL) != 0,
+#endif
             .alt = (e.key.mod & SDL_KMOD_ALT) != 0,
             .shift = (e.key.mod & SDL_KMOD_SHIFT) != 0
         };

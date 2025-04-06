@@ -6,6 +6,7 @@
 
 #include "dialog.hh"
 #include "menu.hh"
+#include "toolbox.hh"
 #include "backends/imgui_impl_sdl3.h"
 #include "backends/imgui_impl_sdlrenderer3.h"
 
@@ -27,8 +28,11 @@ GUI::~GUI()
     }
 }
 
-void GUI::init()
+void GUI::init(int circuit_tx_w, int circuit_tx_h)
 {
+    circuit_tx_w_ = circuit_tx_w;
+    circuit_tx_h_ = circuit_tx_h;
+
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     io = &ImGui::GetIO();
@@ -63,6 +67,7 @@ std::vector<luaobj::Event> GUI::render(luaobj::Render const& render, Engine& eng
     std::vector<luaobj::Event> events;
     render_menu(render, events);
     render_dialogs(dialog_list(render), events);
+    render_toolbox(render, events, circuit_tx_w_, circuit_tx_h_);
 
     ImGui::Render();
     ImGui_ImplSDLRenderer3_RenderDrawData(ImGui::GetDrawData(), ps::graphics::renderer());
