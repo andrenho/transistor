@@ -55,6 +55,10 @@ function Position.unhash(h: integer): Position
    return P(x, y, dir)
 end
 
+function Position:center() : Position
+   return P(self.x, self.y)
+end
+
 function Position.a_to_b(a: Position, b: Position, orientation: Orientation) : {Position}
    
    if a == b then return { P(a.x, a.y, a.dir == CENTER and E or a.dir) } end

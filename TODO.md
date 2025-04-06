@@ -22,7 +22,7 @@
 - [x] Clear circuit not working
 - [x] Serialization (serialization.lua)
 - [x] Compilation (compilation.lua, connected_wires.lua)
-- [ ] Put wire in direction
+- [x] Put wire in direction
 
 - [ ] Toolbar
 - [ ] Infobox
