@@ -16,12 +16,19 @@ global enum EventButton
    "right"
 end
 
+global record KeyMod
+   ctrl: boolean
+   alt: boolean
+   shift: boolean
+end
+
 global record Event
    type: EventType
    x: integer
    y: integer
    button: EventButton
    key: string
+   mod: KeyMod
    index: integer
 end
 

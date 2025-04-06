@@ -67,8 +67,7 @@ end
 
 function FileManager:save(filename: string)
    local f = assert(io.open(filename, "w"))
-   f:write("return ")
-   serialize(self.sandbox:serialize(), f)
+   f:write("return " .. serpent.line(self.sandbox:serialize(), { comment=false, compact=true }))
    f:close()
 end
 

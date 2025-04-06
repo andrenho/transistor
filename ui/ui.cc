@@ -62,6 +62,12 @@ std::vector<luaobj::Event> UI::events() const
         if (e.type == SDL_EVENT_QUIT || (e.type == SDL_EVENT_KEY_DOWN && e.key.key == SDLK_Q))
             ps::graphics::quit();
 
+        luaobj::Event::KeyMod mod = {
+            .ctrl = (e.key.mod & SDL_KMOD_CTRL) != 0,
+            .alt = (e.key.mod & SDL_KMOD_ALT) != 0,
+            .shift = (e.key.mod & SDL_KMOD_SHIFT) != 0
+        };
+
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
         switch (e.type) {
@@ -79,10 +85,10 @@ std::vector<luaobj::Event> UI::events() const
                 break;
             case SDL_EVENT_KEY_DOWN:
                 if (e.key.repeat == 0)
-                    events.push_back({ .type = "key_down", .key = std::string(1, (char) e.key.key), .index = e.button.button });
+                    events.push_back({ .type = "key_down", .key = std::string(1, (char) e.key.key), .index = e.button.button, .mod = mod });
                 break;
             case SDL_EVENT_KEY_UP:
-                events.push_back({ .type = "key_up", .key = std::string(1, (char) e.key.key) });
+                events.push_back({ .type = "key_up", .key = std::string(1, (char) e.key.key), .mod = mod });
                 break;
             case SDL_EVENT_WINDOW_RESIZED: {
                 int w, h;
