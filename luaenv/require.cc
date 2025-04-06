@@ -25,8 +25,8 @@ void setup_require(lua_State* L)
         std::string key = name;
         std::string cached_name = "__require_"s + name;
 
-        // is it "bit"?
-        if (strcmp(name, "bit") == 0) {
+        // is it a luajit internal library?
+        if (strcmp(name, "bit") == 0 || strcmp(name, "table.new") == 0) {
             lua_getglobal(LL, "old_require");
             lua_pushstring(LL, name);
             lua_call(LL, 1, 1);

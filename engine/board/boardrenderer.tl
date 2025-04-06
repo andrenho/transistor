@@ -1,6 +1,6 @@
 require "ui.scene"
 require "ui.context"
-require "board/board"
+require "board.board"
 require "board.geo.position"
 require "board.wire"
 

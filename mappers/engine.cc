@@ -10,6 +10,8 @@ using namespace std;
 #include "luaenv/array.hh"
 #include "luaenv/cache.hh"
 
+extern void setup_require(lua_State* L);
+
 Engine::Engine(Lua& lua)
     : lua_(lua)
 {
