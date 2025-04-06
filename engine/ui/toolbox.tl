@@ -1,15 +1,10 @@
-global enum PopupToolCategory
-	"logic_gates"
-	"digital"
-	"memory"
-	"cpu"
-end
+require "components.category"
 
 global record ToolItem
 	image: string
 	key: string
 	tooltip: string
-	category: PopupToolCategory
+	category: ComponentCategory
 	selected: boolean
 	separator: boolean
 

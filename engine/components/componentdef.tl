@@ -5,6 +5,7 @@ require "board.geo.rect"
 require "board.geo.position"
 require "board.geo.pinpos"
 require "board.geo.direction"
+require "components.category"
 
 global enum ComponentType
    "single_tile"
@@ -20,13 +21,6 @@ end
 local record ComponentPin
    name: string
    direction: PinDirection
-end
-
-local enum ComponentCategory
-   "logic_gates"
-   "digital"
-   "memory"
-   "cpu"
 end
 
 global type Component

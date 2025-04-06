@@ -1,4 +1,5 @@
 require "components.componentdef"
+require "components.category"
 
 global record ComponentDB
    items: {string: ComponentDef}
@@ -35,7 +36,6 @@ function ComponentDB:load_all_native_components()  -- this function is just for 
 	  self:add(require("components." .. c) as ComponentDef, true)
    end
 end
-
 
 function ComponentDB.new() : ComponentDB
    local self : ComponentDB = setmetatable({}, ComponentDB as metatable<ComponentDB>)
