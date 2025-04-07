@@ -5,6 +5,8 @@ global record ToolItem
 	key: string
 	tooltip: string
 	category: ComponentCategory
+	menu: {string}
+	submenu: {string: {Categories.Def}}
 	selected: boolean
 	separator: boolean
 
