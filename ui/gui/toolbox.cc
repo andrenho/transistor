@@ -27,17 +27,23 @@ static std::string popup_name(std::string const& category)
     return "category_" + category;
 }
 
-static void render_popup_menus(luaobj::Render const& render, std::string const& category, std::vector<luaobj::Event>& events)
+static void render_popup_menu(luaobj::ToolItem const& item, std::vector<luaobj::Event>& events)
 {
-    if (ImGui::BeginPopup(popup_name(category).c_str())) {
+    if (ImGui::BeginPopup(popup_name(*item.category).c_str())) {
+        for (auto const& menu: *item.menus) {
+            if (ImGui::BeginMenu(menu.c_str())) {
+                for (auto const& submenu: item.submenus->at(menu))
+                    if (ImGui::MenuItem(submenu.name.c_str()))
+                        events.push_back({ .type = "select_key", .key = submenu.key });
+                ImGui::EndMenu();
+            }
+        }
         ImGui::EndPopup();
     }
 }
 
 void render_toolbox(luaobj::Render const& render, std::vector<luaobj::Event>& events, int circuit_tx_w, int circuit_tx_h)
 {
-    std::unordered_set<std::string> categories;
-
     size_t i = 0;
     if (ImGui::Begin("Toolbox", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoCollapse)) {
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2.f, 2.f));
@@ -55,12 +61,10 @@ void render_toolbox(luaobj::Render const& render, std::vector<luaobj::Event>& ev
                 if (i % 2 == 1)
                     ImGui::SameLine(0, 5);
                 if (item.image != 0 && image_button(item.image, i, circuit_tx_w, circuit_tx_h)) {
-                    if (item.category) {
-                        categories.insert(*item.category);
+                    if (item.category)
                         ImGui::OpenPopup(popup_name(*item.category).c_str());
-                    } else if (item.key) {
+                    else if (item.key)
                         events.push_back({ .type = "select_key", .key = *item.key });
-                    }
                 }
                 if (!item.tooltip.empty())
                     ImGui::SetItemTooltip("%s", item.tooltip.c_str());
@@ -71,9 +75,10 @@ void render_toolbox(luaobj::Render const& render, std::vector<luaobj::Event>& ev
         }
         ImGui::PopStyleVar();
 
-        for (auto const& category: categories)
-            render_popup_menus(render, category, events);
+        // draw popup menus
+        for (auto const& item: render.toolbox)
+            if (item.category)
+                render_popup_menu(item, events);
     }
     ImGui::End();
-
 }

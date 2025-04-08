@@ -24,6 +24,6 @@
 - [x] Compilation (compilation.lua, connected_wires.lua)
 - [x] Put wire in direction
 
-- [ ] Toolbar
+- [x] Toolbar
 - [ ] Infobox
-- [ ] ICs
+- [ ] Placement & ICs

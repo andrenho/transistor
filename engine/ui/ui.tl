@@ -9,7 +9,7 @@ global record UI
 	   menu: {MenuItem}
 	   toolbox: ToolBox
    end
-selected_key: string
+   selected_key: string
 
    __index: UI
 end
@@ -50,6 +50,7 @@ function UI:toolbox(component_db: ComponentDB) : ToolBox
 	  { image = "tb_cpu",         category = "cpu",         tooltip = "CPUs and microcontrollers" },
    }
    for _,t in ipairs(toolbox) do 
+	  if t.key == self.selected_key then t.selected = true end
 	  if t.category then
 		 t.menus = component_db.categories.categories[t.category]
 		 t.submenus = {}
