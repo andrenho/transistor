@@ -16,8 +16,8 @@ struct Dialog {
 
         static Button from_lua(lua_State* L, int index) {
             return {
-                .text = luaw_getfield<std::string>(L, -1, "text"),
-                .event = luaw_getfield<std::optional<Event>>(L, -1, "event"),
+                .LUAW_FIELD(text),
+                .LUAW_FIELD(event),
             };
         }
     };
@@ -31,11 +31,11 @@ struct Dialog {
 
     static Dialog from_lua(lua_State* L, int index) {
         Dialog dialog = {
-            .title = luaw_getfield<std::string>(L, -1, "title"),
+            .LUAW_FIELD(title),
             .text = {},
             .type = Information,
-            .buttons = luaw_getfield<std::vector<Button>>(L, -1, "buttons"),
-            .default_button = luaw_getfield<size_t>(L, -1, "default_button"),
+            .LUAW_FIELD(buttons),
+            .LUAW_FIELD(default_button),
         };
 
         luaw_getfield(L, -1, "text");

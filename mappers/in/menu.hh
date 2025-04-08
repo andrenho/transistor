@@ -16,9 +16,9 @@ struct MenuItem {
 
     static MenuItem from_lua(lua_State* L, int index) {
         return {
-            .text = luaw_getfield<std::string>(L, index, "text"),
-            .ask_confirmation = luaw_getfield<std::optional<Dialog>>(L, index, "ask_confirmation"),
-            .event = luaw_getfield<std::optional<Event>>(L, index, "event"),
+            .LUAW_FIELD(text),
+            .LUAW_FIELD(ask_confirmation),
+            .LUAW_FIELD(event),
             .items = luaw_getfield<std::optional<std::vector<MenuItem>>>(L, index, "items").value_or(std::vector<MenuItem> {}),
         };
     }

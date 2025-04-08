@@ -90,4 +90,6 @@ std::string luaw_to_string(lua_State* L, int index);
 
 #include "luaw.inl"
 
+#define LUAW_FIELD(name) name = luaw_getfield<decltype(name)>(L, index, #name)
+
 #endif //LUAW_HH_

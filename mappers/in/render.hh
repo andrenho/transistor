@@ -18,8 +18,8 @@ struct Render {
     static Render from_lua(lua_State* L, int index) {
         Render render = {
             .scenes = {},
-            .menu = luaw_getfield<std::vector<MenuItem>>(L, index, "menu"),
-            .toolbox = luaw_getfield<ToolBox>(L, index, "toolbox"),
+            .LUAW_FIELD(menu),
+            .LUAW_FIELD(toolbox),
         };
 
         luaw_getfield(L, index, "scenes");
