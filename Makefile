@@ -54,6 +54,7 @@ OBJ = \
 	ui/ui.o \
 	ui/gui/gui.o \
 	ui/gui/dialog.o \
+	ui/gui/infobox.o \
 	ui/gui/menu.o \
 	ui/gui/toolbox.o
 

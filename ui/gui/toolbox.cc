@@ -6,17 +6,17 @@ using namespace std;
 
 #include <imgui.h>
 
-static bool image_button(ps_res_idx_t resource, size_t i, int circuit_tx_w, int circuit_tx_h)
+static bool image_button(ps_res_idx_t resource, size_t i)
 {
     ps::res::Tile tile = ps::res::tile(resource);
 
     ImVec2 uv0 = ImVec2(
-        tile.rect.x / (float) circuit_tx_w,
-        tile.rect.y / (float) circuit_tx_h
+        tile.rect.x / tile.texture->w,
+        tile.rect.y / tile.texture->h
     );
     ImVec2 uv1 = ImVec2(
-        (tile.rect.x + tile.rect.w) / (float) circuit_tx_w,
-        (tile.rect.y + tile.rect.h) / (float) circuit_tx_h
+        (tile.rect.x + tile.rect.w) / tile.texture->w,
+        (tile.rect.y + tile.rect.h) / tile.texture->h
     );
 
     return ImGui::ImageButton(("##btn" + std::to_string(i)).c_str(), (ImTextureID) tile.texture, { 32, 32 }, uv0, uv1);
@@ -42,7 +42,7 @@ static void render_popup_menu(luaobj::ToolItem const& item, std::vector<luaobj::
     }
 }
 
-void render_toolbox(luaobj::Render const& render, std::vector<luaobj::Event>& events, int circuit_tx_w, int circuit_tx_h)
+void render_toolbox(luaobj::Render const& render, std::vector<luaobj::Event>& events)
 {
     size_t i = 0;
     if (ImGui::Begin("Toolbox", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoCollapse)) {
@@ -60,7 +60,7 @@ void render_toolbox(luaobj::Render const& render, std::vector<luaobj::Event>& ev
                 }
                 if (i % 2 == 1)
                     ImGui::SameLine(0, 5);
-                if (item.image != 0 && image_button(item.image, i, circuit_tx_w, circuit_tx_h)) {
+                if (item.image != 0 && image_button(item.image, i)) {
                     if (item.category)
                         ImGui::OpenPopup(popup_name(*item.category).c_str());
                     else if (item.key)

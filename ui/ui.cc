@@ -5,6 +5,8 @@
 #include "resources/images/bg.jpg.h"
 #include "resources/images/circuit.png.h"
 #include "resources/images/circuit.tileset.lua.h"
+#include "resources/images/infobox.png.h"
+#include "resources/images/infobox.tileset.lua.h"
 
 [[noreturn]] static void error_callback(void* _)
 {
@@ -31,12 +33,13 @@ UI::UI()
     rs_bg = ps::res::add_image(ui_resources_images_bg_jpg, ui_resources_images_bg_jpg_sz);
     ps::res::add_image("circuit", ui_resources_images_circuit_png, ui_resources_images_circuit_png_sz);
     ps::res::add_tiles_from_lua("circuit", ui_resources_images_circuit_tileset_lua, ui_resources_images_circuit_tileset_lua_sz);
+    ps::res::add_image("infobox", ui_resources_images_infobox_png, ui_resources_images_infobox_png_sz);
+    ps::res::add_tiles_from_lua("infobox", ui_resources_images_infobox_tileset_lua, ui_resources_images_infobox_tileset_lua_sz);
 
     SDL_Event resize = { .type = SDL_EVENT_WINDOW_RESIZED };
     SDL_PushEvent(&resize);
 
-    auto [w, h] = ps::res::image_size("circuit");
-    gui.init(w, h);
+    gui.init();
 }
 
 bool UI::running() const
@@ -90,7 +93,7 @@ std::vector<luaobj::Event> UI::events() const
                 break;
             case SDL_EVENT_KEY_DOWN:
                 if (e.key.repeat == 0)
-                    events.push_back({ .type = "key_down", .key = std::string(1, (char) e.key.key), .index = e.button.button, .mod = mod });
+                    events.push_back({ .type = "key_down", .key = std::string(1, (char) e.key.key), .mod = mod, .index = e.button.button });
                 break;
             case SDL_EVENT_KEY_UP:
                 events.push_back({ .type = "key_up", .key = std::string(1, (char) e.key.key), .mod = mod });
