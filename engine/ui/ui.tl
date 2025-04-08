@@ -8,6 +8,7 @@ global record UI
 	   scenes: {Scene}
 	   menu: {MenuItem}
 	   toolbox: ToolBox
+	   infobox: string
    end
    selected_key: string
 
@@ -62,11 +63,17 @@ function UI:toolbox(component_db: ComponentDB) : ToolBox
    return toolbox
 end
 
+function UI:infobox(sandbox: Sandbox) : string
+   local def : ComponentDef = sandbox.component_db.items[self.selected_key]
+   return def and def.infobox or nil
+end
+
 function UI:render(sandbox: Sandbox, wires_values: {integer, integer}) : UI.Render
    return {
       scenes = sandbox:render(wires_values),
 	  menu = self:menu(),
 	  toolbox = self:toolbox(sandbox.component_db),
+	  infobox = self:infobox(sandbox),
    }
 end
 
