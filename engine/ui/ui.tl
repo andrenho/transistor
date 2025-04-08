@@ -51,10 +51,10 @@ function UI:toolbox(component_db: ComponentDB) : ToolBox
    }
    for _,t in ipairs(toolbox) do 
 	  if t.category then
-		 t.menu = component_db.categories.categories[t.category]
-		 t.submenu = {}
-		 for _,item in ipairs(t.menu) do
-			t.submenu[item] = component_db.categories.subcategories[item]
+		 t.menus = component_db.categories.categories[t.category]
+		 t.submenus = {}
+		 for _,item in ipairs(t.menus) do
+			t.submenus[item] = component_db.categories.subcategories[item]
 		 end
 	  end
    end

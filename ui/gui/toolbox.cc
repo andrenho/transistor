@@ -1,5 +1,9 @@
 #include "toolbox.hh"
 
+#include <string>
+#include <unordered_set>
+using namespace std;
+
 #include <imgui.h>
 
 static bool image_button(ps_res_idx_t resource, size_t i, int circuit_tx_w, int circuit_tx_h)
@@ -18,9 +22,22 @@ static bool image_button(ps_res_idx_t resource, size_t i, int circuit_tx_w, int 
     return ImGui::ImageButton(("##btn" + std::to_string(i)).c_str(), (ImTextureID) tile.texture, { 32, 32 }, uv0, uv1);
 }
 
-void render_toolbox(luaobj::Render const& render, std::vector<luaobj::Event>& events, int circuit_tx_w, int circuit_tx_h)
-
+static std::string popup_name(std::string const& category)
 {
+    return "category_" + category;
+}
+
+static void render_popup_menus(luaobj::Render const& render, std::string const& category, std::vector<luaobj::Event>& events)
+{
+    if (ImGui::BeginPopup(popup_name(category).c_str())) {
+        ImGui::EndPopup();
+    }
+}
+
+void render_toolbox(luaobj::Render const& render, std::vector<luaobj::Event>& events, int circuit_tx_w, int circuit_tx_h)
+{
+    std::unordered_set<std::string> categories;
+
     size_t i = 0;
     if (ImGui::Begin("Toolbox", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoCollapse)) {
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2.f, 2.f));
@@ -38,13 +55,12 @@ void render_toolbox(luaobj::Render const& render, std::vector<luaobj::Event>& ev
                 if (i % 2 == 1)
                     ImGui::SameLine(0, 5);
                 if (item.image != 0 && image_button(item.image, i, circuit_tx_w, circuit_tx_h)) {
-                    /*
-                    if (item.category)
+                    if (item.category) {
+                        categories.insert(*item.category);
                         ImGui::OpenPopup(popup_name(*item.category).c_str());
-                    else
-                    */
-                    if (item.key)
+                    } else if (item.key) {
                         events.push_back({ .type = "select_key", .key = *item.key });
+                    }
                 }
                 if (!item.tooltip.empty())
                     ImGui::SetItemTooltip("%s", item.tooltip.c_str());
@@ -55,7 +71,8 @@ void render_toolbox(luaobj::Render const& render, std::vector<luaobj::Event>& ev
         }
         ImGui::PopStyleVar();
 
-        // TODO - render_popup_menus(T);
+        for (auto const& category: categories)
+            render_popup_menus(render, category, events);
     }
     ImGui::End();
 

@@ -23,9 +23,9 @@ struct ToolItem {
     std::string                tooltip;
     bool                       selected;
     bool                       separator = false;
-
-    std::optional<std::vector<std::string>>                                  menu;
-    std::optional<std::unordered_map<std::string, std::vector<CategoryDef>>> submenu;
+    std::optional<std::string> category;
+    std::optional<std::vector<std::string>>                                  menus;
+    std::optional<std::unordered_map<std::string, std::vector<CategoryDef>>> submenus;
 
     static ToolItem from_lua(lua_State* L, int index) {
         if (luaw_getfield<std::optional<bool>>(L,index, "separator").value_or(false))
@@ -34,11 +34,11 @@ struct ToolItem {
             .image = ps::res::idx(luaw_getfield<std::string>(L, index, "image")),
             .LUAW_FIELD(key),
             .LUAW_FIELD(tooltip),
-            .tooltip = luaw_getfield<std::string>(L, index, "tooltip"),
             .selected = luaw_getfield<std::optional<bool>>(L, index, "selected").value_or(false),
             .separator = false,
-            .LUAW_FIELD(menu),
-            .LUAW_FIELD(submenu)
+            .LUAW_FIELD(category),
+            .LUAW_FIELD(menus),
+            .LUAW_FIELD(submenus)
         };
     }
 };
