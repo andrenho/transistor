@@ -1,5 +1,4 @@
 #include "infobox.hh"
-
 #include <regex>
 
 #include <imgui.h>
@@ -12,8 +11,11 @@ static void render_tag(std::string const& type, std::string const& text)
     if (type == "text") {
         std::istringstream ss(text);
         std::string line;
-        while (std::getline(ss, line))
-            ImGui::TextWrapped("%s", line.c_str());
+        while (std::getline(ss, line)) {
+            line.erase(line.begin(), std::find_if(line.begin(), line.end(), [](unsigned char ch) { return !std::isspace(ch); }));   // line
+            if (!line.empty())
+                ImGui::TextWrapped("%s", line.c_str());
+        }
 
     } else if (type == "image" || type == "image_sl") {
         if (type == "image_sl")

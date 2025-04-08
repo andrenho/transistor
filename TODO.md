@@ -25,5 +25,5 @@
 - [x] Put wire in direction
 
 - [x] Toolbar
-- [ ] Infobox
+- [x] Infobox
 - [ ] Placement & ICs

@@ -21,7 +21,7 @@ local button: ComponentDef = {
    
    infobox = [[
       Buttons` accepts input from the user, and outputs `1` or `0` depending if the button is pressed or not.
-      ${image: __infobox_button_0}${image_sl: __infobox_button_1}
+	  ${image: __infobox_button_0}${image_sl: __infobox_button_1}
    ]],
    
    on_click = function(button: Component)
