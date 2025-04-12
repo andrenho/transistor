@@ -518,13 +518,43 @@ template <typename T> void luaw_setfield(lua_State* L, int index, std::string co
 }
 
 //
+// EXCEPTIONS
+//
+
+struct LuawException : public std::runtime_error {
+    explicit LuawException(const char* msg) : std::runtime_error(msg) {}
+};
+
+//
 // CALLS
 //
+
+static int luaw_error_handler(lua_State* L)
+{
+    lua_getglobal(L, "debug");
+    lua_getfield(L, -1, "traceback");
+    lua_pushvalue(L, 1);  // The error message
+    lua_pushnumber(L, 2); // Skip this function in the traceback
+    lua_call(L, 2, 1);
+    return 1;
+}
+
+static void luaw_pcall(lua_State* L, int nargs, int nresults)
+{
+    // add message handler
+    int hpos = lua_gettop(L) - nargs;
+    lua_pushcfunction(L, luaw_error_handler);
+    lua_insert(L, hpos);
+    int r = lua_pcall(L, nargs, nresults, hpos);
+    lua_remove(L, hpos);
+    if (r != LUA_OK)
+        throw LuawException(lua_tostring(L, -1));
+}
 
 template <typename T> T luaw_call(lua_State* L, auto&&... args)
 {
     ([&] { luaw_push(L, args); } (), ...);
-    lua_call(L, sizeof...(args), 1);
+    luaw_pcall(L, sizeof...(args), 1);
     return luaw_pop<T>(L);
 }
 
@@ -543,7 +573,7 @@ template <typename T> T luaw_call_field(lua_State* L, int index, std::string con
 int luaw_call_push(lua_State* L, int nresults, auto&... args)
 {
     ([&] { luaw_push(L, args); } (), ...);
-    lua_call(L, sizeof...(args), nresults);
+    luaw_pcall(L, sizeof...(args), nresults);
     return nresults;
 }
 
@@ -551,7 +581,7 @@ int luaw_call_push_global(lua_State* L, std::string const& global, int nresults,
 {
     lua_getglobal(L, global.c_str());
     ([&] { luaw_push(L, args); } (), ...);
-    lua_call(L, sizeof...(args), nresults);
+    luaw_pcall(L, sizeof...(args), nresults);
     return nresults;
 }
 
@@ -559,7 +589,7 @@ int luaw_call_push_field(lua_State* L, int index, std::string const& field, int 
 {
     luaw_getfield(L, index, field);
     ([&] { luaw_push(L, args); } (), ...);
-    lua_call(L, sizeof...(args), nresults);
+    luaw_pcall(L, sizeof...(args), nresults);
     return nresults;
 }
 

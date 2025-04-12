@@ -10,7 +10,6 @@ global record UI
 	   toolbox: ToolBox
 	   infobox: string
    end
-   selected_key: string
 
    __index: UI
 end
@@ -18,7 +17,6 @@ UI.__index = UI
 
 function UI.new() : UI
     local self : UI = setmetatable({}, UI as metatable<UI>)
-	self.selected_key = ""
     return self
 end
 
@@ -36,7 +34,7 @@ function UI:menu(): {MenuItem}
    }
 end
 
-function UI:toolbox(component_db: ComponentDB) : ToolBox
+function UI:toolbox(sandbox: Sandbox) : ToolBox
    local toolbox : {ToolItem} = {
 	  { image = "tb_arrow",  key = "",         tooltip = "Unselect (ESC)" },
 	  { image = "tb_vcc",    key = "__vcc",    tooltip = "VCC [always `1`] (v)" },
@@ -51,12 +49,12 @@ function UI:toolbox(component_db: ComponentDB) : ToolBox
 	  { image = "tb_cpu",         category = "cpu",         tooltip = "CPUs and microcontrollers" },
    }
    for _,t in ipairs(toolbox) do 
-	  if t.key == self.selected_key then t.selected = true end
+	  if t.key == sandbox.board.cursor.selected_component then t.selected = true end
 	  if t.category then
-		 t.menus = component_db.categories.categories[t.category]
+		 t.menus = sandbox.component_db.categories.categories[t.category]
 		 t.submenus = {}
 		 for _,item in ipairs(t.menus) do
-			t.submenus[item] = component_db.categories.subcategories[item]
+			t.submenus[item] = sandbox.component_db.categories.subcategories[item]
 		 end
 	  end
    end
@@ -64,7 +62,7 @@ function UI:toolbox(component_db: ComponentDB) : ToolBox
 end
 
 function UI:infobox(sandbox: Sandbox) : string
-   local def : ComponentDef = sandbox.component_db.items[self.selected_key]
+   local def : ComponentDef = sandbox.component_db.items[sandbox.board.cursor.selected_component]
    return def and def.infobox or nil
 end
 
@@ -72,7 +70,7 @@ function UI:render(sandbox: Sandbox, wires_values: {integer, integer}) : UI.Rend
    return {
       scenes = sandbox:render(wires_values),
 	  menu = self:menu(),
-	  toolbox = self:toolbox(sandbox.component_db),
+	  toolbox = self:toolbox(sandbox),
 	  infobox = self:infobox(sandbox),
    }
 end

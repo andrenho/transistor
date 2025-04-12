@@ -46,7 +46,7 @@ global function do_events(events: {Event}) : CompiledCircuit
 	  if event.type == "key_down" and event.key == "d" and event.mod.ctrl then
 		 dump_last_state()
 	  elseif event.type == "select_key" then
-		 ui.selected_key = event.key
+		 sandbox.board.cursor.selected_component = event.key
 	  end
    end
 

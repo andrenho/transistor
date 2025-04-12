@@ -65,7 +65,7 @@ void Engine::setup_dev()
     // run compiler and check for errors
     auto [success, msg] = check_engine();
     compilation_successful_ = success;
-    compilation_messages_ = msg;
+    error_messages_ = msg;
 
     // load/reload engine from files
     lua_.with_lua([](lua_State*L) {

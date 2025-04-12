@@ -20,7 +20,7 @@ public:
     [[nodiscard]] luaobj::Render render(std::unordered_map<uint32_t, uint8_t> const& wires_values) const;
 
     [[nodiscard]] bool                              compilation_successful() const { return compilation_successful_; }
-    [[nodiscard]] std::string const&                compilation_messages() const { return compilation_messages_; }
+    [[nodiscard]] std::string const&                error_messages() const { return error_messages_; }
     [[nodiscard]] std::optional<std::string> const& test_errors() const { return test_errors_; }
 
 
@@ -35,7 +35,7 @@ private:
     std::pair<bool, std::string>        run_tests() const;
 
     bool                       compilation_successful_ = true;
-    std::string                compilation_messages_;
+    std::string                error_messages_;
     std::optional<std::string> test_errors_;
 };
 

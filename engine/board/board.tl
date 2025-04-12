@@ -58,6 +58,7 @@ function Board.new(w: integer, h: integer, component_db: ComponentDB) : Board
    self.component_db = component_db
    self.cursor = {
 	  selected_direction = N,
+	  selected_component = "",
 	  selected_wire = WR("top", "1"),
 	  erasing = false,
    }
@@ -270,7 +271,7 @@ function Board:do_event(event: Event, rel_mouse_x: integer, rel_mouse_y: integer
 		 local component = self:component(pos:center())
 		 if component then
 			component:on_click()
-		 elseif cursor.selected_component then
+		 elseif cursor.selected_component then -- and cursor.selected_component ~= "" then
 			self:add_component(cursor.selected_component, pos:center(), cursor.selected_direction)
 			recompile = true
 		 end

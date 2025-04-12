@@ -127,11 +127,11 @@ void GUI::error_window(luaobj::Render const& render, Engine const& engine) const
         else
             ImGui::Text("Tests ok.");
         ImGui::Separator();
-        if (engine.compilation_messages().empty()) {
+        if (engine.error_messages().empty()) {
             ImGui::Text("No warnings.");
         } else {
             ImVec4 color = engine.compilation_successful() ? ImVec4(1.0f, 1.0f, 1.0f, 1.0f) : ImVec4(1.0f, 0.6f, 0.6f, 1.0f);
-            ImGui::TextColored(color, "%s", engine.compilation_messages().c_str());
+            ImGui::TextColored(color, "%s", engine.error_messages().c_str());
         }
     }
     ImGui::End();
