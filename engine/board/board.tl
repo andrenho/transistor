@@ -21,6 +21,7 @@ local record BoardCursor
 	  orientation_defined: boolean
    end
 
+   tile: Position
    selected_direction: Direction
    selected_wire: Wire
    selected_component: string
@@ -244,6 +245,9 @@ function Board:do_event(event: Event, rel_mouse_x: integer, rel_mouse_y: integer
    local cursor = self.cursor
 
    if event.type == "move_pointer" then
+	  cursor.tile = pos:center()
+	  if not Rect.new(0, 0, self.w-1, self.h-1):contains(cursor.tile) then cursor.tile = nil end
+	  
 	  if cursor.wire then
 		 local dx = cursor.wire.starting_pos.x - pos.x
 		 local dy = cursor.wire.starting_pos.y - pos.y
@@ -271,14 +275,16 @@ function Board:do_event(event: Event, rel_mouse_x: integer, rel_mouse_y: integer
 		 local component = self:component(pos:center())
 		 if component then
 			component:on_click()
-		 elseif cursor.selected_component then -- and cursor.selected_component ~= "" then
+		 elseif cursor.selected_component ~= "" then
 			self:add_component(cursor.selected_component, pos:center(), cursor.selected_direction)
 			recompile = true
 		 end
 	  end
 
    elseif event.type == "key_down" then
-	  if event.key == "r" then
+	  if event.index == 41 then  -- ESC
+		 cursor.selected_component = ""
+	  elseif event.key == "r" then
 		 if self:component(pos:center()) then
 			self:rotate_tile(pos:center())
 			recompile = true

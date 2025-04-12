@@ -82,8 +82,9 @@ function BoardRenderer:__draw_wires(scene: Scene, wires_values: {integer, intege
 end
 
 function BoardRenderer:__draw_components(scene: Scene)
+   -- components
    for _, component in ipairs(self.board.components) do
-      local context = { 
+      local context : Context = { 
 		 position = { 
 			x = math.floor(component.position.x * TILE_SIZE + (self.board.x / self.board.zoom)),
 			y = math.floor(component.position.y * TILE_SIZE + (self.board.y / self.board.zoom)),
@@ -91,6 +92,19 @@ function BoardRenderer:__draw_components(scene: Scene)
 		 rotation = Dir.angle[component.direction]
 	  }
 	  component.def.render(component, scene, context)
+   end
+   -- shadow component
+   if self.board.cursor.tile and self.board.cursor.selected_component ~= "" then
+      local context : Context = { 
+		 position = { 
+			x = math.floor(self.board.cursor.tile.x * TILE_SIZE + (self.board.x / self.board.zoom)),
+			y = math.floor(self.board.cursor.tile.y * TILE_SIZE + (self.board.y / self.board.zoom)),
+		 },
+		 rotation = Dir.angle[self.board.cursor.selected_direction],
+		 opacity = .5,
+	  }
+	  local def = self.board.component_db:def(self.board.cursor.selected_component)
+	  def.render(nil, scene, context)
    end
 end
 
