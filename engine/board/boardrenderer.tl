@@ -4,13 +4,7 @@ require "board.board"
 require "board.geo.position"
 require "board.wire"
 
-local record Cache
-   tile: ResourceId
-   board_top: ResourceId
-   board_bottom: ResourceId
-   board_left: ResourceId
-   board_right: ResourceId
-end
+local type Cache = {string: ResourceId}
 
 global record BoardRenderer
    board: Board
@@ -22,13 +16,20 @@ BoardRenderer.__index = BoardRenderer
 local TILE_SIZE = 16
 
 local function load_cache() : Cache
-   return {
-	  tile = cache_image("tile"),
-	  board_top = cache_image("board_top"),
-	  board_bottom = cache_image("board_bottom"),
-	  board_right = cache_image("board_right"),
-	  board_left = cache_image("board_left"),
-   }
+   local cache: Cache = {}
+   local directions = { "n", "s", "w", "e" }
+   local all_directions = { "nw", "n", "ne", "sw", "s", "se", "w", "e", "center" }
+   local images = { "tile", "board_top", "board_bottom", "board_right", "board_left" }
+   for _,dir in ipairs(directions) do table.insert(images, "ic_dot_" .. dir) end
+   for _,dir in ipairs(directions) do table.insert(images, "ic_pin_" .. dir) end
+   for _,dir in ipairs(all_directions) do table.insert(images, "logic_gates_" .. dir) end
+   for _,dir in ipairs(all_directions) do table.insert(images, "digital_" .. dir) end
+   for _,dir in ipairs(all_directions) do table.insert(images, "memory_" .. dir) end
+   for _,dir in ipairs(all_directions) do table.insert(images, "cpu_" .. dir) end
+   for _, image in ipairs(images) do
+	  cache[image] = cache_image(image)
+   end
+   return cache
 end
 
 function BoardRenderer.new(board: Board) : BoardRenderer
@@ -81,30 +82,39 @@ function BoardRenderer:__draw_wires(scene: Scene, wires_values: {integer, intege
    end
 end
 
+function BoardRenderer:__draw_component_single_tile(scene: Scene, component: Component, def: ComponentDef, x: integer, y: integer, dir: Direction, semitransparent: boolean)
+   local context : Context = { 
+	  position = { 
+		 x = math.floor(x * TILE_SIZE + (self.board.x / self.board.zoom)),
+		 y = math.floor(y * TILE_SIZE + (self.board.y / self.board.zoom)),
+	  },
+	  rotation = Dir.angle[dir],
+	  opacity = semitransparent and 0.5 or 1,
+   }
+   def.render(component, scene, context)
+end
+
+function BoardRenderer:__draw_ic(scene: Scene, component: Component, def: ComponentDef, x: integer, y: integer, dir: Direction, semitransparent: boolean)
+   -- TODO
+end
+
+function BoardRenderer:__draw_component(scene: Scene, component: Component, def: ComponentDef, x: integer, y: integer, dir: Direction, semitransparent: boolean)
+   if def.type == "single_tile" then
+	  self:__draw_component_single_tile(scene, component, def, x, y, dir, semitransparent)
+   else
+	  self:__draw_ic(scene, component, def, x, y, dir, semitransparent)
+   end
+end
+
 function BoardRenderer:__draw_components(scene: Scene)
    -- components
    for _, component in ipairs(self.board.components) do
-      local context : Context = { 
-		 position = { 
-			x = math.floor(component.position.x * TILE_SIZE + (self.board.x / self.board.zoom)),
-			y = math.floor(component.position.y * TILE_SIZE + (self.board.y / self.board.zoom)),
-		 },
-		 rotation = Dir.angle[component.direction]
-	  }
-	  component.def.render(component, scene, context)
+	  self:__draw_component(scene, component, component.def, component.position.x, component.position.y, component.direction, false)
    end
    -- shadow component
    if self.board.cursor.tile and self.board.cursor.selected_component ~= "" then
-      local context : Context = { 
-		 position = { 
-			x = math.floor(self.board.cursor.tile.x * TILE_SIZE + (self.board.x / self.board.zoom)),
-			y = math.floor(self.board.cursor.tile.y * TILE_SIZE + (self.board.y / self.board.zoom)),
-		 },
-		 rotation = Dir.angle[self.board.cursor.selected_direction],
-		 opacity = .5,
-	  }
 	  local def = self.board.component_db:def(self.board.cursor.selected_component)
-	  def.render(nil, scene, context)
+	  self:__draw_component(scene, nil, def, self.board.cursor.tile.x, self.board.cursor.tile.y, self.board.cursor.selected_direction, true)
    end
 end
 
