@@ -4,7 +4,6 @@
 #include "luaenv/lua.hh"
 #include "luaenv/hotreload.hh"
 #include "mappers/engine.hh"
-#include "mappers/in/compiled_circuit.hh"
 
 #include "ui/ui.hh"
 
