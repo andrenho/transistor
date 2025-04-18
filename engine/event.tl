@@ -1,4 +1,5 @@
 global enum EventType
+   -- user interface events
    "move_pointer"
    "mouse_press"
    "mouse_wheel"
@@ -6,10 +7,13 @@ global enum EventType
    "key_down"
    "key_up"
 
-   "clear_board"
+   -- WM events
    "window_resize"
 
+   -- user commands
    "select_key"
+   "clear_board"
+   "show_imgui_demo"
 end
 
 global enum EventButton

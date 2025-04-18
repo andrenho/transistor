@@ -51,6 +51,12 @@ void GUI::do_event(SDL_Event* e) const
     ImGui_ImplSDL3_ProcessEvent(e);
 }
 
+void GUI::do_event(luaobj::Event const& event)
+{
+    if (event.type == "show_imgui_demo")
+        show_demo_window_ = true;
+}
+
 std::vector<luaobj::Event> GUI::render(luaobj::Render const& render, Engine& engine) const
 {
     ImGui_ImplSDLRenderer3_NewFrame();

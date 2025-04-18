@@ -4,7 +4,7 @@
 
 # v0.0.6 - IC support
 
-- [ ] optional ImGUI window in debug mode
+- [x] optional ImGUI window in debug mode
 - [x] ic support
   - [x] logic (write unit tests)
     - [x] create OR ic

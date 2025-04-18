@@ -22,14 +22,16 @@ int main()
         if (hotreload.restart())
             engine.setup();
 
-        auto events = ui.events();
-        if (auto compiled_circuit = engine.events(events))
+        auto events = ui.get_user_events();
+        if (auto compiled_circuit = engine.do_events(events))
             simulator.update_compiled_circuit(std::move(*compiled_circuit));
 
         auto render = engine.render(simulator.wires_values());
-        events = ui.render(render, engine);
-        if (!events.empty())
-            engine.events(events);
+        events = ui.render_and_get_gui_events(render, engine);
+        if (!events.empty()) {
+            ui.do_events(events);
+            engine.do_events(events);
+        }
 
         if (i % 60 == 0)
             ui.set_simulation_steps(simulator.steps());

@@ -15,7 +15,7 @@ public:
     void setup();
     void save_in_progress();
 
-    std::optional<luaobj::CompiledCircuit> events(std::vector<luaobj::Event> const& events);
+    std::optional<luaobj::CompiledCircuit> do_events(std::vector<luaobj::Event> const& events);
 
     [[nodiscard]] luaobj::Render render(std::unordered_map<uint32_t, uint8_t> const& wires_values) const;
 

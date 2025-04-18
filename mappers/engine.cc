@@ -32,7 +32,7 @@ void Engine::setup()
     init();
 }
 
-std::optional<luaobj::CompiledCircuit> Engine::events(std::vector<luaobj::Event> const& events)
+std::optional<luaobj::CompiledCircuit> Engine::do_events(std::vector<luaobj::Event> const& events)
 {
     return lua_.with_lua<std::optional<luaobj::CompiledCircuit>>([&](lua_State* L) {
         return luaw_call_global<std::optional<luaobj::CompiledCircuit>>(L, "do_events", events);
@@ -56,7 +56,11 @@ void Engine::save_in_progress()
 void Engine::init()
 {
     return lua_.with_lua([this](lua_State* L) {
+#ifndef DEV
         luaw_call_global(L, "init");
+#else
+        luaw_call_global(L, "init", true);
+#endif
     });
 }
 

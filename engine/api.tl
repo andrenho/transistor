@@ -1,19 +1,21 @@
 require "sandbox"
+require "debug_"
 require "ui.ui"
 require "filemanager"
 require "event"
 require "compiler.compiler"
 
-global sandbox : Sandbox
-global file_manager : FileManager
-global ui : UI
+local sandbox : Sandbox
+local file_manager : FileManager
+local ui : UI
 
 local last_render: UI.Render
 
 local first_step = true
 
-global function init()
+global function init(debug_?: boolean)
    print("-----------------------")
+   DEBUG = debug_ or false
    file_manager = FileManager.new()
    sandbox = file_manager.sandbox
    ui = UI.new()

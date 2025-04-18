@@ -48,7 +48,7 @@ bool UI::running() const
     return ps::graphics::running();
 }
 
-std::vector<luaobj::Event> UI::events() const
+std::vector<luaobj::Event> UI::get_user_events() const
 {
     std::vector<luaobj::Event> events;
 
@@ -110,10 +110,17 @@ std::vector<luaobj::Event> UI::events() const
 
         gui.do_event(&e);
     }
+
     return events;
 }
 
-std::vector<luaobj::Event> UI::render(luaobj::Render const& render, Engine& engine) const
+void UI::do_events(std::vector<luaobj::Event> const& events)
+{
+    for (auto const& event: events)
+        gui.do_event(event);
+}
+
+std::vector<luaobj::Event> UI::render_and_get_gui_events(luaobj::Render const& render, Engine& engine) const
 {
     std::vector scenes = { background_scene() };
     scenes.insert(scenes.end(), std::make_move_iterator(render.scenes.begin()), std::make_move_iterator(render.scenes.end()));

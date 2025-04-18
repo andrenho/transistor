@@ -14,8 +14,10 @@ public:
     UI();
 
     [[nodiscard]] bool                       running() const;
-    [[nodiscard]] std::vector<luaobj::Event> events() const;
-    std::vector<luaobj::Event>               render(luaobj::Render const& render, Engine& engine) const;
+    [[nodiscard]] std::vector<luaobj::Event> get_user_events() const;
+    std::vector<luaobj::Event>               render_and_get_gui_events(luaobj::Render const& render, Engine& engine) const;
+
+    void                                     do_events(std::vector<luaobj::Event> const& events);
 
     void set_simulation_steps(uint64_t simulation_steps) { simulation_steps_ = simulation_steps; }
 
