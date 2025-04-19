@@ -109,14 +109,7 @@ end
 
 function BoardRenderer:__draw_ic(scene: Scene, component: Component, def: ComponentDef, x: integer, y: integer, dir: Direction, semitransparent: boolean)
    local C = self.cache
-   local context : Context = {
-	  position = { 
-		 x = math.floor(x * TILE_SIZE + (self.board.x / self.board.zoom)),
-		 y = math.floor(y * TILE_SIZE + (self.board.y / self.board.zoom)),
-	  },
-	  rotation = Dir.angle[dir],
-	  opacity = semitransparent and 0.5 or 1
-   }
+   local context : Context = { opacity = semitransparent and 0.5 or 1 }
    local cat = def.category
    local r = def:rect(P(x, y), dir)
 
@@ -159,7 +152,17 @@ function BoardRenderer:__draw_ic(scene: Scene, component: Component, def: Compon
    end
 
    -- custom rendeer
-   def.render(component, scene, context)
+   local context_render : Context = {
+	  opacity = semitransparent and 0.5 or 1,
+	  position = { 
+		 x = math.floor(x * TILE_SIZE + (self.board.x / self.board.zoom)),
+		 y = math.floor(y * TILE_SIZE + (self.board.y / self.board.zoom)),
+		 w = math.floor(x * (r.bottom_right.x - r.top_left.x) + (self.board.x / self.board.zoom)),
+		 h = math.floor(y * (r.bottom_right.y - r.top_left.y) + (self.board.y / self.board.zoom)),
+	  },
+	  rotation = Dir.angle[dir]
+   }
+   def.render(component, scene, context_render)
 end
 
 function BoardRenderer:__draw_component(scene: Scene, component: Component, def: ComponentDef, x: integer, y: integer, dir: Direction, semitransparent: boolean)
