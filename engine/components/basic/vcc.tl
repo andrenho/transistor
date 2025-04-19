@@ -20,7 +20,7 @@ local vcc : ComponentDef = {
       ${image: __infobox_vcc}
    ]],
    
-   render = function(component: Component, scene: Scene, context: Context)
+   render = function(_: Component | nil, scene: Scene, context: Context)
       scene:add_image("shadow_square", 1, 1, context)
       scene:add_image("vcc", 0, 0, context)
    end,

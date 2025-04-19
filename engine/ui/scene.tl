@@ -23,6 +23,10 @@ function Scene:add_image(image: string | ResourceId, x: integer, y: integer, con
    self.instructions[#self.instructions+1] = { "draw", image, x, y, 0, 0, context }
 end
 
+function Scene:add_text(font: string | ResourceId, text: string, x: integer, y: integer, w?: integer, h?: integer, context?: Context)
+   self.instructions[#self.instructions+1] = { "text", font, text, x, y, w, h, context }
+end
+
 function Scene:push_context(context: Context)
    self.instructions[#self.instructions+1] = { "push_context", context }
 end

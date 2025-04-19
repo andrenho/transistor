@@ -95,7 +95,7 @@ function BoardRenderer:__draw_wires(scene: Scene, wires_values: {integer, intege
    end
 end
 
-function BoardRenderer:__draw_component_single_tile(scene: Scene, component: Component, def: ComponentDef, x: integer, y: integer, dir: Direction, semitransparent: boolean)
+function BoardRenderer:__draw_component_single_tile(scene: Scene, component: Component | nil, def: ComponentDef, x: integer, y: integer, dir: Direction, semitransparent: boolean)
    local context : Context = { 
 	  position = { 
 		 x = math.floor(x * TILE_SIZE + (self.board.x / self.board.zoom)),

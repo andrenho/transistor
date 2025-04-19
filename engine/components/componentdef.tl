@@ -40,7 +40,7 @@ global record ComponentDef
 
    init: function()
    on_click: function(Component)
-   render: function(any, Scene, Context)   -- TODO - replace `any` with Component
+   render: function(Component | nil, Scene, Context)
    simulate: function(Component)
 
    -- internal

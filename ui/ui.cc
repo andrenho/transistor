@@ -7,6 +7,7 @@
 #include "resources/images/circuit.tileset.lua.h"
 #include "resources/images/infobox.png.h"
 #include "resources/images/infobox.tileset.lua.h"
+#include "resources/fonts/CutePixel.ttf.h"
 
 [[noreturn]] static void error_callback(void* _)
 {
@@ -35,6 +36,7 @@ UI::UI()
     ps::res::add_tiles_from_lua("circuit", ui_resources_images_circuit_tileset_lua, ui_resources_images_circuit_tileset_lua_sz);
     ps::res::add_image("infobox", ui_resources_images_infobox_png, ui_resources_images_infobox_png_sz);
     ps::res::add_tiles_from_lua("infobox", ui_resources_images_infobox_tileset_lua, ui_resources_images_infobox_tileset_lua_sz);
+    ps::res::add_ttf("ic_font", ui_resources_fonts_CutePixel_ttf, ui_resources_fonts_CutePixel_ttf_sz);
 
     SDL_Event resize = { .type = SDL_EVENT_WINDOW_RESIZED };
     SDL_PushEvent(&resize);

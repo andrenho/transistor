@@ -28,9 +28,9 @@ local button: ComponentDef = {
       button.data[1] = bnot(button.data[1])
    end,
    
-   render = function(button: Component, scene: Scene, context: Context)
+   render = function(button: Component | nil, scene: Scene, context: Context)
       scene:add_image("shadow_square", 1, 1, context)
-      if not button or button.data[1] == 0 then
+      if not button or (button as Component).data[1] == 0 then
          scene:add_image("button_off", 0, 0, context)
       else
          scene:add_image("button_on", 0, 0, context)

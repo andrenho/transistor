@@ -22,7 +22,7 @@ local npn : ComponentDef = {
        Press `R` to rotate the component.
    ]],
    
-   render = function(component: Component, scene: Scene, context: Context)
+   render = function(_: Component | nil, scene: Scene, context: Context)
       scene:add_image("shadow_rect", 1, 1, context)
       scene:add_image("npn", 0, 0, context)
    end,
