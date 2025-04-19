@@ -27,8 +27,8 @@ local or_2i : ComponentDef = {
       -- TODO - load icon
    end,
    
-   render = function(component: Component | nil, scene: Scene, context: Context)
-	  -- TODO
+   render = function(_: Component | nil, scene: Scene, context: Context)
+	  scene:ic_text("OR", context)
    end,
 }
 

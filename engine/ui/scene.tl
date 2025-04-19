@@ -1,17 +1,37 @@
 require "ui.context"
 
-local tnew = require "table.new"
-
 -- draw:        { "draw", image, x, y, w, h, context }
+-- text:        { "text", font, font_sz, text, x, y, w, h, r, g, b, context }
 -- push_context { "push_context", context }
 -- pop_context  { "pop_context" }
 local type Instruction = { any }
+
+local tnew = require "table.new"
 
 global record Scene
    __index: Scene
    instructions: {Instruction}
 end
 Scene.__index = Scene
+
+global record SceneText
+   record Color
+	  r: integer
+	  g: integer
+	  b: integer
+   end
+   font: string | ResourceId
+   font_sz: integer
+   text: string
+   x: integer
+   y: integer
+   w: integer
+   h: integer
+   color: Color
+   context: Context
+end
+
+local IC_TEXT_DEFAULT_COLOR : SceneText.Color = { r = 0xb0, g = 0xb0, b = 0xb0 }
 
 function Scene.new() : Scene
     local self : Scene = setmetatable({}, Scene as metatable<Scene>)
@@ -23,8 +43,25 @@ function Scene:add_image(image: string | ResourceId, x: integer, y: integer, con
    self.instructions[#self.instructions+1] = { "draw", image, x, y, 0, 0, context }
 end
 
-function Scene:add_text(font: string | ResourceId, text: string, x: integer, y: integer, w?: integer, h?: integer, context?: Context)
-   self.instructions[#self.instructions+1] = { "text", font, text, x, y, w, h, context }
+function Scene:add_text(text: SceneText)
+   local color = text.color or IC_TEXT_DEFAULT_COLOR
+   self.instructions[#self.instructions+1] = {
+	  "text", assert(text.font), assert(text.font_sz), assert(text.text),
+	  assert(text.x), assert(text.y), text.w or 0, text.h or 0,
+	  color.r, color.g, color.b,
+	  text.context
+   }
+end
+
+function Scene:ic_text(text: string, context?: Context)
+   self:add_text({
+	  font = "ic_font",
+	  font_sz = 16,
+	  text = text,
+	  x = 0,
+	  y = 0,
+	  context = context,
+   })
 end
 
 function Scene:push_context(context: Context)

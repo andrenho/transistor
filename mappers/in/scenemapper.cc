@@ -54,12 +54,32 @@ static void map_to_instruction(lua_State* L, ps::Scene& scene)
 
         // image
         lua_rawgeti(L, -1, 2);
-        if (lua_type(L, -1) == LUA_TSTRING) {
+        if (lua_type(L, -1) == LUA_TSTRING)
             scene.add_image(lua_tostring(L, -1), SDL_Rect { x, y, w, h }, context);
-        } else if (lua_type(L, -1) == LUA_TNUMBER) {
+        else if (lua_type(L, -1) == LUA_TNUMBER)
             scene.add_image(lua_tointeger(L, -1), SDL_Rect { x, y, w, h }, context);
-        }
         lua_pop(L, 1);
+    } else if (strcmp(command, "text") == 0) {
+        ps::Context context {};
+        lua_rawgeti(L, -1, 3); int font_sz = (int) lua_tointeger(L, -1); lua_pop(L, 1);
+        lua_rawgeti(L, -1, 4); const char* text = lua_tostring(L, -1); lua_pop(L, 1);
+        lua_rawgeti(L, -1, 5); int x = (int) lua_tointeger(L, -1); lua_pop(L, 1);
+        lua_rawgeti(L, -1, 6); int y = (int) lua_tointeger(L, -1); lua_pop(L, 1);
+        lua_rawgeti(L, -1, 7); int w = (int) lua_tointeger(L, -1); lua_pop(L, 1);
+        lua_rawgeti(L, -1, 8); int h = (int) lua_tointeger(L, -1); lua_pop(L, 1);
+        lua_rawgeti(L, -1, 9); uint8_t r = (int) lua_tointeger(L, -1); lua_pop(L, 1);
+        lua_rawgeti(L, -1, 10); uint8_t g = (int) lua_tointeger(L, -1); lua_pop(L, 1);
+        lua_rawgeti(L, -1, 11); uint8_t b = (int) lua_tointeger(L, -1); lua_pop(L, 1);
+        lua_rawgeti(L, -1, 12); if (!lua_isnil(L, -1)) context = map_to_context(L); lua_pop(L, 1);
+
+        // font
+        lua_rawgeti(L, -1, 2);
+        if (lua_type(L, -1) == LUA_TSTRING)
+            scene.add_text(lua_tostring(L, -1), text, SDL_Rect { x, y, w, h }, font_sz, SDL_Color { r, g, b }, context);
+        else
+            scene.add_text(lua_tointeger(L, -1), text, SDL_Rect { x, y, w, h }, font_sz, SDL_Color { r, g, b }, context);
+        lua_pop(L, 1);
+
     } else if (strcmp(command, "push_context") == 0) {
         ps::Context context {};
         lua_rawgeti(L, -1, 2); if (!lua_isnil(L, -1)) context = map_to_context(L); lua_pop(L, 1);

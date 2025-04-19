@@ -107,9 +107,16 @@ function BoardRenderer:__draw_component_single_tile(scene: Scene, component: Com
    def.render(component, scene, context)
 end
 
-function BoardRenderer:__draw_ic(scene: Scene, _: Component, def: ComponentDef, x: integer, y: integer, dir: Direction, semitransparent: boolean)
+function BoardRenderer:__draw_ic(scene: Scene, component: Component, def: ComponentDef, x: integer, y: integer, dir: Direction, semitransparent: boolean)
    local C = self.cache
-   local context : Context = { opacity = semitransparent and 0.5 or 1 }
+   local context : Context = {
+	  position = { 
+		 x = math.floor(x * TILE_SIZE + (self.board.x / self.board.zoom)),
+		 y = math.floor(y * TILE_SIZE + (self.board.y / self.board.zoom)),
+	  },
+	  rotation = Dir.angle[dir],
+	  opacity = semitransparent and 0.5 or 1
+   }
    local cat = def.category
    local r = def:rect(P(x, y), dir)
 
@@ -150,6 +157,9 @@ function BoardRenderer:__draw_ic(scene: Scene, _: Component, def: ComponentDef, 
 		 self:add_image(scene, C.ic_pin_w, p.pos.x, p.pos.y, context)
 	  end
    end
+
+   -- custom rendeer
+   def.render(component, scene, context)
 end
 
 function BoardRenderer:__draw_component(scene: Scene, component: Component, def: ComponentDef, x: integer, y: integer, dir: Direction, semitransparent: boolean)
