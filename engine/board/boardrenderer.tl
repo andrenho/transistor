@@ -157,8 +157,8 @@ function BoardRenderer:__draw_ic(scene: Scene, component: Component, def: Compon
 	  position = { 
 		 x = math.floor(x * TILE_SIZE + (self.board.x / self.board.zoom)),
 		 y = math.floor(y * TILE_SIZE + (self.board.y / self.board.zoom)),
-		 w = math.floor(x * (r.bottom_right.x - r.top_left.x) + (self.board.x / self.board.zoom)),
-		 h = math.floor(y * (r.bottom_right.y - r.top_left.y) + (self.board.y / self.board.zoom)),
+		 w = math.floor((r.bottom_right.x - r.top_left.x - 1) * TILE_SIZE * self.board.zoom),
+		 h = math.floor((r.bottom_right.y - r.top_left.y - 1) * TILE_SIZE * self.board.zoom),
 	  },
 	  rotation = Dir.angle[dir]
    }
