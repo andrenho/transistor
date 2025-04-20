@@ -155,12 +155,13 @@ function BoardRenderer:__draw_ic(scene: Scene, component: Component, def: Compon
    local context_render : Context = {
 	  opacity = semitransparent and 0.5 or 1,
 	  position = { 
-		 x = math.floor(x * TILE_SIZE + (self.board.x / self.board.zoom)),
-		 y = math.floor(y * TILE_SIZE + (self.board.y / self.board.zoom)),
+		 x = math.floor((x - 1) * TILE_SIZE + (self.board.x / self.board.zoom)),
+		 y = math.floor((y - 1) * TILE_SIZE + (self.board.y / self.board.zoom)),
 		 w = math.floor((r.bottom_right.x - r.top_left.x - 1) * TILE_SIZE * self.board.zoom),
 		 h = math.floor((r.bottom_right.y - r.top_left.y - 1) * TILE_SIZE * self.board.zoom),
 	  },
-	  rotation = Dir.angle[dir]
+	  rotation = Dir.angle[Dir.rotation[dir]],
+	  draw_border = true,
    }
    def.render(component, scene, context_render)
 end

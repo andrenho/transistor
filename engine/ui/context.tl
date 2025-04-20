@@ -16,6 +16,7 @@ global record Context
    opacity: number
    zoom: number
    rotation_center: ContextPos
+   draw_border: boolean
 end
 
 -- vim:sw=3:st=3:sts=3:noexpandtab

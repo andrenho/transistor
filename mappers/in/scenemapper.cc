@@ -14,6 +14,7 @@ static ps::Context map_to_context(lua_State* L)
     context.rotation = luaw_getfield<std::optional<float>>(L, -1, "rotation").value_or(0.f);
     context.opacity = luaw_getfield<std::optional<float>>(L, -1, "opacity").value_or(1.f);
     context.zoom = luaw_getfield<std::optional<float>>(L, -1, "zoom").value_or(1.f);
+    context.draw_border = luaw_getfield<std::optional<bool>>(L, -1, "draw_border").value_or(false);
 
     lua_getfield(L, -1, "position"); if (!lua_isnil(L, -1)) {
         context.position = {
