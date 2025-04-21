@@ -152,11 +152,18 @@ function BoardRenderer:__draw_ic(scene: Scene, component: Component, def: Compon
    end
 
    -- custom rendeer
+   local fx : number = x
+   local fy : number = y
+   if dir == N or dir == S then 
+	  fx = x + 0.5
+   else
+	  fy = y + 0.5
+   end
    local context_render : Context = {
 	  opacity = semitransparent and 0.5 or 1,
 	  position = { 
-		 x = math.floor((x - 1) * TILE_SIZE + (self.board.x / self.board.zoom)),
-		 y = math.floor((y - 1) * TILE_SIZE + (self.board.y / self.board.zoom)),
+		 x = math.floor((fx - 1) * TILE_SIZE + (self.board.x / self.board.zoom)),
+		 y = math.floor((fy - 1) * TILE_SIZE + (self.board.y / self.board.zoom)),
 		 w = math.floor((r.bottom_right.x - r.top_left.x - 1) * TILE_SIZE * self.board.zoom),
 		 h = math.floor((r.bottom_right.y - r.top_left.y - 1) * TILE_SIZE * self.board.zoom),
 	  },
