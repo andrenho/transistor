@@ -168,7 +168,6 @@ function BoardRenderer:__draw_ic(scene: Scene, component: Component, def: Compon
 		 h = math.floor((r.bottom_right.y - r.top_left.y - 1) * TILE_SIZE * self.board.zoom),
 	  },
 	  rotation = Dir.angle[Dir.rotation[dir]],
-	  draw_border = true,
    }
    def.render(component, scene, context_render)
 end
