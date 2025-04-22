@@ -32,6 +32,7 @@ global record SceneText
 end
 
 local IC_TEXT_DEFAULT_COLOR : SceneText.Color = { r = 0xb0, g = 0xb0, b = 0xb0 }
+local IC_TEXT_SHADOW_COLOR : SceneText.Color = { r = 0x20, g = 0x20, b = 0x20 }
 
 function Scene.new() : Scene
     local self : Scene = setmetatable({}, Scene as metatable<Scene>)
@@ -44,22 +45,34 @@ function Scene:add_image(image: string | ResourceId, x: integer, y: integer, con
 end
 
 function Scene:add_text(text: SceneText)
-   local color = text.color or IC_TEXT_DEFAULT_COLOR
    self.instructions[#self.instructions+1] = {
 	  "text", assert(text.font), assert(text.font_sz), assert(text.text),
 	  assert(text.x), assert(text.y), text.w or 0, text.h or 0,
-	  color.r, color.g, color.b,
+	  text.color.r, text.color.g, text.color.b,
 	  text.context
    }
 end
 
 function Scene:ic_text(text: string, context?: Context)
+   if context.rotation >= 180 then
+	  context.rotation = context.rotation - 180
+   end
+   self:add_text({
+	  font = "ic_font",
+	  font_sz = 16,
+	  text = text,
+	  x = 1,
+	  y = 1,
+	  color = IC_TEXT_SHADOW_COLOR,
+	  context = context,
+   })
    self:add_text({
 	  font = "ic_font",
 	  font_sz = 16,
 	  text = text,
 	  x = 0,
 	  y = 0,
+	  color = IC_TEXT_DEFAULT_COLOR,
 	  context = context,
    })
 end

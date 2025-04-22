@@ -27,13 +27,14 @@
       - [x] create submenus (categories: logic gates, series 7400, memory, cpu)
     - [x] unify cursor rendering and component rendering
     - [x] draw temporary IC
-    - [ ] draw IC
+    - [x] draw IC
+      - [x] draw from text
+      - [x] automatic shadows
       - [ ] draw from image
-      - [ ] automatic shadows
-      - [ ] draw from text
-    - [ ] limit IC placement in board borders
-    - [ ] rotation/placement
+    - [x] rotation/placement
+    - [x] limit IC placement in board borders
     - [ ] show pin names
+    - [ ] moving board not working
 - [x] ic Lua support
   - [x] serialize/deserialize
 

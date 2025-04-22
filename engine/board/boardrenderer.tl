@@ -180,19 +180,53 @@ function BoardRenderer:__draw_component(scene: Scene, component: Component, def:
    end
 end
 
-function BoardRenderer:__draw_components(scene: Scene)
+function BoardRenderer:__draw_pin_names(component: Component)
+   local r = component:rect()
+   for _,p in ipairs(component:pin_positions()) do
+	  local x, y: integer, integer
+	  local text: string
+	  if p.pos.y <= r.top_left.y then  -- top
+		 -- self:add_image(scene, C.ic_pin_n, p.pos.x, p.pos.y, context)
+	  elseif p.pos.y >= r.bottom_right.y then  -- bottom
+		 -- self:add_image(scene, C.ic_pin_s, p.pos.x, p.pos.y, context)
+	  elseif p.pos.x <= r.top_left.x then  -- left
+		 -- self:add_image(scene, C.ic_pin_e, p.pos.x, p.pos.y, context)
+	  elseif p.pos.x >= r.bottom_right.x then  -- right
+		 -- self:add_image(scene, C.ic_pin_w, p.pos.x, p.pos.y, context)
+		 --scene:add_image(image, math.floor(x * TILE_SIZE + (self.board.x / self.board.zoom)), math.floor(y * TILE_SIZE + (self.board.y / self.board.zoom)), context)
+		 text = "AR"
+		 x = p.pos.x
+		 y = p.pos.y
+	  end
+	  if text then
+		 scene:add_text({
+
+		 })
+	  end
+   end
+end
+
+function BoardRenderer:__draw_components(scene: Scene, tile_x: integer, tile_y: integer)
    -- components
    for _, component in ipairs(self.board.components) do
 	  self:__draw_component(scene, component, component.def, component.position.x, component.position.y, component.direction, false)
+	  if component:rect():contains(P(tile_x, tile_y)) then
+		 self:__draw_pin_names(component)
+	  end
    end
    -- shadow component
    if self.board.cursor.tile and self.board.cursor.selected_component ~= "" then
 	  local def = self.board.component_db:def(self.board.cursor.selected_component)
-	  self:__draw_component(scene, nil, def, self.board.cursor.tile.x, self.board.cursor.tile.y, self.board.cursor.selected_direction, true)
+	  local rect = def:rect(P(self.board.cursor.tile.x, self.board.cursor.tile.y), self.board.cursor.selected_direction)
+	  if rect:fully_inside_of(Rect.new(0, 0, self.board.w - 1, self.board.h - 1)) then
+		 self:__draw_component(scene, nil, def, self.board.cursor.tile.x, self.board.cursor.tile.y, self.board.cursor.selected_direction, true)
+	  end
    end
 end
 
-function BoardRenderer:render(wires_values: {integer, integer}) : Scene
+function BoardRenderer:render(wires_values: {integer, integer}, last_x: integer, last_y: integer) : Scene
+   local tile_x = math.floor((last_x - self.board.x) / TILE_SIZE / self.board.zoom)
+   local tile_y = math.floor((last_y - self.board.y) / TILE_SIZE / self.board.zoom)
    if not self.cache then
 	  self.cache = load_cache()
    end
@@ -200,7 +234,7 @@ function BoardRenderer:render(wires_values: {integer, integer}) : Scene
    scene:push_context({ zoom = self.board.zoom })
    self:__draw_board(scene)
    self:__draw_wires(scene, wires_values)
-   self:__draw_components(scene)
+   self:__draw_components(scene, tile_x, tile_y)
    return scene
 end
 
