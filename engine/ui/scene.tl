@@ -15,6 +15,11 @@ end
 Scene.__index = Scene
 
 global record SceneText
+   enum TextAlignment
+	  "left"
+	  "center"
+	  "right"
+   end
    record Color
 	  r: integer
 	  g: integer
@@ -28,6 +33,7 @@ global record SceneText
    w: integer
    h: integer
    color: Color
+   align: TextAlignment
    context: Context
 end
 
@@ -49,6 +55,7 @@ function Scene:add_text(text: SceneText)
 	  "text", assert(text.font), assert(text.font_sz), assert(text.text),
 	  assert(text.x), assert(text.y), text.w or 0, text.h or 0,
 	  text.color.r, text.color.g, text.color.b,
+	  text.align or "left",
 	  text.context
    }
 end

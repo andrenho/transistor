@@ -185,23 +185,25 @@ function BoardRenderer:__draw_pin_names(scene: Scene, component: Component)
    for _,p in ipairs(component:pin_positions()) do
 	  local x, y: number, number
 	  local text: string
+	  local align: SceneText.TextAlignment = "left"
 	  if p.pos.y <= r.top_left.y then  -- top
 		 -- self:add_image(scene, C.ic_pin_n, p.pos.x, p.pos.y, context)
 	  elseif p.pos.y >= r.bottom_right.y then  -- bottom
 		 -- self:add_image(scene, C.ic_pin_s, p.pos.x, p.pos.y, context)
 	  elseif p.pos.x <= r.top_left.x then  -- left
-		 -- self:add_image(scene, C.ic_pin_e, p.pos.x, p.pos.y, context)
+		 text = component.def.pins[p.pin_no].name
+		 x = p.pos.x + 0.3
+		 y = p.pos.y + 0.2
+		 align = "right"
 	  elseif p.pos.x >= r.bottom_right.x then  -- right
-		 -- self:add_image(scene, C.ic_pin_w, p.pos.x, p.pos.y, context)
-		 --scene:add_image(image, math.floor(x * TILE_SIZE + (self.board.x / self.board.zoom)), math.floor(y * TILE_SIZE + (self.board.y / self.board.zoom)), context)
 		 text = component.def.pins[p.pin_no].name
 		 x = p.pos.x + 0.8
 		 y = p.pos.y + 0.2
 	  end
 	  if text then
 		 local px, py = self:to_px(x, y)
-		 scene:add_text({ font = "font", font_sz = 11, text = text, x = px + 1, y = py + 1, color = TEXT_SHADOW })
-		 scene:add_text({ font = "font", font_sz = 11, text = text, x = px, y = py, color = TEXT_COLOR })
+		 scene:add_text({ font = "font", font_sz = 11, text = text, x = px + 1, y = py + 1, align = align, color = TEXT_SHADOW })
+		 scene:add_text({ font = "font", font_sz = 11, text = text, x = px, y = py, align = align, color = TEXT_COLOR })
 	  end
    end
 end

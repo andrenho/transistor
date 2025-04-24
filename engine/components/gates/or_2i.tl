@@ -15,7 +15,7 @@ local or_2i : ComponentDef = {
    pins = {
       { name = "IN0", direction = "input" },
       { name = "IN1", direction = "input" },
-      { name = "~Q",  direction = "output" },
+      { name = "!Q",  direction = "output" },
       { name = "Q",   direction = "output" },
    },
    

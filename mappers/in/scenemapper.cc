@@ -71,14 +71,21 @@ static void map_to_instruction(lua_State* L, ps::Scene& scene)
         lua_rawgeti(L, -1, 9); uint8_t r = (int) lua_tointeger(L, -1); lua_pop(L, 1);
         lua_rawgeti(L, -1, 10); uint8_t g = (int) lua_tointeger(L, -1); lua_pop(L, 1);
         lua_rawgeti(L, -1, 11); uint8_t b = (int) lua_tointeger(L, -1); lua_pop(L, 1);
-        lua_rawgeti(L, -1, 12); if (!lua_isnil(L, -1)) context = map_to_context(L); lua_pop(L, 1);
+        lua_rawgeti(L, -1, 12); const char* align_s = lua_tostring(L, -1); lua_pop(L, 1);
+        lua_rawgeti(L, -1, 13); if (!lua_isnil(L, -1)) context = map_to_context(L); lua_pop(L, 1);
+
+        ps::TextAlignment align = ps::TextAlignment::Left;
+        if (strcmp(align_s, "center") == 0)
+            align = ps::TextAlignment::Center;
+        else if (strcmp(align_s, "right") == 0)
+            align = ps::TextAlignment::Right;
 
         // font
         lua_rawgeti(L, -1, 2);
         if (lua_type(L, -1) == LUA_TSTRING)
-            scene.add_text(lua_tostring(L, -1), text, SDL_Rect { x, y, w, h }, font_sz, SDL_Color { r, g, b }, context);
+            scene.add_text(lua_tostring(L, -1), text, SDL_Rect { x, y, w, h }, font_sz, SDL_Color { r, g, b }, align, context);
         else
-            scene.add_text(lua_tointeger(L, -1), text, SDL_Rect { x, y, w, h }, font_sz, SDL_Color { r, g, b }, context);
+            scene.add_text(lua_tointeger(L, -1), text, SDL_Rect { x, y, w, h }, font_sz, SDL_Color { r, g, b }, align, context);
         lua_pop(L, 1);
 
     } else if (strcmp(command, "push_context") == 0) {
