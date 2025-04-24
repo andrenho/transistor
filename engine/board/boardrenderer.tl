@@ -51,8 +51,14 @@ function BoardRenderer.new(board: Board) : BoardRenderer
     return self
 end
 
+function BoardRenderer:to_px(tile_x: number, tile_y: number) : integer, integer
+   return math.floor(tile_x * TILE_SIZE + (self.board.x / self.board.zoom)),
+          math.floor(tile_y * TILE_SIZE + (self.board.y / self.board.zoom))
+end
+
 function BoardRenderer:add_image(scene: Scene, image: ResourceId, x: integer, y: integer, context?: Context)
-   scene:add_image(image, math.floor(x * TILE_SIZE + (self.board.x / self.board.zoom)), math.floor(y * TILE_SIZE + (self.board.y / self.board.zoom)), context)
+   local px, py = self:to_px(x, y)
+   scene:add_image(image, px, py, context)
 end
 
 function BoardRenderer:__draw_board(scene: Scene)
@@ -96,11 +102,9 @@ function BoardRenderer:__draw_wires(scene: Scene, wires_values: {integer, intege
 end
 
 function BoardRenderer:__draw_component_single_tile(scene: Scene, component: Component | nil, def: ComponentDef, x: integer, y: integer, dir: Direction, semitransparent: boolean)
+   local px, py = self:to_px(x, y)
    local context : Context = { 
-	  position = { 
-		 x = math.floor(x * TILE_SIZE + (self.board.x / self.board.zoom)),
-		 y = math.floor(y * TILE_SIZE + (self.board.y / self.board.zoom)),
-	  },
+	  position = { x = px, y = py },
 	  rotation = Dir.angle[dir],
 	  opacity = semitransparent and 0.5 or 1,
    }
@@ -152,20 +156,14 @@ function BoardRenderer:__draw_ic(scene: Scene, component: Component, def: Compon
    end
 
    -- custom rendeer
-   local fx : number = x
-   local fy : number = y
-   if dir == N or dir == S then 
-	  fx = x + 0.5
-   else
-	  fy = y + 0.5
-   end
+   local px, py = self:to_px(x, y)
    local context_render : Context = {
 	  opacity = semitransparent and 0.5 or 1,
 	  position = { 
-		 x = math.floor((fx - 1) * TILE_SIZE + (self.board.x / self.board.zoom)),
-		 y = math.floor((fy - 1) * TILE_SIZE + (self.board.y / self.board.zoom)),
-		 w = math.floor((r.bottom_right.x - r.top_left.x - 1) * TILE_SIZE * self.board.zoom),
-		 h = math.floor((r.bottom_right.y - r.top_left.y - 1) * TILE_SIZE * self.board.zoom),
+		 x = px,
+		 y = py,
+		 w = math.floor((r.bottom_right.x - r.top_left.x - 1) * TILE_SIZE),
+		 h = math.floor((r.bottom_right.y - r.top_left.y - 1) * TILE_SIZE),
 	  },
 	  rotation = Dir.angle[Dir.rotation[dir]],
    }
@@ -180,10 +178,12 @@ function BoardRenderer:__draw_component(scene: Scene, component: Component, def:
    end
 end
 
-function BoardRenderer:__draw_pin_names(component: Component)
+function BoardRenderer:__draw_pin_names(scene: Scene, component: Component)
    local r = component:rect()
+   local TEXT_COLOR = { r = 240, g = 240, b = 240 }
+   local TEXT_SHADOW = { r = 20, g = 20, b = 20 }
    for _,p in ipairs(component:pin_positions()) do
-	  local x, y: integer, integer
+	  local x, y: number, number
 	  local text: string
 	  if p.pos.y <= r.top_left.y then  -- top
 		 -- self:add_image(scene, C.ic_pin_n, p.pos.x, p.pos.y, context)
@@ -194,14 +194,14 @@ function BoardRenderer:__draw_pin_names(component: Component)
 	  elseif p.pos.x >= r.bottom_right.x then  -- right
 		 -- self:add_image(scene, C.ic_pin_w, p.pos.x, p.pos.y, context)
 		 --scene:add_image(image, math.floor(x * TILE_SIZE + (self.board.x / self.board.zoom)), math.floor(y * TILE_SIZE + (self.board.y / self.board.zoom)), context)
-		 text = "AR"
-		 x = p.pos.x
-		 y = p.pos.y
+		 text = component.def.pins[p.pin_no].name
+		 x = p.pos.x + 0.8
+		 y = p.pos.y + 0.2
 	  end
 	  if text then
-		 scene:add_text({
-
-		 })
+		 local px, py = self:to_px(x, y)
+		 scene:add_text({ font = "font", font_sz = 11, text = text, x = px + 1, y = py + 1, color = TEXT_SHADOW })
+		 scene:add_text({ font = "font", font_sz = 11, text = text, x = px, y = py, color = TEXT_COLOR })
 	  end
    end
 end
@@ -211,7 +211,7 @@ function BoardRenderer:__draw_components(scene: Scene, tile_x: integer, tile_y: 
    for _, component in ipairs(self.board.components) do
 	  self:__draw_component(scene, component, component.def, component.position.x, component.position.y, component.direction, false)
 	  if component:rect():contains(P(tile_x, tile_y)) then
-		 self:__draw_pin_names(component)
+		 self:__draw_pin_names(scene, component)
 	  end
    end
    -- shadow component
