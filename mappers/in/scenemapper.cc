@@ -83,9 +83,9 @@ static void map_to_instruction(lua_State* L, ps::Scene& scene)
         // font
         lua_rawgeti(L, -1, 2);
         if (lua_type(L, -1) == LUA_TSTRING)
-            scene.add_text(lua_tostring(L, -1), text, SDL_Rect { x, y, w, h }, font_sz, SDL_Color { r, g, b }, align, context);
+            scene.add_text(lua_tostring(L, -1), text, SDL_Rect { x, y, w, h }, font_sz, SDL_Color { r, g, b, 255 }, align, context);
         else
-            scene.add_text(lua_tointeger(L, -1), text, SDL_Rect { x, y, w, h }, font_sz, SDL_Color { r, g, b }, align, context);
+            scene.add_text(lua_tointeger(L, -1), text, SDL_Rect { x, y, w, h }, font_sz, SDL_Color { r, g, b, 255 }, align, context);
         lua_pop(L, 1);
 
     } else if (strcmp(command, "push_context") == 0) {

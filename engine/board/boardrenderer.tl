@@ -184,27 +184,29 @@ function BoardRenderer:__draw_pin_names(scene: Scene, component: Component)
    local TEXT_SHADOW = { r = 20, g = 20, b = 20 }
    for _,p in ipairs(component:pin_positions()) do
 	  local x, y: number, number
-	  local text: string
+	  local rotation: number
+	  local text = component.def.pins[p.pin_no].name
 	  local align: SceneText.TextAlignment = "left"
 	  if p.pos.y <= r.top_left.y then  -- top
-		 -- self:add_image(scene, C.ic_pin_n, p.pos.x, p.pos.y, context)
+		 x = p.pos.x + 0.3
+		 y = p.pos.y - 0.2
+		 rotation = 90
+		 align = "right"
 	  elseif p.pos.y >= r.bottom_right.y then  -- bottom
-		 -- self:add_image(scene, C.ic_pin_s, p.pos.x, p.pos.y, context)
+		 x = p.pos.x + 0.3
+		 y = p.pos.y + 0.6
+		 rotation = 90
 	  elseif p.pos.x <= r.top_left.x then  -- left
-		 text = component.def.pins[p.pin_no].name
 		 x = p.pos.x + 0.3
 		 y = p.pos.y + 0.2
 		 align = "right"
 	  elseif p.pos.x >= r.bottom_right.x then  -- right
-		 text = component.def.pins[p.pin_no].name
 		 x = p.pos.x + 0.8
 		 y = p.pos.y + 0.2
 	  end
-	  if text then
-		 local px, py = self:to_px(x, y)
-		 scene:add_text({ font = "font", font_sz = 11, text = text, x = px + 1, y = py + 1, align = align, color = TEXT_SHADOW })
-		 scene:add_text({ font = "font", font_sz = 11, text = text, x = px, y = py, align = align, color = TEXT_COLOR })
-	  end
+	  local px, py = self:to_px(x, y)
+	  scene:add_text({ font = "font", font_sz = 11, text = text, x = px + 1, y = py + 1, align = align, color = TEXT_SHADOW, rotation = rotation })
+	  scene:add_text({ font = "font", font_sz = 11, text = text, x = px, y = py, align = align, color = TEXT_COLOR, rotation = rotation })
    end
 end
 

@@ -34,6 +34,7 @@ global record SceneText
    h: integer
    color: Color
    align: TextAlignment
+   rotation: number
    context: Context
 end
 
@@ -51,6 +52,10 @@ function Scene:add_image(image: string | ResourceId, x: integer, y: integer, con
 end
 
 function Scene:add_text(text: SceneText)
+   if text.rotation then
+	  if not text.context then text.context = {} end
+	  text.context.rotation = text.rotation
+   end
    self.instructions[#self.instructions+1] = {
 	  "text", assert(text.font), assert(text.font_sz), assert(text.text),
 	  assert(text.x), assert(text.y), text.w or 0, text.h or 0,

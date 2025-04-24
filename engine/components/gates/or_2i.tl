@@ -13,7 +13,7 @@ local or_2i : ComponentDef = {
    subcategory = "OR gates",
    
    pins = {
-      { name = "IN0", direction = "input" },
+      { name = "TESTX", direction = "input" },
       { name = "IN1", direction = "input" },
       { name = "!Q",  direction = "output" },
       { name = "Q",   direction = "output" },
