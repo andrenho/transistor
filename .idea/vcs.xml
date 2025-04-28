@@ -2,6 +2,7 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/contrib/LuaJIT" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/contrib/SDL" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/contrib/imgui" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/contrib/pastel-base" vcs="Git" />
@@ -13,5 +14,9 @@
     <mapping directory="$PROJECT_DIR$/contrib/pastel2d/contrib/pastel-log" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/contrib/pastel2d/contrib/pocketmod" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/contrib/pastel2d/contrib/stb" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/contrib/raylib" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/contrib/rlImGui" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/mk/LuaJIT" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/mk/raylib" vcs="Git" />
   </component>
 </project>

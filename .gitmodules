@@ -1,24 +1,4 @@
-[submodule "contrib/pastel2d"]
-	path = contrib/pastel2d
-	url = https://github.com/andrenho/pastel2d.git
-	branch = master
-[submodule "contrib/pastel-base"]
-	path = contrib/pastel-base
-	url = https://github.com/andrenho/pastel-base
-	branch = master
 [submodule "contrib/imgui"]
 	path = contrib/imgui
 	url = https://github.com/ocornut/imgui.git
 	branch = master
-[submodule "contrib/SDL"]
-	path = contrib/SDL
-	url = https://github.com/libsdl-org/SDL.git
-[submodule "contrib/raylib"]
-	path = contrib/raylib
-	url = https://github.com/raysan5/raylib
-[submodule "contrib/rlImGui"]
-	path = contrib/rlImGui
-	url = https://github.com/raylib-extras/rlImGui.git
-[submodule "contrib/LuaJIT"]
-	path = contrib/LuaJIT
-	url = https://github.com/LuaJIT/LuaJIT.git
