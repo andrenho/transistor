@@ -13,3 +13,12 @@
 [submodule "contrib/SDL"]
 	path = contrib/SDL
 	url = https://github.com/libsdl-org/SDL.git
+[submodule "contrib/raylib"]
+	path = contrib/raylib
+	url = https://github.com/raysan5/raylib
+[submodule "contrib/rlImGui"]
+	path = contrib/rlImGui
+	url = https://github.com/raylib-extras/rlImGui.git
+[submodule "contrib/LuaJIT"]
+	path = contrib/LuaJIT
+	url = https://github.com/LuaJIT/LuaJIT.git
