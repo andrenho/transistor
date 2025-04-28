@@ -58,9 +58,10 @@ OBJ = \
 	luaenv/hotreload.o \
 	luaenv/cache.o \
 	mappers/engine.o \
-	mappers/in/scenemapper.o \
+	mappers/in/scene.o \
 	mappers/in/compiled_circuit.o \
 	ui/ui.o \
+	ui/resource.o \
 	ui/gui/gui.o \
 	ui/gui/dialog.o \
 	ui/gui/infobox.o \
@@ -170,7 +171,7 @@ libraylib.a:
 
 # transistor executable
 
-$(OBJ): libluajit.a libraylib.a
+$(OBJ) $(CONTRIB_OBJ): libluajit.a libraylib.a
 
 $(PROJECT_NAME): $(OBJ) $(CONTRIB_OBJ) libluajit.a libraylib.a
 	$(CXX) -o $@ $^ $(LDFLAGS)
@@ -218,7 +219,7 @@ softclean:
 
 .PHONY: clean
 clean: softclean
-	rm -rf $(LUAJIT_PATH) $(RAYLIB_PATH) libraylib.a libluajit.a libpastel2d-cc.a
+	rm -rf $(LUAJIT_PATH) $(RAYLIB_PATH) libraylib.a libluajit.a
 
 FORCE: ;
 

@@ -1,4 +1,3 @@
-#include <pl_log.h>
 #include <simulator/simulator.hh>
 
 #include "luaenv/lua.hh"
@@ -9,8 +8,6 @@
 
 int main()
 {
-    pl_init();
-
     Lua lua;
     HotReload hotreload(lua);
     Engine engine(lua);

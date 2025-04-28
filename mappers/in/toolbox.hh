@@ -2,6 +2,7 @@
 #define TOOLBOX_HH_
 
 #include <string>
+#include <ui/resource.hh>
 
 namespace luaobj {
 
@@ -18,7 +19,7 @@ struct CategoryDef {
 };
 
 struct ToolItem {
-    ps::res::idx_t             image;
+    Resource                   image;
     std::optional<std::string> key;
     std::string                tooltip;
     bool                       selected;
@@ -31,7 +32,7 @@ struct ToolItem {
         if (luaw_getfield<std::optional<bool>>(L,index, "separator").value_or(false))
             return { .separator = true };
         return {
-            .image = ps::res::idx(luaw_getfield<std::string>(L, index, "image")),
+            .image = Resource(luaw_getfield<std::string>(L, index, "image")),
             .LUAW_FIELD(key),
             .LUAW_FIELD(tooltip),
             .selected = luaw_getfield<std::optional<bool>>(L, index, "selected").value_or(false),

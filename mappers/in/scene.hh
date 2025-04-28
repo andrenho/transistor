@@ -4,11 +4,14 @@
 #include <vector>
 
 #include <lua.hpp>
-#include <pastel2d.hh>
+
+struct Scene {
+};
+
 
 namespace scene_mapper {
 
-std::vector<ps::Scene> map_to_scene(lua_State* L);
+std::vector<Scene> map_to_scene(lua_State* L);
 
 };
 

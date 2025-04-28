@@ -6,7 +6,6 @@
 #include <vector>
 
 #include <luaw.hh>
-#include <pastel2d.hh>
 
 #include "menu.hh"
 #include "toolbox.hh"
@@ -15,7 +14,7 @@
 namespace luaobj {
 
 struct Render {
-    std::vector<ps::Scene>     scenes;
+    std::vector<Scene>         scenes;
     std::vector<MenuItem>      menu;
     ToolBox                    toolbox;
     std::optional<std::string> infobox;
